@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>初心者向けGitHub・コード閲覧とブラウザ開発環境の実例｜Windows・macOS・iOS・Android | PC 4OS実例ガイド</title>
+  <style>
+:root {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --muted: #475569;
+  --accent: #0284c7;
+  --accent-soft: #e0f2fe;
+  --border: #e2e8f0;
+  --code-bg: #0f172a;
+  --code-text: #e2e8f0;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Noto Sans JP", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+}
+header.site-header {
+  background: linear-gradient(135deg, #0f172a 0%, #0369a1 100%);
+  color: #fff;
+  padding: 2.2rem 1.25rem;
+}
+header.site-header .inner { max-width: 980px; margin: 0 auto; }
+header.site-header h1 { margin: 0 0 0.4rem; font-size: 1.75rem; }
+header.site-header p { margin: 0; opacity: 0.9; font-size: 0.96rem; }
+main { max-width: 980px; margin: 2rem auto; padding: 0 1.25rem 3rem; }
+.badge {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: var(--accent-soft);
+  color: #0369a1;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1.25rem;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08); }
+.card img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; display: block; background: #e2e8f0; }
+.card-body { padding: 1rem 1.1rem 1.2rem; flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+.card-title { font-size: 1.02rem; font-weight: 700; margin: 0; line-height: 1.45; }
+.card-meta { font-size: 0.82rem; color: var(--muted); margin-top: auto; }
+article.post {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 2rem;
+}
+article.post img.eyecatch {
+  width: 100%;
+  max-height: 460px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+}
+article.post h1 { font-size: 1.65rem; line-height: 1.35; margin-top: 0; }
+article.post h2 {
+  font-size: 1.3rem;
+  margin-top: 2.1rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 2px solid var(--accent-soft);
+}
+article.post h3 { font-size: 1.08rem; margin-top: 1.4rem; }
+article.post table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.2rem 0;
+  font-size: 0.92rem;
+  display: block;
+  overflow-x: auto;
+}
+article.post th, article.post td {
+  border: 1px solid var(--border);
+  padding: 0.6rem 0.8rem;
+  text-align: left;
+}
+article.post th { background: #f1f5f9; font-weight: 700; }
+article.post pre {
+  background: var(--code-bg);
+  color: var(--code-text);
+  padding: 1rem 1.15rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+article.post code {
+  background: #f1f5f9;
+  padding: 0.15rem 0.38rem;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+article.post pre code { background: transparent; padding: 0; color: inherit; }
+article.post blockquote {
+  margin: 1.2rem 0;
+  padding: 0.8rem 1.1rem;
+  border-left: 4px solid var(--accent);
+  background: #f0f9ff;
+  border-radius: 0 8px 8px 0;
+}
+.back-link { display: inline-block; margin-bottom: 1rem; color: var(--accent); text-decoration: none; font-weight: 600; }
+footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2rem 1rem; }
+@media (max-width: 640px) {
+  article.post { padding: 1.2rem; }
+}
+</style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="inner">
+      <h1>PC 4OS実例ガイド</h1>
+      <p>Windows・macOS・iOS・Android の実践比較＆トラブル解決アーカイブ</p>
+    </div>
+  </header>
+  <main>
+    <a class="back-link" href="../index.html">← 記事一覧へ戻る</a>
+    <article class="post">
+      <p><span class="badge">#07｜分類07: プログラミング・ソフトウェア開発</span> <small style="color:#64748b;margin-left:0.5rem;">2026-11-23</small></p>
+      <img class="eyecatch" src="../images/2026-11-23_art07_github_code_browser_mobile.png" alt="初心者向けGitHub・コード閲覧とブラウザ開発環境の実例｜Windows・macOS・iOS・Android">
+      <h1>初心者向けGitHub・コード閲覧とブラウザ開発環境の実例｜Windows・macOS・iOS・Android</h1>
+<p>「プログラミングを始めたいけれど、まずはGitHubのコードをちょっとだけ確認したい」「外出先からスマホでコードの修正をしたいけれど、どうすればいいのかわからない」といった悩みをお持ちではありませんか？</p>
+<p>エンジニアの世界では、ソースコードの管理に<strong>GitHub</strong>は欠かせないツールです。しかし、いざ触ってみようとすると「環境構築が難しそう」「自分のPCにソフトを入れるのが怖い」と感じる初心者の方も多いでしょう。</p>
+<p>この記事では、そんな方のために、<strong>特別な環境構築をせずにブラウザやアプリだけでGitHubのコードを閲覧・編集する方法</strong>を、Windows、macOS、iOS、Androidの4つのOSごとに徹底解説します。この記事を読めば、どのデバイスからでもスムーズにGitHubを使いこなすための第一歩を踏み出せるようになります。</p>
+<h2>4OS比較早見表</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">機能</th>
+<th style="text-align: left;">Windows 11</th>
+<th style="text-align: left;">macOS</th>
+<th style="text-align: left;">iOS (iPhone/iPad)</th>
+<th style="text-align: left;">Android</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>主な閲覧方法</strong></td>
+<td style="text-align: left;">ブラウザ / GitHub Desktop</td>
+<td style="text-align: left;">ブラウザ / GitHub Desktop</td>
+<td style="text-align: left;">GitHub Mobileアプリ</td>
+<td style="text-align: left;">GitHub Mobileアプリ</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>ブラウザ開発</strong></td>
+<td style="text-align: left;">github.dev (Chrome/Edge)</td>
+<td style="text-align: left;">github.dev (Safari/Chrome)</td>
+<td style="text-align: left;">Safari (Webエディタ)</td>
+<td style="text-align: left;">Chrome (Webエディタ)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>ローカル連携</strong></td>
+<td style="text-align: left;">VS Code / Git</td>
+<td style="text-align: left;">VS Code / Finder</td>
+<td style="text-align: left;">Sidecar (iPadのみ推奨)</td>
+<td style="text-align: left;">タブレットモード推奨</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>主な用途</strong></td>
+<td style="text-align: left;">本格開発・同期</td>
+<td style="text-align: left;">本格開発・同期</td>
+<td style="text-align: left;">閲覧・クイック修正</td>
+<td style="text-align: left;">閲覧・クイック修正</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>1. Windows 11 での実例手順</h2>
+<p>Windows環境では、ブラウザでの操作とローカルアプリ（GitHub Desktop）の両方を使い分けることで、非常にスムーズな開発フローを構築できます。</p>
+<h3>公式仕様に基づく実例手順（github.dev の利用）</h3>
+<ol>
+<li><strong>準備</strong>: ChromeまたはEdgeを開き、<code>https://github.dev</code> にアクセスしてログインします。</li>
+<li><strong>リポジトリ選択</strong>: 「Explore」または「Your repositories」から対象のリポジトリを選択します。</li>
+<li><strong>ファイル編集</strong>: 左側のツリーからファイルをダブルクリックし、右上のペンアイコン（Edit this file）を押します。エディタが開くのでコードを修正し、右下の「Commit changes」ボタンで保存します。</li>
+<li><strong>ローカルとの同期</strong>: ブラウザ上の変更はGitHubに直接反映されますが、<strong>ローカルのVS Codeと自動同期はされません</strong>。最新版を取得するには、「Pull」ボタンを押すか、手動で再取得を行う必要があります。</li>
+</ol>
+<h3>公式仕様に基づく実例手順（GitHub Desktop の利用）</h3>
+<ol>
+<li><strong>準備</strong>: Microsoft Storeから「GitHub Desktop」をインストールし、ログインします。</li>
+<li><strong>リポジトリ追加</strong>: 「File」→「Clone repository from GitHub」でURLを入力し、ローカルに取得します。</li>
+<li><strong>編集・コミット</strong>: アプリ内でファイルを開き（VS Code等と連携）、変更後「Commit to main」ボタンを押して保存します。</li>
+</ol>
+<h3>標準機能の制限事項と代替手段</h3>
+<ul>
+<li><strong>制限</strong>: <code>github.dev</code> はブラウザ上のみの動作であるため、ローカルの環境変数や特定の拡張機能が使えない場合があります。また、大規模リポジトリは読み込みに時間がかかることがあります。</li>
+<li><strong>代替手段</strong>: 本格的な開発が必要な場合は「GitHub Desktop」または公式のVS Codeをインストールし、「Git: Push/Pull」コマンドで同期を行うのが標準的です。</li>
+</ul>
+<h3>よくあるトラブルと解決法</h3>
+<ol>
+<li><strong>「Commit changes」ボタンが押せない / エラーが出る</strong></li>
+<li><strong>原因</strong>: リポジトリに「Write permissions（書き込み権限）」がない、またはファイルロックがかかっている。</li>
+<li><strong>解決</strong>: GitHub Webページで「Fork」して自分のリポジトリを複製し、そこから編集する。「Pull Request」を作成すれば元の所有者にも反映されます。</li>
+<li><strong>ブラウザが重い / 読み込みエラー</strong></li>
+<li><strong>原因</strong>: リポジトリのファイル数が多すぎる（10,000ファイル以上）。</li>
+<li><strong>解決</strong>: 大規模リポジトリはローカルのVS Codeで管理し、「GitHub Desktop」でコミットする方が安定します。または「Codespaces」機能を使ってクラウド上のVMを起動して開発します。</li>
+<li><strong>コードが保存されない / 変更反映しない</strong></li>
+<li><strong>原因</strong>: ブラウザのキャッシュや、Gitのブランチ名が間違っている。</li>
+<li><strong>解決</strong>: ページをリロードし、「Current branch」を確認。「main」または「master」になっているか確認します。</li>
+</ol>
+<hr />
+<h2>2. macOS での実例手順</h2>
+<p>macOSでは、洗練されたブラウザ操作とFinderとの連携を意識したフローが特徴です。</p>
+<h3>公式仕様に基づく実例手順（github.dev の利用）</h3>
+<ol>
+<li><strong>準備</strong>: SafariやChromeで <code>https://github.dev</code> にアクセスし、ログインします。</li>
+<li><strong>リポジトリ選択</strong>: 「Your repositories」から対象を選択。「Edit this file」をクリックしてWebエディタを開きます。</li>
+<li><strong>編集・コミット</strong>: コードを修正後、「Commit changes」ボタンを押します。macOSのFinderでは直接GitHubと同期できないため、このフローが非常に便利です。</li>
+</ol>
+<h3>公式仕様に基づく実例手順（GitHub Desktop / Xcode などとの連携）</h3>
+<ol>
+<li><strong>準備</strong>: App Storeから「GitHub Desktop」をインストールします。</li>
+<li><strong>リポジトリ管理</strong>: アプリ内でリポジトリを追加し、Finderのフォルダと同期させます。</li>
+<li><strong>編集・コミット</strong>: Finderでファイルを修正後、「Commit to main」ボタンを押します。</li>
+</ol>
+<h3>標準機能の制限事項と代替手段</h3>
+<ul>
+<li><strong>制限</strong>: macOSの「ショートカットキー」でGitHub Webから直接ファイルを開くことはセキュリティ上の理由でできません。また、<code>github.dev</code> はSafariでも動作しますが、一部の拡張機能が非対応の場合があります。</li>
+<li><strong>代替手段</strong>: ローカル開発を前提とする場合は、「GitHub Desktop」または公式のVS Code for Macを使用し、Finderと同期して作業を行うのが推奨されます。</li>
+</ul>
+<h3>よくあるトラブルと解決法</h3>
+<ol>
+<li><strong>「Commit changes」ボタンがグレーアウトしている</strong></li>
+<li><strong>原因</strong>: ファイルに変更がないか、ブランチ名が「main」と一致していない。</li>
+<li><strong>解決</strong>: ページをリロードし、「Current branch」を確認。「main」になっていることを確認します。</li>
+<li><strong>Safari での github.dev が動作しない</strong></li>
+<li><strong>原因</strong>: Safariの拡張機能との相性、またはApple Silicon Macのアーキテクチャ問題。</li>
+<li><strong>解決</strong>: ChromeやEdgeを使用するか、「Settings」→「Privacy &amp; Security」でサードパーティのコンテンツブロッカーを一時的に無効にします（※公式ドキュメントでは推奨されないため注意）。</li>
+</ol>
+<hr />
+<h2>3. iOS（iPhone / iPad）での実例手順</h2>
+<p>モバイル端末では、アプリを活用することで「移動中のクイック修正」が可能になります。</p>
+<h3>公式仕様に基づく実例手順（GitHub Mobile アプリの利用）</h3>
+<ol>
+<li><strong>準備</strong>: App Storeから「GitHub」アプリをインストールし、ログインします。</li>
+<li><strong>リポジトリ閲覧</strong>: 「Repositories」タブから対象を選択。「Files」セクションを表示します。</li>
+<li><strong>ファイル編集</strong>: ファイル名をクリック→右上のペンを押す（Edit this file）。エディタが開くのでコードを修正し、「Commit changes」ボタンで保存します。</li>
+</ol>
+<h3>公式仕様に基づく実例手順（ブラウザ Safari の利用）</h3>
+<ol>
+<li><strong>準備</strong>: Safariで <code>https://github.com/ユーザー名/リポジトリ名</code> にアクセス。</li>
+<li><strong>ファイル編集</strong>: ファイルをクリック→「Edit this file」を選択し、Webエディタで修正します。</li>
+</ol>
+<h3>標準機能の制限事項と代替手段</h3>
+<ul>
+<li><strong>制限</strong>: iOSのSafariやGitHubアプリでは、複雑なプロジェクト（npm installなど）をローカル環境で行うことはできません。「Build and deploy」はクラウドサービスに依存する必要があります。また、キーボード入力時の予測変換がコード編集に適さない場合があります。</li>
+<li><strong>代替手段</strong>: 本格的な開発にはiPadの「Sidecar」機能でMacを接続し、MacでVS Codeを使うのが現実的です。あるいはGitHub Codespaces（ブラウザ上のVM）を起動してクラウド上で環境構築を行います。</li>
+</ul>
+<h3>よくあるトラブルと解決法</h3>
+<ol>
+<li><strong>「Commit changes」ボタンが押せない</strong></li>
+<li><strong>原因</strong>: リポジトリに書き込み権限がない、またはファイルロックがかかっている。</li>
+<li><strong>解決</strong>: GitHub Webページで「Fork」して自分のリポジトリを複製し、そこから編集する。「Pull Request」を作成すれば元の所有者にも反映されます。</li>
+<li><strong>キーボード入力が不自然 / 予測変換が邪魔になる</strong></li>
+<li><strong>原因</strong>: iOSの標準キーボードのレイアウトや設定問題。</li>
+<li><strong>解決</strong>: 「Settings」→「General」→「Keyboard」で言語を追加し、開発用キーボード（例：SwiftKeyなど）をインストールするか、「Predictive Text」を一時的に無効にします。</li>
+</ol>
+<hr />
+<h2>4. Android での実例手順</h2>
+<p>Android端末でもGitHubアプリを活用することで、スムーズなコード確認が可能です。</p>
+<h3>公式仕様に基づく実例手順（GitHub Mobile アプリの利用）</h3>
+<ol>
+<li><strong>準備</strong>: Google Playストアから「GitHub」アプリをインストールし、ログインします。（機種に関わらず基本操作は同じですが、「Settings」メニューの階層が異なる場合があります）。</li>
+<li><strong>リポジトリ閲覧</strong>: 「Repositories」タブから対象を選択。「Files」セクションを表示します。</li>
+<li><strong>ファイル編集</strong>: ファイルをクリック→右上のペンを押す（Edit this file）。エディタが開くのでコードを修正し、「Commit changes」ボタンで保存します。</li>
+</ol>
+<h3>公式仕様に基づく実例手順（ブラウザ Chrome の利用）</h3>
+<ol>
+<li><strong>準備</strong>: Chromeで <code>https://github.com/ユーザー名/リポジトリ名</code> にアクセス。</li>
+<li><strong>ファイル編集</strong>: ファイルをクリック→「Edit this file」を選択し、Webエディタで修正します。</li>
+</ol>
+<h3>標準機能の制限事項と代替手段</h3>
+<ul>
+<li><strong>制限</strong>: AndroidのブラウザやGitHubアプリでは、複雑なプロジェクト（npm installなど）をローカル環境で行うことはできません。「Build and deploy」はクラウドサービスに依存する必要があります。また、機種によって「Settings」メニューの階層が異なる場合があります（PixelとGalaxyで名称が違う等）。</li>
+<li><strong>代替手段</strong>: 本格的な開発にはタブレットモードを使うか、GitHub Codespaces（ブラウザ上のVM）を起動してクラウド上で環境構築を行います。</li>
+</ul>
+<h3>よくあるトラブルと解決法</h3>
+<ol>
+<li><strong>「Commit changes」ボタンが押せない</strong></li>
+<li><strong>原因</strong>: リポジトリに書き込み権限がない、またはファイルロックがかかっている。</li>
+<li><strong>解決</strong>: GitHub Webページで「Fork」して自分のリポジトリを複製し、そこから編集する。「Pull Request」を作成すれば元の所有者にも反映されます。</li>
+<li><strong>ブラウザでの表示が崩れる / 操作しにくい</strong></li>
+<li><strong>原因</strong>: デスクトップ用UIがモバイルに最適化されていない。</li>
+<li><strong>解決</strong>: Chromeの「デスクトップサイトを表示」をオンにするか、GitHub Mobileアプリを使用するのが最も安定した方法です。</li>
+</ol>
+<hr />
+<h2>よくあるトラブルと解決チェックリスト</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">トラブル事象</th>
+<th style="text-align: left;">原因の可能性</th>
+<th style="text-align: left;">解決策・チェック項目</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Commitボタンが押せない</strong></td>
+<td style="text-align: left;">書き込み権限不足</td>
+<td style="text-align: left;">リポジトリを「Fork」して自分のアカウントに複製し、そこから編集する。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>ブラウザでの動作が極端に重い</strong></td>
+<td style="text-align: left;">ファイル数が多すぎる</td>
+<td style="text-align: left;">大規模リポジトリはローカルのVS CodeとGitHub Desktopで管理する。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>コードの変更が反映されない</strong></td>
+<td style="text-align: left;">ブランチ間違い / キャッシュ</td>
+<td style="text-align: left;">ページをリロードし、現在操作しているブランチ（main/master等）を確認する。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>モバイルでの入力が困難</strong></td>
+<td style="text-align: left;">予測変換の干渉</td>
+<td style="text-align: left;">設定から「予測テキスト」をオフにするか、開発用外部キーボードアプリを導入する。</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>まとめ：快適なマルチOS環境を作るポイント</h2>
+<p>GitHubを使いこなすための第一歩は、今回ご紹介したように「まずはブラウザやモバイルアプリで触ってみる」ことから始まります。しかし、プロジェクトが大きくなってきた時や、本格的なアプリケーション開発に進む際は、デバイスの性能と周辺機器の充実が生産性を大きく左右します。</p>
+<p>快適なマルチOS環境を構築するためのポイントをいくつか紹介します：</p>
+<ul>
+<li><strong>入力デバイス</strong>: 長時間のコーディングでは、正確な打鍵感を提供する<strong>メカニカルキーボード</strong>の導入は、疲れを軽減しタイピングの精度を劇的に向上させます。</li>
+<li><strong>視認性</strong>: コードの構造を一目で把握するためには、<strong>ウルトラワイドモニター</strong>が非常に有効です。左側にエディタ、右側にブラウザやターミナルを表示するマルチウィンドウ環境は、開発効率を最大化します。</li>
+<li><strong>学習リソース</strong>: 常に最新の技術動向をキャッチアップするために、信頼できる<strong>技術書</strong>をデスクに備え、手元で確認しながら進める習慣をつけましょう。</li>
+<li><strong>クラウド活用</strong>: ローカル環境の構築に時間を取られたくない場合は、<strong>VPSやクラウドサービス（GitHub Codespacesなど）</strong>を活用しましょう。どこからでも同じ開発環境にアクセスできるため、OSの垣根を超えたシームレスな開発が可能になります。</li>
+</ul>
+<p>まずは手元のスマホやPCのブラウザから、GitHubの世界へ飛び込んでみてください！</p>
+<hr />
+<h2>参考文献・公式ドキュメント（一次情報ソース）</h2>
+<p>本記事の手順・仕様は以下の各OSおよびツールの公式ドキュメントに基づいています。OSアップデートによりメニュー名称や挙動が変わる場合があるため、最新仕様の確認にもご活用ください。</p>
+<ul>
+<li><strong>[Windows / macOS]</strong> <a href="https://docs.github.com/ja/codespaces/the-githubdev-web-based-editor">GitHubからの Web 用 VS Code の使用 (github.dev) - GitHubドキュメント</a></li>
+<li><strong>[共通]</strong> <a href="https://docs.github.com/ja/repositories/working-with-files/managing-files/editing-files">GitHub上でファイルを編集する - GitHubドキュメント</a></li>
+<li><strong>[iOS / Android]</strong> <a href="https://docs.github.com/ja/get-started/using-github/github-mobile">GitHub Mobile 公式ガイド - GitHubドキュメント</a></li>
+</ul>
+    </article>
+  </main>
+  <footer>Generated with Local Ollama (qwen3.5 / gemma4) &amp; Draw Things (FLUX.2 klein 4B)</footer>
+</body>
+</html>
