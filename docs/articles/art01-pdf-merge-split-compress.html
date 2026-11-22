@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>【4OS徹底比較】PDFの結合・分割・圧縮を無料で行う実例ガイド｜Windows・macOS・Linux・iPad | PC 4OS実例ガイド</title>
+  <style>
+:root {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --muted: #475569;
+  --accent: #0284c7;
+  --accent-soft: #e0f2fe;
+  --border: #e2e8f0;
+  --code-bg: #0f172a;
+  --code-text: #e2e8f0;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Noto Sans JP", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+}
+header.site-header {
+  background: linear-gradient(135deg, #0f172a 0%, #0369a1 100%);
+  color: #fff;
+  padding: 2.2rem 1.25rem;
+}
+header.site-header .inner { max-width: 980px; margin: 0 auto; }
+header.site-header h1 { margin: 0 0 0.4rem; font-size: 1.75rem; }
+header.site-header p { margin: 0; opacity: 0.9; font-size: 0.96rem; }
+main { max-width: 980px; margin: 2rem auto; padding: 0 1.25rem 3rem; }
+.badge {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: var(--accent-soft);
+  color: #0369a1;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1.25rem;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08); }
+.card img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; display: block; background: #e2e8f0; }
+.card-body { padding: 1rem 1.1rem 1.2rem; flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+.card-title { font-size: 1.02rem; font-weight: 700; margin: 0; line-height: 1.45; }
+.card-meta { font-size: 0.82rem; color: var(--muted); margin-top: auto; }
+article.post {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 2rem;
+}
+article.post img.eyecatch {
+  width: 100%;
+  max-height: 460px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+}
+article.post h1 { font-size: 1.65rem; line-height: 1.35; margin-top: 0; }
+article.post h2 {
+  font-size: 1.3rem;
+  margin-top: 2.1rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 2px solid var(--accent-soft);
+}
+article.post h3 { font-size: 1.08rem; margin-top: 1.4rem; }
+article.post table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.2rem 0;
+  font-size: 0.92rem;
+  display: block;
+  overflow-x: auto;
+}
+article.post th, article.post td {
+  border: 1px solid var(--border);
+  padding: 0.6rem 0.8rem;
+  text-align: left;
+}
+article.post th { background: #f1f5f9; font-weight: 700; }
+article.post pre {
+  background: var(--code-bg);
+  color: var(--code-text);
+  padding: 1rem 1.15rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+article.post code {
+  background: #f1f5f9;
+  padding: 0.15rem 0.38rem;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+article.post pre code { background: transparent; padding: 0; color: inherit; }
+article.post blockquote {
+  margin: 1.2rem 0;
+  padding: 0.8rem 1.1rem;
+  border-left: 4px solid var(--accent);
+  background: #f0f9ff;
+  border-radius: 0 8px 8px 0;
+}
+.back-link { display: inline-block; margin-bottom: 1rem; color: var(--accent); text-decoration: none; font-weight: 600; }
+footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2rem 1rem; }
+@media (max-width: 640px) {
+  article.post { padding: 1.2rem; }
+}
+</style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="inner">
+      <h1>PC 4OS実例ガイド</h1>
+      <p>Windows・macOS・Linux・iPad の実践比較＆トラブル解決アーカイブ</p>
+    </div>
+  </header>
+  <main>
+    <a class="back-link" href="../index.html">← 記事一覧へ戻る</a>
+    <article class="post">
+      <p><span class="badge">#01｜分類01: 文書作成・オフィス業務・事務作業</span> <small style="color:#64748b;margin-left:0.5rem;">2026-11-23</small></p>
+      <img class="eyecatch" src="../images/2026-11-23_art01_pdf_merge_split_compress.png" alt="【4OS徹底比較】PDFの結合・分割・圧縮を無料で行う実例ガイド｜Windows・macOS・Linux・iPad">
+      <h1>【4OS徹底比較】PDFの結合・分割・圧縮を無料で行う実例ガイド｜Windows・macOS・Linux・iPad</h1>
+<p>「仕事で送られてきた複数のPDFを1つにまとめたい」「長い資料の一部だけを抽出したい」「メールで送るためにファイルサイズを小さくしたい」……。こうした場面で、有料のAdobe Acrobatなどの高機能ソフトを契約するのは少しハードルが高いと感じる方も多いはずです。</p>
+<p>実は、<strong>私たちが普段使っているOS（Windows, macOS, Linux, iPadOS）には、標準機能や基本的なツールだけでこれらの操作を行う方法が備わっています。</strong> </p>
+<p>この記事では、プロの視点から4つの主要なOSにおける「PDFの結合・分割・圧縮」の手順を徹底比較します。外部アプリを極力使わず、標準機能を使いこなすための実践的なガイドとして活用してください。</p>
+<h2>4OS比較早見表</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">OS</th>
+<th style="text-align: left;">主な操作手段</th>
+<th style="text-align: left;">結合</th>
+<th style="text-align: left;">分割</th>
+<th style="text-align: left;">圧縮</th>
+<th style="text-align: left;">特徴</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Windows</strong></td>
+<td style="text-align: left;">Microsoft Print to PDF</td>
+<td style="text-align: left;">△（印刷利用）</td>
+<td style="text-align: left;">△（範囲指定）</td>
+<td style="text-align: left;">△（DPI変更）</td>
+<td style="text-align: left;">ブラウザや仮想プリンタを活用するスタイル</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>macOS</strong></td>
+<td style="text-align: left;">プレビュー (Preview)</td>
+<td style="text-align: left;">◎（ドラッグ＆ドロップ）</td>
+<td style="text-align: left;">◎（ページ削除）</td>
+<td style="text-align: left;">△（再出力）</td>
+<td style="text-align: left;">直感的で最も標準機能が充実している</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Linux</strong></td>
+<td style="text-align: left;">CLI (<code>pdftk</code>, <code>pdfunite</code>)</td>
+<td style="text-align: left;">◎（コマンド）</td>
+<td style="text-align: left;">◎（コマンド）</td>
+<td style="text-align: left;">△（linearize）</td>
+<td style="text-align: left;">確実な処理が可能だが、基本はターミナル操作</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>iPadOS</strong></td>
+<td style="text-align: left;">ファイル / ショートカット</td>
+<td style="text-align: left;">△（ショートカット活用）</td>
+<td style="text-align: left;">△（ページ削除）</td>
+<td style="text-align: left;">×（標準では困難）</td>
+<td style="text-align: left;">モバイル特有の制約があり、自動化が必要</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>1. Windows での実例手順</h2>
+<p>Windows環境では、専用のPDF編集ソフトをインストールせずに「仮想プリンタ」としての機能を利用するのが最も標準的なアプローチです。</p>
+<h3>具体的な実例手順</h3>
+<ul>
+<li><strong>結合</strong>: 複数のPDFを開き、「印刷」メニューから「Microsoft Print to PDF」を選択します。ただし、これは「並べて表示して印刷する」というアナログな手法に近いものになります。</li>
+<li><strong>分割</strong>: EdgeブラウザでPDFを開き、印刷ダイアログ（Ctrl + P）を表示します。出力先を「Microsoft Print to PDF」にし、「ページ」の欄に抽出したい範囲（例：<code>1-3, 5</code>）を入力して実行することで、指定したページだけの新規PDFとして保存できます。</li>
+<li><strong>圧縮</strong>: Windows標準ではボタン一つで圧縮する機能はありません。印刷ダイアログの「プロパティ」から解像度を調整します。<ul>
+<li><strong>手順</strong>: [Microsoft Print to PDF] のプロパティ &gt; 詳細設定 &gt; 解像度を「72 dpi」などに下げる（※画質劣化に注意）。</li>
+</ul>
+</li>
+</ul>
+<h3>よくあるトラブルと解決チェックリスト</h3>
+<ol>
+<li><strong>結合後の文字が崩れる・レイアウトがおかしくなる</strong><ul>
+<li>原因：PDFに埋め込まれたフォントが含まれていない、または印刷時の解像度不足。</li>
+<li>解決策：Edgeの印刷設定で「システムダイアログを使用する」を試し、高品質なグラフィックス出力を確認してください。</li>
+</ul>
+</li>
+<li><strong>分割時にページ番号がずれる</strong><ul>
+<li>原因：プレビュー表示での範囲選択ミス。</li>
+<li>解決策：「ファイル &gt; ページのプレビュー」で正確な範囲（例：1-3, 5-7）を青く塗りつぶし、印刷ダイアログで再確認してください。</li>
+</ul>
+</li>
+<li><strong>圧縮してもサイズが減少しない</strong><ul>
+<li>原因：Windows標準機能では画像のJPEG品質制御ができないため。</li>
+<li>解決策：解像度（dpi）を下げる以外に標準機能での大幅な軽量化は困難です。</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h2>2. macOS での実例手順</h2>
+<p>macOSは「プレビュー」アプリの性能が高いため、最もスムーズに操作が行えます。</p>
+<h3>具体的な実例手順</h3>
+<ul>
+<li><strong>結合</strong>: 「プレビュー」で複数のPDFを開きます。サイドバー（表示 &gt; サイドバー）を表示し、サムネイルパネルから必要なページを選択して、別のPDFウィンドウへドラッグ＆ドロップします。最後に「ファイル &gt; エクスポート PDF...」で保存します。</li>
+<li><strong>分割</strong>: 1つのPDF内で不要なページを削除する方法が最も簡単です。「編集」メニューの「ページを削除」またはサムネイルを右クリックして削除を選択します。残ったページを新規保存することで分割が完了します。</li>
+<li><strong>圧縮</strong>: 「印刷」ダイアログから「PDFとして保存」を選択します。標準機能のみでは高度な最適化はできませんが、再出力時に解像度を指定することで簡易的なサイズ調整が可能です。</li>
+</ul>
+<h3>よくあるトラブルと解決チェックリスト</h3>
+<ol>
+<li><strong>結合した際、ページ順序が逆になる・挟まる</strong><ul>
+<li>原因：ドラッグ＆ドロップ時の誤操作でサムネイルの順序を逆に移動させたため。</li>
+<li>解決策：プレビューウィンドウ左側の「ページ」パネルから、番号を確認しながら正しい順序に配置し直してください。</li>
+</ul>
+</li>
+<li><strong>分割時に画像がぼやける</strong><ul>
+<li>原因：「印刷して保存」で解像度を下げた場合の副作用。</li>
+<li>解決策：標準機能での圧縮は画質劣化を伴うため、品質維持を優先する場合は「ファイル &gt; エクスポート PDF...」を使用してください。</li>
+</ul>
+</li>
+<li><strong>結合後のファイルサイズが膨大になる</strong><ul>
+<li>原因：複数の高解像度スキャンPDFをそのまま結合した場合。</li>
+<li>解決策：macOS標準では高度な圧縮が難しいため、再出力時に「印刷 &gt; PDF...」から品質を調整して保存します。</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h2>3. Linux（Ubuntu系）での実例手順</h2>
+<p>Linux環境ではGUIよりもコマンドラインツール（CLI）を組み合わせるのが最も確実でプロフェッショナルな方法です。</p>
+<h3>具体的な実例手順</h3>
+<p>標準のドキュメントビューア（Evince）には結合機能がないため、以下のパッケージを利用します。<br />
+*   <strong>準備</strong>: ターミナルを開き、必要なツールをインストールします。<br />
+<code>bash
+    sudo apt update &amp;&amp; sudo apt install poppler-utils pdftk</code><br />
+*   <strong>結合</strong>: <code>pdftk</code> または <code>pdfunite</code> を使用します。<br />
+    ```bash<br />
+    # pdftkを使用する場合<br />
+    pdftk file1.pdf file2.pdf cat output combined.pdf</p>
+<pre><code># pdfuniteを使用する場合
+pdfunite file1.pdf file2.pdf combined.pdf
+```
+</code></pre>
+<ul>
+<li><strong>分割</strong>: <code>pdftk</code> を使い、特定のページ範囲を指定して出力します。<br />
+<code>bash
+    # 1〜5ページを抽出
+    pdftk input.pdf cat 1-5 output part1.pdf</code></li>
+<li><strong>圧縮</strong>: 高度な最適化は難しいですが、<code>qpdf</code> を使ってWeb向けに線形化（Linearize）することで軽量化が可能です。<br />
+<code>bash
+    qpdf --linearize combined.pdf output_optimized.pdf</code></li>
+</ul>
+<h3>よくあるトラブルと解決チェックリスト</h3>
+<ol>
+<li><strong>コマンド実行時「command not found: pdftk」とエラーが出る</strong><ul>
+<li>原因：パッケージがインストールされていない。</li>
+<li>解決策：<code>sudo apt install poppler-utils pdftk</code> を再度実行してください。</li>
+</ul>
+</li>
+<li><strong>結合後のPDFが開かない・文字化けする</strong><ul>
+<li>原因：フォント埋め込みの不備やバージョンの不一致。</li>
+<li>解決策：<code>qpdf</code> で再エンコードを試みてください（例：<code>qpdf --linearize input.pdf output.pdf</code>）。</li>
+</ul>
+</li>
+<li><strong>分割時にページ番号が指定できない</strong><ul>
+<li>原因：引数の形式ミス（例：1-5と入力すべきところをカンマ区切りのみにするなど）。</li>
+<li>解決策：正確な範囲指定を確認してください。</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h2>4. iPad（iPadOS）での実例手順</h2>
+<p>iPadOSはモバイル端末であるため、PCに比べると標準機能の制約が多いですが、「ファイル」アプリと「ショートカット」を組み合わせることで対応可能です。</p>
+<h3>具体的な実例手順</h3>
+<ul>
+<li><strong>結合</strong>: 「ファイル」アプリでPDFを選択し、長押ししてメニューから「コピー」を行い、新しいフォルダ等へ貼り付ける方法がありますが、バージョンによって挙動が不安定です。確実なのは「ショートカット」アプリです。<ul>
+<li><strong>手順</strong>: 「ショートカット」アプリを開き、「PDFファイルを作成」や「PDFを結合」というアクションを含むワークフローを作成（または公開されているテンプレートを利用）します。</li>
+</ul>
+</li>
+<li><strong>分割</strong>: 「プレビュー」アプリでPDFを開きます。ページサムネイルを表示し、不要なページを選択して削除ボタンを押します。その後、そのまま保存することで分割されたファイルが得られます。</li>
+<li><strong>圧縮</strong>: iPadOS標準の「ファイル」アプリや「プレビュー」では、高度な圧縮機能は提供されていません。</li>
+</ul>
+<hr />
+<h2>よくあるトラブルと解決チェックリスト</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">トラブル内容</th>
+<th style="text-align: left;">原因</th>
+<th style="text-align: left;">解決策</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>結合後の文字化け</strong></td>
+<td style="text-align: left;">フォントの埋め込み失敗</td>
+<td style="text-align: left;">印刷設定で「高品質なグラフィックス」をオンにするか、PDF作成元のソフトでフォントを埋め込む。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>ファイルサイズが減らない</strong></td>
+<td style="text-align: left;">画像圧縮アルゴリズムの不在</td>
+<td style="text-align: left;">Windows/macOS標準機能では限界があるため、どうしても必要な場合はWeb上の無料ツールや専用アプリを検討する。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>ページ順序の誤り</strong></td>
+<td style="text-align: left;">ドラッグ操作のミス</td>
+<td style="text-align: left;">結合前に必ず「プレビュー」または「印刷ダイアログ」で並び順を確認してから出力する。</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>まとめ：快適なマルチOS環境を作るポイント</h2>
+<p>今回の比較でわかった通り、OSごとにPDFを扱うための「得意不得意」があります。Windowsは仮想プリンタでの対応、macOSは直感的なUI操作、Linuxは確実なコマンドライン操作、iPadはショートカットによる自動化という特徴を理解して使い分けるのがコツです。</p>
+<p>より快適に事務作業を進めるためには、OSの標準機能に加え、以下の環境を整えることも検討してみてください。</p>
+<ul>
+<li><strong>Office互換ソフト</strong>: Google WorkspaceやMicrosoft 365を導入することで、PDF化する前の文書作成段階でレイアウトを正確に保つことができます。</li>
+<li><strong>PDF編集ソフト</strong>: 標準機能で限界を感じる場合は、Adobe Acrobatの代替として軽量な無料・安価なツール（例：PDF24など）を検討するのも手です。</li>
+<li><strong>周辺機器</strong>: 複数のOSを跨いで作業する場合、<strong>外付けキーボード</strong>や<strong>大型モニター</strong>は必須級のアイテムです。特にiPadとMacを併用するなら、同じキーボードで両方を操作できる環境を作ることで、PDFの結合・分割などの細かい微調整作業のストレスが劇的に軽減されます。</li>
+</ul>
+<p>それぞれのOSの特性を活かした「自分に合ったワークフロー」を見つけ、効率的な事務作業を実現しましょう。</p>
+    </article>
+  </main>
+  <footer>Generated with Local Ollama (qwen3.5 / gemma4) &amp; Draw Things (FLUX.2 klein 4B)</footer>
+</body>
+</html>
