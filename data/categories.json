@@ -4,7 +4,9 @@
     "slug": "office-docs",
     "name": "文書作成・オフィス業務・事務作業",
     "short_name": "文書・オフィス",
-    "visual_motif": "clean modern desk with glowing document sheets, spreadsheets, and PDF icons floating around sleek devices",
+    "accent_hex": "#E11D48",
+    "palette": "warm crimson red, crisp ivory white, and deep navy blue editorial illustration",
+    "visual_motif": "stacked translucent paper document pages merging through a sleek geometric press and splitting cleanly into neat lightweight folios",
     "affiliate_hint": "Office互換ソフト、PDF編集ソフト、外付けキーボード・大型モニター"
   },
   {
@@ -12,7 +14,9 @@
     "slug": "communication",
     "name": "コミュニケーション・情報共有",
     "short_name": "通信・共有",
-    "visual_motif": "modern workspace with video call waves, chat bubbles without text, and cloud sync light trails connecting devices",
+    "accent_hex": "#2563EB",
+    "palette": "deep cobalt indigo, luminous sky blue, and soft amber gold atmospheric digital art",
+    "visual_motif": "a glowing crystalline cloud hub suspended in midair with bidirectional glowing sync ribbons and synchronized folder orbits",
     "affiliate_hint": "Webカメラ、高音質マイク、ヘッドセット、クラウドストレージ"
   },
   {
@@ -20,7 +24,9 @@
     "slug": "research-web",
     "name": "情報収集・リサーチ・Web利用",
     "short_name": "Web・リサーチ",
-    "visual_motif": "sleek browser windows, magnifying glass, glowing bookmarks, and digital library shelves in clean isometric style",
+    "accent_hex": "#059669",
+    "palette": "vivid emerald green, dark obsidian slate, and glowing ruby red accent modern tech visual",
+    "visual_motif": "a precision glowing camera viewfinder crop frame with corner brackets, sleek optical shutter lens, and glowing cinema filmstrip waveform",
     "affiliate_hint": "VPNサービス、トラックボールマウス、ブルーライトカット眼鏡"
   },
   {
@@ -28,7 +34,9 @@
     "slug": "image-design",
     "name": "画像・イラスト・デザイン制作",
     "short_name": "画像・デザイン",
-    "visual_motif": "vibrant color palettes, stylus pen, vector bezier curves, and photo layers floating above modern screens",
+    "accent_hex": "#D97706",
+    "palette": "vibrant sunset amber, electric magenta, violet, and cyan creative studio lighting",
+    "visual_motif": "a cascading array of colorful framed landscape photographs shrinking smoothly through an optical glass prism into compact jewel-like tiles",
     "affiliate_hint": "カラーマネジメントモニター、ペンタブレット、外付けSSD、画像編集ソフト"
   },
   {
@@ -36,7 +44,9 @@
     "slug": "video-audio",
     "name": "動画・音声・音楽制作",
     "short_name": "動画・音声",
-    "visual_motif": "sleek video timeline tracks, glowing audio waveforms, studio headphones, and microphone on a modern tech desk",
+    "accent_hex": "#7C3AED",
+    "palette": "cinematic royal purple, neon cyan, and warm studio orange dark-mode aesthetic",
+    "visual_motif": "glowing multi-track video editing timeline bars, sculpted 3D audio equalizer waves, and sleek studio headphones",
     "affiliate_hint": "オーディオインターフェース、高速外付けSSD、動画編集ソフト、USBマイク"
   },
   {
@@ -44,7 +54,9 @@
     "slug": "3d-cad-making",
     "name": "3D・CAD・ものづくり",
     "short_name": "3D・CAD",
-    "visual_motif": "glowing 3D wireframe geometric models, blueprint grid, and futuristic 3D printer beside sleek multi-OS computers",
+    "accent_hex": "#0891B2",
+    "palette": "architectural blueprint cyan, brushed titanium silver, and crisp technical white",
+    "visual_motif": "a hovering glowing 3D wireframe polyhedron and precision mechanical gear blueprint hovering above a gridded drafting mat",
     "affiliate_hint": "3Dマウス、左手デバイス、高スペックPC・GPU、3Dプリンター"
   },
   {
@@ -52,7 +64,9 @@
     "slug": "programming-dev",
     "name": "プログラミング・ソフトウェア開発",
     "short_name": "開発・コード",
-    "visual_motif": "minimalist dark-mode code editor shapes, glowing terminal prompt icons, and container cubes connecting across devices",
+    "accent_hex": "#16A34A",
+    "palette": "cyber matrix emerald, charcoal slate, and bright lime highlights sleek developer art",
+    "visual_motif": "an ornate glowing golden cryptographic key unlocking a luminous geometric tunnel of abstract code blocks and terminal brackets",
     "affiliate_hint": "メカニカルキーボード、ウルトラワイドモニター、技術書、VPS・クラウド"
   },
   {
@@ -60,7 +74,9 @@
     "slug": "web-marketing",
     "name": "Web制作・ブログ・デジタルマーケティング",
     "short_name": "Web制作・運営",
-    "visual_motif": "clean webpage layout blocks, rising analytics charts, and glowing globe icon over a bright modern workspace",
+    "accent_hex": "#EA580C",
+    "palette": "energetic tangerine orange, warm cream, and deep petrol blue modern flat-3D editorial",
+    "visual_motif": "floating modular webpage wireframe blocks, glowing globe network, and rising geometric analytics bar charts",
     "affiliate_hint": "レンタルサーバー、独自ドメイン、SEOツール、Web制作教材"
   },
   {
@@ -68,7 +84,9 @@
     "slug": "data-ai",
     "name": "データ分析・科学計算・AI活用",
     "short_name": "データ・AI",
-    "visual_motif": "glowing neural network nodes, 3D data visualization graphs, and sleek multi-device AI computing desk",
+    "accent_hex": "#4F46E5",
+    "palette": "luminous electric indigo, magenta-violet, and pearl white scientific data art",
+    "visual_motif": "structured glowing tabular data grids transforming smoothly into crisp 3D bar charts and constellation-like neural nodes",
     "affiliate_hint": "大容量メモリ・GPU搭載PC、外付けNVMe SSD、AI関連ツール"
   },
   {
@@ -76,7 +94,9 @@
     "slug": "system-maintenance",
     "name": "システム管理・OS設定・メンテナンス",
     "short_name": "OS管理・保守",
-    "visual_motif": "precision gear icons, glowing system monitor gauges, diagnostic shield, and clean multi-OS workstation",
+    "accent_hex": "#0D9488",
+    "palette": "clean surgical teal, metallic gunmetal gray, and bright mint accents",
+    "visual_motif": "a sleek glowing storage drive cutaway with organized translucent data blocks, precision tachometer gauges, and broom-like spark sweep",
     "affiliate_hint": "SSD換装キット、クローン作成ソフト、エアダスター、クリーニング用品"
   },
   {
@@ -84,7 +104,9 @@
     "slug": "network-server",
     "name": "ネットワーク・サーバー・インフラ構築",
     "short_name": "ネットワーク",
-    "visual_motif": "glowing fiber-optic data streams, sleek Wi-Fi router, compact home NAS box, and connected laptop and tablet",
+    "accent_hex": "#0284C7",
+    "palette": "deep ocean blue, electric aqua fiber-optic glow, and crisp metallic silver",
+    "visual_motif": "a sleek compact home NAS tower and Wi-Fi router emitting concentric glowing signal rings and high-speed fiber light beams",
     "affiliate_hint": "Wi-Fi 6/6E/7ルーター、家庭用NAS、LANケーブル、スイッチングハブ"
   },
   {
@@ -92,7 +114,9 @@
     "slug": "security-privacy",
     "name": "セキュリティ・プライバシー対策",
     "short_name": "セキュリティ",
-    "visual_motif": "luminous digital padlock, geometric encryption shield, and secure key icon protecting laptop and tablet",
+    "accent_hex": "#B91C1C",
+    "palette": "fortress burgundy red, obsidian black, and luminous gold metallic accents",
+    "visual_motif": "a sculpted translucent crystal shield and glowing golden padlock encasing a sleek USB drive and encrypted vault cube",
     "affiliate_hint": "パスワード管理ツール、セキュリティキー（YubiKey等）、VPN、セキュリティソフト"
   },
   {
@@ -100,7 +124,9 @@
     "slug": "file-backup",
     "name": "ファイル管理・バックアップ・データ復旧",
     "short_name": "バックアップ",
-    "visual_motif": "organized glowing folder tree, sleek external SSD drive, and circular sync arrows across multiple devices",
+    "accent_hex": "#0369A1",
+    "palette": "cerulean blue, warm silver aluminum, and bright turquoise circular highlights",
+    "visual_motif": "a sleek brushed-metal external SSD drive surrounded by luminous circular backup arrows and neatly stacked glowing folders",
     "affiliate_hint": "外付けHDD/SSD、データ復旧ソフト、バックアップソフト、クラウドバックアップ"
   },
   {
@@ -108,7 +134,9 @@
     "slug": "hardware-iot",
     "name": "ハードウェア・周辺機器・IoT連携",
     "short_name": "周辺機器・IoT",
-    "visual_motif": "sleek dual-monitor setup, USB-C hub, wireless mouse, and smart home IoT sensor icons in crisp tech style",
+    "accent_hex": "#6D28D9",
+    "palette": "sleek ultraviolet purple, matte graphite, and electric sky-blue wireless wave accents",
+    "visual_motif": "a stylish wireless mechanical keyboard, ergonomic mouse, and sleek earbuds linked by graceful glowing wireless wave arcs",
     "affiliate_hint": "USB-Cドッキングステーション、KVM切替器、マルチペアリングキーボード・マウス"
   },
   {
@@ -116,7 +144,9 @@
     "slug": "entertainment",
     "name": "エンターテインメント・趣味",
     "short_name": "エンタメ・趣味",
-    "visual_motif": "vibrant game controller, high-res audio headphones, streaming play icon, and cozy glowing desk setup",
+    "accent_hex": "#DB2777",
+    "palette": "neon magenta pink, midnight indigo, and electric cyan entertainment lighting",
+    "visual_motif": "glowing cinema play prism, sleek wireless game controller, and high-res sound waves streaming across a cozy dark room",
     "affiliate_hint": "ゲーミングモニター、DAC・ヘッドホン、ゲームパッド、ストリーミング機器"
   },
   {
@@ -124,7 +154,9 @@
     "slug": "learning-education",
     "name": "学習・教育・自己啓発",
     "short_name": "学習・教育",
-    "visual_motif": "glowing digital notebook, flashcards, graduation cap icon, and tidy study desk with laptop and tablet",
+    "accent_hex": "#15803D",
+    "palette": "fresh botanical green, warm parchment cream, and sunlit gold editorial illustration",
+    "visual_motif": "a glowing digital notebook with floating geometric flashcards, stylus pen, and interconnected knowledge graph constellation",
     "affiliate_hint": "オンライン学習サービス、スタイラスペン、ノイズキャンセリングイヤホン"
   },
   {
@@ -132,7 +164,9 @@
     "slug": "life-finance",
     "name": "生活・行政手続き・家計・資産管理",
     "short_name": "生活・資産管理",
-    "visual_motif": "clean financial charts, smart card reader, digital calendar, and calm home office desk with multi-OS devices",
+    "accent_hex": "#B45309",
+    "palette": "warm bronze gold, forest green, and crisp ivory clean editorial art",
+    "visual_motif": "a sleek document scanner light beam digitizing neat paper receipts into organized glowing archive folders and upward financial charts",
     "affiliate_hint": "ICカードリーダー（e-Tax対応）、会計ソフト、家計管理アプリ、モバイルスキャナー"
   }
 ]

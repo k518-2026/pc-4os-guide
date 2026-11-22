@@ -1,13 +1,41 @@
+import io
 import json
 import tempfile
 import unittest
 from pathlib import Path
 
+from PIL import Image
+
+from src.article_generator import compose_title_card
 from src.catalog_manager import CatalogManager
+from src.reference_verifier import format_references_markdown, get_verified_references
 from src.site_builder import build_github_pages
 
 
 class TestPC4OSGuide(unittest.TestCase):
+    def test_title_card_composition(self):
+        buf = io.BytesIO()
+        Image.new("RGB", (768, 512), color=(30, 60, 120)).save(buf, format="PNG")
+        out = compose_title_card(
+            buf.getvalue(),
+            article={
+                "article_num": 1,
+                "cat_num": 1,
+                "category": "文書作成・オフィス業務・事務作業",
+                "title": "【4OS徹底比較】PDFの結合・分割・圧縮を無料で行う実例ガイド｜Windows・macOS・Linux・iPad",
+            },
+            category_meta={"short_name": "文書・オフィス", "accent_hex": "#E11D48"},
+        )
+        img = Image.open(io.BytesIO(out))
+        self.assertEqual(img.size, (768, 512))
+
+    def test_references_formatter(self):
+        refs = get_verified_references(cat_num=1, check_live=False)
+        self.assertGreaterEqual(len(refs), 4)
+        md = format_references_markdown(refs)
+        self.assertIn("参考文献・公式ドキュメント", md)
+        self.assertIn("https://", md)
+
     def test_17_category_rotation_order(self):
         mgr = CatalogManager(
             categories_path=Path("data/categories.json"),

@@ -1,4 +1,5 @@
 import base64
+import io
 import json
 import logging
 import re
@@ -8,19 +9,22 @@ import urllib.request
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
+from src.reference_verifier import format_references_markdown, get_verified_references
+
 logger = logging.getLogger(__name__)
 
 PLANNER_SYSTEM_PROMPT = """あなたはWindows・macOS・Linux（Ubuntu系）・iPadOSおよびネットワークに精通したIT技術記事の構成作家（テクニカルエディター）です。
 読者の実務や日常のPCトラブルを解決できる、正確で具体的な「4OS実例比較記事」の構成案（アウトライン）を設計してください。
 
-【絶対ルール】
-1. 技術的正確性：実在する標準機能、ショートカットキー、コマンド（PowerShell/CMD、macOSターミナル、Ubuntu/bash）、iPadOSの標準アプリ操作のみを記載し、架空のコマンドや存在しないメニューを作らないこと。
-2. 4OSすべてを公平かつ具体的に扱うこと（Windows 11 / macOS / Linux(Ubuntu) / iPadOS）。
-3. よくある失敗・エラーと解決策（トラブルシューティング）を必ず3つ以上盛り込むこと。
-4. 出力は簡潔な箇条書きの構成メモとし、余計な前置きや挨拶を入れないこと。"""
+【ハルシネーション厳禁ルール】
+1. 実在する標準機能・ショートカットキー・コマンド（PowerShell/CMD、macOSターミナル、Ubuntu/bash）、iPadOSの標準アプリ操作のみを記載すること。
+2. 確証がないメニュー階層や架空のコマンドオプション・架空のフォルダ名を絶対に作らないこと。できないこと・標準機能に無いことは「標準機能では非対応（代替手段は〇〇）」と正直に明記すること。
+3. 4OSすべてを公平かつ具体的に扱うこと（Windows 11 / macOS / Linux(Ubuntu 24.04等・Wayland前提の注意点含む) / iPadOS）。
+4. よくある失敗・エラーと解決策（トラブルシューティング）を必ず3つ以上盛り込むこと。
+5. 出力は簡潔な箇条書きの構成メモとし、余計な前置きや挨拶を入れないこと。"""
 
 WRITER_SYSTEM_PROMPT = """あなたはGoogle Bloggerおよび技術ブログで高い読了率と検索評価を得るプロのITライターです。
-構成案をもとに、初心者にも分かりやすく、中級者にも役立つ実践的な「4OS徹底比較ガイド記事」をMarkdown形式で執筆してください。
+構成案と公式ドキュメント情報をもとに、初心者にも分かりやすく、中級者にも役立つ実践的な「4OS徹底比較ガイド記事」をMarkdown形式で執筆してください。
 
 【執筆ルール】
 1. 以下の見出し構成を必ず守ること：
@@ -33,15 +37,191 @@ WRITER_SYSTEM_PROMPT = """あなたはGoogle Bloggerおよび技術ブログで�
    - `## 4. iPad（iPadOS）での実例手順`
    - `## よくあるトラブルと解決チェックリスト`（実際にハマりやすいエラー原因と対処法を3〜4点）
    - `## まとめ：快適なマルチOS環境を作るポイント`（関連する便利な周辺機器・ツールの選び方も自然に紹介）
-2. コードやコマンドは必ず適切なコードブロック（```cmd, ```bash, ```powershell など）で囲むこと。
-3. メタ発言（「はい、記事を作成します」など）は一切書かず、記事本文のみを出力すること。"""
+2. 存在しないメニュー項目やコマンドオプションを創作しないこと。標準機能でできないことは正直に「標準機能のみでは制限あり」と明記し、公式推奨ツール（PowerToys、ショートカットアプリ、OSS CLI等）を案内すること。
+3. コードやコマンドは必ず適切なコードブロック（```cmd, ```bash, ```powershell など）で囲むこと。
+4. 参考文献セクションはシステム側で実在検証済みURLを自動追記するため、本文側で架空のURLを捏造しないこと。
+5. メタ発言（「はい、記事を作成します」など）は一切書かず、記事本文のみを出力すること。"""
+
+
+def _hex_to_rgb(hex_color: str, fallback: Tuple[int, int, int] = (2, 132, 199)) -> Tuple[int, int, int]:
+    h = (hex_color or "").strip().lstrip("#")
+    if len(h) == 6:
+        try:
+            return (int(h[0:2], 16), int(h[2:4], 16), int(h[4:6], 16))
+        except ValueError:
+            pass
+    return fallback
+
+
+def _load_jp_font(size: int, bold: bool = True):
+    from PIL import ImageFont
+
+    candidates = (
+        [
+            r"C:\Windows\Fonts\BIZ-UDGothicB.ttc",
+            r"C:\Windows\Fonts\YuGothB.ttc",
+            r"C:\Windows\Fonts\meiryob.ttc",
+            "/usr/share/fonts/opentype/noto/NotoSansCJK-Bold.ttc",
+        ]
+        if bold
+        else [
+            r"C:\Windows\Fonts\BIZ-UDGothicR.ttc",
+            r"C:\Windows\Fonts\YuGothM.ttc",
+            r"C:\Windows\Fonts\meiryo.ttc",
+            "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc",
+        ]
+    )
+    for path in candidates:
+        if Path(path).exists():
+            try:
+                return ImageFont.truetype(path, size=size)
+            except Exception:
+                continue
+    return ImageFont.load_default()
+
+
+def _wrap_japanese_text(draw, text: str, font, max_width: int, max_lines: int = 3) -> List[str]:
+    lines: List[str] = []
+    current = ""
+    for ch in text:
+        test = current + ch
+        bbox = draw.textbbox((0, 0), test, font=font)
+        if bbox[2] - bbox[0] <= max_width:
+            current = test
+        else:
+            if current:
+                lines.append(current)
+            current = ch
+            if len(lines) >= max_lines - 1:
+                break
+    if current:
+        # Append remaining characters if we stopped early, ellipsizing if needed
+        consumed = sum(len(l) for l in lines)
+        rem = text[consumed:]
+        while rem:
+            bbox = draw.textbbox((0, 0), rem, font=font)
+            if bbox[2] - bbox[0] <= max_width:
+                lines.append(rem)
+                break
+            rem = rem[:-1]
+            if len(rem) <= 2:
+                lines.append(rem + "…")
+                break
+            if draw.textbbox((0, 0), rem + "…", font=font)[2] <= max_width:
+                lines.append(rem + "…")
+                break
+    return lines[:max_lines]
+
+
+def compose_title_card(
+    raw_image_bytes: bytes,
+    article: Dict[str, Any],
+    category_meta: Optional[Dict[str, Any]] = None,
+) -> bytes:
+    """
+    Overlays a sleek, publication-grade Japanese title banner on top of the
+    topic-specific Draw Things background artwork (768x512) so every article has
+    a visually distinct, 100%-readable blog title image.
+    """
+    from PIL import Image, ImageDraw
+
+    base = Image.open(io.BytesIO(raw_image_bytes)).convert("RGBA")
+    w, h = base.size
+
+    accent = _hex_to_rgb((category_meta or {}).get("accent_hex", "#0284C7"))
+    cat_num = int(article.get("cat_num", 1))
+    art_num = int(article.get("article_num", 1))
+    short_cat = (category_meta or {}).get("short_name") or article.get("category", "PCガイド")
+
+    # Clean display title (strip redundant prefix/suffix so title pops cleanly)
+    raw_title = (article.get("title") or article.get("task_topic") or "").strip()
+    display_title = re.sub(r"^【4OS徹底比較】\s*", "", raw_title)
+    display_title = re.sub(r"\s*[｜|]\s*Windows.*$", "", display_title).strip()
+    if not display_title:
+        display_title = raw_title
+
+    # Create smooth dark gradient scrim (stronger on left & bottom for crisp typography, clear on right to showcase art)
+    overlay = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+    odraw = ImageDraw.Draw(overlay)
+    for x in range(w):
+        # Left 58% gets rich slate backdrop fading smoothly to transparent on the right
+        t = min(1.0, max(0.0, 1.0 - (x / (w * 0.72))))
+        alpha = int(225 * (t ** 1.35))
+        odraw.line([(x, 0), (x, h)], fill=(12, 18, 32, alpha))
+    for y in range(int(h * 0.55), h):
+        t = min(1.0, max(0.0, (y - h * 0.55) / (h * 0.45)))
+        alpha = int(165 * (t ** 1.5))
+        odraw.line([(0, y), (w, y)], fill=(10, 15, 28, alpha))
+
+    # Top accent bar
+    odraw.rectangle([(0, 0), (w, 7)], fill=(*accent, 255))
+
+    composed = Image.alpha_composite(base, overlay)
+    draw = ImageDraw.Draw(composed)
+
+    pad_x = 34
+    max_text_w = int(w * 0.60)
+
+    # Top pill: Category + Article Number
+    font_badge = _load_jp_font(17, bold=True)
+    badge_text = f"#{art_num:02d}  分類{cat_num:02d}｜{short_cat}"
+    bb = draw.textbbox((0, 0), badge_text, font=font_badge)
+    bw = (bb[2] - bb[0]) + 28
+    bh = (bb[3] - bb[1]) + 14
+    badge_y = 34
+    draw.rounded_rectangle(
+        [(pad_x, badge_y), (pad_x + bw, badge_y + bh)],
+        radius=16,
+        fill=(*accent, 240),
+    )
+    draw.text((pad_x + 14, badge_y + 5), badge_text, font=font_badge, fill=(255, 255, 255, 255))
+
+    # Main Japanese Title
+    font_title = _load_jp_font(34, bold=True)
+    title_lines = _wrap_japanese_text(draw, display_title, font_title, max_width=max_text_w, max_lines=3)
+    ty = badge_y + bh + 28
+    line_gap = 12
+    for line in title_lines:
+        # Subtle drop shadow
+        draw.text((pad_x + 2, ty + 2), line, font=font_title, fill=(0, 0, 0, 180))
+        draw.text((pad_x, ty), line, font=font_title, fill=(255, 255, 255, 255))
+        lb = draw.textbbox((0, 0), line, font=font_title)
+        ty += (lb[3] - lb[1]) + line_gap
+
+    # Subtitle label
+    font_sub = _load_jp_font(16, bold=False)
+    sub_text = "4OS 実例比較 ＆ 公式ドキュメント検証ガイド"
+    draw.text((pad_x, ty + 10), sub_text, font=font_sub, fill=(203, 213, 225, 240))
+
+    # Bottom 4-OS Pills
+    os_pills = [
+        ("Windows", (0, 120, 212)),
+        ("macOS", (71, 85, 105)),
+        ("Linux", (233, 84, 32)),
+        ("iPad", (14, 165, 233)),
+    ]
+    font_os = _load_jp_font(15, bold=True)
+    px = pad_x
+    py = h - 58
+    for label, col in os_pills:
+        ob = draw.textbbox((0, 0), label, font=font_os)
+        ow = (ob[2] - ob[0]) + 22
+        oh = 30
+        draw.rounded_rectangle([(px, py), (px + ow, py + oh)], radius=8, fill=(*col, 230))
+        draw.text((px + 11, py + 5), label, font=font_os, fill=(255, 255, 255, 255))
+        px += ow + 10
+
+    out_buf = io.BytesIO()
+    composed.convert("RGB").save(out_buf, format="PNG", optimize=True)
+    return out_buf.getvalue()
 
 
 class ArticleGenerator:
     """
-    Dual-LLM Technical Article Generator + Draw Things Illustration Engine:
+    Dual-LLM Technical Article Generator + Topic-Faithful Title Image Engine:
     - Text LLM (Ollama): http://192.168.128.62:11434 (qwen3.5:9b planner + gemma4:12b writer)
-    - Image Gen (Draw Things): http://192.168.128.59:7860 (FLUX.2 klein 4B, 768x512 landscape)
+    - Image Gen (Draw Things): http://192.168.128.59:7860 (FLUX.2 klein 4B, 768x512) + Pillow Title Card
+    - References: Live HTTP-verified official docs (Microsoft, Apple, Ubuntu, CLI manuals)
     """
 
     def __init__(
@@ -146,28 +326,29 @@ class ArticleGenerator:
         category_meta: Optional[Dict[str, Any]] = None,
     ) -> Tuple[str, str]:
         """
-        Generates a full 4-OS comparison Markdown article using:
-        1. Planner (qwen3.5:9b): technical facts, exact steps, commands, and pitfalls
-        2. Writer (gemma4:12b): polished Japanese technical blog post
-        Returns (full_markdown, final_title).
+        Generates a full 4-OS comparison Markdown article with live-verified official references.
         """
         cat_name = article.get("category", "")
-        cat_num = article.get("cat_num", 1)
+        cat_num = int(article.get("cat_num", 1))
         topic = article.get("task_topic", "")
         title = article.get("title", "")
         keywords = ", ".join(article.get("keywords", []))
         affiliate_hint = (category_meta or {}).get("affiliate_hint", "関連する便利なPC周辺機器やツール")
 
-        logger.info(f"[Planner: {self.planner_model}] Designing technical blueprint for #{article.get('article_num')} ({cat_name})...")
+        verified_refs = get_verified_references(cat_num=cat_num, check_live=True)
+        refs_context = "\n".join(f"- [{r['os']}] {r['title']} ({r['url']})" for r in verified_refs)
+
+        logger.info(f"[Planner: {self.planner_model}] Designing verified blueprint for #{article.get('article_num')} ({cat_name})...")
         plan_prompt = (
             f"カテゴリ#{cat_num}: {cat_name}\n"
             f"テーマ: {topic}\n"
             f"想定タイトル: {title}\n"
             f"狙うキーワード: {keywords}\n"
-            f"関連ツール・周辺機器のヒント: {affiliate_hint}\n\n"
+            f"関連ツール・周辺機器のヒント: {affiliate_hint}\n"
+            f"参照すべき公式ドキュメント:\n{refs_context}\n\n"
             "上記テーマについて、Windows 11 / macOS / Linux(Ubuntu系) / iPadOS それぞれでの"
-            "「具体的な実例手順（標準機能・コマンド・アプリ名）」「注意点」「よくあるトラブルと解決法3〜4選」"
-            "を技術的に正確に整理した構成メモを作成してください。"
+            "「公式仕様に基づく正確な実例手順（標準機能・コマンド・公式アプリ名）」「標準機能の制限事項」「よくあるトラブルと解決法3〜4選」"
+            "を整理した構成メモを作成してください。架空のメニューや存在しないコマンドオプションは絶対に書かないこと。"
         )
         blueprint = self._clean_markdown(
             self._call_ollama_chat(
@@ -176,7 +357,7 @@ class ArticleGenerator:
                     {"role": "system", "content": PLANNER_SYSTEM_PROMPT},
                     {"role": "user", "content": plan_prompt},
                 ],
-                temperature=0.35,
+                temperature=0.3,
                 num_predict=2200,
             )
         )
@@ -187,7 +368,8 @@ class ArticleGenerator:
             f"・カテゴリ: #{cat_num} {cat_name}\n"
             f"・推奨タイトル: {title}\n"
             f"・文字数の目安: 2,500〜4,000文字程度（丁寧で実践的、かつ読みやすく）\n"
-            f"・まとめでは「{affiliate_hint}」などの導入メリットも読者目線で自然に触れてください。\n\n"
+            f"・まとめでは「{affiliate_hint}」などの導入メリットも読者目線で自然に触れてください。\n"
+            f"・参考文献セクションは後段で公式URLを自動追記するため、本文中に架空のURLを書かないでください。\n\n"
             f"【構成メモ】\n{blueprint}"
         )
         raw_md = self._call_ollama_chat(
@@ -196,12 +378,11 @@ class ArticleGenerator:
                 {"role": "system", "content": WRITER_SYSTEM_PROMPT},
                 {"role": "user", "content": write_prompt},
             ],
-            temperature=0.55,
+            temperature=0.45,
             num_predict=4500,
         )
         body_md = self._clean_markdown(raw_md)
 
-        # Ensure H1 title exists and extract it
         first_line = body_md.splitlines()[0].strip() if body_md.splitlines() else ""
         if first_line.startswith("# "):
             final_title = first_line[2:].strip()
@@ -209,6 +390,7 @@ class ArticleGenerator:
             final_title = title
             body_md = f"# {final_title}\n\n{body_md}"
 
+        refs_md = format_references_markdown(verified_refs)
         meta_header = (
             f"<!--\n"
             f"article_id: {article.get('id', '')}\n"
@@ -217,52 +399,72 @@ class ArticleGenerator:
             f"category: {cat_name}\n"
             f"planner_model: {self.planner_model}\n"
             f"writer_model: {self.writer_model}\n"
+            f"verified_refs_count: {len(verified_refs)}\n"
             f"-->\n\n"
         )
-        return meta_header + body_md + "\n", final_title
+        full_md = f"{meta_header}{body_md}\n\n{refs_md}".strip() + "\n"
+        return full_md, final_title
 
     def generate_image_prompt(
         self,
         article: Dict[str, Any],
         category_meta: Optional[Dict[str, Any]] = None,
     ) -> str:
-        """Uses planner LLM to craft a clean English prompt for Draw Things (FLUX.2 klein 4B)."""
+        """
+        Crafts a topic-faithful, visually distinct English background prompt for Draw Things (FLUX.2 klein 4B).
+        Composes the main hero visual on the RIGHT side with dark/calm negative space on the LEFT so the
+        Japanese title banner overlays cleanly with maximum visual impact.
+        """
         motif = (category_meta or {}).get(
             "visual_motif",
-            "sleek laptop, desktop monitor, and tablet connected by glowing abstract light trails on a clean modern desk",
+            "sleek abstract geometric objects illustrating digital workflow",
+        )
+        palette = (category_meta or {}).get(
+            "palette",
+            "rich navy blue, vibrant cyan, and warm gold studio lighting",
         )
         topic = article.get("task_topic", article.get("title", ""))
+
         prompt_req = (
-            "Write ONE concise English image-generation prompt (max 65 words) for a modern horizontal 3:2 tech blog header illustration.\n"
-            f"Topic: {topic}\n"
-            f"Visual motif hint: {motif}\n"
-            "Style: clean modern editorial vector-meets-3D isometric tech illustration, bright crisp daylight studio palette (teal, cobalt blue, soft coral accents), sleek laptop, desktop monitor, Linux workstation, and tablet harmoniously arranged on a minimal desk.\n"
-            "STRICT RULE: Explicitly avoid any text, letters, logos, brand names, watermarks, or UI words. Output ONLY the English prompt."
+            "Write ONE vivid, concrete English image-generation prompt (max 60 words) for a 3:2 editorial blog banner background.\n"
+            f"Specific topic to depict literally & symbolically: {topic}\n"
+            f"Key visual metaphor: {motif}\n"
+            f"Color palette & mood: {palette}\n"
+            "Composition rule: Place the main hero illustration prominently on the RIGHT half of the frame, leaving calm dark-toned negative space on the LEFT side for a title overlay.\n"
+            "STRICT RULES:\n"
+            "- Do NOT draw generic laptops/desks unless the topic specifically requires them; focus on the topic's concrete objects/metaphors!\n"
+            "- ZERO text, ZERO letters, ZERO numbers, ZERO brand logos, ZERO watermarks.\n"
+            "- Output ONLY the English prompt."
         )
         try:
             en_prompt = self._clean_markdown(
                 self._call_ollama_chat(
                     model=self.planner_model,
                     messages=[
-                        {"role": "system", "content": "You are an expert prompt engineer for FLUX.2 image generation. Output only a single clean English prompt without quotes or explanations."},
+                        {
+                            "role": "system",
+                            "content": "You are an art director writing vivid, distinct FLUX.2 image prompts. Output only the single English prompt.",
+                        },
                         {"role": "user", "content": prompt_req},
                     ],
-                    temperature=0.5,
+                    temperature=0.65,
                     num_predict=180,
                     timeout=120,
                 )
             )
             en_prompt = re.sub(r"\s+", " ", en_prompt).strip().strip('"').strip("'")
             if len(en_prompt) >= 20:
-                return f"{en_prompt}, ultra-clean modern tech blog header illustration, crisp lighting, high detail, no text, no letters, no watermark"
+                return (
+                    f"{en_prompt}, high-craft 3D editorial illustration, dramatic studio lighting, "
+                    "sharp focus, rich depth, no text, no letters, no numbers, no logos, no watermark"
+                )
         except Exception as e:
             logger.warning(f"Falling back to template image prompt: {e}")
 
         return (
-            f"Modern editorial tech blog header illustration showing {motif}, "
-            "sleek laptop, desktop display, and tablet on a clean minimalist workspace desk, "
-            "soft teal and cobalt blue studio lighting, isometric digital art style, crisp detail, "
-            "no text, no letters, no logos, no watermark"
+            f"High-craft 3D editorial illustration depicting {motif}, {palette}, "
+            "main subject positioned on the right side with clean dark atmospheric space on the left, "
+            "cinematic studio lighting, crisp detail, no text, no letters, no logos, no watermark"
         )
 
     def generate_illustration(
@@ -271,8 +473,12 @@ class ArticleGenerator:
         output_image_path: Path,
         category_meta: Optional[Dict[str, Any]] = None,
         custom_prompt: Optional[str] = None,
+        overlay_title: bool = True,
     ) -> Tuple[Optional[Path], str]:
-        """Generates a 768x512 landscape tech blog eyecatch via Draw Things HTTP API."""
+        """
+        Generates a 768x512 topic-faithful illustration via Draw Things HTTP API
+        and composites a crisp Japanese blog title card over it.
+        """
         dt = self.check_draw_things_connection()
         if not dt.get("online"):
             logger.warning(f"Draw Things ({self.draw_things_host}) is offline: {dt.get('error')}")
@@ -281,15 +487,15 @@ class ArticleGenerator:
         en_prompt = custom_prompt.strip() if custom_prompt else self.generate_image_prompt(article, category_meta)
         logger.info(
             f"[Draw Things: {self.draw_things_host} ({dt.get('model')})] "
-            f"Generating {self.image_width}x{self.image_height} eyecatch..."
+            f"Generating {self.image_width}x{self.image_height} topic-faithful artwork..."
         )
 
         payload = {
             "prompt": en_prompt,
             "negative_prompt": (
                 "text, words, letters, typography, alphabet, numbers, kanji, japanese text, chinese characters, "
-                "logo, brand mark, apple logo, windows logo, watermark, signature, caption, label, UI text, "
-                "blurry, lowres, messy clutter, dark gloomy shadows, distorted screens, ugly, deformed"
+                "file extensions, badges with text, labels, UI text, logo, brand mark, watermark, signature, "
+                "generic empty desk, blurry, lowres, messy clutter, distorted shapes, ugly, deformed"
             ),
             "width": self.image_width,
             "height": self.image_height,
@@ -311,11 +517,19 @@ class ArticleGenerator:
                 images = body.get("images", [])
                 if images and images[0]:
                     b64_str = re.sub(r"^data:image/[^;]+;base64,", "", images[0])
-                    img_bytes = base64.b64decode(b64_str)
+                    raw_bytes = base64.b64decode(b64_str)
+                    final_bytes = (
+                        compose_title_card(raw_bytes, article=article, category_meta=category_meta)
+                        if overlay_title
+                        else raw_bytes
+                    )
                     output_image_path.parent.mkdir(parents=True, exist_ok=True)
-                    output_image_path.write_bytes(img_bytes)
+                    output_image_path.write_bytes(final_bytes)
                     elapsed = time.time() - start_t
-                    logger.info(f"Saved eyecatch: {output_image_path} ({len(img_bytes)} bytes in {elapsed:.1f}s)")
+                    logger.info(
+                        f"Saved topic-faithful title eyecatch: {output_image_path} "
+                        f"({len(final_bytes)} bytes in {elapsed:.1f}s)"
+                    )
                     return output_image_path, en_prompt
         except Exception as e:
             logger.error(f"Draw Things image generation failed: {e}")

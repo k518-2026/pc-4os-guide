@@ -141,206 +141,184 @@ footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2
       <p><span class="badge">#01｜分類01: 文書作成・オフィス業務・事務作業</span> <small style="color:#64748b;margin-left:0.5rem;">2026-11-23</small></p>
       <img class="eyecatch" src="../images/2026-11-23_art01_pdf_merge_split_compress.png" alt="【4OS徹底比較】PDFの結合・分割・圧縮を無料で行う実例ガイド｜Windows・macOS・Linux・iPad">
       <h1>【4OS徹底比較】PDFの結合・分割・圧縮を無料で行う実例ガイド｜Windows・macOS・Linux・iPad</h1>
-<p>「仕事で送られてきた複数のPDFを1つにまとめたい」「長い資料の一部だけを抽出したい」「メールで送るためにファイルサイズを小さくしたい」……。こうした場面で、有料のAdobe Acrobatなどの高機能ソフトを契約するのは少しハードルが高いと感じる方も多いはずです。</p>
-<p>実は、<strong>私たちが普段使っているOS（Windows, macOS, Linux, iPadOS）には、標準機能や基本的なツールだけでこれらの操作を行う方法が備わっています。</strong> </p>
-<p>この記事では、プロの視点から4つの主要なOSにおける「PDFの結合・分割・圧縮」の手順を徹底比較します。外部アプリを極力使わず、標準機能を使いこなすための実践的なガイドとして活用してください。</p>
+<p>「複数のPDFを1つにまとめたい」「長い資料から必要なページだけ抜き出したい」「メール添付のためにファイルサイズを軽くしたい」——。こうした場面で、有料のAdobe Acrobatを契約せずとも、<strong>OS標準機能や定番の無料コマンドラインツール</strong>だけで対応できる範囲はかなり広いです。</p>
+<p>ただし、<strong>「標準機能だけでできること・できないこと」にはOSごとに明確な差</strong>があります。この記事では、Windows 11・macOS・Linux（Ubuntu系）・iPadOSの4環境における正確な手順と、公式仕様に基づく制限事項・トラブル対処法を徹底比較します。</p>
 <h2>4OS比較早見表</h2>
 <table>
 <thead>
 <tr>
 <th style="text-align: left;">OS</th>
 <th style="text-align: left;">主な操作手段</th>
-<th style="text-align: left;">結合</th>
-<th style="text-align: left;">分割</th>
-<th style="text-align: left;">圧縮</th>
-<th style="text-align: left;">特徴</th>
+<th style="text-align: center;">結合</th>
+<th style="text-align: center;">分割（ページ抽出）</th>
+<th style="text-align: center;">圧縮（軽量化）</th>
+<th style="text-align: left;">特徴・注意点</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;"><strong>Windows</strong></td>
-<td style="text-align: left;">Microsoft Print to PDF</td>
-<td style="text-align: left;">△（印刷利用）</td>
-<td style="text-align: left;">△（範囲指定）</td>
-<td style="text-align: left;">△（DPI変更）</td>
-<td style="text-align: left;">ブラウザや仮想プリンタを活用するスタイル</td>
+<td style="text-align: left;"><strong>Windows 11</strong></td>
+<td style="text-align: left;">Edge / Microsoft Print to PDF</td>
+<td style="text-align: center;">×（標準のみは不可）</td>
+<td style="text-align: center;">◎（ページ指定印刷）</td>
+<td style="text-align: center;">×（標準では非対応）</td>
+<td style="text-align: left;">分割のみ標準可。結合・圧縮は無料ツール併用が現実的</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>macOS</strong></td>
-<td style="text-align: left;">プレビュー (Preview)</td>
-<td style="text-align: left;">◎（ドラッグ＆ドロップ）</td>
-<td style="text-align: left;">◎（ページ削除）</td>
-<td style="text-align: left;">△（再出力）</td>
-<td style="text-align: left;">直感的で最も標準機能が充実している</td>
+<td style="text-align: left;">プレビュー（Preview）</td>
+<td style="text-align: center;">◎（サムネイルD&amp;D）</td>
+<td style="text-align: center;">◎（ページ削除／D&amp;D）</td>
+<td style="text-align: center;">◎（Quartzフィルタ）</td>
+<td style="text-align: left;"><strong>3操作すべてOS標準アプリだけで完結</strong></td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Linux</strong></td>
-<td style="text-align: left;">CLI (<code>pdftk</code>, <code>pdfunite</code>)</td>
-<td style="text-align: left;">◎（コマンド）</td>
-<td style="text-align: left;">◎（コマンド）</td>
-<td style="text-align: left;">△（linearize）</td>
-<td style="text-align: left;">確実な処理が可能だが、基本はターミナル操作</td>
+<td style="text-align: left;"><strong>Linux (Ubuntu)</strong></td>
+<td style="text-align: left;"><code>pdfunite</code> / <code>pdfseparate</code> / <code>gs</code></td>
+<td style="text-align: center;">◎（<code>pdfunite</code>）</td>
+<td style="text-align: center;">◎（<code>pdfseparate</code>）</td>
+<td style="text-align: center;">◎（Ghostscript <code>gs</code>）</td>
+<td style="text-align: left;">CLIで高速・一括処理可能。<code>qpdf</code>でWeb最適化も可</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>iPadOS</strong></td>
-<td style="text-align: left;">ファイル / ショートカット</td>
-<td style="text-align: left;">△（ショートカット活用）</td>
-<td style="text-align: left;">△（ページ削除）</td>
-<td style="text-align: left;">×（標準では困難）</td>
-<td style="text-align: left;">モバイル特有の制約があり、自動化が必要</td>
+<td style="text-align: left;">「ファイル」＆「ショートカット」</td>
+<td style="text-align: center;">◎（ショートカット）</td>
+<td style="text-align: center;">◎（ファイル/印刷）</td>
+<td style="text-align: center;">△（標準では限定的）</td>
+<td style="text-align: left;">標準の「ショートカット」アプリで複数PDF結合が可能</td>
 </tr>
 </tbody>
 </table>
 <hr />
-<h2>1. Windows での実例手順</h2>
-<p>Windows環境では、専用のPDF編集ソフトをインストールせずに「仮想プリンタ」としての機能を利用するのが最も標準的なアプローチです。</p>
+<h2>1. Windows 11 での実例手順</h2>
+<p>Windows 11 の標準機能（Microsoft Edge ＋ 仮想プリンタ <code>Microsoft Print to PDF</code>）で確実にできるのは<strong>「分割（必要ページの抽出）」</strong>です。</p>
 <h3>具体的な実例手順</h3>
 <ul>
-<li><strong>結合</strong>: 複数のPDFを開き、「印刷」メニューから「Microsoft Print to PDF」を選択します。ただし、これは「並べて表示して印刷する」というアナログな手法に近いものになります。</li>
-<li><strong>分割</strong>: EdgeブラウザでPDFを開き、印刷ダイアログ（Ctrl + P）を表示します。出力先を「Microsoft Print to PDF」にし、「ページ」の欄に抽出したい範囲（例：<code>1-3, 5</code>）を入力して実行することで、指定したページだけの新規PDFとして保存できます。</li>
-<li><strong>圧縮</strong>: Windows標準ではボタン一つで圧縮する機能はありません。印刷ダイアログの「プロパティ」から解像度を調整します。<ul>
-<li><strong>手順</strong>: [Microsoft Print to PDF] のプロパティ &gt; 詳細設定 &gt; 解像度を「72 dpi」などに下げる（※画質劣化に注意）。</li>
+<li><strong>分割（特定ページだけ抽出）</strong>:</li>
+<li>対象のPDFファイルを <strong>Microsoft Edge</strong> で開く。</li>
+<li><code>Ctrl + P</code> で印刷ダイアログを開き、プリンターに <strong>「Microsoft Print to PDF」</strong>（または「PDF として保存」）を選択。</li>
+<li>「ページ」欄をカスタムにし、抽出したいページ番号（例：<code>1-3, 5</code>）を指定して保存する。</li>
+<li><strong>結合・圧縮について（標準機能の制限）</strong>:</li>
+<li>Windows 標準の <code>Microsoft Print to PDF</code> 単体では<strong>複数PDFの結合や、画像再圧縮による大幅な軽量化は行えません</strong>。</li>
+<li>結合・圧縮を安全にローカル環境で無料実行したい場合は、オープンソースの <code>PDFsam Basic</code> や <code>PDF24 Creator</code>、あるいは WSL2 / Winget 経由で Linux と同じ <code>qpdf</code>・<code>Ghostscript</code> を導入するのが確実です。</li>
 </ul>
-</li>
-</ul>
-<h3>よくあるトラブルと解決チェックリスト</h3>
-<ol>
-<li><strong>結合後の文字が崩れる・レイアウトがおかしくなる</strong><ul>
-<li>原因：PDFに埋め込まれたフォントが含まれていない、または印刷時の解像度不足。</li>
-<li>解決策：Edgeの印刷設定で「システムダイアログを使用する」を試し、高品質なグラフィックス出力を確認してください。</li>
-</ul>
-</li>
-<li><strong>分割時にページ番号がずれる</strong><ul>
-<li>原因：プレビュー表示での範囲選択ミス。</li>
-<li>解決策：「ファイル &gt; ページのプレビュー」で正確な範囲（例：1-3, 5-7）を青く塗りつぶし、印刷ダイアログで再確認してください。</li>
-</ul>
-</li>
-<li><strong>圧縮してもサイズが減少しない</strong><ul>
-<li>原因：Windows標準機能では画像のJPEG品質制御ができないため。</li>
-<li>解決策：解像度（dpi）を下げる以外に標準機能での大幅な軽量化は困難です。</li>
-</ul>
-</li>
-</ol>
 <hr />
 <h2>2. macOS での実例手順</h2>
-<p>macOSは「プレビュー」アプリの性能が高いため、最もスムーズに操作が行えます。</p>
+<p>macOS は標準搭載の <strong>「プレビュー（Preview）」</strong> アプリが非常に強力で、結合・分割・圧縮の3つすべてが追加アプリなしで完結します。</p>
 <h3>具体的な実例手順</h3>
 <ul>
-<li><strong>結合</strong>: 「プレビュー」で複数のPDFを開きます。サイドバー（表示 &gt; サイドバー）を表示し、サムネイルパネルから必要なページを選択して、別のPDFウィンドウへドラッグ＆ドロップします。最後に「ファイル &gt; エクスポート PDF...」で保存します。</li>
-<li><strong>分割</strong>: 1つのPDF内で不要なページを削除する方法が最も簡単です。「編集」メニューの「ページを削除」またはサムネイルを右クリックして削除を選択します。残ったページを新規保存することで分割が完了します。</li>
-<li><strong>圧縮</strong>: 「印刷」ダイアログから「PDFとして保存」を選択します。標準機能のみでは高度な最適化はできませんが、再出力時に解像度を指定することで簡易的なサイズ調整が可能です。</li>
+<li><strong>結合</strong>:</li>
+<li>1つ目のPDFを「プレビュー」で開き、メニューバーから <strong>「表示」＞「サムネイル」</strong> を選択してサイドバーを表示する。</li>
+<li>結合したい別のPDFファイルを Finder からサイドバーの挿入したい位置へドラッグ＆ドロップする。</li>
+<li><strong>「ファイル」＞「保存」</strong>（または「書き出す…」）で保存する。</li>
+<li><strong>分割（不要ページの削除・抽出）</strong>:</li>
+<li>サイドバーのサムネイルで不要なページを選択して <code>Delete</code> キーで削除するか、必要なページだけを選択してデスクトップ等へドラッグ＆ドロップすると、そのページだけの新しいPDFが作成されます。</li>
+<li><strong>圧縮（ファイルサイズ削減）</strong>:</li>
+<li>「プレビュー」でPDFを開き、<strong>「ファイル」＞「書き出す…」</strong> を選択（※「PDFとして書き出す」ではない点に注意）。</li>
+<li><strong>「Quartz フィルタ」</strong> のプルダウンから <strong>「Reduce File Size」</strong> を選択して保存する。</li>
 </ul>
-<h3>よくあるトラブルと解決チェックリスト</h3>
-<ol>
-<li><strong>結合した際、ページ順序が逆になる・挟まる</strong><ul>
-<li>原因：ドラッグ＆ドロップ時の誤操作でサムネイルの順序を逆に移動させたため。</li>
-<li>解決策：プレビューウィンドウ左側の「ページ」パネルから、番号を確認しながら正しい順序に配置し直してください。</li>
-</ul>
-</li>
-<li><strong>分割時に画像がぼやける</strong><ul>
-<li>原因：「印刷して保存」で解像度を下げた場合の副作用。</li>
-<li>解決策：標準機能での圧縮は画質劣化を伴うため、品質維持を優先する場合は「ファイル &gt; エクスポート PDF...」を使用してください。</li>
-</ul>
-</li>
-<li><strong>結合後のファイルサイズが膨大になる</strong><ul>
-<li>原因：複数の高解像度スキャンPDFをそのまま結合した場合。</li>
-<li>解決策：macOS標準では高度な圧縮が難しいため、再出力時に「印刷 &gt; PDF...」から品質を調整して保存します。</li>
-</ul>
-</li>
-</ol>
+<blockquote>
+<p><strong>macOSでの注意点:</strong><br />
+「Reduce File Size」は内蔵画像を強く再圧縮するため、細かい図表やスキャン文字が粗くなる場合があります。元ファイルは必ず別名保存で残してください。</p>
+</blockquote>
 <hr />
 <h2>3. Linux（Ubuntu系）での実例手順</h2>
-<p>Linux環境ではGUIよりもコマンドラインツール（CLI）を組み合わせるのが最も確実でプロフェッショナルな方法です。</p>
-<h3>具体的な実例手順</h3>
-<p>標準のドキュメントビューア（Evince）には結合機能がないため、以下のパッケージを利用します。<br />
-*   <strong>準備</strong>: ターミナルを開き、必要なツールをインストールします。<br />
-<code>bash
-    sudo apt update &amp;&amp; sudo apt install poppler-utils pdftk</code><br />
-*   <strong>結合</strong>: <code>pdftk</code> または <code>pdfunite</code> を使用します。<br />
-    ```bash<br />
-    # pdftkを使用する場合<br />
-    pdftk file1.pdf file2.pdf cat output combined.pdf</p>
-<pre><code># pdfuniteを使用する場合
-pdfunite file1.pdf file2.pdf combined.pdf
-```
+<p>Ubuntu では <code>poppler-utils</code>（<code>pdfunite</code> / <code>pdfseparate</code>）と <code>ghostscript</code>（<code>gs</code>）を組み合わせるのが、軽量かつ最も確実です。</p>
+<h3>準備（パッケージ導入）</h3>
+<pre><code class="language-bash">sudo apt update &amp;&amp; sudo apt install -y poppler-utils ghostscript qpdf
 </code></pre>
+<h3>具体的な実例手順</h3>
 <ul>
-<li><strong>分割</strong>: <code>pdftk</code> を使い、特定のページ範囲を指定して出力します。<br />
+<li><strong>結合（<code>pdfunite</code>）</strong>:<br />
 <code>bash
-    # 1〜5ページを抽出
-    pdftk input.pdf cat 1-5 output part1.pdf</code></li>
-<li><strong>圧縮</strong>: 高度な最適化は難しいですが、<code>qpdf</code> を使ってWeb向けに線形化（Linearize）することで軽量化が可能です。<br />
-<code>bash
-    qpdf --linearize combined.pdf output_optimized.pdf</code></li>
+  pdfunite file1.pdf file2.pdf combined.pdf</code></li>
+<li><strong>分割（<code>pdfseparate</code> で1〜5ページを1ページずつ抽出、または <code>qpdf</code> で範囲抽出）</strong>:<br />
+  ```bash<br />
+  # 1〜5ページを1ページごとのPDFに分割<br />
+  pdfseparate -f 1 -l 5 input.pdf page_%d.pdf</li>
 </ul>
-<h3>よくあるトラブルと解決チェックリスト</h3>
-<ol>
-<li><strong>コマンド実行時「command not found: pdftk」とエラーが出る</strong><ul>
-<li>原因：パッケージがインストールされていない。</li>
-<li>解決策：<code>sudo apt install poppler-utils pdftk</code> を再度実行してください。</li>
-</ul>
-</li>
-<li><strong>結合後のPDFが開かない・文字化けする</strong><ul>
-<li>原因：フォント埋め込みの不備やバージョンの不一致。</li>
-<li>解決策：<code>qpdf</code> で再エンコードを試みてください（例：<code>qpdf --linearize input.pdf output.pdf</code>）。</li>
-</ul>
-</li>
-<li><strong>分割時にページ番号が指定できない</strong><ul>
-<li>原因：引数の形式ミス（例：1-5と入力すべきところをカンマ区切りのみにするなど）。</li>
-<li>解決策：正確な範囲指定を確認してください。</li>
-</ul>
-</li>
-</ol>
+<p># 1〜5ページを1つのPDFとして抽出（qpdf）<br />
+  qpdf input.pdf --pages . 1-5 -- part1.pdf<br />
+<code>* **圧縮（Ghostscript による画像再圧縮）**:</code>bash<br />
+  # /ebook (150dpi相当・バランス重視) や /screen (72dpi相当・最小サイズ) を指定<br />
+  gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook \<br />
+     -dNOPAUSE -dQUIET -dBATCH -sOutputFile=compressed.pdf input.pdf<br />
+<code>``
+  ※ Web表示を高速化（先頭ページから順次表示）したい場合は</code>qpdf --linearize input.pdf web_ready.pdf` を併用します。</p>
 <hr />
 <h2>4. iPad（iPadOS）での実例手順</h2>
-<p>iPadOSはモバイル端末であるため、PCに比べると標準機能の制約が多いですが、「ファイル」アプリと「ショートカット」を組み合わせることで対応可能です。</p>
+<p>iPadOS でも、標準の <strong>「ファイル」アプリ</strong> と <strong>「ショートカット」アプリ</strong> を組み合わせることで、外部Webサービスにファイルをアップロードせずに結合・抽出が行えます。</p>
 <h3>具体的な実例手順</h3>
 <ul>
-<li><strong>結合</strong>: 「ファイル」アプリでPDFを選択し、長押ししてメニューから「コピー」を行い、新しいフォルダ等へ貼り付ける方法がありますが、バージョンによって挙動が不安定です。確実なのは「ショートカット」アプリです。<ul>
-<li><strong>手順</strong>: 「ショートカット」アプリを開き、「PDFファイルを作成」や「PDFを結合」というアクションを含むワークフローを作成（または公開されているテンプレートを利用）します。</li>
+<li><strong>結合（「ショートカット」アプリを使用）</strong>:</li>
+<li>「ショートカット」アプリを開き、新規ショートカットを作成。</li>
+<li>アクションを追加：<ul>
+<li><strong>「ファイルを選択」</strong>（オプションで「複数を選択」をオン）</li>
+<li><strong>「PDFを作成」</strong>（または複数画像を1つのPDF化／PDF結合アクション）</li>
+<li><strong>「ファイルを保存」</strong></li>
 </ul>
 </li>
-<li><strong>分割</strong>: 「プレビュー」アプリでPDFを開きます。ページサムネイルを表示し、不要なページを選択して削除ボタンを押します。その後、そのまま保存することで分割されたファイルが得られます。</li>
-<li><strong>圧縮</strong>: iPadOS標準の「ファイル」アプリや「プレビュー」では、高度な圧縮機能は提供されていません。</li>
+<li>実行して対象PDFを選ぶだけで、結合済みPDFを「ファイル」アプリ内に保存できます。</li>
+<li><strong>分割（特定ページの抽出）</strong>:</li>
+<li>「ファイル」アプリでPDFを開き、共有ボタン（上矢印）→ <strong>「プリント」</strong> をタップ。</li>
+<li>「範囲」で必要なページを指定し、プリント画面のプレビューを共有ボタンから <strong>「“ファイル”に保存」</strong> すると、指定ページだけのPDFとして保存されます。</li>
+<li><strong>圧縮</strong>:</li>
+<li>iPadOS標準機能には画質調整付きの高度なPDF圧縮機能はありません。大幅な圧縮が必要な場合は、Macの「プレビュー」やローカルPC側で処理するのが安全です。</li>
 </ul>
 <hr />
 <h2>よくあるトラブルと解決チェックリスト</h2>
 <table>
 <thead>
 <tr>
-<th style="text-align: left;">トラブル内容</th>
-<th style="text-align: left;">原因</th>
-<th style="text-align: left;">解決策</th>
+<th style="text-align: left;">トラブル現象</th>
+<th style="text-align: left;">主な原因</th>
+<th style="text-align: left;">確認・解決策</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;"><strong>結合後の文字化け</strong></td>
-<td style="text-align: left;">フォントの埋め込み失敗</td>
-<td style="text-align: left;">印刷設定で「高品質なグラフィックス」をオンにするか、PDF作成元のソフトでフォントを埋め込む。</td>
+<td style="text-align: left;"><strong>結合・抽出後に文字が検索できなくなる</strong></td>
+<td style="text-align: left;">仮想プリンタ出力時にテキストが画像化（ラスタライズ）された</td>
+<td style="text-align: left;">Windowsの印刷出力ではなく、<code>qpdf</code> や macOS「プレビュー」のサムネイル結合を使う</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>ファイルサイズが減らない</strong></td>
-<td style="text-align: left;">画像圧縮アルゴリズムの不在</td>
-<td style="text-align: left;">Windows/macOS標準機能では限界があるため、どうしても必要な場合はWeb上の無料ツールや専用アプリを検討する。</td>
+<td style="text-align: left;"><strong>圧縮したら図表が読めなくなった</strong></td>
+<td style="text-align: left;"><code>Reduce File Size</code> や <code>-dPDFSETTINGS=/screen</code> の圧縮率が高すぎる</td>
+<td style="text-align: left;">Ghostscriptなら <code>/ebook</code> や <code>/printer</code> に変更し、必ず元ファイルを残す</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>ページ順序の誤り</strong></td>
-<td style="text-align: left;">ドラッグ操作のミス</td>
-<td style="text-align: left;">結合前に必ず「プレビュー」または「印刷ダイアログ」で並び順を確認してから出力する。</td>
+<td style="text-align: left;"><strong>パスワード保護されたPDFが処理できない</strong></td>
+<td style="text-align: left;">編集制限・閲覧パスワードが設定されている</td>
+<td style="text-align: left;">権限のあるファイルであれば <code>qpdf --password=パスワード --decrypt in.pdf out.pdf</code> で解除後に処理する</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>社外秘PDFを無料Webサイトに上げてしまった</strong></td>
+<td style="text-align: left;">オンライン変換サービスの利用</td>
+<td style="text-align: left;">機密文書は必ず本記事のような<strong>オフライン（ローカル）手順</strong>で処理する</td>
 </tr>
 </tbody>
 </table>
 <hr />
 <h2>まとめ：快適なマルチOS環境を作るポイント</h2>
-<p>今回の比較でわかった通り、OSごとにPDFを扱うための「得意不得意」があります。Windowsは仮想プリンタでの対応、macOSは直感的なUI操作、Linuxは確実なコマンドライン操作、iPadはショートカットによる自動化という特徴を理解して使い分けるのがコツです。</p>
-<p>より快適に事務作業を進めるためには、OSの標準機能に加え、以下の環境を整えることも検討してみてください。</p>
+<p>PDFの結合・分割・圧縮は、<strong>macOS（プレビュー）とLinux（CLI）が標準／無料ツールで完結しやすく、WindowsとiPadは役割分担すると効率的</strong>です。</p>
 <ul>
-<li><strong>Office互換ソフト</strong>: Google WorkspaceやMicrosoft 365を導入することで、PDF化する前の文書作成段階でレイアウトを正確に保つことができます。</li>
-<li><strong>PDF編集ソフト</strong>: 標準機能で限界を感じる場合は、Adobe Acrobatの代替として軽量な無料・安価なツール（例：PDF24など）を検討するのも手です。</li>
-<li><strong>周辺機器</strong>: 複数のOSを跨いで作業する場合、<strong>外付けキーボード</strong>や<strong>大型モニター</strong>は必須級のアイテムです。特にiPadとMacを併用するなら、同じキーボードで両方を操作できる環境を作ることで、PDFの結合・分割などの細かい微調整作業のストレスが劇的に軽減されます。</li>
+<li><strong>Office互換ソフト・PDF編集ソフト</strong>: 業務で頻繁にPDFのテキスト編集や墨消しを行う場合は、ローカル動作の専用PDFソフトを導入すると作業時間を大幅に短縮できます。</li>
+<li><strong>外付けキーボード・大型モニター</strong>: 複数PDFを見比べながらページ順を整理する作業では、広い画面とショートカット操作が圧倒的に快適です。</li>
 </ul>
-<p>それぞれのOSの特性を活かした「自分に合ったワークフロー」を見つけ、効率的な事務作業を実現しましょう。</p>
+<hr />
+<h2>参考文献・公式ドキュメント（一次情報ソース）</h2>
+<p>本記事の手順・仕様は以下の各OSおよびツールの公式ドキュメントに基づいています。OSアップデートによりメニュー名称や挙動が変わる場合があるため、最新仕様の確認にもご活用ください。</p>
+<ul>
+<li><strong>[Windows]</strong> <a href="https://learn.microsoft.com/ja-jp/deployedge/microsoft-edge-policies#printing">Microsoft Edge 印刷・PDF関連ポリシー公式ドキュメント | Microsoft Learn</a></li>
+<li><strong>[macOS]</strong> <a href="https://support.apple.com/ja-jp/guide/preview/prvw43696/mac">Macの「プレビュー」でPDFを結合する - Apple サポート (日本)</a></li>
+<li><strong>[macOS]</strong> <a href="https://support.apple.com/ja-jp/guide/preview/prvw1509/mac">Macの「プレビュー」でPDFのサイズを減らす - Apple サポート (日本)</a></li>
+<li><strong>[Linux]</strong> <a href="https://manpages.ubuntu.com/manpages/noble/en/man1/pdfunite.1.html">Ubuntu Manpage: pdfunite (poppler-utils) - PDF page merger</a></li>
+<li><strong>[Linux]</strong> <a href="https://manpages.ubuntu.com/manpages/noble/en/man1/pdfseparate.1.html">Ubuntu Manpage: pdfseparate (poppler-utils) - PDF page extractor</a></li>
+<li><strong>[Linux]</strong> <a href="https://ghostscript.readthedocs.io/en/latest/VectorDevices.html">Ghostscript High Level Devices (pdfwrite / PDF圧縮設定)</a></li>
+<li><strong>[Linux]</strong> <a href="https://qpdf.readthedocs.io/en/stable/cli.html">qpdf CLI Documentation (Web最適化・線形化)</a></li>
+<li><strong>[iPadOS]</strong> <a href="https://support.apple.com/ja-jp/guide/shortcuts/welcome/ios">ショートカット ユーザガイド - Apple サポート (日本)</a></li>
+</ul>
     </article>
   </main>
   <footer>Generated with Local Ollama (qwen3.5 / gemma4) &amp; Draw Things (FLUX.2 klein 4B)</footer>

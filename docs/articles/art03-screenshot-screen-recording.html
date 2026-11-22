@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>【4OS徹底比較】スクリーンショット・画面録画の最短手順と保存先トラブル対処｜Windows 11 / macOS / Linux(Ubuntu) / iPad | PC 4OS実例ガイド</title>
+  <title>【4OS徹底比較】スクリーンショット・画面録画の最短手順と保存先トラブル対処｜Windows・macOS・Linux・iPad | PC 4OS実例ガイド</title>
   <style>
 :root {
   --bg: #f8fafc;
@@ -139,11 +139,10 @@ footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2
     <a class="back-link" href="../index.html">← 記事一覧へ戻る</a>
     <article class="post">
       <p><span class="badge">#03｜分類03: 情報収集・リサーチ・Web利用</span> <small style="color:#64748b;margin-left:0.5rem;">2026-11-23</small></p>
-      <img class="eyecatch" src="../images/2026-11-23_art03_screenshot_screen_recording.png" alt="【4OS徹底比較】スクリーンショット・画面録画の最短手順と保存先トラブル対処｜Windows 11 / macOS / Linux(Ubuntu) / iPad">
-      <h1>【4OS徹底比較】スクリーンショット・画面録画の最短手順と保存先トラブル対処｜Windows 11 / macOS / Linux(Ubuntu) / iPad</h1>
-<p>「仕事で急に画面をキャプチャしたいけれど、どのボタンを押せばいいか忘れてしまった…」「録画したはずのファイルがどこにも見当たらない！」といった経験はありませんか？</p>
-<p>OSごとに操作体系が異なるため、複数のデバイスを使い分けるユーザーほど、それぞれの「標準機能」の癖を把握しておくことは重要です。この記事では、Windows、macOS、Linux（Ubuntu）、そしてiPadOSの4つの主要環境において、<strong>サードパーティ製アプリを一切使わず、標準搭載のツールやコマンドのみで完結する最短手順</strong>を徹底比較します。</p>
-<p>また、初心者が陥りやすい「保存先の迷子」や、ブラウザでの「Webページ縦長保存」の裏技についても詳しく解説します。</p>
+      <img class="eyecatch" src="../images/2026-11-23_art03_screenshot_screen_recording.png" alt="【4OS徹底比較】スクリーンショット・画面録画の最短手順と保存先トラブル対処｜Windows・macOS・Linux・iPad">
+      <h1>【4OS徹底比較】スクリーンショット・画面録画の最短手順と保存先トラブル対処｜Windows・macOS・Linux・iPad</h1>
+<p>「急に画面を撮りたいのにショートカットを忘れてしまった」「録画した動画がどこに保存されたか分からない」「Webページ全体を縦長に保存したい」——。</p>
+<p>複数のOSを行き来していると、ショートカットキーや標準の保存先の違いで迷いがちです。この記事では、<strong>Windows 11・macOS・Linux（Ubuntu 22.04/24.04・Wayland対応）・iPadOS</strong> の4環境において、追加アプリ不要の<strong>標準機能だけで完結する正確な手順</strong>と、よくあるトラブルの解決法を比較します。</p>
 <h2>4OS比較早見表</h2>
 <table>
 <thead>
@@ -151,7 +150,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2
 <th style="text-align: left;">機能</th>
 <th style="text-align: left;">Windows 11</th>
 <th style="text-align: left;">macOS</th>
-<th style="text-align: left;">Linux (Ubuntu)</th>
+<th style="text-align: left;">Linux (Ubuntu / GNOME)</th>
 <th style="text-align: left;">iPadOS</th>
 </tr>
 </thead>
@@ -159,130 +158,146 @@ footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2
 <tr>
 <td style="text-align: left;"><strong>スクショ（範囲指定）</strong></td>
 <td style="text-align: left;"><code>Win + Shift + S</code></td>
-<td style="text-align: left;"><code>Cmd + Shift + 4</code></td>
-<td style="text-align: left;"><code>gnome-screenshot</code></td>
-<td style="text-align: left;">ボタン同時押し</td>
+<td style="text-align: left;"><code>Shift + Cmd + 4</code></td>
+<td style="text-align: left;"><code>Print Screen</code> キー</td>
+<td style="text-align: left;">トップ＋音量ボタン同時押し</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>画面録画</strong></td>
-<td style="text-align: left;">Xbox Game Bar (<code>Win + G</code>)</td>
-<td style="text-align: left;">QuickTime Player</td>
-<td style="text-align: left;"><code>ffmpeg</code> (CLI)</td>
-<td style="text-align: left;">コントロールセンター</td>
+<td style="text-align: left;"><strong>画面録画（標準）</strong></td>
+<td style="text-align: left;">Snipping Tool / <code>Win + G</code></td>
+<td style="text-align: left;"><code>Shift + Cmd + 5</code> / QuickTime</td>
+<td style="text-align: left;"><code>Ctrl + Shift + Alt + R</code></td>
+<td style="text-align: left;">コントロールセンター「画面収録」</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Webページ縦長保存</strong></td>
-<td style="text-align: left;">印刷 → PDF保存</td>
-<td style="text-align: left;">印刷 → PDF保存</td>
-<td style="text-align: left;">印刷 → PDF保存</td>
-<td style="text-align: left;">サードパーティ推奨</td>
+<td style="text-align: left;"><strong>Web縦長保存</strong></td>
+<td style="text-align: left;">Edge「Webキャプチャ」/ 印刷PDF</td>
+<td style="text-align: left;">Safari「PDFとして書き出す」</td>
+<td style="text-align: left;">ブラウザ印刷PDF / 開発者ツール</td>
+<td style="text-align: left;"><strong>Safariスクショ →「フルページ」</strong></td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>主な保存先</strong></td>
-<td style="text-align: left;">クリップボード / 指定フォルダ</td>
-<td style="text-align: left;">デスクトップ / Finder</td>
-<td style="text-align: left;"><code>~/Screenshots</code></td>
-<td style="text-align: left;">写真アプリ</td>
+<td style="text-align: left;"><strong>デフォルト保存先</strong></td>
+<td style="text-align: left;"><code>ピクチャ\Screenshots</code><br><code>ビデオ\画面録画</code></td>
+<td style="text-align: left;">デスクトップ（変更可）</td>
+<td style="text-align: left;"><code>~/ピクチャ/スクリーンショット</code><br><code>~/ビデオ/スクリーンキャスト</code></td>
+<td style="text-align: left;">「写真」アプリ（フルページは「ファイル」）</td>
 </tr>
 </tbody>
 </table>
 <hr />
-<h2>1. Windows 11：Snipping Tool と Xbox Game Bar</h2>
-<p>Windowsでは、直感的なGUI操作と、ゲーミング機能から派生した録画機能の組み合わせが標準となっています。</p>
-<h3>【実例手順】</h3>
+<h2>1. Windows 11 での実例手順（Snipping Tool / Xbox Game Bar）</h2>
+<p>現在の Windows 11 では、標準の <strong>Snipping Tool</strong> がスクリーンショットだけでなく<strong>画面録画（範囲指定録画）</strong>にもネイティブ対応しています。</p>
+<h3>具体的な実例手順</h3>
 <ul>
-<li><strong>スクリーンショット</strong>: <code>Win + Shift + S</code> キーを押します。画面上部にスニップツールが表示されるので、マウスで範囲を選択してください。画像はクリップボードにコピーされるため、そのままメモ帳やSlack等に <code>Ctrl + V</code> で貼り付け可能です。</li>
-<li><strong>Web ページ縦長保存</strong>: 標準機能では「全ページキャプチャ」ボタンはありません。代替案として<strong>「印刷 → PDF保存」</strong>を使いましょう。ブラウザで <code>Ctrl + P</code> を押し、送信先を「Microsoft Print to PDF」または「PDFとして保存」にし、ページ範囲を指定して実行します。</li>
-<li><strong>画面録画</strong>: <code>Win + G</code> キーを押して Xbox Game Bar を起動します。上部のカメラアイコンをクリックし、録画ボタン（●）を押します。終了後は自動的に以下のフォルダへ保存されます。</li>
-<li>保存先：<code>C:\Users\ユーザー名\Videos\Captures</code></li>
+<li><strong>スクリーンショット</strong>:</li>
+<li><code>Win + Shift + S</code> を押すと画面上部にオーバーレイが表示され、四角形・ウィンドウ・全画面・フリーフォームで撮影できます。クリップボードにコピーされるほか、自動保存オン時は <code>C:\Users\ユーザー名\Pictures\Screenshots</code> へ保存されます。</li>
+<li><strong>画面録画</strong>:</li>
+<li><strong>Snipping Tool</strong> を起動し、上部のカメラアイコンから<strong>ビデオアイコン（録画）</strong>に切り替えて「新規」→ 範囲選択 →「スタート」で録画できます（既定保存先：<code>C:\Users\ユーザー名\Videos\Screen Recordings</code>）。</li>
+<li>ゲームや長時間のアプリ録画には <code>Win + G</code>（Xbox Game Bar）も利用可能です（保存先：<code>Videos\Captures</code>）。</li>
+<li><strong>Webページ縦長保存</strong>:</li>
+<li>Microsoft Edge で <code>Ctrl + Shift + S</code>（Webキャプチャ）を使うか、<code>Ctrl + P</code> で「PDFとして保存」を利用します。</li>
 </ul>
-<h3>【よくあるトラブルと解決法】</h3>
-<ol>
-<li><strong>「Win + Shift + S」が反応しない場合</strong></li>
-<li>設定 &gt; システム &gt; スニップツールを開き、「スナップショットの取得を有効にする」がオンか確認してください。また、Microsoft Storeからアプリの更新がないかチェックします。</li>
-<li><strong>Xbox Game Bar で録画できない（灰色になっている）場合</strong></li>
-<li>Windowsの「プライバシーとセキュリティ」設定で、ゲームバーの使用権限がオンになっているか確認してください。</li>
-<li><strong>「保存先が見つからない」というエラーが出る場合</strong></li>
-<li><code>Videos\Captures</code> フォルダが存在しない場合は、Windows Updateを適用するか、システムファイルの整合性をチェックする必要があります。</li>
-</ol>
 <hr />
-<h2>2. macOS：Shift + Command + S と QuickTime Player</h2>
-<p>macOSはショートカットキーの習熟度が重要です。特に「Optionキー」の有無で挙動が変わる点に注意が必要です。</p>
-<h3>【実例手順】</h3>
+<h2>2. macOS での実例手順（標準ショートカット / QuickTime Player）</h2>
+<p>macOS は <strong><code>Shift + Command + 3 / 4 / 5</code></strong> の3つのショートカットを覚えるだけで、撮影から画面録画、保存先変更まで完結します。</p>
+<h3>具体的な実例手順</h3>
 <ul>
-<li><strong>スクリーンショット</strong>: <code>Shift + Command + 4</code> を押します。マウスが十字に変わったら範囲をドラッグします。<strong>Tip:</strong> <code>Option</code> キーを押しながらドラッグすると、解像度を指定して撮影可能です。ファイルはデフォルトでデスクトップに保存されます。</li>
-<li><strong>Web ページ縦長保存</strong>: Safariで対象ページを開き、<code>Cmd + P</code> を押します。プリントダイアログの左下にある「PDF」ボタンをクリックするか、プレビュー画面から「PDFとして保存」を選択します。</li>
-<li><strong>画面録画</strong>: Spotlight（<code>Cmd + Space</code>）で「QuickTime Player」と入力して起動します。メニューの「ファイル &gt; 新しいビデオ記録」を選択し、録画ボタンを押します。</li>
+<li><strong>スクリーンショット</strong>:</li>
+<li><strong>全画面</strong>: <code>Shift + Command + 3</code></li>
+<li><strong>範囲指定</strong>: <code>Shift + Command + 4</code>（ドラッグ中に <code>Space</code> を押すと選択範囲を移動、選択前に <code>Space</code> を押すとウィンドウ単位で撮影可能）</li>
+<li><strong>メニュー付き（録画・保存先変更も可）</strong>: <strong><code>Shift + Command + 5</code></strong></li>
+<li><strong>画面録画</strong>:</li>
+<li><code>Shift + Command + 5</code> を押して画面下部のツールバーから「画面全体を収録」または「選択部分を収録」を選びます。</li>
+<li>QuickTime Player を使う場合は、メニューバーの <strong>「ファイル」＞「新規画面収録」</strong> を選択します（※「新規ムービー収録」はWebカメラ撮影なので注意）。</li>
+<li><strong>保存先の確認・変更</strong>:</li>
+<li>デフォルトはデスクトップですが、<code>Shift + Command + 5</code> →「オプション」から任意のフォルダに変更できます。</li>
 </ul>
-<h3>【よくあるトラブルと解決法】</h3>
-<ol>
-<li><strong>「Shift + Command + S」が機能しない場合</strong></li>
-<li>システム設定 &gt; キーボード &gt; ショートカットで競合がないか確認してください。BetterTouchToolなどの外部アプリを入れている場合はそちらの設定も確認が必要です。</li>
-<li><strong>QuickTime Player で録画できない場合</strong></li>
-<li>Apple Siliconへの移行に伴う権限の問題がある場合があります。ターミナルから <code>brew install ffmpeg</code> 等を検討するか、システム設定の「画面収録」権限を確認してください。</li>
-<li><strong>「保存先が見つからない」というエラーが出る場合</strong></li>
-<li>Finderの「最近の項目」にない場合、<code>~/Movies/</code> 内のフォルダを確認してください。存在しない場合は手動で <code>Movies Recs</code> フォルダを作成すると解決する場合があります。</li>
-</ol>
 <hr />
-<h2>3. Linux (Ubuntu): gnome-screenshot と ffmpeg</h2>
-<p>Linux環境ではCLI（コマンドライン）を組み合わせることで、より高度な自動化や一貫性を保つことができます。</p>
-<h3>【実例手順】</h3>
+<h2>3. Linux（Ubuntu系）での実例手順（GNOME標準 / Wayland対応）</h2>
+<p>Ubuntu 22.04 LTS / 24.04 LTS 以降では、ディスプレイサーバーに <strong>Wayland</strong> が標準採用されています。従来の X11 向けツール（<code>ffmpeg -f x11grab</code> 等）は Wayland 環境では真っ黒な画面になるため、まずは <strong>GNOME 標準機能</strong>を使うのが最も確実です。</p>
+<h3>具体的な実例手順</h3>
 <ul>
-<li><strong>スクリーンショット</strong>: ターミナルで <code>gnome-screenshot</code> を実行します。<br />
+<li><strong>スクリーンショット（GNOME標準UI）</strong>:</li>
+<li><code>Print Screen</code> キーを押すと、範囲選択・画面全体・ウィンドウ選択ができる標準キャプチャUIが開きます。</li>
+<li><code>Shift + Print Screen</code> で即座に全画面撮影、<code>Alt + Print Screen</code> でアクティブウィンドウ撮影。</li>
+<li>保存先：<code>~/Pictures/Screenshots</code>（日本語環境では <code>~/ピクチャ/スクリーンショット</code>）</li>
+<li><strong>画面録画（GNOME標準スクリーンキャスト）</strong>:</li>
+<li><strong><code>Ctrl + Shift + Alt + R</code></strong>（または <code>Print Screen</code> のUIでビデオアイコンへ切替）で録画開始／停止ができます。</li>
+<li>保存先：<code>~/Videos/Screencasts</code>（WebM形式）</li>
+<li><strong>X11セッション環境で CLI 録画する場合（<code>ffmpeg</code>）</strong>:<br />
 <code>bash
-  # 全画面撮影
-  gnome-screenshot -f screenshot.png
-  # 範囲指定撮影
-  gnome-screenshot -a</code><br />
-  デフォルトでは <code>/home/ユーザー名/Screenshots</code> に保存されます。</li>
-<li><strong>Web ページ縦長保存</strong>: Firefox等のブラウザで <code>Ctrl + P</code> を押し、システムにインストールした「Print to PDF」ドライバを使用して保存します。またはCLIツール <code>wkhtmltoimage</code> を使用します。<br />
-<code>bash
-  # wkhtmltoimageを使用した例
-  wkhtmltoimage https://example.com -o output.png</code></li>
-<li><strong>画面録画</strong>: 標準の <code>ffmpeg</code> コマンドを使用します（未導入なら <code>sudo apt install ffmpeg</code>）。<br />
-<code>bash
-  # 基本的な録画コマンド例
+  # ※ WaylandではなくXorg(X11)セッション上でのみ有効
   ffmpeg -f x11grab -video_size 1920x1080 -i :0.0 -c:v libx264 -pix_fmt yuv420p output.mp4</code></li>
 </ul>
-<h3>【よくあるトラブルと解決法】</h3>
-<ol>
-<li><strong>「gnome-screenshot コマンドが見つからない」というエラーが出る場合</strong></li>
-<li>パッケージが未インストールです。以下を実行してください。<br />
-<code>bash
-     sudo apt update &amp;&amp; sudo apt install gnome-screenshot</code></li>
-<li><strong>ffmpeg で録画できない（デバイスが見つからない）場合</strong></li>
-<li><code>v4l2-ctl --list-devices</code> を実行し、キャプチャデバイスが認識されているか確認してください。</li>
-<li><strong>「保存先が見つからない」というエラーが出る場合</strong></li>
-<li>フォルダが存在しない場合は以下で作成します。<br />
-<code>bash
-     mkdir -p ~/Screenshots</code></li>
-</ol>
 <hr />
-<h2>4. iPadOS: スクリーンショットと画面録画（制限事項）</h2>
-<p>iPadOSはモバイルOSの制約があるため、PC OSとはアプローチが異なります。</p>
-<h3>【実例手順】</h3>
+<h2>4. iPad（iPadOS）での実例手順</h2>
+<p>iPadOS は標準機能だけで <strong>Safari のWebページ全体（フルページ）保存</strong> にも対応しています。</p>
+<h3>具体的な実例手順</h3>
 <ul>
-<li><strong>スクリーンショット</strong>: 「サイドボタン + 音量ボタン（またはホームボタン）」を同時に押します。画像は「写真」アプリの「最近の写真」アルバムに即座に保存されます。</li>
-<li><strong>Web ページ縦長保存</strong>: iPadOS標準では完全な自動機能はありません。Safariで表示し、「共有ボタン」→「プリント」を選択。プレビュー画面をピンチアウト（拡大）することでPDFとして扱える場合がありますが、基本的にはサードパーティ製アプリの利用を推奨します。</li>
-<li><strong>画面録画</strong>: 「コントロールセンター」を下にスワイプし、「画面収録（丸いアイコン）」をタップします。※標準機能ではありますが、PCのような細かい範囲指定や高度な設定は制限されます。</li>
+<li><strong>スクリーンショット</strong>:</li>
+<li>ホームボタンのないモデル：<strong>トップボタン ＋ いずれかの音量ボタン</strong>を同時押し（または Apple Pencil で画面左下／右下隅から斜め上にスワイプ）。</li>
+<li>ホームボタンのあるモデル：<strong>トップボタン ＋ ホームボタン</strong>を同時押し。</li>
+<li><strong>Safari のWebページ縦長保存（フルページ）</strong>:</li>
+<li>Safari で保存したいページを開き、通常通りスクリーンショットを撮る。</li>
+<li>左下に表示されるサムネイルをタップし、画面上部の <strong>「フルページ」</strong> タブに切り替える。</li>
+<li>「完了」→ <strong>「PDFを“ファイル”に保存」</strong> を選ぶと、ページ全体の縦長PDFとして保存されます。</li>
+<li><strong>画面録画</strong>:</li>
+<li>画面右上から下にスワイプしてコントロールセンターを開き、<strong>「画面収録（二重丸アイコン）」</strong> をタップ。音声（マイク）も入れたい場合はアイコンを長押ししてマイクをオンにします。</li>
 </ul>
-<h3>【よくあるトラブルと解決法】</h3>
-<ol>
-<li><strong>「サイドボタン + 音量ボタン」で反応しない場合</strong></li>
-<li>「設定 &gt; アクセシビリティ &gt; 触覚」でスクリーンショットの動作が有効になっているか確認してください。</li>
-<li><strong>画面録画中に音が聞こえない場合</strong></li>
-<li>コントロールセンターの録画アイコンを「長押し」し、マイクのオン/オフ設定を確認してください。</li>
-</ol>
+<hr />
+<h2>よくあるトラブルと解決チェックリスト</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">トラブル現象</th>
+<th style="text-align: left;">主な原因</th>
+<th style="text-align: left;">確認・解決策</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>WindowsでSnipping Toolの録画ファイルが見つからない</strong></td>
+<td style="text-align: left;">自動保存オフ、または録画中断で一時フォルダに残留</td>
+<td style="text-align: left;"><code>Videos\Screen Recordings</code> を確認。異常終了時はアプリ設定（設定 ＞ アプリ ＞ インストールされているアプリ ＞ Snipping Tool ＞ 詳細オプション）から修復を実行</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>macOSで画面収録ができない・背景しか映らない</strong></td>
+<td style="text-align: left;">「画面収録」のプライバシー権限がオフ</td>
+<td style="text-align: left;">システム設定 ＞ プライバシーとセキュリティ ＞「画面収録とシステムオーディオ録音」を確認</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Ubuntuで <code>ffmpeg</code> の <code>x11grab</code> が真っ黒になる</strong></td>
+<td style="text-align: left;">WaylandセッションでX11用キャプチャを実行している</td>
+<td style="text-align: left;">GNOME標準の <code>Ctrl + Shift + Alt + R</code> を使うか、ログイン画面で「Ubuntu on Xorg」を選択</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>iPadの画面録画で自分の声が入らない</strong></td>
+<td style="text-align: left;">コントロールセンターのマイク設定がオフ</td>
+<td style="text-align: left;">画面収録ボタンを<strong>長押し</strong>し、下部のマイクアイコンをタップしてオンにする</td>
+</tr>
+</tbody>
+</table>
 <hr />
 <h2>まとめ：快適なマルチOS環境を作るポイント</h2>
-<p>今回の比較でわかった通り、各OSには独自の「最短ルート」が存在します。これらを使いこなすことで、ツールをあちこち行き来するストレスを大幅に軽減できます。</p>
-<p>さらに、これらの作業をより快適にするための周辺機器や環境整備も重要です。</p>
+<p>4OSとも、最新バージョンでは<strong>外部アプリを入れなくても「範囲指定スクショ＋画面録画＋Web縦長保存」が標準で完結</strong>するようになっています。</p>
 <ul>
-<li><strong>VPNサービス</strong>: リサーチ業務で海外サイトや特定のネットワーク環境にアクセスする場合、セキュリティと安定性を担保するために信頼できるVPNの導入は必須です。</li>
-<li><strong>トラックボールマウス</strong>: 長時間のスクロールや細かい範囲指定を行う際、手首の負担を減らすトラックボールは、Windows/macOSユーザーの生産性を劇的に向上させます。</li>
-<li><strong>ブルーライトカット眼鏡</strong>: 画面キャプチャや録画の確認作業は集中力が必要なため、目の疲れを軽減する眼鏡を導入することで、長時間の作業でもパフォーマンスを維持できます。</li>
+<li><strong>トラックボールマウス</strong>: 細かい範囲指定キャプチャや長時間のリサーチ作業で手首の負担を減らせます。</li>
+<li><strong>VPNサービス</strong>: 外出先の公衆Wi-Fiで調査・画面共有を行う際の通信保護に有効です。</li>
+<li><strong>ブルーライトカット眼鏡・モニターライト</strong>: キャプチャ確認やドキュメント作成の長時間作業での目の疲労軽減に役立ちます。</li>
 </ul>
-<p>それぞれのOSの特性を理解し、適切なツールと周辺機器を組み合わせることで、あなたのワークフローはよりスムーズでプロフェッショナルなものになるはずです。</p>
+<hr />
+<h2>参考文献・公式ドキュメント（一次情報ソース）</h2>
+<p>本記事の手順・仕様は以下の各OSおよびツールの公式ドキュメントに基づいています。OSアップデートによりメニュー名称や挙動が変わる場合があるため、最新仕様の確認にもご活用ください。</p>
+<ul>
+<li><strong>[Windows]</strong> <a href="https://support.microsoft.com/ja-jp/windows/snipping-tool-%E3%82%92%E4%BD%BF%E3%81%A3%E3%81%A6%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88%E3%82%92%E3%82%AD%E3%83%A3%E3%83%97%E3%83%81%E3%83%A3%E3%81%99%E3%82%8B-00246869-1843-655f-f220-97299b865f6b">Snipping Tool を使ってスクリーンショットをキャプチャする・画面録画する - Microsoft サポート</a></li>
+<li><strong>[macOS]</strong> <a href="https://support.apple.com/ja-jp/102646">Macでスクリーンショットを撮る - Apple サポート (日本)</a></li>
+<li><strong>[macOS]</strong> <a href="https://support.apple.com/ja-jp/102618">Macで画面を収録する方法 - Apple サポート (日本)</a></li>
+<li><strong>[Linux]</strong> <a href="https://help.gnome.org/users/gnome-help/stable/screen-shot-record.html.ja">スクリーンショットとスクリーンキャスト - GNOME ヘルプ（Ubuntu標準）</a></li>
+<li><strong>[Linux]</strong> <a href="https://ffmpeg.org/ffmpeg-devices.html">FFmpeg Devices Documentation (x11grab / 入力デバイス仕様)</a></li>
+<li><strong>[iPadOS]</strong> <a href="https://support.apple.com/ja-jp/guide/ipad/ipad08a40f3b/ipados">iPadでスクリーンショットを撮る（フルページ保存を含む） - Apple サポート (日本)</a></li>
+<li><strong>[iPadOS]</strong> <a href="https://support.apple.com/ja-jp/102653">iPhone、iPad、iPod touchで画面を録画する - Apple サポート (日本)</a></li>
+</ul>
     </article>
   </main>
   <footer>Generated with Local Ollama (qwen3.5 / gemma4) &amp; Draw Things (FLUX.2 klein 4B)</footer>
