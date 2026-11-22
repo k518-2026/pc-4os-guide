@@ -29,10 +29,11 @@ python -m src.main -n 1 --push
 python -m src.main -n 1 --category 11
 ```
 
-## 書き溜め済み記事一覧（全 5 本 / 最終更新: 2026-11-23 08:44 JST）
+## 書き溜め済み記事一覧（全 6 本 / 最終更新: 2026-11-23 08:49 JST）
 
 | No. | 17分類カテゴリ | 記事タイトル（Markdown） | 挿絵 | 生成日 |
 | :---: | :--- | :--- | :---: | :---: |
+| #06 | 分類06: 3D・CAD・ものづくり | [3Dデータ（STL/OBJ/AR）の閲覧・確認の実例ガイド｜Windows・macOS・iOS・Android](content/2026-11-23_art06_3d_ar_model_viewer.md) | あり | 2026-11-23 |
 | #05 | 分類05: 動画・音声・音楽制作 | [動画の圧縮・トリミング・MP4共有の実例と再生エラー対処｜Windows・macOS・iOS・Android](content/2026-11-23_art05_video_compression_mp4.md) | あり | 2026-11-23 |
 | #04 | 分類04: 画像・イラスト・デザイン制作 | [画像の一括リサイズ＆HEIC/WebP変換の実例ガイド｜Windows・macOS・iOS・Android](content/2026-11-23_art04_batch_image_resize_webp.md) | あり | 2026-11-23 |
 | #03 | 分類03: 情報収集・リサーチ・Web利用 | [スクリーンショット・画面録画の最短手順と保存先トラブル対処｜Windows・macOS・iOS・Android](content/2026-11-23_art03_screenshot_screen_recording.md) | あり | 2026-11-23 |
