@@ -558,7 +558,7 @@ class ArticleGenerator:
             f"【既存テーマ（重複禁止）】\n" + "\n".join(existing_topics) + "\n\n"
             "【出力形式】JSON配列のみ出力（Markdownコードフェンス不要）。各要素のキー:\n"
             '{"id": "artXX-short-english-slug", "article_num": 数値, "cat_num": 数値, "category": "カテゴリ名", '
-            '"task_topic": "具体的な作業内容", "title": "【4OS徹底比較】...｜Windows・macOS・iOS・Android", "keywords": ["kw1", "kw2", "kw3"]}'
+            '"task_topic": "具体的な作業内容", "title": "...｜Windows・macOS・iOS・Android", "keywords": ["kw1", "kw2", "kw3"]}'
         )
         raw = self._clean_markdown(
             self._call_ollama_chat(

@@ -41,6 +41,29 @@ CATEGORY_OFFICIAL_REFS: Dict[int, List[Dict[str, str]]] = {
         {"os": "Android", "title": "写真を編集する - Google フォト ヘルプ", "url": "https://support.google.com/photos/answer/6128850?hl=ja"},
         {"os": "共通", "title": "cwebp | WebP Official Documentation | Google for Developers", "url": "https://developers.google.com/speed/webp/docs/cwebp"},
     ],
+    5: [
+        {"os": "Windows", "title": "Windows のヘルプとラーニング（Clipchamp / フォト動画編集） - Microsoft サポート", "url": "https://support.microsoft.com/ja-jp/windows"},
+        {"os": "macOS", "title": "Mac用QuickTime Playerユーザガイド（トリミング・書き出し） - Apple サポート (日本)", "url": "https://support.apple.com/ja-jp/guide/quicktime-player/qtp76b9321b3/mac"},
+        {"os": "iOS", "title": "iPhoneユーザガイド（写真アプリでのビデオ編集・トリミング） - Apple サポート (日本)", "url": "https://support.apple.com/ja-jp/guide/iphone/iph1d13452f2/ios"},
+        {"os": "Android", "title": "写真や動画を編集する - Google フォト ヘルプ", "url": "https://support.google.com/photos/answer/6128850?hl=ja"},
+    ],
+    6: [
+        {"os": "Windows", "title": "Windows のヘルプとラーニング - Microsoft サポート", "url": "https://support.microsoft.com/ja-jp/windows"},
+        {"os": "macOS", "title": "Macのクイックルックでファイルを表示する/編集する - Apple サポート (日本)", "url": "https://support.apple.com/ja-jp/guide/mac-help/mh14119/mac"},
+        {"os": "iOS", "title": "ARクイックルック（USDZ 3Dモデル表示） - Apple Developer", "url": "https://developer.apple.com/jp/augmented-reality/quick-look/"},
+        {"os": "Android", "title": "Scene Viewer（Androidでの3D/ARモデル表示） - Google Developers", "url": "https://developers.google.com/ar/develop/scene-viewer"},
+    ],
+    7: [
+        {"os": "Windows / macOS", "title": "GitHubからの Web 用 VS Code の使用 (github.dev) - GitHubドキュメント", "url": "https://docs.github.com/ja/codespaces/the-githubdev-web-based-editor"},
+        {"os": "共通", "title": "GitHub上でファイルを編集する - GitHubドキュメント", "url": "https://docs.github.com/ja/repositories/working-with-files/managing-files/editing-files"},
+        {"os": "iOS / Android", "title": "GitHub Mobile 公式ガイド - GitHubドキュメント", "url": "https://docs.github.com/ja/get-started/using-github/github-mobile"},
+    ],
+    8: [
+        {"os": "Windows", "title": "Microsoft Edge の閲覧履歴・キャッシュを表示および削除する - Microsoft サポート", "url": "https://support.microsoft.com/ja-jp/microsoft-edge/microsoft-edge-%E3%81%AE%E9%96%B2%E8%A6%A7%E5%B1%A5%E6%AD%B4%E3%82%92%E8%A1%A8%E7%A4%BA%E3%81%8A%E3%82%88%E3%81%B3%E5%89%8A%E9%99%A4%E3%81%99%E3%82%8B-00cf7943-a9e1-975a-a33d-ac10ce454ca4"},
+        {"os": "Windows / macOS", "title": "Device Mode でモバイル デバイスをシミュレートする | Chrome DevTools", "url": "https://developer.chrome.com/docs/devtools/device-mode?hl=ja"},
+        {"os": "iOS", "title": "iPhoneでSafariの閲覧履歴、キャッシュ、Cookieを消去する - Apple サポート (日本)", "url": "https://support.apple.com/ja-jp/105082"},
+        {"os": "Android", "title": "Chrome の閲覧データ・キャッシュを削除する - Google Chrome ヘルプ", "url": "https://support.google.com/chrome/answer/2392709?hl=ja"},
+    ],
 }
 
 FALLBACK_OFFICIAL_REFS: List[Dict[str, str]] = [
