@@ -25,8 +25,9 @@ python -m src.main -n 1 --push
 python -m src.main -n 1 --category 11
 ```
 
-## 書き溜め済み記事一覧（全 1 本 / 最終更新: 2026-11-23 01:18 JST）
+## 書き溜め済み記事一覧（全 2 本 / 最終更新: 2026-11-23 01:29 JST）
 
 | No. | 17分類カテゴリ | 記事タイトル（Markdown） | 挿絵 | 生成日 |
 | :---: | :--- | :--- | :---: | :---: |
+| #02 | 分類02: コミュニケーション・情報共有 | [【4OS徹底比較】クラウドストレージ同期と共有トラブル解決の実例｜Windows・macOS・Linux(Ubuntu) / iPadOS](content/2026-11-23_art02_cross_os_cloud_sync_conflict.md) | あり | 2026-11-23 |
 | #01 | 分類01: 文書作成・オフィス業務・事務作業 | [【4OS徹底比較】PDFの結合・分割・圧縮を無料で行う実例ガイド｜Windows・macOS・Linux・iPad](content/2026-11-23_art01_pdf_merge_split_compress.md) | あり | 2026-11-23 |
