@@ -126,12 +126,20 @@ class TestPC4OSGuide(unittest.TestCase):
                 smtp_use_ssl=False,
                 mail_from_name="PC 4OS Guide",
                 hatena_post_email="test.blog@hatenablog.com",
+                blogger_post_email="secret.test@blogger.com",
             )
-            sender = HatenaMailSender(cfg)
+            sender = HatenaMailSender(cfg, platform="hatena")
             mime_msg = sender.build_mime_message(post)
             raw_mime = mime_msg.as_string()
             self.assertIn('filename="art01_eyecatch.jpg"', raw_mime)
             self.assertTrue(sender.send_post(post, dry_run=True)["success"])
+
+            blogger_sender = HatenaMailSender(cfg, platform="blogger")
+            blogger_html = blogger_sender.sanitize_html_for_blogger(post.html_body)
+            self.assertNotIn("<table", blogger_html)
+            self.assertNotIn("style=", blogger_html)
+            self.assertIn("Windows", blogger_html)
+            self.assertTrue(blogger_sender.send_post(post, dry_run=True)["success"])
 
             hist_mgr = HatenaHistoryManager(history_path=tmp_path / "posted_hatena.json")
             self.assertFalse(hist_mgr.has_posted_today())

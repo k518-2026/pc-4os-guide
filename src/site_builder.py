@@ -298,6 +298,7 @@ def build_github_pages(
 * **記事ストック**: `content/YYYY-MM-DD_artXX_slug.md` + `.png`
 * **Web公開（GitHub Pages）**: `docs/index.html` および `docs/articles/*.html`
 * **はてなブログ1日1回自動メール投稿**: `.github/workflows/publish_hatena.yml`（毎朝 07:17 JST に未投稿1記事＋JPEGアイキャッチを送信、`data/posted_hatena.json` に記録）
+* **Google Blogger 1日1回自動メール投稿**: `.github/workflows/publish_blogger.yml`（毎朝 07:37 JST に未投稿1記事＋JPEGアイキャッチを送信、`data/posted_blogger.json` に記録）
 
 ## 使い方
 

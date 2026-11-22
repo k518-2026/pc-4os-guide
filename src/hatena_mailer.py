@@ -159,19 +159,57 @@ def select_next_article_for_hatena(
 
 
 class HatenaMailSender:
-    """Sends a formatted article + ASCII-named JPEG eyecatch to Hatena Blog via SMTP."""
+    """Sends a formatted article + ASCII-named JPEG eyecatch to Hatena Blog or Google Blogger via SMTP."""
 
-    def __init__(self, config: AppConfig):
+    def __init__(self, config: AppConfig, platform: str = "hatena"):
         self.config = config
+        self.platform = platform.lower().strip()
 
     @staticmethod
-    def _compress_image_jpeg(path: Path, max_bytes: int = 180_000) -> Tuple[bytes, str]:
+    def sanitize_html_for_blogger(html_text: str) -> str:
+        """
+        Simplifies HTML for Google Blogger's 'Post using email' parser:
+        - Converts <table> blocks into clean bullet paragraphs
+        - Strips inline style="..." and class="..." attributes
+        - Keeps lightweight semantic tags (<p>, <h2>, <h3>, <ul>, <li>, <pre>, <code>, <a>)
+        """
+        cleaned = html_text
+
+        def _table_to_paragraphs(match: re.Match) -> str:
+            tbl = match.group(0)
+            rows = re.findall(r"<tr\b[^>]*>(.*?)</tr>", tbl, flags=re.IGNORECASE | re.DOTALL)
+            p_lines = []
+            for row in rows:
+                if "<th" in row.lower():
+                    continue
+                cells = re.findall(r"<td\b[^>]*>(.*?)</td>", row, flags=re.IGNORECASE | re.DOTALL)
+                if len(cells) >= 2:
+                    head = re.sub(r"<[^>]+>", "", cells[0]).strip()
+                    rest = " / ".join(re.sub(r"<[^>]+>", "", c).strip() for c in cells[1:] if c.strip())
+                    p_lines.append(f"<p>・<strong>{head}</strong>：{rest}</p>")
+            return "\n".join(p_lines)
+
+        cleaned = re.sub(r"<table\b[^>]*>.*?</table>", _table_to_paragraphs, cleaned, flags=re.IGNORECASE | re.DOTALL)
+        cleaned = re.sub(r'\s+(?:style|class)=["\'][^"\']*["\']', "", cleaned, flags=re.IGNORECASE)
+        return cleaned.strip()
+
+    def _target_email(self) -> str:
+        if self.platform == "blogger":
+            return self.config.blogger_post_email
+        return self.config.hatena_post_email
+
+    def _attach_image_enabled(self) -> bool:
+        env_key = "ATTACH_IMAGE_BLOGGER" if self.platform == "blogger" else "ATTACH_IMAGE_HATENA"
+        return os.getenv(env_key, "true").strip().lower() in ("1", "true", "yes")
+
+    @staticmethod
+    def _compress_image_jpeg(path: Path, max_bytes: int = 120_000) -> Tuple[bytes, str]:
         raw = path.read_bytes()
         try:
             from PIL import Image
 
             img = Image.open(io.BytesIO(raw)).convert("RGB")
-            for quality in (86, 78, 68, 56):
+            for quality in (84, 74, 64, 52):
                 buf = io.BytesIO()
                 img.save(buf, "JPEG", quality=quality, optimize=True)
                 if buf.tell() <= max_bytes:
@@ -185,7 +223,7 @@ class HatenaMailSender:
         attach_img = (
             post.image_path is not None
             and post.image_path.exists()
-            and os.getenv("ATTACH_IMAGE_HATENA", "true").strip().lower() in ("1", "true", "yes")
+            and self._attach_image_enabled()
         )
 
         if attach_img:
@@ -203,16 +241,22 @@ class HatenaMailSender:
         except UnicodeEncodeError:
             from_display = Header(self.config.mail_from_name, "utf-8").encode()
         msg["From"] = f"{from_display} <{self.config.smtp_user}>"
-        msg["To"] = self.config.hatena_post_email
+        msg["To"] = self._target_email()
         msg["Date"] = formatdate(localtime=True)
 
+        html_payload = (
+            self.sanitize_html_for_blogger(post.html_body)
+            if self.platform == "blogger"
+            else post.html_body
+        )
+
         alt_part.attach(MIMEText(post.plain_body, "plain", "utf-8"))
-        alt_part.attach(MIMEText(post.html_body, "html", "utf-8"))
+        alt_part.attach(MIMEText(html_payload, "html", "utf-8"))
 
         if attach_img and post.image_path is not None:
-            img_bytes, subtype = self._compress_image_jpeg(post.image_path)
+            max_b = 120_000 if self.platform == "blogger" else 180_000
+            img_bytes, subtype = self._compress_image_jpeg(post.image_path, max_bytes=max_b)
             ext = "jpg" if subtype == "jpeg" else "png"
-            # Strictly ASCII filename (Hatena Blog email posting can fail on Japanese filenames)
             ascii_name = f"art{post.article_num:02d}_eyecatch.{ext}"
             img_part = MIMEImage(img_bytes, _subtype=subtype)
             img_part.add_header("Content-Disposition", "attachment", filename=ascii_name)
@@ -221,15 +265,19 @@ class HatenaMailSender:
         return msg
 
     def send_post(self, post: HatenaFormattedPost, dry_run: bool = False) -> Dict[str, Any]:
+        target_email = self._target_email()
+        label = "Google Blogger" if self.platform == "blogger" else "Hatena Blog"
+        env_name = "BLOGGER_POST_EMAIL" if self.platform == "blogger" else "HATENA_POST_EMAIL"
+
         if dry_run:
             logger.info(
-                f"[DRY-RUN] Would email '{post.title}' ({post.article_id}) to "
-                f"'{self.config.hatena_post_email or '(HATENA_POST_EMAIL unset)'}'"
+                f"[DRY-RUN:{label}] Would email '{post.title}' ({post.article_id}) to "
+                f"'{target_email or f'({env_name} unset)'}'"
             )
             return {"success": True, "dry_run": True}
 
-        if not self.config.hatena_post_email:
-            return {"success": False, "error": "HATENA_POST_EMAIL is not configured."}
+        if not target_email:
+            return {"success": False, "error": f"{env_name} is not configured."}
         if not self.config.smtp_user or not self.config.smtp_password:
             return {"success": False, "error": "SMTP_USER or SMTP_PASSWORD is not configured."}
 
@@ -239,7 +287,7 @@ class HatenaMailSender:
             if self.config.smtp_use_ssl or self.config.smtp_port == 465:
                 with smtplib.SMTP_SSL(self.config.smtp_host, self.config.smtp_port, context=context, timeout=30) as server:
                     server.login(self.config.smtp_user, self.config.smtp_password)
-                    server.sendmail(self.config.smtp_user, [self.config.hatena_post_email], msg.as_string())
+                    server.sendmail(self.config.smtp_user, [target_email], msg.as_string())
             else:
                 with smtplib.SMTP(self.config.smtp_host, self.config.smtp_port, timeout=30) as server:
                     server.ehlo()
@@ -247,8 +295,8 @@ class HatenaMailSender:
                         server.starttls(context=context)
                         server.ehlo()
                     server.login(self.config.smtp_user, self.config.smtp_password)
-                    server.sendmail(self.config.smtp_user, [self.config.hatena_post_email], msg.as_string())
-            logger.info(f"Successfully emailed '{post.title}' to Hatena Blog!")
+                    server.sendmail(self.config.smtp_user, [target_email], msg.as_string())
+            logger.info(f"Successfully emailed '{post.title}' to {label}!")
             return {"success": True, "dry_run": False}
         except Exception as e:
             return {"success": False, "error": str(e)}

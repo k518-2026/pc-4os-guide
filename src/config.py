@@ -38,6 +38,7 @@ class AppConfig:
     smtp_use_ssl: bool
     mail_from_name: str
     hatena_post_email: str
+    blogger_post_email: str
 
 
 def get_config() -> AppConfig:
@@ -69,4 +70,5 @@ def get_config() -> AppConfig:
         smtp_use_ssl=os.getenv("SMTP_USE_SSL", "false").strip().lower() in ("true", "1", "yes"),
         mail_from_name=os.getenv("MAIL_FROM_NAME", "PC 4OS Guide Publisher").strip(),
         hatena_post_email=os.getenv("HATENA_POST_EMAIL", "").strip(),
+        blogger_post_email=os.getenv("BLOGGER_POST_EMAIL", "").strip(),
     )

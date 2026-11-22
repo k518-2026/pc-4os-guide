@@ -1,0 +1,106 @@
+name: Daily PC 4OS Guide Publisher to Blogger
+
+concurrency:
+  group: pc-4os-guide-blogger-publish
+  cancel-in-progress: false
+
+on:
+  schedule:
+    # 毎朝 07:37 JST (前日 22:37 UTC) に書き溜めストックから未投稿の1記事を Google Blogger へ自動メール投稿
+    - cron: '37 22 * * *'
+
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run mode (Simulate without sending email or committing history)'
+        required: true
+        type: boolean
+        default: false
+      article_id:
+        description: 'Specific article ID (optional, e.g. art01-pdf-merge-split-compress)'
+        required: false
+        type: string
+        default: ''
+      force:
+        description: 'Force post even if already posted today or previously posted'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+jobs:
+  publish-blogger:
+    name: Dispatch Stocked 4OS Article to Google Blogger
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run unit tests
+        run: |
+          python -m unittest discover tests -v
+
+      - name: Send Next Stocked Article to Google Blogger
+        env:
+          SMTP_HOST: ${{ secrets.SMTP_HOST || '' }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT || '587' }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          SMTP_USE_TLS: ${{ secrets.SMTP_USE_TLS || 'true' }}
+          SMTP_USE_SSL: ${{ secrets.SMTP_USE_SSL || 'false' }}
+          BLOGGER_POST_EMAIL: ${{ secrets.BLOGGER_POST_EMAIL }}
+          ATTACH_IMAGE_BLOGGER: 'true'
+          INPUT_DRY_RUN: ${{ github.event.inputs.dry_run }}
+          INPUT_ARTICLE_ID: ${{ github.event.inputs.article_id }}
+          INPUT_FORCE: ${{ github.event.inputs.force }}
+        run: |
+          git pull --rebase origin main || true
+          ARGS="--post-blogger --preview-html"
+          if [ "$INPUT_DRY_RUN" = "true" ]; then
+            ARGS="$ARGS --dry-run"
+          fi
+          if [ -n "$INPUT_ARTICLE_ID" ]; then
+            ARGS="$ARGS --article-id $INPUT_ARTICLE_ID"
+          fi
+          if [ "$INPUT_FORCE" = "true" ]; then
+            ARGS="$ARGS --force"
+          fi
+          python -m src.main $ARGS
+
+      - name: Upload Blogger HTML Preview Artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: blogger-post-preview-html
+          path: preview_blogger.html
+          if-no-files-found: ignore
+
+      - name: Commit & Push Updated Blogger Post History
+        if: ${{ github.event.inputs.dry_run != 'true' }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/posted_blogger.json
+          if git diff --staged --quiet; then
+            echo "No history updates to commit."
+          else
+            git commit -m "chore(blogger): Record daily Blogger email post history [skip ci]"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
