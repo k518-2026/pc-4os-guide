@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>【4OS徹底比較】スクリーンショット・画面録画の最短手順と保存先トラブル対処｜Windows 11 / macOS / Linux(Ubuntu) / iPad | PC 4OS実例ガイド</title>
+  <style>
+:root {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --muted: #475569;
+  --accent: #0284c7;
+  --accent-soft: #e0f2fe;
+  --border: #e2e8f0;
+  --code-bg: #0f172a;
+  --code-text: #e2e8f0;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Noto Sans JP", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+}
+header.site-header {
+  background: linear-gradient(135deg, #0f172a 0%, #0369a1 100%);
+  color: #fff;
+  padding: 2.2rem 1.25rem;
+}
+header.site-header .inner { max-width: 980px; margin: 0 auto; }
+header.site-header h1 { margin: 0 0 0.4rem; font-size: 1.75rem; }
+header.site-header p { margin: 0; opacity: 0.9; font-size: 0.96rem; }
+main { max-width: 980px; margin: 2rem auto; padding: 0 1.25rem 3rem; }
+.badge {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: var(--accent-soft);
+  color: #0369a1;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1.25rem;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08); }
+.card img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; display: block; background: #e2e8f0; }
+.card-body { padding: 1rem 1.1rem 1.2rem; flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+.card-title { font-size: 1.02rem; font-weight: 700; margin: 0; line-height: 1.45; }
+.card-meta { font-size: 0.82rem; color: var(--muted); margin-top: auto; }
+article.post {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 2rem;
+}
+article.post img.eyecatch {
+  width: 100%;
+  max-height: 460px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+}
+article.post h1 { font-size: 1.65rem; line-height: 1.35; margin-top: 0; }
+article.post h2 {
+  font-size: 1.3rem;
+  margin-top: 2.1rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 2px solid var(--accent-soft);
+}
+article.post h3 { font-size: 1.08rem; margin-top: 1.4rem; }
+article.post table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.2rem 0;
+  font-size: 0.92rem;
+  display: block;
+  overflow-x: auto;
+}
+article.post th, article.post td {
+  border: 1px solid var(--border);
+  padding: 0.6rem 0.8rem;
+  text-align: left;
+}
+article.post th { background: #f1f5f9; font-weight: 700; }
+article.post pre {
+  background: var(--code-bg);
+  color: var(--code-text);
+  padding: 1rem 1.15rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+article.post code {
+  background: #f1f5f9;
+  padding: 0.15rem 0.38rem;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+article.post pre code { background: transparent; padding: 0; color: inherit; }
+article.post blockquote {
+  margin: 1.2rem 0;
+  padding: 0.8rem 1.1rem;
+  border-left: 4px solid var(--accent);
+  background: #f0f9ff;
+  border-radius: 0 8px 8px 0;
+}
+.back-link { display: inline-block; margin-bottom: 1rem; color: var(--accent); text-decoration: none; font-weight: 600; }
+footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2rem 1rem; }
+@media (max-width: 640px) {
+  article.post { padding: 1.2rem; }
+}
+</style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="inner">
+      <h1>PC 4OS実例ガイド</h1>
+      <p>Windows・macOS・Linux・iPad の実践比較＆トラブル解決アーカイブ</p>
+    </div>
+  </header>
+  <main>
+    <a class="back-link" href="../index.html">← 記事一覧へ戻る</a>
+    <article class="post">
+      <p><span class="badge">#03｜分類03: 情報収集・リサーチ・Web利用</span> <small style="color:#64748b;margin-left:0.5rem;">2026-11-23</small></p>
+      <img class="eyecatch" src="../images/2026-11-23_art03_screenshot_screen_recording.png" alt="【4OS徹底比較】スクリーンショット・画面録画の最短手順と保存先トラブル対処｜Windows 11 / macOS / Linux(Ubuntu) / iPad">
+      <h1>【4OS徹底比較】スクリーンショット・画面録画の最短手順と保存先トラブル対処｜Windows 11 / macOS / Linux(Ubuntu) / iPad</h1>
+<p>「仕事で急に画面をキャプチャしたいけれど、どのボタンを押せばいいか忘れてしまった…」「録画したはずのファイルがどこにも見当たらない！」といった経験はありませんか？</p>
+<p>OSごとに操作体系が異なるため、複数のデバイスを使い分けるユーザーほど、それぞれの「標準機能」の癖を把握しておくことは重要です。この記事では、Windows、macOS、Linux（Ubuntu）、そしてiPadOSの4つの主要環境において、<strong>サードパーティ製アプリを一切使わず、標準搭載のツールやコマンドのみで完結する最短手順</strong>を徹底比較します。</p>
+<p>また、初心者が陥りやすい「保存先の迷子」や、ブラウザでの「Webページ縦長保存」の裏技についても詳しく解説します。</p>
+<h2>4OS比較早見表</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">機能</th>
+<th style="text-align: left;">Windows 11</th>
+<th style="text-align: left;">macOS</th>
+<th style="text-align: left;">Linux (Ubuntu)</th>
+<th style="text-align: left;">iPadOS</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>スクショ（範囲指定）</strong></td>
+<td style="text-align: left;"><code>Win + Shift + S</code></td>
+<td style="text-align: left;"><code>Cmd + Shift + 4</code></td>
+<td style="text-align: left;"><code>gnome-screenshot</code></td>
+<td style="text-align: left;">ボタン同時押し</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>画面録画</strong></td>
+<td style="text-align: left;">Xbox Game Bar (<code>Win + G</code>)</td>
+<td style="text-align: left;">QuickTime Player</td>
+<td style="text-align: left;"><code>ffmpeg</code> (CLI)</td>
+<td style="text-align: left;">コントロールセンター</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Webページ縦長保存</strong></td>
+<td style="text-align: left;">印刷 → PDF保存</td>
+<td style="text-align: left;">印刷 → PDF保存</td>
+<td style="text-align: left;">印刷 → PDF保存</td>
+<td style="text-align: left;">サードパーティ推奨</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>主な保存先</strong></td>
+<td style="text-align: left;">クリップボード / 指定フォルダ</td>
+<td style="text-align: left;">デスクトップ / Finder</td>
+<td style="text-align: left;"><code>~/Screenshots</code></td>
+<td style="text-align: left;">写真アプリ</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>1. Windows 11：Snipping Tool と Xbox Game Bar</h2>
+<p>Windowsでは、直感的なGUI操作と、ゲーミング機能から派生した録画機能の組み合わせが標準となっています。</p>
+<h3>【実例手順】</h3>
+<ul>
+<li><strong>スクリーンショット</strong>: <code>Win + Shift + S</code> キーを押します。画面上部にスニップツールが表示されるので、マウスで範囲を選択してください。画像はクリップボードにコピーされるため、そのままメモ帳やSlack等に <code>Ctrl + V</code> で貼り付け可能です。</li>
+<li><strong>Web ページ縦長保存</strong>: 標準機能では「全ページキャプチャ」ボタンはありません。代替案として<strong>「印刷 → PDF保存」</strong>を使いましょう。ブラウザで <code>Ctrl + P</code> を押し、送信先を「Microsoft Print to PDF」または「PDFとして保存」にし、ページ範囲を指定して実行します。</li>
+<li><strong>画面録画</strong>: <code>Win + G</code> キーを押して Xbox Game Bar を起動します。上部のカメラアイコンをクリックし、録画ボタン（●）を押します。終了後は自動的に以下のフォルダへ保存されます。</li>
+<li>保存先：<code>C:\Users\ユーザー名\Videos\Captures</code></li>
+</ul>
+<h3>【よくあるトラブルと解決法】</h3>
+<ol>
+<li><strong>「Win + Shift + S」が反応しない場合</strong></li>
+<li>設定 &gt; システム &gt; スニップツールを開き、「スナップショットの取得を有効にする」がオンか確認してください。また、Microsoft Storeからアプリの更新がないかチェックします。</li>
+<li><strong>Xbox Game Bar で録画できない（灰色になっている）場合</strong></li>
+<li>Windowsの「プライバシーとセキュリティ」設定で、ゲームバーの使用権限がオンになっているか確認してください。</li>
+<li><strong>「保存先が見つからない」というエラーが出る場合</strong></li>
+<li><code>Videos\Captures</code> フォルダが存在しない場合は、Windows Updateを適用するか、システムファイルの整合性をチェックする必要があります。</li>
+</ol>
+<hr />
+<h2>2. macOS：Shift + Command + S と QuickTime Player</h2>
+<p>macOSはショートカットキーの習熟度が重要です。特に「Optionキー」の有無で挙動が変わる点に注意が必要です。</p>
+<h3>【実例手順】</h3>
+<ul>
+<li><strong>スクリーンショット</strong>: <code>Shift + Command + 4</code> を押します。マウスが十字に変わったら範囲をドラッグします。<strong>Tip:</strong> <code>Option</code> キーを押しながらドラッグすると、解像度を指定して撮影可能です。ファイルはデフォルトでデスクトップに保存されます。</li>
+<li><strong>Web ページ縦長保存</strong>: Safariで対象ページを開き、<code>Cmd + P</code> を押します。プリントダイアログの左下にある「PDF」ボタンをクリックするか、プレビュー画面から「PDFとして保存」を選択します。</li>
+<li><strong>画面録画</strong>: Spotlight（<code>Cmd + Space</code>）で「QuickTime Player」と入力して起動します。メニューの「ファイル &gt; 新しいビデオ記録」を選択し、録画ボタンを押します。</li>
+</ul>
+<h3>【よくあるトラブルと解決法】</h3>
+<ol>
+<li><strong>「Shift + Command + S」が機能しない場合</strong></li>
+<li>システム設定 &gt; キーボード &gt; ショートカットで競合がないか確認してください。BetterTouchToolなどの外部アプリを入れている場合はそちらの設定も確認が必要です。</li>
+<li><strong>QuickTime Player で録画できない場合</strong></li>
+<li>Apple Siliconへの移行に伴う権限の問題がある場合があります。ターミナルから <code>brew install ffmpeg</code> 等を検討するか、システム設定の「画面収録」権限を確認してください。</li>
+<li><strong>「保存先が見つからない」というエラーが出る場合</strong></li>
+<li>Finderの「最近の項目」にない場合、<code>~/Movies/</code> 内のフォルダを確認してください。存在しない場合は手動で <code>Movies Recs</code> フォルダを作成すると解決する場合があります。</li>
+</ol>
+<hr />
+<h2>3. Linux (Ubuntu): gnome-screenshot と ffmpeg</h2>
+<p>Linux環境ではCLI（コマンドライン）を組み合わせることで、より高度な自動化や一貫性を保つことができます。</p>
+<h3>【実例手順】</h3>
+<ul>
+<li><strong>スクリーンショット</strong>: ターミナルで <code>gnome-screenshot</code> を実行します。<br />
+<code>bash
+  # 全画面撮影
+  gnome-screenshot -f screenshot.png
+  # 範囲指定撮影
+  gnome-screenshot -a</code><br />
+  デフォルトでは <code>/home/ユーザー名/Screenshots</code> に保存されます。</li>
+<li><strong>Web ページ縦長保存</strong>: Firefox等のブラウザで <code>Ctrl + P</code> を押し、システムにインストールした「Print to PDF」ドライバを使用して保存します。またはCLIツール <code>wkhtmltoimage</code> を使用します。<br />
+<code>bash
+  # wkhtmltoimageを使用した例
+  wkhtmltoimage https://example.com -o output.png</code></li>
+<li><strong>画面録画</strong>: 標準の <code>ffmpeg</code> コマンドを使用します（未導入なら <code>sudo apt install ffmpeg</code>）。<br />
+<code>bash
+  # 基本的な録画コマンド例
+  ffmpeg -f x11grab -video_size 1920x1080 -i :0.0 -c:v libx264 -pix_fmt yuv420p output.mp4</code></li>
+</ul>
+<h3>【よくあるトラブルと解決法】</h3>
+<ol>
+<li><strong>「gnome-screenshot コマンドが見つからない」というエラーが出る場合</strong></li>
+<li>パッケージが未インストールです。以下を実行してください。<br />
+<code>bash
+     sudo apt update &amp;&amp; sudo apt install gnome-screenshot</code></li>
+<li><strong>ffmpeg で録画できない（デバイスが見つからない）場合</strong></li>
+<li><code>v4l2-ctl --list-devices</code> を実行し、キャプチャデバイスが認識されているか確認してください。</li>
+<li><strong>「保存先が見つからない」というエラーが出る場合</strong></li>
+<li>フォルダが存在しない場合は以下で作成します。<br />
+<code>bash
+     mkdir -p ~/Screenshots</code></li>
+</ol>
+<hr />
+<h2>4. iPadOS: スクリーンショットと画面録画（制限事項）</h2>
+<p>iPadOSはモバイルOSの制約があるため、PC OSとはアプローチが異なります。</p>
+<h3>【実例手順】</h3>
+<ul>
+<li><strong>スクリーンショット</strong>: 「サイドボタン + 音量ボタン（またはホームボタン）」を同時に押します。画像は「写真」アプリの「最近の写真」アルバムに即座に保存されます。</li>
+<li><strong>Web ページ縦長保存</strong>: iPadOS標準では完全な自動機能はありません。Safariで表示し、「共有ボタン」→「プリント」を選択。プレビュー画面をピンチアウト（拡大）することでPDFとして扱える場合がありますが、基本的にはサードパーティ製アプリの利用を推奨します。</li>
+<li><strong>画面録画</strong>: 「コントロールセンター」を下にスワイプし、「画面収録（丸いアイコン）」をタップします。※標準機能ではありますが、PCのような細かい範囲指定や高度な設定は制限されます。</li>
+</ul>
+<h3>【よくあるトラブルと解決法】</h3>
+<ol>
+<li><strong>「サイドボタン + 音量ボタン」で反応しない場合</strong></li>
+<li>「設定 &gt; アクセシビリティ &gt; 触覚」でスクリーンショットの動作が有効になっているか確認してください。</li>
+<li><strong>画面録画中に音が聞こえない場合</strong></li>
+<li>コントロールセンターの録画アイコンを「長押し」し、マイクのオン/オフ設定を確認してください。</li>
+</ol>
+<hr />
+<h2>まとめ：快適なマルチOS環境を作るポイント</h2>
+<p>今回の比較でわかった通り、各OSには独自の「最短ルート」が存在します。これらを使いこなすことで、ツールをあちこち行き来するストレスを大幅に軽減できます。</p>
+<p>さらに、これらの作業をより快適にするための周辺機器や環境整備も重要です。</p>
+<ul>
+<li><strong>VPNサービス</strong>: リサーチ業務で海外サイトや特定のネットワーク環境にアクセスする場合、セキュリティと安定性を担保するために信頼できるVPNの導入は必須です。</li>
+<li><strong>トラックボールマウス</strong>: 長時間のスクロールや細かい範囲指定を行う際、手首の負担を減らすトラックボールは、Windows/macOSユーザーの生産性を劇的に向上させます。</li>
+<li><strong>ブルーライトカット眼鏡</strong>: 画面キャプチャや録画の確認作業は集中力が必要なため、目の疲れを軽減する眼鏡を導入することで、長時間の作業でもパフォーマンスを維持できます。</li>
+</ul>
+<p>それぞれのOSの特性を理解し、適切なツールと周辺機器を組み合わせることで、あなたのワークフローはよりスムーズでプロフェッショナルなものになるはずです。</p>
+    </article>
+  </main>
+  <footer>Generated with Local Ollama (qwen3.5 / gemma4) &amp; Draw Things (FLUX.2 klein 4B)</footer>
+</body>
+</html>
