@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>【4OS徹底比較】画像の一括リサイズ＆HEIC/WebP変換の実例ガイド｜Windows・macOS・Linux・iPad | PC 4OS実例ガイド</title>
+  <style>
+:root {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --muted: #475569;
+  --accent: #0284c7;
+  --accent-soft: #e0f2fe;
+  --border: #e2e8f0;
+  --code-bg: #0f172a;
+  --code-text: #e2e8f0;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Noto Sans JP", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+}
+header.site-header {
+  background: linear-gradient(135deg, #0f172a 0%, #0369a1 100%);
+  color: #fff;
+  padding: 2.2rem 1.25rem;
+}
+header.site-header .inner { max-width: 980px; margin: 0 auto; }
+header.site-header h1 { margin: 0 0 0.4rem; font-size: 1.75rem; }
+header.site-header p { margin: 0; opacity: 0.9; font-size: 0.96rem; }
+main { max-width: 980px; margin: 2rem auto; padding: 0 1.25rem 3rem; }
+.badge {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: var(--accent-soft);
+  color: #0369a1;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1.25rem;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08); }
+.card img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; display: block; background: #e2e8f0; }
+.card-body { padding: 1rem 1.1rem 1.2rem; flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+.card-title { font-size: 1.02rem; font-weight: 700; margin: 0; line-height: 1.45; }
+.card-meta { font-size: 0.82rem; color: var(--muted); margin-top: auto; }
+article.post {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 2rem;
+}
+article.post img.eyecatch {
+  width: 100%;
+  max-height: 460px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+}
+article.post h1 { font-size: 1.65rem; line-height: 1.35; margin-top: 0; }
+article.post h2 {
+  font-size: 1.3rem;
+  margin-top: 2.1rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 2px solid var(--accent-soft);
+}
+article.post h3 { font-size: 1.08rem; margin-top: 1.4rem; }
+article.post table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.2rem 0;
+  font-size: 0.92rem;
+  display: block;
+  overflow-x: auto;
+}
+article.post th, article.post td {
+  border: 1px solid var(--border);
+  padding: 0.6rem 0.8rem;
+  text-align: left;
+}
+article.post th { background: #f1f5f9; font-weight: 700; }
+article.post pre {
+  background: var(--code-bg);
+  color: var(--code-text);
+  padding: 1rem 1.15rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+article.post code {
+  background: #f1f5f9;
+  padding: 0.15rem 0.38rem;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+article.post pre code { background: transparent; padding: 0; color: inherit; }
+article.post blockquote {
+  margin: 1.2rem 0;
+  padding: 0.8rem 1.1rem;
+  border-left: 4px solid var(--accent);
+  background: #f0f9ff;
+  border-radius: 0 8px 8px 0;
+}
+.back-link { display: inline-block; margin-bottom: 1rem; color: var(--accent); text-decoration: none; font-weight: 600; }
+footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2rem 1rem; }
+@media (max-width: 640px) {
+  article.post { padding: 1.2rem; }
+}
+</style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="inner">
+      <h1>PC 4OS実例ガイド</h1>
+      <p>Windows・macOS・Linux・iPad の実践比較＆トラブル解決アーカイブ</p>
+    </div>
+  </header>
+  <main>
+    <a class="back-link" href="../index.html">← 記事一覧へ戻る</a>
+    <article class="post">
+      <p><span class="badge">#04｜分類04: 画像・イラスト・デザイン制作</span> <small style="color:#64748b;margin-left:0.5rem;">2026-11-23</small></p>
+      <img class="eyecatch" src="../images/2026-11-23_art04_batch_image_resize_webp.png" alt="【4OS徹底比較】画像の一括リサイズ＆HEIC/WebP変換の実例ガイド｜Windows・macOS・Linux・iPad">
+      <h1>【4OS徹底比較】画像の一括リサイズ＆HEIC/WebP変換の実例ガイド｜Windows・macOS・Linux・iPad</h1>
+<p>「大量の写真を撮影したけれど、WebサイトやSNSにアップロードする際にファイルサイズが大きすぎてエラーになる」「iPhoneで撮ったHEIC形式を、他のデバイスでも見られるJPEGや軽量なWebPに一括で変換したい」といった悩みは、クリエイターや事務職の方にとって共通の課題です。</p>
+<p>しかし、OSによって標準機能や操作体系が異なるため、最適な方法を見つけるのは意外と難しいものです。この記事では、<strong>Windows、macOS、Linux（Ubuntu）、そしてiPadOS</strong>の4つの環境において、追加の有料ソフトを使わずに「標準機能」または「オープンソースツール」のみを駆使して画像の一括リサイズとフォーマット変換を行う実践的な手順を徹底比較します。</p>
+<hr />
+<h2>4OS比較早見表</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">OS</th>
+<th style="text-align: left;">主な操作手段</th>
+<th style="text-align: left;">HEIC対応</th>
+<th style="text-align: left;">リサイズ手法</th>
+<th style="text-align: left;">特徴</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Windows</strong></td>
+<td style="text-align: left;">写真アプリ / PowerShell</td>
+<td style="text-align: left;">要拡張機能</td>
+<td style="text-align: left;">PowerToys等（推奨）</td>
+<td style="text-align: left;">汎用性が高いが標準のみでは一括処理に制約あり</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>macOS</strong></td>
+<td style="text-align: left;">プレビュー / Finder</td>
+<td style="text-align: left;">標準対応</td>
+<td style="text-align: left;">プレビューアプリ</td>
+<td style="text-align: left;">GUI操作で直感的。WebP出力はバージョン依存</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Linux</strong></td>
+<td style="text-align: left;">ターミナル (CLI)</td>
+<td style="text-align: left;">パッケージ導入</td>
+<td style="text-align: left;">ImageMagick</td>
+<td style="text-align: left;">高度なバッチ処理が可能。コマンド操作に強い</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>iPadOS</strong></td>
+<td style="text-align: left;">写真 / ファイルアプリ</td>
+<td style="text-align: left;">標準対応</td>
+<td style="text-align: left;">手動編集 / 共有</td>
+<td style="text-align: left;">モバイル特化。一括自動処理は標準では困難</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>1. Windows での実例手順</h2>
+<p>Windows環境では、標準の「写真」アプリ単体では大量の画像に対する高度なリサイズやフォーマット変換をワンクリックで行うのが難しい傾向にあります。</p>
+<h3>HEIC→JPEG/WebPへの変換</h3>
+<p>Windows 10/11ではHEIC形式を直接開くために、Microsoft Storeから「HEIF 画像拡張機能」をインストールする必要があります。<br />
+1. <strong>準備</strong>: Microsoft Storeで「HEIF 画像拡張機能」をインストールします。<br />
+2. <strong>手動変換</strong>: 「写真」アプリで画像を開き、「名前を付けて保存」を選択。ファイルの種類をJPEGに変更して保存します。</p>
+<h3>リサイズとバッチ処理（PowerShell活用）</h3>
+<p>標準の「写真」アプリには一括リサイズメニューがないため、効率を求めるなら<strong>PowerToys Image Resizer</strong>（Microsoft公式のシステムユーティリティ群の一部）の利用が最も標準に近い体験となります。<br />
+もし完全な標準機能のみに拘る場合は、PowerShellを用いてファイル名を一括変更するなどの補助的な自動化を行い、個別に「写真」アプリでサイズを調整します。</p>
+<hr />
+<h2>2. macOS での実例手順</h2>
+<p>macOSは、GUI操作とコマンドラインのバランスが非常に良く、標準アプリだけで多くのことが完結します。</p>
+<h3>「プレビュー」アプリによる一括リサイズ</h3>
+<ol>
+<li>Finderで変換したい画像（HEIC等）を複数選択します。</li>
+<li>右クリック ＞ 「このアプリケーションで開く」 ＞ <strong>「プレビュー」</strong>を選択。</li>
+<li>プレビューのサイドバーで全画像を選択した状態で、上部メニューの「ツール」＞<strong>「サイズを変更」</strong>をクリック。</li>
+<li>解像度やピクセルサイズを指定し、「OK」を押します。</li>
+<li>「ファイル」＞「書き出し...」から、フォーマットをJPEGまたはWebP（対応バージョンのみ）に指定して保存します。</li>
+</ol>
+<h3>注意点</h3>
+<p>macOSの標準機能では、WebP形式への書き出しがビルドによって制限される場合があります。その場合はJPEGでの出力を行い、必要に応じてファイル拡張子を管理します。</p>
+<hr />
+<h2>3. Linux（Ubuntu系）での実例手順</h2>
+<p>Linux環境では、コマンドライン（CLI）を駆使することで、最も高速かつ正確な一括処理が可能になります。</p>
+<h3>環境構築</h3>
+<p>Ubuntuでは<code>ImageMagick</code>という強力なツールを標準に近いパッケージとして利用するのが一般的です。</p>
+<pre><code class="language-bash"># 必要なパッケージのインストール
+sudo apt update &amp;&amp; sudo apt install libheif-examples imagemagick -y
+</code></pre>
+<h3>バッチ変換とリサイズ（CLI）</h3>
+<p>ターミナルを開き、以下のコマンドを実行することで、フォルダ内の全HEICファイルをJPEGへ変換しつつ、横幅を1920pxにリサイズすることが可能です。</p>
+<pre><code class="language-bash"># フォルダ内のすべての.HEICファイルをリサイズしてJPEGとして出力
+for file in *.HEIC; do
+  convert &quot;$file&quot; -resize 1920x output_&quot;${file%.HEIC}.jpg&quot;
+done
+</code></pre>
+<h3>GUIでの操作</h3>
+<p>GUIを好む場合は、GNOME標準の「Shotwell」や「GIMP」を使用します。エクスポート時にサイズ指定が可能ですが、コマンドラインの方が一括処理には圧倒的に優位です。</p>
+<hr />
+<h2>4. iPad（iPadOS）での実例手順</h2>
+<p>iPadOSはモバイルデバイスであるため、PCのような「フォルダ単位のバッチリサイズ」という概念が標準機能では薄いのが特徴です。</p>
+<h3>「写真」アプリと「ファイル」アプリの連携</h3>
+<ol>
+<li><strong>「写真」アプリ</strong>で対象の画像を選択します。</li>
+<li>「共有ボタン（上矢印）」をタップし、<strong>「コピー」</strong>を選択。</li>
+<li><strong>「ファイル」アプリ</strong>を開き、保存先のフォルダ内で「ペースト」します。</li>
+<li>この際、iPadOSのバージョンによっては自動的に互換性の高いフォーマットへ変換されることがありますが、基本的には元の形式が維持されます。</li>
+</ol>
+<h3>リサイズについて</h3>
+<p>標準の「写真」アプリでは、トリミングや回転は可能ですが、ピクセル数指定による一括リサイズ機能は備わっていません。大量の画像を処理する場合は、iPadOSでもサードパーティ製の無料アプリ（Previewerなど）を介在させるのが現実的な解決策となります。</p>
+<hr />
+<h2>よくあるトラブルと解決チェックリスト</h2>
+<p>作業中に遭遇しやすいエラーと対処法をまとめました。</p>
+<ul>
+<li><strong>[ ] HEICファイルが開けない（Windows）</strong></li>
+<li><strong>原因</strong>: 「HEIF 画像拡張機能」がインストールされていない、またはライセンスの制限。</li>
+<li><strong>対策</strong>: Microsoft Storeから最新の拡張機能を再インストールしてください。</li>
+<li><strong>[ ] WebP形式で書き出せない（macOS/iPadOS）</strong></li>
+<li><strong>原因</strong>: OSのバージョンやビルドによってWebP出力が非対応。</li>
+<li><strong>対策</strong>: 一旦JPEGとして書き出し、必要に応じてWebP変換ツールを検討してください。</li>
+<li><strong>[ ] <code>convert</code>コマンドが「command not found」になる（Linux）</strong></li>
+<li><strong>原因</strong>: ImageMagickがインストールされていない。</li>
+<li><strong>対策</strong>: <code>sudo apt install imagemagick</code> を実行してインストールを完了させてください。</li>
+<li><strong>[ ] リサイズ後の画像がぼやける</strong></li>
+<li><strong>原因</strong>: 縮小ではなく「拡大」を行っている、または低品質な補間アルゴリズムを使用している。</li>
+<li><strong>対策</strong>: 元の解像度より小さいサイズに設定し、高品質なリサイズオプション（ImageMagickなら <code>-quality</code> 指定など）を確認してください。</li>
+</ul>
+<hr />
+<h2>まとめ：快適なマルチOS環境を作るポイント</h2>
+<p>今回比較した通り、OSによって「標準機能でどこまでできるか」には大きな差があります。効率的に画像制作を行うためには、各OSの特性を理解した上で、適切な周辺機器やツールを組み合わせることが重要です。</p>
+<ul>
+<li><strong>正確な色再現のために</strong>: WindowsやmacOSで本格的なデザイン制作を行うなら、<strong>カラーマネジメントモニター</strong>の導入は必須です。OSごとの色空間の違いによる「意図しない色の変化」を防げます。</li>
+<li><strong>スムーズな操作感のために</strong>: iPadでの編集やPCでの精密なレタッチには、高精度な<strong>ペンタブレット</strong>を組み合わせることで、マウスでは不可能な繊細な描写が可能になります。</li>
+<li><strong>ストレージの管理</strong>: 大量の画像データを扱うなら、高速な<strong>外付けSSD</strong>を用意しましょう。特にLinux環境でのバッチ処理や、iPadOSでのファイル操作において、読み書き速度の向上は作業効率を劇的に変えます。</li>
+<li><strong>高度な編集が必要な時</strong>: 標準機能の限界を感じたら、Adobe PhotoshopやAffinity Photoといった<strong>画像編集ソフト</strong>を導入することで、プロレベルの一括自動化（アクション機能など）が解放されます。</li>
+</ul>
+<p>自分のメイン環境に合わせて最適なフローを構築し、ストレスのないクリエイティブ環境を整えていきましょう。</p>
+    </article>
+  </main>
+  <footer>Generated with Local Ollama (qwen3.5 / gemma4) &amp; Draw Things (FLUX.2 klein 4B)</footer>
+</body>
+</html>
