@@ -9,6 +9,11 @@ from typing import List
 from src.article_generator import ArticleGenerator
 from src.catalog_manager import CatalogManager
 from src.config import get_config
+from src.hatena_mailer import (
+    HatenaHistoryManager,
+    HatenaMailSender,
+    select_next_article_for_hatena,
+)
 from src.site_builder import build_github_pages
 
 JST = timezone(timedelta(hours=9))
@@ -97,7 +102,10 @@ def main() -> None:
     parser.add_argument("--build-pages", action="store_true", help="Rebuild docs/ (GitHub Pages) and README.md")
     parser.add_argument("--push", action="store_true", help="Git commit & push after generation/build")
     parser.add_argument("--status-report", action="store_true", help="Show current stock & rotation status")
-    parser.add_argument("--force", action="store_true", help="Force regeneration even if files exist")
+    parser.add_argument("--post-hatena", action="store_true", help="Send the next unposted article to Hatena Blog via email (1/day guard)")
+    parser.add_argument("--dry-run", action="store_true", help="Simulate Hatena Blog email posting without sending or updating history")
+    parser.add_argument("--preview-html", action="store_true", help="Save rendered Hatena email HTML to preview_hatena.html")
+    parser.add_argument("--force", action="store_true", help="Force regeneration or override 1-article-per-day Hatena guard")
     parser.add_argument("-v", "--verbose", action="store_true", help="Enable debug logging")
 
     args = parser.parse_args()
@@ -105,6 +113,42 @@ def main() -> None:
 
     config = get_config()
     catalog_mgr = CatalogManager()
+
+    if args.post_hatena:
+        hatena_history = HatenaHistoryManager()
+        if not args.dry_run and not args.force and hatena_history.has_posted_today():
+            today_str = datetime.now(JST).strftime("%Y-%m-%d")
+            logger.warning(
+                f"[1日1回安全ガード] 本日 ({today_str} JST) はすでにはてなブログへ投稿済みのためスキップします。"
+                "（強制送信する場合は --force を指定してください）"
+            )
+            return
+
+        post = select_next_article_for_hatena(
+            catalog_mgr=catalog_mgr,
+            history_mgr=hatena_history,
+            article_id=args.article_id,
+            force=args.force,
+        )
+        if post is None:
+            logger.info("No unposted stocked articles available for Hatena Blog.")
+            return
+
+        if args.preview_html or args.dry_run:
+            preview_path = Path("preview_hatena.html")
+            preview_path.write_text(post.html_body, encoding="utf-8")
+            logger.info(f"Saved Hatena HTML preview: {preview_path.resolve()}")
+
+        sender = HatenaMailSender(config)
+        res = sender.send_post(post, dry_run=args.dry_run)
+        if not res.get("success"):
+            logger.error(f"Hatena Blog email dispatch failed: {res.get('error')}")
+            sys.exit(1)
+
+        if not args.dry_run:
+            hatena_history.record_post(post)
+            logger.info(f"Recorded Hatena post history for '{post.article_id}' in {hatena_history.history_path}")
+        return
 
     if args.status_report:
         print_status_report(catalog_mgr)

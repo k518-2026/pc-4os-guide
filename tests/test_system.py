@@ -7,6 +7,13 @@ from PIL import Image
 
 from src.article_generator import compose_title_card
 from src.catalog_manager import CatalogManager
+from src.config import AppConfig
+from src.hatena_mailer import (
+    HatenaHistoryManager,
+    HatenaMailSender,
+    format_markdown_for_hatena,
+    select_next_article_for_hatena,
+)
 from src.reference_verifier import format_references_markdown, get_verified_references
 from src.site_builder import build_github_pages
 
@@ -81,6 +88,56 @@ class TestPC4OSGuide(unittest.TestCase):
             self.assertNotIn("Linux", index_txt)
             self.assertNotIn("Linux", readme_txt)
             self.assertGreaterEqual(len(built), 3)
+
+    def test_hatena_mailer_format_mime_and_daily_guard(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_path = Path(tmp)
+            md_file = tmp_path / "2026-11-23_art01_pdf_merge_split_compress.md"
+            md_file.write_text(
+                "<!-- article_id: art01-pdf-merge-split-compress -->\n\n"
+                "# テストタイトル｜Windows・macOS・iOS・Android\n\n"
+                "導入テキスト\n\n## 4OS比較早見表\n\n| OS | 方法 |\n|---|---|\n| Windows | Edge |\n",
+                encoding="utf-8",
+            )
+            png_file = md_file.with_suffix(".png")
+            Image.new("RGB", (768, 512), color=(10, 40, 80)).save(png_file, format="PNG")
+
+            item = {"id": "art01-pdf-merge-split-compress", "article_num": 1, "title": "fallback"}
+            post = format_markdown_for_hatena(item, md_file, png_file)
+            self.assertEqual(post.title, "テストタイトル｜Windows・macOS・iOS・Android")
+            self.assertNotIn("<h1>", post.html_body)
+            self.assertIn("<table", post.html_body)
+
+            cfg = AppConfig(
+                ollama_host="http://localhost:11434",
+                planner_model="qwen3.5:9b",
+                writer_model="gemma4:12b",
+                draw_things_host="http://localhost:7860",
+                image_width=768,
+                image_height=512,
+                image_steps=16,
+                image_guidance_scale=4.0,
+                site_base_url="",
+                smtp_host="smtp.gmail.com",
+                smtp_port=587,
+                smtp_user="sender@example.com",
+                smtp_password="secret",
+                smtp_use_tls=True,
+                smtp_use_ssl=False,
+                mail_from_name="PC 4OS Guide",
+                hatena_post_email="test.blog@hatenablog.com",
+            )
+            sender = HatenaMailSender(cfg)
+            mime_msg = sender.build_mime_message(post)
+            raw_mime = mime_msg.as_string()
+            self.assertIn('filename="art01_eyecatch.jpg"', raw_mime)
+            self.assertTrue(sender.send_post(post, dry_run=True)["success"])
+
+            hist_mgr = HatenaHistoryManager(history_path=tmp_path / "posted_hatena.json")
+            self.assertFalse(hist_mgr.has_posted_today())
+            hist_mgr.record_post(post)
+            self.assertTrue(hist_mgr.has_posted_today())
+            self.assertIn("art01-pdf-merge-split-compress", hist_mgr.posted_ids())
 
 
 if __name__ == "__main__":

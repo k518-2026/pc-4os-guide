@@ -10,6 +10,7 @@
 * **一次情報ソース検証**: Microsoft / Apple / Google 公式ドキュメントURLのHTTP実在チェック付き
 * **記事ストック**: `content/YYYY-MM-DD_artXX_slug.md` + `.png`
 * **Web公開（GitHub Pages）**: `docs/index.html` および `docs/articles/*.html`
+* **はてなブログ1日1回自動メール投稿**: `.github/workflows/publish_hatena.yml`（毎朝 07:17 JST に未投稿1記事＋JPEGアイキャッチを送信、`data/posted_hatena.json` に記録）
 
 ## 使い方
 
@@ -27,7 +28,7 @@ python -m src.main -n 1 --push
 python -m src.main -n 1 --category 11
 ```
 
-## 書き溜め済み記事一覧（全 4 本 / 最終更新: 2026-11-23 07:52 JST）
+## 書き溜め済み記事一覧（全 4 本 / 最終更新: 2026-11-23 08:09 JST）
 
 | No. | 17分類カテゴリ | 記事タイトル（Markdown） | 挿絵 | 生成日 |
 | :---: | :--- | :--- | :---: | :---: |
