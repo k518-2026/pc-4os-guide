@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>【4OS徹底比較】クラウドストレージ同期と共有トラブル解決の実例｜Windows・macOS・Linux・iPad | PC 4OS実例ガイド</title>
+  <title>【4OS徹底比較】クラウドストレージ同期と共有トラブル解決の実例｜Windows・macOS・iOS・Android | PC 4OS実例ガイド</title>
   <style>
 :root {
   --bg: #f8fafc;
@@ -132,17 +132,17 @@ footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2
   <header class="site-header">
     <div class="inner">
       <h1>PC 4OS実例ガイド</h1>
-      <p>Windows・macOS・Linux・iPad の実践比較＆トラブル解決アーカイブ</p>
+      <p>Windows・macOS・iOS・Android の実践比較＆トラブル解決アーカイブ</p>
     </div>
   </header>
   <main>
     <a class="back-link" href="../index.html">← 記事一覧へ戻る</a>
     <article class="post">
       <p><span class="badge">#02｜分類02: コミュニケーション・情報共有</span> <small style="color:#64748b;margin-left:0.5rem;">2026-11-23</small></p>
-      <img class="eyecatch" src="../images/2026-11-23_art02_cross_os_cloud_sync_conflict.png" alt="【4OS徹底比較】クラウドストレージ同期と共有トラブル解決の実例｜Windows・macOS・Linux・iPad">
-      <h1>【4OS徹底比較】クラウドストレージ同期と共有トラブル解決の実例｜Windows・macOS・Linux・iPad</h1>
-<p>「Windowsで編集した資料をiPadで開いたら古い版だった」「複数端末で同時に保存したら競合コピー（ファイル名にPC名が付いた別ファイル）が増えてしまった」「Linuxサーバーと共有したら権限エラーが出た」——。</p>
-<p>OSごとにファイルシステムや同期エージェントの仕組みが異なるため、マルチOS環境では<strong>同期の仕組みとバージョン復元・権限管理の公式手順</strong>を押さえておくことがトラブル防止の近道です。この記事では4OSそれぞれの実践手順と切り分けポイントを整理します。</p>
+      <img class="eyecatch" src="../images/2026-11-23_art02_cross_os_cloud_sync_conflict.png" alt="【4OS徹底比較】クラウドストレージ同期と共有トラブル解決の実例｜Windows・macOS・iOS・Android">
+      <h1>【4OS徹底比較】クラウドストレージ同期と共有トラブル解決の実例｜Windows・macOS・iOS・Android</h1>
+<p>「Windowsで編集した資料をiPhoneやAndroidで開いたら古い版だった」「複数端末で同時に保存したら競合コピー（ファイル名にPC名が付いた別ファイル）が増えてしまった」「共有リンクを送ったのに相手が開けない」——。</p>
+<p>PCとスマホをまたいでデータを扱う場合、<strong>同期の仕組みとバージョン復元・共有権限の公式手順</strong>を押さえておくことがトラブル防止の近道です。この記事では <strong>Windows 11・macOS・iOS・Android</strong> の4OSそれぞれの実践手順と切り分けポイントを整理します。</p>
 <h2>4OS比較早見表</h2>
 <table>
 <thead>
@@ -150,38 +150,38 @@ footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2
 <th style="text-align: left;">特徴</th>
 <th style="text-align: left;">Windows 11</th>
 <th style="text-align: left;">macOS</th>
-<th style="text-align: left;">Linux (Ubuntu)</th>
-<th style="text-align: left;">iPadOS</th>
+<th style="text-align: left;">iOS (iPhone / iPad)</th>
+<th style="text-align: left;">Android</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;"><strong>主な同期手段</strong></td>
+<td style="text-align: left;"><strong>主なクラウド手段</strong></td>
 <td style="text-align: left;">OneDrive / Google Drive</td>
-<td style="text-align: left;">Google Drive for Desktop / iCloud</td>
-<td style="text-align: left;"><code>rsync</code> / Samba (SMB) / rclone</td>
-<td style="text-align: left;">公式アプリ ＋「ファイル」アプリ</td>
+<td style="text-align: left;">Google Drive / iCloud Drive</td>
+<td style="text-align: left;">iCloud Drive / 公式アプリ</td>
+<td style="text-align: left;">Google ドライブ / OneDrive</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>操作インターフェース</strong></td>
 <td style="text-align: left;">エクスプローラー</td>
 <td style="text-align: left;">Finder</td>
-<td style="text-align: left;">ターミナル（CLI）/ Nautilus</td>
-<td style="text-align: left;">タッチUI（アプリ連携）</td>
+<td style="text-align: left;">「ファイル」アプリ＋公式アプリ</td>
+<td style="text-align: left;">Google ドライブ／Filesアプリ</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>上書き時の復元</strong></td>
 <td style="text-align: left;">OneDrive「バージョン履歴」</td>
 <td style="text-align: left;">Google Drive「版を管理」</td>
-<td style="text-align: left;">Git / スナップショット / バックアップ</td>
 <td style="text-align: left;">クラウドWeb版または公式アプリ</td>
+<td style="text-align: left;">Google Drive「版を管理」</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>よくある落とし穴</strong></td>
-<td style="text-align: left;">フォルダバックアップ競合・文字数制限</td>
-<td style="text-align: left;">ミラーリング vs ストリーミング混同</td>
-<td style="text-align: left;">所有者・パーミッション不一致</td>
-<td style="text-align: left;">オフライン編集の同期遅延</td>
+<td style="text-align: left;">フォルダ自動バックアップ競合</td>
+<td style="text-align: left;">ストリーミング vs ミラーリング混同</td>
+<td style="text-align: left;">アプリ終了が早すぎて未同期</td>
+<td style="text-align: left;">モバイル通信時のアップロード保留</td>
 </tr>
 </tbody>
 </table>
@@ -190,8 +190,8 @@ footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2
 <p>Windows 11 では標準統合されている <strong>OneDrive</strong> の設定を意図通りに制御することが、競合を防ぐ最大のポイントです。</p>
 <h3>具体的な実例手順</h3>
 <ul>
-<li><strong>同期フォルダの整理</strong>:</li>
-<li>タスクバーの OneDrive アイコン → 設定（歯車）→ <strong>「同期とバックアップ」＞「バックアップを管理」</strong> で、デスクトップやドキュメントを自動同期するかどうかを明確に決めておきます（不要な自動同期が原因で他PCとデスクトップ上のファイルが混ざるトラブルが多いため）。</li>
+<li><strong>自動バックアップ対象の見直し</strong>:</li>
+<li>タスクバーの OneDrive アイコン → 設定（歯車）→ <strong>「同期とバックアップ」＞「バックアップを管理」</strong> で、デスクトップやドキュメントを自動同期するかどうかを明確に決めておきます（複数PCでデスクトップが勝手に混ざるトラブルを防げます）。</li>
 <li><strong>安全な共有設定</strong>:</li>
 <li>エクスプローラーで対象ファイル／フォルダを右クリック → <strong>「共有」</strong> からリンク権限（「表示可能」または「編集可能」）を選択して発行します。</li>
 <li><strong>上書き・競合時の復元（「バージョン履歴」）</strong>:</li>
@@ -210,48 +210,31 @@ footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2
 <li>複数人で同時に Office ファイル（<code>.xlsx</code> / <code>.docx</code> 等）を編集する場合、ローカル同期フォルダ経由で開くのではなく、<strong>ブラウザ上の Google ドキュメント／スプレッドシートまたは Office Web版</strong>で開くと競合コピーの発生を大幅に抑えられます。</li>
 </ul>
 <hr />
-<h2>3. Linux（Ubuntu系）での実例手順（rsync / Samba）</h2>
-<p>Ubuntu では、公式クライアントが存在しないクラウドサービスも多いため、<strong><code>rsync</code>（差分同期）</strong> や <strong>Samba（LAN内ファイル共有サーバー）</strong> を使うのが実務の王道です。</p>
-<h3>具体的な実例手順</h3>
-<ul>
-<li><strong>安全な差分同期（<code>rsync</code>）</strong>:<br />
-<code>bash
-  # -a: 属性保持, -v: 詳細表示, -z: 圧縮転送, --partial: 中断時の途中データ保持
-  rsync -avz --progress --partial /local/path/ user@remote:/remote/path/</code><br />
-  ※ <code>--delete</code> を付けると「送信元にないファイルが送信先から削除」されるため、初回は必ず <code>-n</code>（<code>--dry-run</code>：テスト実行）を付けて削除対象を確認してください。</li>
-<li><strong>LAN共有サーバー構築（Samba）</strong>:<br />
-<code>bash
-  sudo apt update &amp;&amp; sudo apt install -y samba
-  # Samba用の認証パスワードを登録（/etc/samba/smb.conf 編集後に再起動）
-  sudo smbpasswd -a $USER
-  sudo systemctl restart smbd</code></li>
-</ul>
-<h3>Linux特有のトラブル対処コマンド</h3>
-<ul>
-<li><strong>ファイルロック中のプロセス確認</strong>:<br />
-<code>bash
-  # どのプロセスがファイルを開いているか確認
-  lsof /path/to/file
-  # 強制終了が必要な場合（慎重に使用）
-  sudo fuser -k /path/to/file</code></li>
-<li><strong>所有者・権限の修正</strong>:<br />
-<code>bash
-  sudo chown -R $USER:$USER /path/to/shared_dir
-  chmod u+rwX /path/to/shared_dir</code></li>
-</ul>
-<hr />
-<h2>4. iPad（iPadOS）での実例手順</h2>
-<p>iPadOS では、純正の <strong>「ファイル」アプリ</strong> に OneDrive や Google ドライブを「場所」として統合できます。</p>
+<h2>3. iOS（iPhone / iPad）での実例手順</h2>
+<p>iOS では、純正の <strong>「ファイル」アプリ</strong> に iCloud Drive だけでなく OneDrive や Google ドライブを「場所」として統合できます。</p>
 <h3>具体的な実例手順</h3>
 <ol>
 <li>App Store から OneDrive または Google ドライブの公式アプリをインストールしてサインインする。</li>
-<li>純正の <strong>「ファイル」アプリ</strong> を開き、左サイドバーの「…」→ <strong>「サイドバーを編集」</strong> から対象のクラウドストレージをオンにする。</li>
-<li>ファイルを編集したあとは、アプリをすぐ閉じずに同期インジケーター（雲マーク等）が完了するまで数秒待つことで、他OSとの競合を防げます。</li>
+<li>純正の <strong>「ファイル」アプリ</strong> を開き、ブラウズ画面右上の「…」→ <strong>「編集」</strong> から対象のクラウドストレージをオンにする。</li>
+<li>ファイルを編集したあとは、アプリをすぐ閉じずに同期インジケーター（雲マーク等）が完了するまで数秒待つことで、PCとの競合を防げます。</li>
 </ol>
 <blockquote>
-<p><strong>iPadOSでの注意点:</strong><br />
+<p><strong>iOSでの注意点:</strong><br />
 「ファイル」アプリ経由では一部のクラウドサービスが読み取り専用になる、またはリアルタイム共同編集が効かない場合があります。複数端末で頻繁に編集する文書は、各クラウドの公式アプリ内で開くのが確実です。</p>
 </blockquote>
+<hr />
+<h2>4. Android での実例手順</h2>
+<p>Android は Google アカウントと深く連携しており、標準搭載の <strong>Google ドライブ</strong> アプリを中心に運用すると最もトラブルが少なくなります。</p>
+<h3>具体的な実例手順</h3>
+<ul>
+<li><strong>ファイルのアップロードと共有</strong>:</li>
+<li><strong>Google ドライブ</strong> アプリを開き、右下の「＋」→ <strong>「アップロード」</strong> から端末内の写真や書類を保存。</li>
+<li>共有したいファイルの右端「︙」→ <strong>「共有」</strong> または <strong>「アクセス権の管理」</strong> をタップし、「制限付き」か「リンクを知っている全員（閲覧者／編集者）」を設定する。</li>
+<li><strong>オフライン環境での利用</strong>:</li>
+<li>電波の弱い場所で見たいファイルは、事前にメニュー「︙」→ <strong>「オフラインで使用可能にする」</strong> をオンにしておきます。</li>
+<li><strong>アップロードが「Wi-Fi 待機中」で止まるとき</strong>:</li>
+<li>Google ドライブの左メニュー「≡」→ <strong>「設定」</strong> → <strong>「Wi-Fi 経由でのみファイルを転送」</strong> がオンになっているとモバイル回線では同期されません。急ぎのときは一時的にオフにするか、Wi-Fi接続後に同期を確認します。</li>
+</ul>
 <hr />
 <h2>よくあるトラブルと解決チェックリスト</h2>
 <table>
@@ -266,31 +249,31 @@ footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2
 <tr>
 <td style="text-align: left;"><strong>ファイル名に <code>-PC名</code> が付いた競合コピーが増える</strong></td>
 <td style="text-align: left;">オフライン中や同期完了前に別端末で同時保存した</td>
-<td style="text-align: left;">編集前に同期完了を確認し、最新2つを比較統合。必要なら「バージョン履歴」で復元</td>
+<td style="text-align: left;">編集前に同期完了を確認し、最新2つを比較統合。必要なら「バージョン履歴 / 版を管理」で復元</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>Windowsで一部ファイルだけ同期エラーになる</strong></td>
 <td style="text-align: left;">パス長制限や使用禁止文字（<code>:</code>, <code>*</code>, <code>?</code>, <code>&lt;</code>, <code>&gt;</code>, <code>|</code> 等）</td>
-<td style="text-align: left;">macOS/Linux側で付けた記号を半角英数・ハイフンに変更する</td>
+<td style="text-align: left;">Macやスマホ側で付けた記号を半角英数・ハイフンに変更する</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Linux Samba共有で Permission Denied</strong></td>
-<td style="text-align: left;">Linux側の権限または <code>smbpasswd</code> 未登録</td>
-<td style="text-align: left;"><code>sudo smbpasswd -a ユーザー名</code> とフォルダの <code>chown/chmod</code> を確認</td>
+<td style="text-align: left;"><strong>共有リンクを送ったのに「アクセス権が必要」と出る</strong></td>
+<td style="text-align: left;">共有設定が「制限付き」のままになっている</td>
+<td style="text-align: left;">共有メニューから相手のメールアドレスを追加するか、リンク権限を「閲覧者」に変更</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>同期が「変更を処理中」のまま進まない</strong></td>
-<td style="text-align: left;">大容量ファイル転送中、または容量上限到達</td>
-<td style="text-align: left;">クラウドの空き容量を確認し、同期クライアントを一時停止→再開する</td>
+<td style="text-align: left;"><strong>同期が「処理中」や「待機中」のまま進まない</strong></td>
+<td style="text-align: left;">容量上限到達、またはAndroidの「Wi-Fiのみ転送」設定</td>
+<td style="text-align: left;">クラウドの空き容量とネットワーク設定を確認し、同期クライアントを一時停止→再開</td>
 </tr>
 </tbody>
 </table>
 <hr />
 <h2>まとめ：快適なマルチOS環境を作るポイント</h2>
-<p>マルチOS環境で同期トラブルを減らすコツは、<strong>「同期モードの把握（ストリーミングかミラーリングか）」「記号・パス名のルール統一」「バージョン履歴の使い方を事前に知っておくこと」</strong>の3点です。</p>
+<p>PCとスマホの4OSで同期トラブルを減らすコツは、<strong>「メインのクラウドを1つに絞る」「ファイル名に特殊記号を使わない」「バージョン履歴での復元手順を知っておく」</strong>の3点です。</p>
 <ul>
-<li><strong>Webカメラ・高音質マイク・ヘッドセット</strong>: リモートでの共同編集時は、画面共有と音声コミュニケーションを併用することで「同じファイルを同時に触ってしまう」すれ違いを未然に防げます。</li>
-<li><strong>クラウドストレージ容量の最適化</strong>: 容量不足は同期停止・競合ループの最大原因になるため、作業用データ量に見合ったプランや自宅NASとの併用を検討しましょう。</li>
+<li><strong>Webカメラ・高音質マイク・ヘッドセット</strong>: リモートでの共同作業時は、画面共有と音声コミュニケーションを併用することで「同じファイルを同時に上書きしてしまう」すれ違いを未然に防げます。</li>
+<li><strong>クラウドストレージ容量の最適化</strong>: 容量不足は同期停止・競合ループの最大原因になるため、写真や仕事データの量に見合ったプランを検討しましょう。</li>
 </ul>
 <hr />
 <h2>参考文献・公式ドキュメント（一次情報ソース）</h2>
@@ -299,10 +282,9 @@ footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2
 <li><strong>[Windows]</strong> <a href="https://support.microsoft.com/ja-jp/office/onedrive-%E3%81%AB%E4%BF%9D%E5%AD%98%E3%81%95%E3%82%8C%E3%81%A6%E3%81%84%E3%82%8B%E4%BB%A5%E5%89%8D%E3%81%AE%E3%83%90%E3%83%BC%E3%82%B8%E3%83%A7%E3%83%B3%E3%81%AE%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%92%E5%BE%A9%E5%85%83%E3%81%99%E3%82%8B-159cad6d-d76e-4981-88ef-de6e96c93893">OneDrive に保存されている以前のバージョンのファイルを復元する - Microsoft サポート</a></li>
 <li><strong>[Windows]</strong> <a href="https://support.microsoft.com/ja-jp/office/onedrive-%E3%81%AE%E5%90%8C%E6%9C%9F%E3%81%AE%E5%95%8F%E9%A1%8C%E3%82%92%E8%A7%A3%E6%B1%BA%E3%81%99%E3%82%8B-0899b115-05f7-45ec-95b2-e4cc8c4670b2">OneDrive の同期の問題を解決する - Microsoft サポート</a></li>
 <li><strong>[macOS / 共通]</strong> <a href="https://support.google.com/drive/answer/10838124?hl=ja">パソコン版 Google ドライブを使用する - Google ドライブ ヘルプ</a></li>
-<li><strong>[Linux]</strong> <a href="https://documentation.ubuntu.com/server/how-to/samba/file-server/">Set up Samba as a file server - Ubuntu Server Documentation</a></li>
-<li><strong>[Linux]</strong> <a href="https://download.samba.org/pub/rsync/rsync.1">rsync(1) Official Manual Page - Samba.org</a></li>
-<li><strong>[Linux]</strong> <a href="https://www.samba.org/samba/docs/current/man-html/smbpasswd.8.html">smbpasswd(8) Official Manual Page - Samba.org</a></li>
-<li><strong>[iPadOS]</strong> <a href="https://support.apple.com/ja-jp/guide/ipad/ipad1c415e32/ipados">iPadユーザガイド（「ファイル」アプリでの共有・管理） - Apple サポート (日本)</a></li>
+<li><strong>[iOS]</strong> <a href="https://support.apple.com/ja-jp/guide/iphone/iphc61044c11/ios">iPhoneの「ファイル」でファイルやフォルダを変更する - Apple サポート (日本)</a></li>
+<li><strong>[Android]</strong> <a href="https://support.google.com/drive/answer/2424368?hl=ja">Google ドライブにファイルやフォルダをアップロードする - Google ドライブ ヘルプ</a></li>
+<li><strong>[Android / 共通]</strong> <a href="https://support.google.com/drive/answer/2409045?hl=ja">操作履歴とファイル バージョンを確認する - Google ドライブ ヘルプ</a></li>
 </ul>
     </article>
   </main>

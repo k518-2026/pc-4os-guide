@@ -13,34 +13,33 @@ from src.reference_verifier import format_references_markdown, get_verified_refe
 
 logger = logging.getLogger(__name__)
 
-PLANNER_SYSTEM_PROMPT = """あなたはWindows・macOS・Linux（Ubuntu系）・iPadOSおよびネットワークに精通したIT技術記事の構成作家（テクニカルエディター）です。
-読者の実務や日常のPCトラブルを解決できる、正確で具体的な「4OS実例比較記事」の構成案（アウトライン）を設計してください。
+PLANNER_SYSTEM_PROMPT = """あなたはWindows 11・macOS・iOS（iPhone/iPad）・Androidおよびネットワークに精通したIT技術記事の構成作家（テクニカルエディター）です。
+初心者から中級者の日常・仕事のPC＆スマホトラブルを解決できる、正確で分かりやすい「4OS実例比較記事」の構成案（アウトライン）を設計してください。
 
 【ハルシネーション厳禁ルール】
-1. 実在する標準機能・ショートカットキー・コマンド（PowerShell/CMD、macOSターミナル、Ubuntu/bash）、iPadOSの標準アプリ操作のみを記載すること。
-2. 確証がないメニュー階層や架空のコマンドオプション・架空のフォルダ名を絶対に作らないこと。できないこと・標準機能に無いことは「標準機能では非対応（代替手段は〇〇）」と正直に明記すること。
-3. 4OSすべてを公平かつ具体的に扱うこと（Windows 11 / macOS / Linux(Ubuntu 24.04等・Wayland前提の注意点含む) / iPadOS）。
+1. 実在する標準機能・ショートカットキー・公式アプリ操作のみを記載すること（Linuxは対象外）。
+2. 確証がないメニュー階層や架空の設定項目を絶対に作らないこと。標準機能に無いことは「標準機能では非対応（代替手段は〇〇）」と正直に明記すること。
+3. 4OSすべてを公平かつ具体的に扱うこと（Windows 11 / macOS / iOS / Android）。Androidは機種（Pixel / Galaxy等）による名称差にも配慮すること。
 4. よくある失敗・エラーと解決策（トラブルシューティング）を必ず3つ以上盛り込むこと。
 5. 出力は簡潔な箇条書きの構成メモとし、余計な前置きや挨拶を入れないこと。"""
 
 WRITER_SYSTEM_PROMPT = """あなたはGoogle Bloggerおよび技術ブログで高い読了率と検索評価を得るプロのITライターです。
-構成案と公式ドキュメント情報をもとに、初心者にも分かりやすく、中級者にも役立つ実践的な「4OS徹底比較ガイド記事」をMarkdown形式で執筆してください。
+構成案と公式ドキュメント情報をもとに、初心者にも分かりやすく実践的な「4OS徹底比較ガイド記事」をMarkdown形式で執筆してください。
 
 【執筆ルール】
 1. 以下の見出し構成を必ず守ること：
    - 記事タイトル（`# タイトル` を1行目に1つだけ）
    - 導入文（読者の悩みに共感し、この記事で分かることを簡潔に提示）
-   - `## 4OS比較早見表`（Markdownの表形式で Windows / macOS / Linux / iPad を比較）
-   - `## 1. Windows での実例手順`（具体的なGUI手順＋必要に応じコマンド例）
+   - `## 4OS比較早見表`（Markdownの表形式で Windows / macOS / iOS / Android を比較）
+   - `## 1. Windows 11 での実例手順`（具体的なGUI手順）
    - `## 2. macOS での実例手順`
-   - `## 3. Linux（Ubuntu系）での実例手順`（GUIとCLIコマンドの両方または実務的な手順）
-   - `## 4. iPad（iPadOS）での実例手順`
+   - `## 3. iOS（iPhone / iPad）での実例手順`
+   - `## 4. Android での実例手順`
    - `## よくあるトラブルと解決チェックリスト`（実際にハマりやすいエラー原因と対処法を3〜4点）
    - `## まとめ：快適なマルチOS環境を作るポイント`（関連する便利な周辺機器・ツールの選び方も自然に紹介）
-2. 存在しないメニュー項目やコマンドオプションを創作しないこと。標準機能でできないことは正直に「標準機能のみでは制限あり」と明記し、公式推奨ツール（PowerToys、ショートカットアプリ、OSS CLI等）を案内すること。
-3. コードやコマンドは必ず適切なコードブロック（```cmd, ```bash, ```powershell など）で囲むこと。
-4. 参考文献セクションはシステム側で実在検証済みURLを自動追記するため、本文側で架空のURLを捏造しないこと。
-5. メタ発言（「はい、記事を作成します」など）は一切書かず、記事本文のみを出力すること。"""
+2. 存在しないメニュー項目や設定名を創作しないこと。標準機能でできないことは正直に「標準機能のみでは制限あり」と明記し、公式推奨アプリ・ツール（PowerToys、ショートカットアプリ、Google公式アプリ等）を案内すること。
+3. 参考文献セクションはシステム側で実在検証済みURLを自動追記するため、本文中に架空のURLを捏造しないこと。
+4. メタ発言（「はい、記事を作成します」など）は一切書かず、記事本文のみを出力すること。"""
 
 
 def _hex_to_rgb(hex_color: str, fallback: Tuple[int, int, int] = (2, 132, 199)) -> Tuple[int, int, int]:
@@ -197,8 +196,8 @@ def compose_title_card(
     os_pills = [
         ("Windows", (0, 120, 212)),
         ("macOS", (71, 85, 105)),
-        ("Linux", (233, 84, 32)),
-        ("iPad", (14, 165, 233)),
+        ("iOS", (14, 165, 233)),
+        ("Android", (22, 163, 74)),
     ]
     font_os = _load_jp_font(15, bold=True)
     px = pad_x
@@ -346,9 +345,9 @@ class ArticleGenerator:
             f"狙うキーワード: {keywords}\n"
             f"関連ツール・周辺機器のヒント: {affiliate_hint}\n"
             f"参照すべき公式ドキュメント:\n{refs_context}\n\n"
-            "上記テーマについて、Windows 11 / macOS / Linux(Ubuntu系) / iPadOS それぞれでの"
-            "「公式仕様に基づく正確な実例手順（標準機能・コマンド・公式アプリ名）」「標準機能の制限事項」「よくあるトラブルと解決法3〜4選」"
-            "を整理した構成メモを作成してください。架空のメニューや存在しないコマンドオプションは絶対に書かないこと。"
+            "上記テーマについて、Windows 11 / macOS / iOS / Android それぞれでの"
+            "「公式仕様に基づく正確な実例手順（標準機能・公式アプリ名）」「標準機能の制限事項」「よくあるトラブルと解決法3〜4選」"
+            "を整理した構成メモを作成してください。架空のメニューや存在しない設定項目は絶対に書かないこと。"
         )
         blueprint = self._clean_markdown(
             self._call_ollama_chat(
@@ -553,13 +552,13 @@ class ArticleGenerator:
             requested_lines.append(f"{idx + 1}. article_num={next_num + idx}, cat_num={cnum}, category=\"{cname}\"")
 
         prompt = (
-            "PC作業をWindows・macOS・Linux・iPadの4OSで実例比較するブログの新しい記事テーマをJSON配列で生成してください。\n"
+            "PC・スマホ作業をWindows・macOS・iOS・Androidの4OSで実例比較する初心者向けブログの新しい記事テーマをJSON配列で生成してください。\n"
             "既存テーマと重複しない、検索需要が高くトラブル解決に役立つ実践テーマにしてください。\n\n"
             f"【生成するスロット】\n" + "\n".join(requested_lines) + "\n\n"
             f"【既存テーマ（重複禁止）】\n" + "\n".join(existing_topics) + "\n\n"
             "【出力形式】JSON配列のみ出力（Markdownコードフェンス不要）。各要素のキー:\n"
             '{"id": "artXX-short-english-slug", "article_num": 数値, "cat_num": 数値, "category": "カテゴリ名", '
-            '"task_topic": "具体的な作業内容", "title": "【4OS徹底比較】...｜Windows・macOS・Linux・iPad", "keywords": ["kw1", "kw2", "kw3"]}'
+            '"task_topic": "具体的な作業内容", "title": "【4OS徹底比較】...｜Windows・macOS・iOS・Android", "keywords": ["kw1", "kw2", "kw3"]}'
         )
         raw = self._clean_markdown(
             self._call_ollama_chat(

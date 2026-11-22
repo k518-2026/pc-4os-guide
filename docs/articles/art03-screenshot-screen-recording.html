@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>【4OS徹底比較】スクリーンショット・画面録画の最短手順と保存先トラブル対処｜Windows・macOS・Linux・iPad | PC 4OS実例ガイド</title>
+  <title>【4OS徹底比較】スクリーンショット・画面録画の最短手順と保存先トラブル対処｜Windows・macOS・iOS・Android | PC 4OS実例ガイド</title>
   <style>
 :root {
   --bg: #f8fafc;
@@ -132,17 +132,17 @@ footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2
   <header class="site-header">
     <div class="inner">
       <h1>PC 4OS実例ガイド</h1>
-      <p>Windows・macOS・Linux・iPad の実践比較＆トラブル解決アーカイブ</p>
+      <p>Windows・macOS・iOS・Android の実践比較＆トラブル解決アーカイブ</p>
     </div>
   </header>
   <main>
     <a class="back-link" href="../index.html">← 記事一覧へ戻る</a>
     <article class="post">
       <p><span class="badge">#03｜分類03: 情報収集・リサーチ・Web利用</span> <small style="color:#64748b;margin-left:0.5rem;">2026-11-23</small></p>
-      <img class="eyecatch" src="../images/2026-11-23_art03_screenshot_screen_recording.png" alt="【4OS徹底比較】スクリーンショット・画面録画の最短手順と保存先トラブル対処｜Windows・macOS・Linux・iPad">
-      <h1>【4OS徹底比較】スクリーンショット・画面録画の最短手順と保存先トラブル対処｜Windows・macOS・Linux・iPad</h1>
-<p>「急に画面を撮りたいのにショートカットを忘れてしまった」「録画した動画がどこに保存されたか分からない」「Webページ全体を縦長に保存したい」——。</p>
-<p>複数のOSを行き来していると、ショートカットキーや標準の保存先の違いで迷いがちです。この記事では、<strong>Windows 11・macOS・Linux（Ubuntu 22.04/24.04・Wayland対応）・iPadOS</strong> の4環境において、追加アプリ不要の<strong>標準機能だけで完結する正確な手順</strong>と、よくあるトラブルの解決法を比較します。</p>
+      <img class="eyecatch" src="../images/2026-11-23_art03_screenshot_screen_recording.png" alt="【4OS徹底比較】スクリーンショット・画面録画の最短手順と保存先トラブル対処｜Windows・macOS・iOS・Android">
+      <h1>【4OS徹底比較】スクリーンショット・画面録画の最短手順と保存先トラブル対処｜Windows・macOS・iOS・Android</h1>
+<p>「急に画面を撮りたいのにショートカットを忘れてしまった」「録画した動画がどこに保存されたか分からない」「Webページ全体を縦長に丸ごと保存したい」——。</p>
+<p>PCとスマホを行き来していると、スクリーンショットや画面録画の操作方法・保存先の違いで迷いがちです。この記事では、<strong>Windows 11・macOS・iOS（iPhone / iPad）・Android</strong> の4環境において、追加アプリ不要の<strong>標準機能だけで完結する正確な手順</strong>と、よくあるトラブルの解決法を比較します。</p>
 <h2>4OS比較早見表</h2>
 <table>
 <thead>
@@ -150,38 +150,38 @@ footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2
 <th style="text-align: left;">機能</th>
 <th style="text-align: left;">Windows 11</th>
 <th style="text-align: left;">macOS</th>
-<th style="text-align: left;">Linux (Ubuntu / GNOME)</th>
-<th style="text-align: left;">iPadOS</th>
+<th style="text-align: left;">iOS (iPhone / iPad)</th>
+<th style="text-align: left;">Android</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;"><strong>スクショ（範囲指定）</strong></td>
+<td style="text-align: left;"><strong>スクショ（撮影）</strong></td>
 <td style="text-align: left;"><code>Win + Shift + S</code></td>
-<td style="text-align: left;"><code>Shift + Cmd + 4</code></td>
-<td style="text-align: left;"><code>Print Screen</code> キー</td>
-<td style="text-align: left;">トップ＋音量ボタン同時押し</td>
+<td style="text-align: left;"><code>Shift + Cmd + 3 / 4 / 5</code></td>
+<td style="text-align: left;">サイド＋音量上ボタン同時押し</td>
+<td style="text-align: left;">電源＋音量下ボタン同時押し</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>画面録画（標準）</strong></td>
 <td style="text-align: left;">Snipping Tool / <code>Win + G</code></td>
 <td style="text-align: left;"><code>Shift + Cmd + 5</code> / QuickTime</td>
-<td style="text-align: left;"><code>Ctrl + Shift + Alt + R</code></td>
 <td style="text-align: left;">コントロールセンター「画面収録」</td>
+<td style="text-align: left;">クイック設定「スクリーンレコード」</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>Web縦長保存</strong></td>
 <td style="text-align: left;">Edge「Webキャプチャ」/ 印刷PDF</td>
 <td style="text-align: left;">Safari「PDFとして書き出す」</td>
-<td style="text-align: left;">ブラウザ印刷PDF / 開発者ツール</td>
 <td style="text-align: left;"><strong>Safariスクショ →「フルページ」</strong></td>
+<td style="text-align: left;"><strong>スクショ直後 →「キャプチャ範囲を拡大」</strong></td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>デフォルト保存先</strong></td>
 <td style="text-align: left;"><code>ピクチャ\Screenshots</code><br><code>ビデオ\画面録画</code></td>
 <td style="text-align: left;">デスクトップ（変更可）</td>
-<td style="text-align: left;"><code>~/ピクチャ/スクリーンショット</code><br><code>~/ビデオ/スクリーンキャスト</code></td>
 <td style="text-align: left;">「写真」アプリ（フルページは「ファイル」）</td>
+<td style="text-align: left;">「Google フォト」／「ギャラリー」（Screenshots / Movies）</td>
 </tr>
 </tbody>
 </table>
@@ -196,7 +196,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2
 <li><strong>Snipping Tool</strong> を起動し、上部のカメラアイコンから<strong>ビデオアイコン（録画）</strong>に切り替えて「新規」→ 範囲選択 →「スタート」で録画できます（既定保存先：<code>C:\Users\ユーザー名\Videos\Screen Recordings</code>）。</li>
 <li>ゲームや長時間のアプリ録画には <code>Win + G</code>（Xbox Game Bar）も利用可能です（保存先：<code>Videos\Captures</code>）。</li>
 <li><strong>Webページ縦長保存</strong>:</li>
-<li>Microsoft Edge で <code>Ctrl + Shift + S</code>（Webキャプチャ）を使うか、<code>Ctrl + P</code> で「PDFとして保存」を利用します。</li>
+<li>Microsoft Edge で <code>Ctrl + Shift + S</code>（Webキャプチャ → ページ全体をキャプチャ）を使うか、<code>Ctrl + P</code> で「PDFとして保存」を利用します。</li>
 </ul>
 <hr />
 <h2>2. macOS での実例手順（標準ショートカット / QuickTime Player）</h2>
@@ -214,36 +214,35 @@ footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2
 <li>デフォルトはデスクトップですが、<code>Shift + Command + 5</code> →「オプション」から任意のフォルダに変更できます。</li>
 </ul>
 <hr />
-<h2>3. Linux（Ubuntu系）での実例手順（GNOME標準 / Wayland対応）</h2>
-<p>Ubuntu 22.04 LTS / 24.04 LTS 以降では、ディスプレイサーバーに <strong>Wayland</strong> が標準採用されています。従来の X11 向けツール（<code>ffmpeg -f x11grab</code> 等）は Wayland 環境では真っ黒な画面になるため、まずは <strong>GNOME 標準機能</strong>を使うのが最も確実です。</p>
-<h3>具体的な実例手順</h3>
-<ul>
-<li><strong>スクリーンショット（GNOME標準UI）</strong>:</li>
-<li><code>Print Screen</code> キーを押すと、範囲選択・画面全体・ウィンドウ選択ができる標準キャプチャUIが開きます。</li>
-<li><code>Shift + Print Screen</code> で即座に全画面撮影、<code>Alt + Print Screen</code> でアクティブウィンドウ撮影。</li>
-<li>保存先：<code>~/Pictures/Screenshots</code>（日本語環境では <code>~/ピクチャ/スクリーンショット</code>）</li>
-<li><strong>画面録画（GNOME標準スクリーンキャスト）</strong>:</li>
-<li><strong><code>Ctrl + Shift + Alt + R</code></strong>（または <code>Print Screen</code> のUIでビデオアイコンへ切替）で録画開始／停止ができます。</li>
-<li>保存先：<code>~/Videos/Screencasts</code>（WebM形式）</li>
-<li><strong>X11セッション環境で CLI 録画する場合（<code>ffmpeg</code>）</strong>:<br />
-<code>bash
-  # ※ WaylandではなくXorg(X11)セッション上でのみ有効
-  ffmpeg -f x11grab -video_size 1920x1080 -i :0.0 -c:v libx264 -pix_fmt yuv420p output.mp4</code></li>
-</ul>
-<hr />
-<h2>4. iPad（iPadOS）での実例手順</h2>
-<p>iPadOS は標準機能だけで <strong>Safari のWebページ全体（フルページ）保存</strong> にも対応しています。</p>
+<h2>3. iOS（iPhone / iPad）での実例手順</h2>
+<p>iOS は標準機能だけで <strong>Safari のWebページ全体（フルページ）保存</strong> にも対応しています。</p>
 <h3>具体的な実例手順</h3>
 <ul>
 <li><strong>スクリーンショット</strong>:</li>
-<li>ホームボタンのないモデル：<strong>トップボタン ＋ いずれかの音量ボタン</strong>を同時押し（または Apple Pencil で画面左下／右下隅から斜め上にスワイプ）。</li>
-<li>ホームボタンのあるモデル：<strong>トップボタン ＋ ホームボタン</strong>を同時押し。</li>
+<li>Face ID搭載モデル：<strong>サイドボタン ＋ 音量を上げるボタン</strong>を同時押し。</li>
+<li>ホームボタン搭載モデル：<strong>サイドボタン（またはトップボタン）＋ ホームボタン</strong>を同時押し。</li>
 <li><strong>Safari のWebページ縦長保存（フルページ）</strong>:</li>
 <li>Safari で保存したいページを開き、通常通りスクリーンショットを撮る。</li>
 <li>左下に表示されるサムネイルをタップし、画面上部の <strong>「フルページ」</strong> タブに切り替える。</li>
 <li>「完了」→ <strong>「PDFを“ファイル”に保存」</strong> を選ぶと、ページ全体の縦長PDFとして保存されます。</li>
 <li><strong>画面録画</strong>:</li>
-<li>画面右上から下にスワイプしてコントロールセンターを開き、<strong>「画面収録（二重丸アイコン）」</strong> をタップ。音声（マイク）も入れたい場合はアイコンを長押ししてマイクをオンにします。</li>
+<li>画面右上から下にスワイプしてコントロールセンターを開き、<strong>「画面収録（二重丸アイコン）」</strong> をタップ。自分の声（マイク）も入れたい場合はアイコンを長押ししてマイクをオンにします。</li>
+</ul>
+<hr />
+<h2>4. Android での実例手順</h2>
+<p>Android 12 以降では、標準機能で <strong>スクロールスクリーンショット（縦長保存）</strong> と <strong>スクリーンレコード（画面録画）</strong> の両方に対応しています。</p>
+<h3>具体的な実例手順</h3>
+<ul>
+<li><strong>スクリーンショット</strong>:</li>
+<li><strong>電源ボタン ＋ 音量小ボタン</strong> を同時に短く押します（機種によってはジェスチャー操作にも対応）。</li>
+<li>保存先：通常は「Google フォト」または「ギャラリー」アプリの「スクリーンショット（Screenshots）」フォルダに保存されます。</li>
+<li><strong>Webページや画面の縦長保存（スクロールキャプチャ）</strong>:</li>
+<li>縦長に保存したい画面（Chrome等）で通常通りスクリーンショットを撮る。</li>
+<li>画面下部に表示される <strong>「キャプチャ範囲を拡大」</strong>（Galaxy等では下向き矢印のスクロールアイコン）をタップし、必要な範囲まで枠を広げて保存する。</li>
+<li><strong>画面録画（スクリーンレコード）</strong>:</li>
+<li>画面上部から下に2回スワイプしてクイック設定パネルを開く。</li>
+<li><strong>「スクリーンレコード開始」</strong>（見当たらない場合は編集ペンアイコンから追加）をタップし、音声録音（端末の音声／マイク）を選んで「開始」を押す。</li>
+<li>終了時は画面上部の赤いステータスバーをタップして停止します。</li>
 </ul>
 <hr />
 <h2>よくあるトラブルと解決チェックリスト</h2>
@@ -259,7 +258,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2
 <tr>
 <td style="text-align: left;"><strong>WindowsでSnipping Toolの録画ファイルが見つからない</strong></td>
 <td style="text-align: left;">自動保存オフ、または録画中断で一時フォルダに残留</td>
-<td style="text-align: left;"><code>Videos\Screen Recordings</code> を確認。異常終了時はアプリ設定（設定 ＞ アプリ ＞ インストールされているアプリ ＞ Snipping Tool ＞ 詳細オプション）から修復を実行</td>
+<td style="text-align: left;"><code>Videos\Screen Recordings</code> を確認。異常終了時は「設定 ＞ アプリ ＞ インストールされているアプリ ＞ Snipping Tool ＞ 詳細オプション」から修復を実行</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>macOSで画面収録ができない・背景しか映らない</strong></td>
@@ -267,24 +266,24 @@ footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2
 <td style="text-align: left;">システム設定 ＞ プライバシーとセキュリティ ＞「画面収録とシステムオーディオ録音」を確認</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Ubuntuで <code>ffmpeg</code> の <code>x11grab</code> が真っ黒になる</strong></td>
-<td style="text-align: left;">WaylandセッションでX11用キャプチャを実行している</td>
-<td style="text-align: left;">GNOME標準の <code>Ctrl + Shift + Alt + R</code> を使うか、ログイン画面で「Ubuntu on Xorg」を選択</td>
+<td style="text-align: left;"><strong>iOS / Androidの画面録画で自分の声が入らない</strong></td>
+<td style="text-align: left;">マイク録音設定がオフになっている</td>
+<td style="text-align: left;">iOSは画面収録ボタンを<strong>長押し</strong>してマイクをオン、Androidは録画開始ダイアログで「録音」をオンにする</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>iPadの画面録画で自分の声が入らない</strong></td>
-<td style="text-align: left;">コントロールセンターのマイク設定がオフ</td>
-<td style="text-align: left;">画面収録ボタンを<strong>長押し</strong>し、下部のマイクアイコンをタップしてオンにする</td>
+<td style="text-align: left;"><strong>動画配信アプリや銀行アプリでスクショが真っ黒になる</strong></td>
+<td style="text-align: left;">DRM（著作権保護）やセキュリティ制限による仕様</td>
+<td style="text-align: left;">アプリ側の保護機能のため正常な挙動です（解除・回避はできません）</td>
 </tr>
 </tbody>
 </table>
 <hr />
 <h2>まとめ：快適なマルチOS環境を作るポイント</h2>
-<p>4OSとも、最新バージョンでは<strong>外部アプリを入れなくても「範囲指定スクショ＋画面録画＋Web縦長保存」が標準で完結</strong>するようになっています。</p>
+<p>4OSとも、現在の標準機能だけで<strong>「スクショ＋画面録画＋縦長保存」</strong>が完結します。まずはよく使う2つの操作（範囲スクショと録画の起動方法）だけ覚えておくと、問い合わせやマニュアル作成がぐっと速くなります。</p>
 <ul>
-<li><strong>トラックボールマウス</strong>: 細かい範囲指定キャプチャや長時間のリサーチ作業で手首の負担を減らせます。</li>
+<li><strong>トラックボールマウス</strong>: PCでの細かい範囲指定キャプチャや長時間のリサーチ作業で手首の負担を減らせます。</li>
 <li><strong>VPNサービス</strong>: 外出先の公衆Wi-Fiで調査・画面共有を行う際の通信保護に有効です。</li>
-<li><strong>ブルーライトカット眼鏡・モニターライト</strong>: キャプチャ確認やドキュメント作成の長時間作業での目の疲労軽減に役立ちます。</li>
+<li><strong>ブルーライトカット眼鏡・モニターライト</strong>: キャプチャ確認や資料作成の長時間作業での目の疲労軽減に役立ちます。</li>
 </ul>
 <hr />
 <h2>参考文献・公式ドキュメント（一次情報ソース）</h2>
@@ -293,10 +292,9 @@ footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2
 <li><strong>[Windows]</strong> <a href="https://support.microsoft.com/ja-jp/windows/snipping-tool-%E3%82%92%E4%BD%BF%E3%81%A3%E3%81%A6%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88%E3%82%92%E3%82%AD%E3%83%A3%E3%83%97%E3%83%81%E3%83%A3%E3%81%99%E3%82%8B-00246869-1843-655f-f220-97299b865f6b">Snipping Tool を使ってスクリーンショットをキャプチャする・画面録画する - Microsoft サポート</a></li>
 <li><strong>[macOS]</strong> <a href="https://support.apple.com/ja-jp/102646">Macでスクリーンショットを撮る - Apple サポート (日本)</a></li>
 <li><strong>[macOS]</strong> <a href="https://support.apple.com/ja-jp/102618">Macで画面を収録する方法 - Apple サポート (日本)</a></li>
-<li><strong>[Linux]</strong> <a href="https://help.gnome.org/users/gnome-help/stable/screen-shot-record.html.ja">スクリーンショットとスクリーンキャスト - GNOME ヘルプ（Ubuntu標準）</a></li>
-<li><strong>[Linux]</strong> <a href="https://ffmpeg.org/ffmpeg-devices.html">FFmpeg Devices Documentation (x11grab / 入力デバイス仕様)</a></li>
-<li><strong>[iPadOS]</strong> <a href="https://support.apple.com/ja-jp/guide/ipad/ipad08a40f3b/ipados">iPadでスクリーンショットを撮る（フルページ保存を含む） - Apple サポート (日本)</a></li>
-<li><strong>[iPadOS]</strong> <a href="https://support.apple.com/ja-jp/102653">iPhone、iPad、iPod touchで画面を録画する - Apple サポート (日本)</a></li>
+<li><strong>[iOS]</strong> <a href="https://support.apple.com/ja-jp/guide/iphone/iphc872c0115/ios">iPhoneでスクリーンショットを撮る（フルページ保存を含む） - Apple サポート (日本)</a></li>
+<li><strong>[iOS]</strong> <a href="https://support.apple.com/ja-jp/102653">iPhone、iPad、iPod touchで画面を録画する - Apple サポート (日本)</a></li>
+<li><strong>[Android]</strong> <a href="https://support.google.com/android/answer/9075928?hl=ja">Android デバイスで画面の画像（スクリーンショット）または動画を撮影する - Android ヘルプ</a></li>
 </ul>
     </article>
   </main>

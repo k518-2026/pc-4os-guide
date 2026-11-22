@@ -209,7 +209,7 @@ def build_github_pages(
   <header class="site-header">
     <div class="inner">
       <h1>PC 4OS実例ガイド</h1>
-      <p>Windows・macOS・Linux・iPad の実践比較＆トラブル解決アーカイブ</p>
+      <p>Windows・macOS・iOS・Android の実践比較＆トラブル解決アーカイブ</p>
     </div>
   </header>
   <main>
@@ -261,14 +261,14 @@ def build_github_pages(
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PC 4OS実例ガイド｜Windows・macOS・Linux・iPad比較＆トラブル解決</title>
+  <title>PC・スマホ 4OS実例ガイド｜Windows・macOS・iOS・Android比較＆トラブル解決</title>
   <style>{COMMON_CSS}</style>
 </head>
 <body>
   <header class="site-header">
     <div class="inner">
-      <h1>PC 4OS実例ガイド</h1>
-      <p>PC作業17分類をローテーションで網羅｜Windows・macOS・Linux・iPad の実践比較＆トラブル解決</p>
+      <h1>PC・スマホ 4OS実例ガイド</h1>
+      <p>デジタル作業17分類をローテーションで網羅｜Windows・macOS・iOS・Android の実践比較＆トラブル解決</p>
     </div>
   </header>
   <main>
@@ -285,14 +285,16 @@ def build_github_pages(
 
     # Update README.md
     table_body = "\n".join(readme_rows) if readme_rows else "| - | - | まだ生成された記事はありません | - | - |"
-    readme_text = f"""# PC 4OS実例ガイド（pc-4os-guide）
+    readme_text = f"""# PC・スマホ 4OS実例ガイド（pc-4os-guide）
 
-PCで行うことができる作業 **17分類** をローテーションしながら、**Windows / macOS / Linux / iPad** の4OSでの具体的な手順比較とトラブル解決法をローカルAIで自動執筆・挿絵生成し、GitHubに書き溜めるプロジェクトです。
+日常や仕事で行うデジタル作業 **17分類** をローテーションしながら、**Windows / macOS / iOS / Android** の4OSでの具体的な手順比較とトラブル解決法をローカルAIで執筆・挿絵生成し、公式ドキュメント参考文献付きでGitHubに書き溜めるプロジェクトです。
 
 ## システム構成
 
+* **対象OS**: **Windows 11 / macOS / iOS（iPhone・iPad）/ Android**
 * **文章生成（Ollama）**: `http://192.168.128.62:11434/`（`qwen3.5:9b` 構成・検証 × `gemma4:12b` 執筆）
-* **挿絵生成（Draw Things）**: `http://192.168.128.59:7860/`（`FLUX.2 [klein] 4B`, `768x512` 横長アイキャッチ）
+* **挿絵生成（Draw Things）**: `http://192.168.128.59:7860/`（`FLUX.2 [klein] 4B`, `768x512` 内容忠実な日本語タイトル画像）
+* **一次情報ソース検証**: Microsoft / Apple / Google 公式ドキュメントURLのHTTP実在チェック付き
 * **記事ストック**: `content/YYYY-MM-DD_artXX_slug.md` + `.png`
 * **Web公開（GitHub Pages）**: `docs/index.html` および `docs/articles/*.html`
 

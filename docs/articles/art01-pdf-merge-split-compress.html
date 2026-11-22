@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>【4OS徹底比較】PDFの結合・分割・圧縮を無料で行う実例ガイド｜Windows・macOS・Linux・iPad | PC 4OS実例ガイド</title>
+  <title>【4OS徹底比較】PDFの結合・分割・圧縮を無料で行う実例ガイド｜Windows・macOS・iOS・Android | PC 4OS実例ガイド</title>
   <style>
 :root {
   --bg: #f8fafc;
@@ -132,17 +132,17 @@ footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2
   <header class="site-header">
     <div class="inner">
       <h1>PC 4OS実例ガイド</h1>
-      <p>Windows・macOS・Linux・iPad の実践比較＆トラブル解決アーカイブ</p>
+      <p>Windows・macOS・iOS・Android の実践比較＆トラブル解決アーカイブ</p>
     </div>
   </header>
   <main>
     <a class="back-link" href="../index.html">← 記事一覧へ戻る</a>
     <article class="post">
       <p><span class="badge">#01｜分類01: 文書作成・オフィス業務・事務作業</span> <small style="color:#64748b;margin-left:0.5rem;">2026-11-23</small></p>
-      <img class="eyecatch" src="../images/2026-11-23_art01_pdf_merge_split_compress.png" alt="【4OS徹底比較】PDFの結合・分割・圧縮を無料で行う実例ガイド｜Windows・macOS・Linux・iPad">
-      <h1>【4OS徹底比較】PDFの結合・分割・圧縮を無料で行う実例ガイド｜Windows・macOS・Linux・iPad</h1>
-<p>「複数のPDFを1つにまとめたい」「長い資料から必要なページだけ抜き出したい」「メール添付のためにファイルサイズを軽くしたい」——。こうした場面で、有料のAdobe Acrobatを契約せずとも、<strong>OS標準機能や定番の無料コマンドラインツール</strong>だけで対応できる範囲はかなり広いです。</p>
-<p>ただし、<strong>「標準機能だけでできること・できないこと」にはOSごとに明確な差</strong>があります。この記事では、Windows 11・macOS・Linux（Ubuntu系）・iPadOSの4環境における正確な手順と、公式仕様に基づく制限事項・トラブル対処法を徹底比較します。</p>
+      <img class="eyecatch" src="../images/2026-11-23_art01_pdf_merge_split_compress.png" alt="【4OS徹底比較】PDFの結合・分割・圧縮を無料で行う実例ガイド｜Windows・macOS・iOS・Android">
+      <h1>【4OS徹底比較】PDFの結合・分割・圧縮を無料で行う実例ガイド｜Windows・macOS・iOS・Android</h1>
+<p>「複数のPDFを1つにまとめたい」「長い資料から必要なページだけ抜き出したい」「メール添付のためにファイルサイズを軽くしたい」——。こうした場面で、有料ソフトを契約せずとも、<strong>OS標準機能や公式アプリ</strong>だけで対応できる範囲はかなり広いです。</p>
+<p>ただし、<strong>「標準機能だけでできること・できないこと」にはOSごとに明確な差</strong>があります。この記事では、初心者でも迷わない <strong>Windows 11・macOS・iOS（iPhone / iPad）・Android</strong> の4環境における正確な手順と、公式仕様に基づく制限事項・トラブル対処法を徹底比較します。</p>
 <h2>4OS比較早見表</h2>
 <table>
 <thead>
@@ -162,7 +162,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2
 <td style="text-align: center;">×（標準のみは不可）</td>
 <td style="text-align: center;">◎（ページ指定印刷）</td>
 <td style="text-align: center;">×（標準では非対応）</td>
-<td style="text-align: left;">分割のみ標準可。結合・圧縮は無料ツール併用が現実的</td>
+<td style="text-align: left;">分割のみ標準可。結合・圧縮はローカル無料ツール併用が安全</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>macOS</strong></td>
@@ -173,20 +173,20 @@ footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2
 <td style="text-align: left;"><strong>3操作すべてOS標準アプリだけで完結</strong></td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Linux (Ubuntu)</strong></td>
-<td style="text-align: left;"><code>pdfunite</code> / <code>pdfseparate</code> / <code>gs</code></td>
-<td style="text-align: center;">◎（<code>pdfunite</code>）</td>
-<td style="text-align: center;">◎（<code>pdfseparate</code>）</td>
-<td style="text-align: center;">◎（Ghostscript <code>gs</code>）</td>
-<td style="text-align: left;">CLIで高速・一括処理可能。<code>qpdf</code>でWeb最適化も可</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong>iPadOS</strong></td>
+<td style="text-align: left;"><strong>iOS (iPhone/iPad)</strong></td>
 <td style="text-align: left;">「ファイル」＆「ショートカット」</td>
 <td style="text-align: center;">◎（ショートカット）</td>
-<td style="text-align: center;">◎（ファイル/印刷）</td>
+<td style="text-align: center;">◎（プリント→PDF保存）</td>
 <td style="text-align: center;">△（標準では限定的）</td>
 <td style="text-align: left;">標準の「ショートカット」アプリで複数PDF結合が可能</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Android</strong></td>
+<td style="text-align: left;">Chrome / Google ドライブ</td>
+<td style="text-align: center;">△（スキャン時まとめ可）</td>
+<td style="text-align: center;">◎（印刷→PDF保存）</td>
+<td style="text-align: center;">△（標準では限定的）</td>
+<td style="text-align: left;">ページ抽出は「印刷→PDFとして保存」が最も手軽</td>
 </tr>
 </tbody>
 </table>
@@ -201,7 +201,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2
 <li>「ページ」欄をカスタムにし、抽出したいページ番号（例：<code>1-3, 5</code>）を指定して保存する。</li>
 <li><strong>結合・圧縮について（標準機能の制限）</strong>:</li>
 <li>Windows 標準の <code>Microsoft Print to PDF</code> 単体では<strong>複数PDFの結合や、画像再圧縮による大幅な軽量化は行えません</strong>。</li>
-<li>結合・圧縮を安全にローカル環境で無料実行したい場合は、オープンソースの <code>PDFsam Basic</code> や <code>PDF24 Creator</code>、あるいは WSL2 / Winget 経由で Linux と同じ <code>qpdf</code>・<code>Ghostscript</code> を導入するのが確実です。</li>
+<li>社外秘や個人情報を含むPDFを安全に無料結合・圧縮したい場合は、Web上の変換サイトにアップロードせず、PC上で完結するローカル無料ツール（例：PDF24 Creator や PDFsam Basic など）を併用するのが安心です。</li>
 </ul>
 <hr />
 <h2>2. macOS での実例手順</h2>
@@ -223,48 +223,39 @@ footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2
 「Reduce File Size」は内蔵画像を強く再圧縮するため、細かい図表やスキャン文字が粗くなる場合があります。元ファイルは必ず別名保存で残してください。</p>
 </blockquote>
 <hr />
-<h2>3. Linux（Ubuntu系）での実例手順</h2>
-<p>Ubuntu では <code>poppler-utils</code>（<code>pdfunite</code> / <code>pdfseparate</code>）と <code>ghostscript</code>（<code>gs</code>）を組み合わせるのが、軽量かつ最も確実です。</p>
-<h3>準備（パッケージ導入）</h3>
-<pre><code class="language-bash">sudo apt update &amp;&amp; sudo apt install -y poppler-utils ghostscript qpdf
-</code></pre>
-<h3>具体的な実例手順</h3>
-<ul>
-<li><strong>結合（<code>pdfunite</code>）</strong>:<br />
-<code>bash
-  pdfunite file1.pdf file2.pdf combined.pdf</code></li>
-<li><strong>分割（<code>pdfseparate</code> で1〜5ページを1ページずつ抽出、または <code>qpdf</code> で範囲抽出）</strong>:<br />
-  ```bash<br />
-  # 1〜5ページを1ページごとのPDFに分割<br />
-  pdfseparate -f 1 -l 5 input.pdf page_%d.pdf</li>
-</ul>
-<p># 1〜5ページを1つのPDFとして抽出（qpdf）<br />
-  qpdf input.pdf --pages . 1-5 -- part1.pdf<br />
-<code>* **圧縮（Ghostscript による画像再圧縮）**:</code>bash<br />
-  # /ebook (150dpi相当・バランス重視) や /screen (72dpi相当・最小サイズ) を指定<br />
-  gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook \<br />
-     -dNOPAUSE -dQUIET -dBATCH -sOutputFile=compressed.pdf input.pdf<br />
-<code>``
-  ※ Web表示を高速化（先頭ページから順次表示）したい場合は</code>qpdf --linearize input.pdf web_ready.pdf` を併用します。</p>
-<hr />
-<h2>4. iPad（iPadOS）での実例手順</h2>
-<p>iPadOS でも、標準の <strong>「ファイル」アプリ</strong> と <strong>「ショートカット」アプリ</strong> を組み合わせることで、外部Webサービスにファイルをアップロードせずに結合・抽出が行えます。</p>
+<h2>3. iOS（iPhone / iPad）での実例手順</h2>
+<p>iOS でも、標準の <strong>「ファイル」アプリ</strong> と <strong>「ショートカット」アプリ</strong> を組み合わせることで、外部Webサービスにファイルをアップロードせずに結合・抽出が行えます。</p>
 <h3>具体的な実例手順</h3>
 <ul>
 <li><strong>結合（「ショートカット」アプリを使用）</strong>:</li>
 <li>「ショートカット」アプリを開き、新規ショートカットを作成。</li>
 <li>アクションを追加：<ul>
 <li><strong>「ファイルを選択」</strong>（オプションで「複数を選択」をオン）</li>
-<li><strong>「PDFを作成」</strong>（または複数画像を1つのPDF化／PDF結合アクション）</li>
+<li><strong>「PDFを作成」</strong>（または複数画像・文書を1つのPDFにまとめるアクション）</li>
 <li><strong>「ファイルを保存」</strong></li>
 </ul>
 </li>
-<li>実行して対象PDFを選ぶだけで、結合済みPDFを「ファイル」アプリ内に保存できます。</li>
+<li>実行して対象ファイルを選ぶだけで、結合済みPDFを「ファイル」アプリ内に保存できます。</li>
 <li><strong>分割（特定ページの抽出）</strong>:</li>
 <li>「ファイル」アプリでPDFを開き、共有ボタン（上矢印）→ <strong>「プリント」</strong> をタップ。</li>
-<li>「範囲」で必要なページを指定し、プリント画面のプレビューを共有ボタンから <strong>「“ファイル”に保存」</strong> すると、指定ページだけのPDFとして保存されます。</li>
+<li>「範囲」で必要なページを指定し、プリント画面から共有ボタン → <strong>「“ファイル”に保存」</strong> を選ぶと、指定ページだけのPDFとして保存されます。</li>
 <li><strong>圧縮</strong>:</li>
-<li>iPadOS標準機能には画質調整付きの高度なPDF圧縮機能はありません。大幅な圧縮が必要な場合は、Macの「プレビュー」やローカルPC側で処理するのが安全です。</li>
+<li>iOS標準機能には画質調整付きの高度なPDF圧縮機能はありません。大幅な圧縮が必要な場合は、Macの「プレビュー」やPC側で処理するのが確実です。</li>
+</ul>
+<hr />
+<h2>4. Android での実例手順</h2>
+<p>Android では、標準搭載の <strong>Google Chrome</strong> や <strong>Google ドライブ</strong> の「印刷（PDFとして保存）」機能を使うと、追加アプリなしでページ抽出やスキャンPDF作成ができます。</p>
+<h3>具体的な実例手順</h3>
+<ul>
+<li><strong>分割（特定ページだけ抽出）</strong>:</li>
+<li>PDFを <strong>Google ドライブ</strong> のPDFビューアまたは <strong>Chrome</strong> で開く。</li>
+<li>右上のメニュー（︙）→ <strong>「印刷」</strong> をタップ。</li>
+<li>プリンター選択で <strong>「PDF として保存」</strong> を選び、「ページ」欄を「範囲」に変更して必要なページ番号（例：<code>1-3, 5</code>）を指定。</li>
+<li>保存ボタン（PDFアイコン）をタップして端末内やGoogleドライブに保存する。</li>
+<li><strong>複数枚の紙資料を1つのPDFにまとめる（Google ドライブのスキャン機能）</strong>:</li>
+<li>Google ドライブアプリ右下のカメラ（スキャン）アイコンから複数ページを連続撮影すると、自動的に1つの結合されたPDFとして保存されます。</li>
+<li><strong>既存PDF同士の結合・圧縮</strong>:</li>
+<li>Android標準機能単体では既存PDF同士の結合や高度な圧縮は非対応です。必要に応じてPC側で処理するか、信頼できる公式PDFアプリ（Adobe Acrobat Reader等）を併用してください。</li>
 </ul>
 <hr />
 <h2>よくあるトラブルと解決チェックリスト</h2>
@@ -278,32 +269,32 @@ footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;"><strong>結合・抽出後に文字が検索できなくなる</strong></td>
-<td style="text-align: left;">仮想プリンタ出力時にテキストが画像化（ラスタライズ）された</td>
-<td style="text-align: left;">Windowsの印刷出力ではなく、<code>qpdf</code> や macOS「プレビュー」のサムネイル結合を使う</td>
+<td style="text-align: left;"><strong>抽出後にPDF内の文字がコピー・検索できない</strong></td>
+<td style="text-align: left;">印刷経由でテキストが画像化された、または元からスキャン画像</td>
+<td style="text-align: left;">macOS「プレビュー」のサムネイル抽出など、テキスト情報を保持できる手順を使う</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>圧縮したら図表が読めなくなった</strong></td>
-<td style="text-align: left;"><code>Reduce File Size</code> や <code>-dPDFSETTINGS=/screen</code> の圧縮率が高すぎる</td>
-<td style="text-align: left;">Ghostscriptなら <code>/ebook</code> や <code>/printer</code> に変更し、必ず元ファイルを残す</td>
+<td style="text-align: left;"><strong>圧縮したら図表や細かい文字が潰れた</strong></td>
+<td style="text-align: left;"><code>Reduce File Size</code> 等の圧縮率が高すぎる</td>
+<td style="text-align: left;">必ず元ファイルを残し、重要資料は圧縮しすぎない設定を選ぶ</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>パスワード保護されたPDFが処理できない</strong></td>
-<td style="text-align: left;">編集制限・閲覧パスワードが設定されている</td>
-<td style="text-align: left;">権限のあるファイルであれば <code>qpdf --password=パスワード --decrypt in.pdf out.pdf</code> で解除後に処理する</td>
+<td style="text-align: left;"><strong>スマホでPDFの保存先が分からなくなった</strong></td>
+<td style="text-align: left;">「ダウンロード」フォルダやクラウド直下に保存された</td>
+<td style="text-align: left;">iOSは「ファイル」アプリの「最近の項目」、Androidは「Files」アプリの「ドキュメント／ダウンロード」を確認</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>社外秘PDFを無料Webサイトに上げてしまった</strong></td>
 <td style="text-align: left;">オンライン変換サービスの利用</td>
-<td style="text-align: left;">機密文書は必ず本記事のような<strong>オフライン（ローカル）手順</strong>で処理する</td>
+<td style="text-align: left;">機密文書や個人情報は必ず本記事のような<strong>端末内完結（ローカル）手順</strong>で処理する</td>
 </tr>
 </tbody>
 </table>
 <hr />
 <h2>まとめ：快適なマルチOS環境を作るポイント</h2>
-<p>PDFの結合・分割・圧縮は、<strong>macOS（プレビュー）とLinux（CLI）が標準／無料ツールで完結しやすく、WindowsとiPadは役割分担すると効率的</strong>です。</p>
+<p>PDFの結合・分割・圧縮は、<strong>「ページ抽出は4OSすべて標準で可能」「結合・圧縮まで標準で完結するのはmacOSが最強」</strong>という特徴があります。スマホとPCを併用している方は、重いPDFの結合・圧縮だけPC側で行うとスムーズです。</p>
 <ul>
-<li><strong>Office互換ソフト・PDF編集ソフト</strong>: 業務で頻繁にPDFのテキスト編集や墨消しを行う場合は、ローカル動作の専用PDFソフトを導入すると作業時間を大幅に短縮できます。</li>
+<li><strong>Office互換ソフト・PDF編集ソフト</strong>: 業務で頻繁にPDFのテキスト修正や墨消しを行う場合は、ローカル動作の専用PDFソフトを導入すると作業時間を大幅に短縮できます。</li>
 <li><strong>外付けキーボード・大型モニター</strong>: 複数PDFを見比べながらページ順を整理する作業では、広い画面とショートカット操作が圧倒的に快適です。</li>
 </ul>
 <hr />
@@ -313,11 +304,10 @@ footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2
 <li><strong>[Windows]</strong> <a href="https://learn.microsoft.com/ja-jp/deployedge/microsoft-edge-policies#printing">Microsoft Edge 印刷・PDF関連ポリシー公式ドキュメント | Microsoft Learn</a></li>
 <li><strong>[macOS]</strong> <a href="https://support.apple.com/ja-jp/guide/preview/prvw43696/mac">Macの「プレビュー」でPDFを結合する - Apple サポート (日本)</a></li>
 <li><strong>[macOS]</strong> <a href="https://support.apple.com/ja-jp/guide/preview/prvw1509/mac">Macの「プレビュー」でPDFのサイズを減らす - Apple サポート (日本)</a></li>
-<li><strong>[Linux]</strong> <a href="https://manpages.ubuntu.com/manpages/noble/en/man1/pdfunite.1.html">Ubuntu Manpage: pdfunite (poppler-utils) - PDF page merger</a></li>
-<li><strong>[Linux]</strong> <a href="https://manpages.ubuntu.com/manpages/noble/en/man1/pdfseparate.1.html">Ubuntu Manpage: pdfseparate (poppler-utils) - PDF page extractor</a></li>
-<li><strong>[Linux]</strong> <a href="https://ghostscript.readthedocs.io/en/latest/VectorDevices.html">Ghostscript High Level Devices (pdfwrite / PDF圧縮設定)</a></li>
-<li><strong>[Linux]</strong> <a href="https://qpdf.readthedocs.io/en/stable/cli.html">qpdf CLI Documentation (Web最適化・線形化)</a></li>
-<li><strong>[iPadOS]</strong> <a href="https://support.apple.com/ja-jp/guide/shortcuts/welcome/ios">ショートカット ユーザガイド - Apple サポート (日本)</a></li>
+<li><strong>[iOS]</strong> <a href="https://support.apple.com/ja-jp/guide/iphone/iphc61044c11/ios">iPhoneの「ファイル」でファイルやフォルダを変更する - Apple サポート (日本)</a></li>
+<li><strong>[iOS]</strong> <a href="https://support.apple.com/ja-jp/guide/shortcuts/welcome/ios">ショートカット ユーザガイド - Apple サポート (日本)</a></li>
+<li><strong>[Android]</strong> <a href="https://support.google.com/drive/answer/3145835?hl=ja">Google ドライブでドキュメントをスキャンする（PDF保存） - Google ドライブ ヘルプ</a></li>
+<li><strong>[Android]</strong> <a href="https://support.google.com/chrome/answer/1069693?hl=ja">Chrome から印刷（PDF として保存・ページ範囲指定） - Google Chrome ヘルプ</a></li>
 </ul>
     </article>
   </main>

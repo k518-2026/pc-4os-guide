@@ -5,23 +5,23 @@ cat_num: 1
 category: 文書作成・オフィス業務・事務作業
 planner_model: qwen3.5:9b
 writer_model: gemma4:12b (fact-checked against official docs)
-verified_refs_count: 8
+verified_refs_count: 7
 -->
 
-# 【4OS徹底比較】PDFの結合・分割・圧縮を無料で行う実例ガイド｜Windows・macOS・Linux・iPad
+# 【4OS徹底比較】PDFの結合・分割・圧縮を無料で行う実例ガイド｜Windows・macOS・iOS・Android
 
-「複数のPDFを1つにまとめたい」「長い資料から必要なページだけ抜き出したい」「メール添付のためにファイルサイズを軽くしたい」——。こうした場面で、有料のAdobe Acrobatを契約せずとも、**OS標準機能や定番の無料コマンドラインツール**だけで対応できる範囲はかなり広いです。
+「複数のPDFを1つにまとめたい」「長い資料から必要なページだけ抜き出したい」「メール添付のためにファイルサイズを軽くしたい」——。こうした場面で、有料ソフトを契約せずとも、**OS標準機能や公式アプリ**だけで対応できる範囲はかなり広いです。
 
-ただし、**「標準機能だけでできること・できないこと」にはOSごとに明確な差**があります。この記事では、Windows 11・macOS・Linux（Ubuntu系）・iPadOSの4環境における正確な手順と、公式仕様に基づく制限事項・トラブル対処法を徹底比較します。
+ただし、**「標準機能だけでできること・できないこと」にはOSごとに明確な差**があります。この記事では、初心者でも迷わない **Windows 11・macOS・iOS（iPhone / iPad）・Android** の4環境における正確な手順と、公式仕様に基づく制限事項・トラブル対処法を徹底比較します。
 
 ## 4OS比較早見表
 
 | OS | 主な操作手段 | 結合 | 分割（ページ抽出） | 圧縮（軽量化） | 特徴・注意点 |
 | :--- | :--- | :---: | :---: | :---: | :--- |
-| **Windows 11** | Edge / Microsoft Print to PDF | ×（標準のみは不可） | ◎（ページ指定印刷） | ×（標準では非対応） | 分割のみ標準可。結合・圧縮は無料ツール併用が現実的 |
+| **Windows 11** | Edge / Microsoft Print to PDF | ×（標準のみは不可） | ◎（ページ指定印刷） | ×（標準では非対応） | 分割のみ標準可。結合・圧縮はローカル無料ツール併用が安全 |
 | **macOS** | プレビュー（Preview） | ◎（サムネイルD&D） | ◎（ページ削除／D&D） | ◎（Quartzフィルタ） | **3操作すべてOS標準アプリだけで完結** |
-| **Linux (Ubuntu)** | `pdfunite` / `pdfseparate` / `gs` | ◎（`pdfunite`） | ◎（`pdfseparate`） | ◎（Ghostscript `gs`） | CLIで高速・一括処理可能。`qpdf`でWeb最適化も可 |
-| **iPadOS** | 「ファイル」＆「ショートカット」 | ◎（ショートカット） | ◎（ファイル/印刷） | △（標準では限定的） | 標準の「ショートカット」アプリで複数PDF結合が可能 |
+| **iOS (iPhone/iPad)** | 「ファイル」＆「ショートカット」 | ◎（ショートカット） | ◎（プリント→PDF保存） | △（標準では限定的） | 標準の「ショートカット」アプリで複数PDF結合が可能 |
+| **Android** | Chrome / Google ドライブ | △（スキャン時まとめ可） | ◎（印刷→PDF保存） | △（標準では限定的） | ページ抽出は「印刷→PDFとして保存」が最も手軽 |
 
 ---
 
@@ -36,7 +36,7 @@ Windows 11 の標準機能（Microsoft Edge ＋ 仮想プリンタ `Microsoft Pr
   3. 「ページ」欄をカスタムにし、抽出したいページ番号（例：`1-3, 5`）を指定して保存する。
 * **結合・圧縮について（標準機能の制限）**:
   * Windows 標準の `Microsoft Print to PDF` 単体では**複数PDFの結合や、画像再圧縮による大幅な軽量化は行えません**。
-  * 結合・圧縮を安全にローカル環境で無料実行したい場合は、オープンソースの `PDFsam Basic` や `PDF24 Creator`、あるいは WSL2 / Winget 経由で Linux と同じ `qpdf`・`Ghostscript` を導入するのが確実です。
+  * 社外秘や個人情報を含むPDFを安全に無料結合・圧縮したい場合は、Web上の変換サイトにアップロードせず、PC上で完結するローカル無料ツール（例：PDF24 Creator や PDFsam Basic など）を併用するのが安心です。
 
 ---
 
@@ -60,55 +60,40 @@ macOS は標準搭載の **「プレビュー（Preview）」** アプリが非�
 
 ---
 
-## 3. Linux（Ubuntu系）での実例手順
+## 3. iOS（iPhone / iPad）での実例手順
 
-Ubuntu では `poppler-utils`（`pdfunite` / `pdfseparate`）と `ghostscript`（`gs`）を組み合わせるのが、軽量かつ最も確実です。
-
-### 準備（パッケージ導入）
-```bash
-sudo apt update && sudo apt install -y poppler-utils ghostscript qpdf
-```
-
-### 具体的な実例手順
-* **結合（`pdfunite`）**:
-  ```bash
-  pdfunite file1.pdf file2.pdf combined.pdf
-  ```
-* **分割（`pdfseparate` で1〜5ページを1ページずつ抽出、または `qpdf` で範囲抽出）**:
-  ```bash
-  # 1〜5ページを1ページごとのPDFに分割
-  pdfseparate -f 1 -l 5 input.pdf page_%d.pdf
-
-  # 1〜5ページを1つのPDFとして抽出（qpdf）
-  qpdf input.pdf --pages . 1-5 -- part1.pdf
-  ```
-* **圧縮（Ghostscript による画像再圧縮）**:
-  ```bash
-  # /ebook (150dpi相当・バランス重視) や /screen (72dpi相当・最小サイズ) を指定
-  gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook \
-     -dNOPAUSE -dQUIET -dBATCH -sOutputFile=compressed.pdf input.pdf
-  ```
-  ※ Web表示を高速化（先頭ページから順次表示）したい場合は `qpdf --linearize input.pdf web_ready.pdf` を併用します。
-
----
-
-## 4. iPad（iPadOS）での実例手順
-
-iPadOS でも、標準の **「ファイル」アプリ** と **「ショートカット」アプリ** を組み合わせることで、外部Webサービスにファイルをアップロードせずに結合・抽出が行えます。
+iOS でも、標準の **「ファイル」アプリ** と **「ショートカット」アプリ** を組み合わせることで、外部Webサービスにファイルをアップロードせずに結合・抽出が行えます。
 
 ### 具体的な実例手順
 * **結合（「ショートカット」アプリを使用）**:
   1. 「ショートカット」アプリを開き、新規ショートカットを作成。
   2. アクションを追加：
      - **「ファイルを選択」**（オプションで「複数を選択」をオン）
-     - **「PDFを作成」**（または複数画像を1つのPDF化／PDF結合アクション）
+     - **「PDFを作成」**（または複数画像・文書を1つのPDFにまとめるアクション）
      - **「ファイルを保存」**
-  3. 実行して対象PDFを選ぶだけで、結合済みPDFを「ファイル」アプリ内に保存できます。
+  3. 実行して対象ファイルを選ぶだけで、結合済みPDFを「ファイル」アプリ内に保存できます。
 * **分割（特定ページの抽出）**:
   1. 「ファイル」アプリでPDFを開き、共有ボタン（上矢印）→ **「プリント」** をタップ。
-  2. 「範囲」で必要なページを指定し、プリント画面のプレビューを共有ボタンから **「“ファイル”に保存」** すると、指定ページだけのPDFとして保存されます。
+  2. 「範囲」で必要なページを指定し、プリント画面から共有ボタン → **「“ファイル”に保存」** を選ぶと、指定ページだけのPDFとして保存されます。
 * **圧縮**:
-  * iPadOS標準機能には画質調整付きの高度なPDF圧縮機能はありません。大幅な圧縮が必要な場合は、Macの「プレビュー」やローカルPC側で処理するのが安全です。
+  * iOS標準機能には画質調整付きの高度なPDF圧縮機能はありません。大幅な圧縮が必要な場合は、Macの「プレビュー」やPC側で処理するのが確実です。
+
+---
+
+## 4. Android での実例手順
+
+Android では、標準搭載の **Google Chrome** や **Google ドライブ** の「印刷（PDFとして保存）」機能を使うと、追加アプリなしでページ抽出やスキャンPDF作成ができます。
+
+### 具体的な実例手順
+* **分割（特定ページだけ抽出）**:
+  1. PDFを **Google ドライブ** のPDFビューアまたは **Chrome** で開く。
+  2. 右上のメニュー（︙）→ **「印刷」** をタップ。
+  3. プリンター選択で **「PDF として保存」** を選び、「ページ」欄を「範囲」に変更して必要なページ番号（例：`1-3, 5`）を指定。
+  4. 保存ボタン（PDFアイコン）をタップして端末内やGoogleドライブに保存する。
+* **複数枚の紙資料を1つのPDFにまとめる（Google ドライブのスキャン機能）**:
+  * Google ドライブアプリ右下のカメラ（スキャン）アイコンから複数ページを連続撮影すると、自動的に1つの結合されたPDFとして保存されます。
+* **既存PDF同士の結合・圧縮**:
+  * Android標準機能単体では既存PDF同士の結合や高度な圧縮は非対応です。必要に応じてPC側で処理するか、信頼できる公式PDFアプリ（Adobe Acrobat Reader等）を併用してください。
 
 ---
 
@@ -116,18 +101,18 @@ iPadOS でも、標準の **「ファイル」アプリ** と **「ショート�
 
 | トラブル現象 | 主な原因 | 確認・解決策 |
 | :--- | :--- | :--- |
-| **結合・抽出後に文字が検索できなくなる** | 仮想プリンタ出力時にテキストが画像化（ラスタライズ）された | Windowsの印刷出力ではなく、`qpdf` や macOS「プレビュー」のサムネイル結合を使う |
-| **圧縮したら図表が読めなくなった** | `Reduce File Size` や `-dPDFSETTINGS=/screen` の圧縮率が高すぎる | Ghostscriptなら `/ebook` や `/printer` に変更し、必ず元ファイルを残す |
-| **パスワード保護されたPDFが処理できない** | 編集制限・閲覧パスワードが設定されている | 権限のあるファイルであれば `qpdf --password=パスワード --decrypt in.pdf out.pdf` で解除後に処理する |
-| **社外秘PDFを無料Webサイトに上げてしまった** | オンライン変換サービスの利用 | 機密文書は必ず本記事のような**オフライン（ローカル）手順**で処理する |
+| **抽出後にPDF内の文字がコピー・検索できない** | 印刷経由でテキストが画像化された、または元からスキャン画像 | macOS「プレビュー」のサムネイル抽出など、テキスト情報を保持できる手順を使う |
+| **圧縮したら図表や細かい文字が潰れた** | `Reduce File Size` 等の圧縮率が高すぎる | 必ず元ファイルを残し、重要資料は圧縮しすぎない設定を選ぶ |
+| **スマホでPDFの保存先が分からなくなった** | 「ダウンロード」フォルダやクラウド直下に保存された | iOSは「ファイル」アプリの「最近の項目」、Androidは「Files」アプリの「ドキュメント／ダウンロード」を確認 |
+| **社外秘PDFを無料Webサイトに上げてしまった** | オンライン変換サービスの利用 | 機密文書や個人情報は必ず本記事のような**端末内完結（ローカル）手順**で処理する |
 
 ---
 
 ## まとめ：快適なマルチOS環境を作るポイント
 
-PDFの結合・分割・圧縮は、**macOS（プレビュー）とLinux（CLI）が標準／無料ツールで完結しやすく、WindowsとiPadは役割分担すると効率的**です。
+PDFの結合・分割・圧縮は、**「ページ抽出は4OSすべて標準で可能」「結合・圧縮まで標準で完結するのはmacOSが最強」**という特徴があります。スマホとPCを併用している方は、重いPDFの結合・圧縮だけPC側で行うとスムーズです。
 
-* **Office互換ソフト・PDF編集ソフト**: 業務で頻繁にPDFのテキスト編集や墨消しを行う場合は、ローカル動作の専用PDFソフトを導入すると作業時間を大幅に短縮できます。
+* **Office互換ソフト・PDF編集ソフト**: 業務で頻繁にPDFのテキスト修正や墨消しを行う場合は、ローカル動作の専用PDFソフトを導入すると作業時間を大幅に短縮できます。
 * **外付けキーボード・大型モニター**: 複数PDFを見比べながらページ順を整理する作業では、広い画面とショートカット操作が圧倒的に快適です。
 
 ---
@@ -139,8 +124,7 @@ PDFの結合・分割・圧縮は、**macOS（プレビュー）とLinux（CLI�
 - **[Windows]** [Microsoft Edge 印刷・PDF関連ポリシー公式ドキュメント | Microsoft Learn](https://learn.microsoft.com/ja-jp/deployedge/microsoft-edge-policies#printing)
 - **[macOS]** [Macの「プレビュー」でPDFを結合する - Apple サポート (日本)](https://support.apple.com/ja-jp/guide/preview/prvw43696/mac)
 - **[macOS]** [Macの「プレビュー」でPDFのサイズを減らす - Apple サポート (日本)](https://support.apple.com/ja-jp/guide/preview/prvw1509/mac)
-- **[Linux]** [Ubuntu Manpage: pdfunite (poppler-utils) - PDF page merger](https://manpages.ubuntu.com/manpages/noble/en/man1/pdfunite.1.html)
-- **[Linux]** [Ubuntu Manpage: pdfseparate (poppler-utils) - PDF page extractor](https://manpages.ubuntu.com/manpages/noble/en/man1/pdfseparate.1.html)
-- **[Linux]** [Ghostscript High Level Devices (pdfwrite / PDF圧縮設定)](https://ghostscript.readthedocs.io/en/latest/VectorDevices.html)
-- **[Linux]** [qpdf CLI Documentation (Web最適化・線形化)](https://qpdf.readthedocs.io/en/stable/cli.html)
-- **[iPadOS]** [ショートカット ユーザガイド - Apple サポート (日本)](https://support.apple.com/ja-jp/guide/shortcuts/welcome/ios)
+- **[iOS]** [iPhoneの「ファイル」でファイルやフォルダを変更する - Apple サポート (日本)](https://support.apple.com/ja-jp/guide/iphone/iphc61044c11/ios)
+- **[iOS]** [ショートカット ユーザガイド - Apple サポート (日本)](https://support.apple.com/ja-jp/guide/shortcuts/welcome/ios)
+- **[Android]** [Google ドライブでドキュメントをスキャンする（PDF保存） - Google ドライブ ヘルプ](https://support.google.com/drive/answer/3145835?hl=ja)
+- **[Android]** [Chrome から印刷（PDF として保存・ページ範囲指定） - Google Chrome ヘルプ](https://support.google.com/chrome/answer/1069693?hl=ja)
