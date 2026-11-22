@@ -8,7 +8,7 @@ writer_model: gemma4:12b (fact-checked against official docs)
 verified_refs_count: 7
 -->
 
-# 【4OS徹底比較】PDFの結合・分割・圧縮を無料で行う実例ガイド｜Windows・macOS・iOS・Android
+# PDFの結合・分割・圧縮を無料で行う実例ガイド｜Windows・macOS・iOS・Android
 
 「複数のPDFを1つにまとめたい」「長い資料から必要なページだけ抜き出したい」「メール添付のためにファイルサイズを軽くしたい」——。こうした場面で、有料ソフトを契約せずとも、**OS標準機能や公式アプリ**だけで対応できる範囲はかなり広いです。
 

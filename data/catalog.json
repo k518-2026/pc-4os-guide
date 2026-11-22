@@ -5,8 +5,12 @@
     "cat_num": 1,
     "category": "文書作成・オフィス業務・事務作業",
     "task_topic": "PDFの結合・分割・圧縮を無料＆標準機能で行う方法",
-    "title": "【4OS徹底比較】PDFの結合・分割・圧縮を無料で行う実例ガイド｜Windows・macOS・iOS・Android",
-    "keywords": ["PDF 結合 無料", "PDF 圧縮", "Windows macOS iOS Android 比較"]
+    "title": "PDFの結合・分割・圧縮を無料で行う実例ガイド｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "PDF 結合 無料",
+      "PDF 圧縮",
+      "Windows macOS iOS Android 比較"
+    ]
   },
   {
     "id": "art02-cross-os-cloud-sync-conflict",
@@ -14,8 +18,12 @@
     "cat_num": 2,
     "category": "コミュニケーション・情報共有",
     "task_topic": "クラウドストレージで複数端末のファイルを同期・共有する実例と競合トラブル対策",
-    "title": "【4OS徹底比較】クラウドストレージ同期と共有トラブル解決の実例｜Windows・macOS・iOS・Android",
-    "keywords": ["クラウド同期 競合", "ファイル共有 4OS", "OneDrive Google Drive"]
+    "title": "クラウドストレージ同期と共有トラブル解決の実例｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "クラウド同期 競合",
+      "ファイル共有 4OS",
+      "OneDrive Google Drive"
+    ]
   },
   {
     "id": "art03-screenshot-screen-recording",
@@ -23,8 +31,12 @@
     "cat_num": 3,
     "category": "情報収集・リサーチ・Web利用",
     "task_topic": "画面全体のスクリーンショット・Webページ縦長保存・画面録画の方法",
-    "title": "【4OS徹底比較】スクリーンショット・画面録画の最短手順と保存先トラブル対処｜Windows・macOS・iOS・Android",
-    "keywords": ["スクリーンショット 方法", "画面録画 標準機能", "保存先 見つからない"]
+    "title": "スクリーンショット・画面録画の最短手順と保存先トラブル対処｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "スクリーンショット 方法",
+      "画面録画 標準機能",
+      "保存先 見つからない"
+    ]
   },
   {
     "id": "art04-batch-image-resize-webp",
@@ -32,8 +44,12 @@
     "cat_num": 4,
     "category": "画像・イラスト・デザイン制作",
     "task_topic": "画像の一括リサイズ・フォーマット変換（HEIC/PNG→JPEG/WebP）を行う方法",
-    "title": "【4OS徹底比較】画像の一括リサイズ＆HEIC/WebP変換の実例ガイド｜Windows・macOS・iOS・Android",
-    "keywords": ["画像 一括リサイズ", "HEIC 変換", "WebP 変換 方法"]
+    "title": "画像の一括リサイズ＆HEIC/WebP変換の実例ガイド｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "画像 一括リサイズ",
+      "HEIC 変換",
+      "WebP 変換 方法"
+    ]
   },
   {
     "id": "art05-video-compression-mp4",
@@ -41,8 +57,12 @@
     "cat_num": 5,
     "category": "動画・音声・音楽制作",
     "task_topic": "大容量の動画ファイルを画質を保ったまま軽量化・トリミング・MP4変換する方法",
-    "title": "【4OS徹底比較】動画の圧縮・トリミング・MP4共有の実例と再生エラー対処｜Windows・macOS・iOS・Android",
-    "keywords": ["動画 圧縮 無料", "動画 送れない サイズ", "MP4 再生できない"]
+    "title": "動画の圧縮・トリミング・MP4共有の実例と再生エラー対処｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "動画 圧縮 無料",
+      "動画 送れない サイズ",
+      "MP4 再生できない"
+    ]
   },
   {
     "id": "art06-3d-ar-model-viewer",
@@ -50,8 +70,12 @@
     "cat_num": 6,
     "category": "3D・CAD・ものづくり",
     "task_topic": "3Dモデルデータ（STL・OBJ・USDZ/GLB）を閲覧・AR表示して確認する方法",
-    "title": "【4OS徹底比較】3Dデータ（STL/OBJ/AR）の閲覧・確認の実例ガイド｜Windows・macOS・iOS・Android",
-    "keywords": ["3Dデータ 開けない", "STL ビューアー 無料", "AR 3D表示"]
+    "title": "3Dデータ（STL/OBJ/AR）の閲覧・確認の実例ガイド｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "3Dデータ 開けない",
+      "STL ビューアー 無料",
+      "AR 3D表示"
+    ]
   },
   {
     "id": "art07-github-code-browser-mobile",
@@ -59,8 +83,12 @@
     "cat_num": 7,
     "category": "プログラミング・ソフトウェア開発",
     "task_topic": "GitHubのコード確認・簡単な編集・ブラウザ開発環境（Codespaces等）を使う方法",
-    "title": "【4OS徹底比較】初心者向けGitHub・コード閲覧とブラウザ開発環境の実例｜Windows・macOS・iOS・Android",
-    "keywords": ["GitHub 初心者 使い方", "スマホ コード 編集", "VS Code Web"]
+    "title": "初心者向けGitHub・コード閲覧とブラウザ開発環境の実例｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "GitHub 初心者 使い方",
+      "スマホ コード 編集",
+      "VS Code Web"
+    ]
   },
   {
     "id": "art08-blog-website-mobile-preview",
@@ -68,8 +96,12 @@
     "cat_num": 8,
     "category": "Web制作・ブログ・デジタルマーケティング",
     "task_topic": "ブログ・Webサイトの表示崩れやスマホ表示を複数端末でチェック＆キャッシュクリアする方法",
-    "title": "【4OS徹底比較】Webサイトの表示確認・スーパーリロード＆キャッシュ削除の実例｜Windows・macOS・iOS・Android",
-    "keywords": ["キャッシュ 削除 方法", "サイト 更新 反映されない", "スマホ 表示 確認"]
+    "title": "Webサイトの表示確認・スーパーリロード＆キャッシュ削除の実例｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "キャッシュ 削除 方法",
+      "サイト 更新 反映されない",
+      "スマホ 表示 確認"
+    ]
   },
   {
     "id": "art09-csv-encoding-mojibake-fix",
@@ -77,8 +109,12 @@
     "cat_num": 9,
     "category": "データ分析・科学計算・AI活用",
     "task_topic": "CSVデータの文字化け（UTF-8 / Shift_JIS）を直してExcelやスプレッドシートで開く方法",
-    "title": "【4OS徹底比較】CSV文字化け（UTF-8/Shift_JIS）の確実な直し方と実例｜Windows・macOS・iOS・Android",
-    "keywords": ["CSV 文字化け 直し方", "Excel CSV 開く", "Googleスプレッドシート CSV"]
+    "title": "CSV文字化け（UTF-8/Shift_JIS）の確実な直し方と実例｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "CSV 文字化け 直し方",
+      "Excel CSV 開く",
+      "Googleスプレッドシート CSV"
+    ]
   },
   {
     "id": "art10-storage-cleanup-disk-usage",
@@ -86,8 +122,12 @@
     "cat_num": 10,
     "category": "システム管理・OS設定・メンテナンス",
     "task_topic": "ストレージ容量圧迫の原因を可視化して不要キャッシュを安全に整理する方法",
-    "title": "【4OS徹底比較】ストレージ容量不足の原因特定と安全な空き容量確保の実例｜Windows・macOS・iOS・Android",
-    "keywords": ["ストレージ 容量不足", "システムデータ 減らす", "空き容量 増やす"]
+    "title": "ストレージ容量不足の原因特定と安全な空き容量確保の実例｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "ストレージ 容量不足",
+      "システムデータ 減らす",
+      "空き容量 増やす"
+    ]
   },
   {
     "id": "art11-lan-smb-file-sharing",
@@ -95,8 +135,12 @@
     "cat_num": 11,
     "category": "ネットワーク・サーバー・インフラ構築",
     "task_topic": "自宅Wi-Fi内の共有フォルダ・NAS（SMB）に接続してファイルをやり取りする方法",
-    "title": "【4OS徹底比較】自宅LANの共有フォルダ・NAS（SMB）接続とエラー解決の実例｜Windows・macOS・iOS・Android",
-    "keywords": ["SMB 接続 方法", "NAS 繋がらない", "ファイル共有 Windows Mac スマホ"]
+    "title": "自宅LANの共有フォルダ・NAS（SMB）接続とエラー解決の実例｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "SMB 接続 方法",
+      "NAS 繋がらない",
+      "ファイル共有 Windows Mac スマホ"
+    ]
   },
   {
     "id": "art12-passkey-password-security",
@@ -104,8 +148,12 @@
     "cat_num": 12,
     "category": "セキュリティ・プライバシー対策",
     "task_topic": "パスキー（Passkey）・パスワード管理と2段階認証を安全に同期・移行する方法",
-    "title": "【4OS徹底比較】パスキー・パスワード管理＆2段階認証の安全な同期実例｜Windows・macOS・iOS・Android",
-    "keywords": ["パスキー 使い方", "パスワード 同期", "2段階認証 引き継ぎ"]
+    "title": "パスキー・パスワード管理＆2段階認証の安全な同期実例｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "パスキー 使い方",
+      "パスワード 同期",
+      "2段階認証 引き継ぎ"
+    ]
   },
   {
     "id": "art13-external-ssd-photo-backup",
@@ -113,8 +161,12 @@
     "cat_num": 13,
     "category": "ファイル管理・バックアップ・データ復旧",
     "task_topic": "外付けSSD・USBメモリをPCとスマホで共用して写真やデータをバックアップする方法",
-    "title": "【4OS徹底比較】外付けSSDを4OSで共用するバックアップ手順と認識しない時の対処｜Windows・macOS・iOS・Android",
-    "keywords": ["外付けSSD 認識しない", "スマホ 外付けSSD バックアップ", "exFAT フォーマット"]
+    "title": "外付けSSDを4OSで共用するバックアップ手順と認識しない時の対処｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "外付けSSD 認識しない",
+      "スマホ 外付けSSD バックアップ",
+      "exFAT フォーマット"
+    ]
   },
   {
     "id": "art14-bluetooth-multi-device-switch",
@@ -122,8 +174,12 @@
     "cat_num": 14,
     "category": "ハードウェア・周辺機器・IoT連携",
     "task_topic": "Bluetoothキーボード・マウス・イヤホンを複数OS間で切り替えて使う設定と接続不良対処",
-    "title": "【4OS徹底比較】Bluetooth機器のマルチペアリング設定と繋がらない時の解決法｜Windows・macOS・iOS・Android",
-    "keywords": ["Bluetooth 繋がらない", "キーボード 複数台 切り替え", "ペアリング 解除"]
+    "title": "Bluetooth機器のマルチペアリング設定と繋がらない時の解決法｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "Bluetooth 繋がらない",
+      "キーボード 複数台 切り替え",
+      "ペアリング 解除"
+    ]
   },
   {
     "id": "art15-screen-mirroring-casting",
@@ -131,8 +187,12 @@
     "cat_num": 15,
     "category": "エンターテインメント・趣味",
     "task_topic": "PCやスマホの画面をテレビ・外部モニターへワイヤレスミラーリング／キャストする方法",
-    "title": "【4OS徹底比較】画面ミラーリング・テレビ投影の実例と映らない・音ズレ対処｜Windows・macOS・iOS・Android",
-    "keywords": ["画面ミラーリング 方法", "テレビ 映らない", "AirPlay キャスト 比較"]
+    "title": "画面ミラーリング・テレビ投影の実例と映らない・音ズレ対処｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "画面ミラーリング 方法",
+      "テレビ 映らない",
+      "AirPlay キャスト 比較"
+    ]
   },
   {
     "id": "art16-digital-notes-sync-study",
@@ -140,8 +200,12 @@
     "cat_num": 16,
     "category": "学習・教育・自己啓発",
     "task_topic": "デジタルノート・PDF教材・暗記アプリをPCとスマホで同期して効率よく学習する方法",
-    "title": "【4OS徹底比較】デジタル学習ノート・暗記カードの全端末同期とトラブル対策｜Windows・macOS・iOS・Android",
-    "keywords": ["ノートアプリ 同期", "勉強 アプリ PC スマホ", "OneNote Notion 比較"]
+    "title": "デジタル学習ノート・暗記カードの全端末同期とトラブル対策｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "ノートアプリ 同期",
+      "勉強 アプリ PC スマホ",
+      "OneNote Notion 比較"
+    ]
   },
   {
     "id": "art17-etax-receipt-scan-pdf-archive",
@@ -149,7 +213,11 @@
     "cat_num": 17,
     "category": "生活・行政手続き・家計・資産管理",
     "task_topic": "領収書スキャン・確定申告データの整理と安全な長期保存フローの作り方",
-    "title": "【4OS徹底比較】領収書スキャン・確定申告データの整理と安全な保存手順｜Windows・macOS・iOS・Android",
-    "keywords": ["領収書 スキャン PDF", "確定申告 データ 保存", "電子帳簿 整理"]
+    "title": "領収書スキャン・確定申告データの整理と安全な保存手順｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "領収書 スキャン PDF",
+      "確定申告 データ 保存",
+      "電子帳簿 整理"
+    ]
   }
 ]

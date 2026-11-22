@@ -8,7 +8,7 @@ writer_model: gemma4:12b (fact-checked against official docs)
 verified_refs_count: 6
 -->
 
-# 【4OS徹底比較】クラウドストレージ同期と共有トラブル解決の実例｜Windows・macOS・iOS・Android
+# クラウドストレージ同期と共有トラブル解決の実例｜Windows・macOS・iOS・Android
 
 「Windowsで編集した資料をiPhoneやAndroidで開いたら古い版だった」「複数端末で同時に保存したら競合コピー（ファイル名にPC名が付いた別ファイル）が増えてしまった」「共有リンクを送ったのに相手が開けない」——。
 

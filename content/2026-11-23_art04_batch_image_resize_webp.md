@@ -8,7 +8,7 @@ writer_model: gemma4:12b (fact-checked against official docs)
 verified_refs_count: 7
 -->
 
-# 【4OS徹底比較】画像の一括リサイズ＆HEIC/WebP変換の実例ガイド｜Windows・macOS・iOS・Android
+# 画像の一括リサイズ＆HEIC/WebP変換の実例ガイド｜Windows・macOS・iOS・Android
 
 「ブログやSNSに載せる大量の写真をまとめて横幅1200pxに縮小したい」「iPhoneで撮ったHEIC形式を、どこでも開けるJPEGや軽量なWebPへ一括変換したい」——。
 

@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>動画の圧縮・トリミング・MP4共有の実例と再生エラー対処｜Windows・macOS・iOS・Android | PC 4OS実例ガイド</title>
+  <style>
+:root {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --muted: #475569;
+  --accent: #0284c7;
+  --accent-soft: #e0f2fe;
+  --border: #e2e8f0;
+  --code-bg: #0f172a;
+  --code-text: #e2e8f0;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Noto Sans JP", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+}
+header.site-header {
+  background: linear-gradient(135deg, #0f172a 0%, #0369a1 100%);
+  color: #fff;
+  padding: 2.2rem 1.25rem;
+}
+header.site-header .inner { max-width: 980px; margin: 0 auto; }
+header.site-header h1 { margin: 0 0 0.4rem; font-size: 1.75rem; }
+header.site-header p { margin: 0; opacity: 0.9; font-size: 0.96rem; }
+main { max-width: 980px; margin: 2rem auto; padding: 0 1.25rem 3rem; }
+.badge {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: var(--accent-soft);
+  color: #0369a1;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1.25rem;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08); }
+.card img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; display: block; background: #e2e8f0; }
+.card-body { padding: 1rem 1.1rem 1.2rem; flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+.card-title { font-size: 1.02rem; font-weight: 700; margin: 0; line-height: 1.45; }
+.card-meta { font-size: 0.82rem; color: var(--muted); margin-top: auto; }
+article.post {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 2rem;
+}
+article.post img.eyecatch {
+  width: 100%;
+  max-height: 460px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+}
+article.post h1 { font-size: 1.65rem; line-height: 1.35; margin-top: 0; }
+article.post h2 {
+  font-size: 1.3rem;
+  margin-top: 2.1rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 2px solid var(--accent-soft);
+}
+article.post h3 { font-size: 1.08rem; margin-top: 1.4rem; }
+article.post table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.2rem 0;
+  font-size: 0.92rem;
+  display: block;
+  overflow-x: auto;
+}
+article.post th, article.post td {
+  border: 1px solid var(--border);
+  padding: 0.6rem 0.8rem;
+  text-align: left;
+}
+article.post th { background: #f1f5f9; font-weight: 700; }
+article.post pre {
+  background: var(--code-bg);
+  color: var(--code-text);
+  padding: 1rem 1.15rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+article.post code {
+  background: #f1f5f9;
+  padding: 0.15rem 0.38rem;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+article.post pre code { background: transparent; padding: 0; color: inherit; }
+article.post blockquote {
+  margin: 1.2rem 0;
+  padding: 0.8rem 1.1rem;
+  border-left: 4px solid var(--accent);
+  background: #f0f9ff;
+  border-radius: 0 8px 8px 0;
+}
+.back-link { display: inline-block; margin-bottom: 1rem; color: var(--accent); text-decoration: none; font-weight: 600; }
+footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2rem 1rem; }
+@media (max-width: 640px) {
+  article.post { padding: 1.2rem; }
+}
+</style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="inner">
+      <h1>PC 4OS実例ガイド</h1>
+      <p>Windows・macOS・iOS・Android の実践比較＆トラブル解決アーカイブ</p>
+    </div>
+  </header>
+  <main>
+    <a class="back-link" href="../index.html">← 記事一覧へ戻る</a>
+    <article class="post">
+      <p><span class="badge">#05｜分類05: 動画・音声・音楽制作</span> <small style="color:#64748b;margin-left:0.5rem;">2026-11-23</small></p>
+      <img class="eyecatch" src="../images/2026-11-23_art05_video_compression_mp4.png" alt="動画の圧縮・トリミング・MP4共有の実例と再生エラー対処｜Windows・macOS・iOS・Android">
+      <h1>動画の圧縮・トリミング・MP4共有の実例と再生エラー対処｜Windows・macOS・iOS・Android</h1>
+<p>「撮影した動画が大きすぎてメールやSNSで送れない」「不要な部分だけをカットして、スマホでも見られる形式（MP4）に変換したい」といった悩みは、動画制作や日常のコミュニケーションにおいて非常に多く見られます。</p>
+<p>しかし、いざ操作しようとすると「どのソフトを使えばいいのか？」「画質を落とさずに容量を減らせるのか？」と迷ってしまう方も少なくありません。</p>
+<p>この記事では、<strong>追加の有料ソフトを一切使わず、各OS（Windows, macOS, iOS, Android）の標準機能のみを使って</strong>、動画のトリミング・圧縮・MP4保存を行う具体的な手順を徹底解説します。また、よく遭遇する再生エラーへの対処法も網羅しているため、初心者の方でも安心して実践いただけます。</p>
+<hr />
+<h2>4OS比較早見表</h2>
+<p>各OSにおける「標準機能での動画編集・変換」の概要を比較しました。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">OS</th>
+<th style="text-align: left;">推奨ツール</th>
+<th style="text-align: left;">主な操作内容</th>
+<th style="text-align: left;">特徴・制限事項</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Windows 11</strong></td>
+<td style="text-align: left;">Clipchamp</td>
+<td style="text-align: left;">トリミング、MP4書き出し</td>
+<td style="text-align: left;">直感的なUI。ビットレートの数値指定は不可。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>macOS</strong></td>
+<td style="text-align: left;">QuickTime Player</td>
+<td style="text-align: left;">トリミング、形式変換</td>
+<td style="text-align: left;">高速で安定。高度な圧縮設定はiMovieが必要。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>iOS</strong></td>
+<td style="text-align: left;">写真アプリ</td>
+<td style="text-align: left;">トリミング、共有</td>
+<td style="text-align: left;">編集は容易だが、詳細なファイルサイズ指定は不可。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Android</strong></td>
+<td style="text-align: left;">Google フォト</td>
+<td style="text-align: left;">トリミング、動画のコピー</td>
+<td style="text-align: left;">クラウド連携が強力。エクスポート設定は限定的。</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>1. Windows 11 での実例手順（Clipchamp）</h2>
+<p>Windows 11では、標準で搭載されている「Clipchamp」を使用するのが最も高画質かつスムーズな方法です。</p>
+<h3>A. 正確な実例手順</h3>
+<ol>
+<li><strong>アプリの起動</strong>: スタートメニューから「Clipchamp」を検索して起動し、「新規プロジェクト」を選択します。</li>
+<li><strong>メディアの読み込み</strong>: 編集したい動画をメディアライブラリへドラッグ＆ドロップします。</li>
+<li><strong>タイムラインへの配置</strong>: 動画をクリックし、下のタイムラインへ移動させます。</li>
+<li><strong>トリミング</strong>: プレビュー画面の左右端をドラッグするか、タイムライン上の動画の端を掴んで、不要な部分をカットします。</li>
+<li><strong>圧縮・変換（エクスポート）</strong>: 右上の「作成して保存」をクリックします。</li>
+<li><strong>出力形式の選択</strong>: 「MP4 (H.264)」を選択します。</li>
+<li><strong>画質調整</strong>: 品質スライダーを「高」または「最高」に設定します。※Clipchampではビットレートの数値指定はできませんが、自動最適化により画質を維持したまま書き出されます。</li>
+</ol>
+<h3>B. 標準機能の制限事項</h3>
+<ul>
+<li><strong>手動ビットレート指定不可</strong>: 「5000kbpsで固定」といった厳密なサイズ管理は標準機能のみでは非対応です。</li>
+<li><strong>高度な音声編集</strong>: 外部オーディオインターフェースからの直接取り込みや、複雑なノイズ除去フィルタの適用には制限があります。</li>
+</ul>
+<h3>C. よくあるトラブルと解決法</h3>
+<ul>
+<li><strong>トラブル①：Clipchampをインストールできない / エラーが出る</strong><ul>
+<li>原因：Windows Updateの未完了やストアキャッシュの破損。</li>
+<li>対策：「設定」＞「Windows Update」で最新の状態にし、Microsoft Storeから再インストールを試みてください。</li>
+</ul>
+</li>
+<li><strong>トラブル②：エクスポート時に「コーデックが見つかりません」と表示される</strong><ul>
+<li>原因：元のファイル形式（MKV等）の不整合やGPUアクセラレーションの競合。</li>
+<li>対策：「設定」＞「システム」でGPU加速をオフにするか、一度別のMP4形式に変換してから読み込んでください。</li>
+</ul>
+</li>
+<li><strong>トラブル③：音声だけが消えてしまう</strong><ul>
+<li>原因：入力デバイスの選択ミスやドライバー不具合。</li>
+<li>対策：マイクアイコンをクリックし、正しい出力/入力デバイスが選択されているか確認してください。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2>2. macOS での実例手順（QuickTime Player）</h2>
+<p>Macユーザーであれば、標準の「QuickTime Player」で非常に素早く処理が可能です。</p>
+<h3>A. 正確な実例手順</h3>
+<ol>
+<li><strong>動画を開く</strong>: QuickTime Playerを起動し、「ファイル」＞「開く」から動画を選択します。</li>
+<li><strong>トリミング範囲の設定</strong>: プレビュー画面の<strong>上下左右をドラッグ</strong>して、残したい範囲を指定します。</li>
+<li><strong>カットの実行</strong>: メニューバーの「編集」＞「カット」を選択します。</li>
+<li><strong>エクスポート</strong>: 「ファイル」＞「エクスポート...」をクリックします。</li>
+<li><strong>設定</strong>: 形式で「H.264 (MP4)」または「HEVC (MOV/MP4)」を選択し、品質を「高」に設定して保存します。</li>
+</ol>
+<h3>B. 標準機能の制限事項</h3>
+<ul>
+<li><strong>圧縮率の不透明性</strong>: ビットレートの数値指定ができないため、元の動画が極端に大きい場合でも、自動判定によりサイズが十分に減らないことがあります。</li>
+<li><strong>音声同期の不安定性</strong>: 非常に長い動画（数十分以上）をトリミングする場合、稀に音声のズレが発生することがあります。</li>
+</ul>
+<h3>C. よくあるトラブルと解決法</h3>
+<ul>
+<li><strong>トラブル①：QuickTime Playerで動画が開けない</strong><ul>
+<li>原因：ファイル破損やHEVCライセンスの問題。</li>
+<li>対策：ファイルをコピーして再度読み込むか、システム設定の「一般」からエンコーダー設定を確認してください。</li>
+</ul>
+</li>
+<li><strong>トラブル②：エクスポート中に「応答なし」となる</strong><ul>
+<li>原因：ディスクI/Oの飽和やメモリ不足。</li>
+<li>対策：「HEVC エンコーダーを使用する」をオフにして、H.264での書き出しに切り替えてください。</li>
+</ul>
+</li>
+<li><strong>トラブル③：トリミング後の動画に黒い帯が出る</strong><ul>
+<li>原因：アスペクト比の不一致。</li>
+<li>対策：QuickTimeでは自動調整が基本ですが、黒帯が出る場合はiMovieを使い、プロジェクト設定に合わせて再編集することをお勧めします。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2>3. iOS (iPhone / iPad) での実例手順（写真アプリ）</h2>
+<p>iPhone/iPadでは「写真」アプリ内で完結させるのが最も簡単です。</p>
+<h3>A. 正確な実例手順</h3>
+<ol>
+<li><strong>編集モード</strong>: 「写真」アプリで動画を開き、右上の「編集」をタップします。</li>
+<li><strong>トリミング</strong>: タイムラインの左右にある黄色い枠をドラッグして範囲を調整し、「完了」をタップします。</li>
+<li><strong>共有と保存</strong>: 「共有ボタン（上矢印）」をタップし、「ビデオを保存」を選択します。</li>
+<li><strong>※重要：圧縮について</strong>: iOS標準機能では、エクスポート時のビットレート指定はできません。画質劣化を伴う軽量化が必要な場合は、iPhoneの「設定」＞「カメラ」＞「ビデオ撮影」で、あらかじめ「1080p」など低めの解像度を選択して撮影する運用が基本となります。</li>
+</ol>
+<hr />
+<h2>4. Android での実例手順（Google フォト）</h2>
+<p>Androidでは「Google フォト」アプリを使用するのが標準的です。</p>
+<h3>A. 正確な実例手順</h3>
+<ol>
+<li><strong>動画の選択</strong>: Google フォトアプリで編集したい動画を開きます。</li>
+<li><strong>編集ボタン</strong>: 下部の「編集」をタップします。</li>
+<li><strong>トリミング</strong>: タイムラインの端をドラッグして不要な部分をカットし、「コピーを保存」をタップします。</li>
+<li><strong>共有・変換</strong>: 「共有」ボタンから他のアプリへ送る際、Google フォトが自動的に最適なMP4形式で処理を行います。</li>
+</ol>
+<h3>B. 標準機能の制限事項</h3>
+<ul>
+<li><strong>詳細設定の欠如</strong>: Android標準の編集機能では、ファイルサイズを数値で指定して再エンコードする機能は備わっていません。</li>
+</ul>
+<hr />
+<h2>よくあるトラブルと解決チェックリスト</h2>
+<p>動画の書き出しや再生で問題が発生した際は、以下の項目を確認してください。</p>
+<ul>
+<li><strong>[ ] 再生時に「コーデック未対応」と出る</strong><ul>
+<li>原因：H.265（HEVC）などの高圧縮形式を古いデバイスで開こうとしている。</li>
+<li>対策：書き出し設定を「H.264」に変更してください。</li>
+</ul>
+</li>
+<li><strong>[ ] 書き出し中にアプリが強制終了する</strong><ul>
+<li>原因：ストレージ容量不足、またはメモリ不足。</li>
+<li>対策：空き容量を確保するか、動画を分割してエクスポートしてください。</li>
+</ul>
+</li>
+<li><strong>[ ] 音声と映像のスピードが合わない</strong><ul>
+<li>原因：可変フレームレート（VFR）の動画を編集した際に発生しやすい。</li>
+<li>対策：可能であれば固定フレームレート（CFR）の素材を使用するか、PCでの編集ソフトで再変換してください。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2>まとめ：快適なマルチOS環境を作るポイント</h2>
+<p>各OSの標準機能を使えば、特別なツールなしでも動画のトリミングやMP4への変換は十分に可能です。しかし、より高度な制作や、ストレスのないスムーズな作業環境を求めるなら、以下の周辺機器・ツールの導入を検討するのも一つの手です。</p>
+<ul>
+<li><strong>高速外付けSSD</strong>: 大容量の動画素材を扱う際、内蔵ストレージの容量不足を防ぎ、読み込み速度を安定させます。</li>
+<li><strong>オーディオインターフェース / USBマイク</strong>: 標準のマイク入力ではノイズを拾いやすいため、クリアな音声を求めるなら必須のアイテムです。</li>
+<li><strong>動画編集ソフト（Pro用）</strong>: ビットレートを数値で指定したい、あるいは高度なカラーグレーディングを行いたい場合は、標準機能の限界を超えた専用ソフトへの移行を検討しましょう。</li>
+</ul>
+<p>まずは手元のデバイスにある標準アプリから試してみて、自分のニーズに合うか確認することから始めてみてください。</p>
+<hr />
+<h2>参考文献・公式ドキュメント（一次情報ソース）</h2>
+<p>本記事の手順・仕様は以下の各OSおよびツールの公式ドキュメントに基づいています。OSアップデートによりメニュー名称や挙動が変わる場合があるため、最新仕様の確認にもご活用ください。</p>
+<ul>
+<li><strong>[Windows]</strong> <a href="https://support.microsoft.com/ja-jp/windows">Windows のヘルプとラーニング（Clipchamp / フォト動画編集） - Microsoft サポート</a></li>
+<li><strong>[macOS]</strong> <a href="https://support.apple.com/ja-jp/guide/quicktime-player/qtp76b9321b3/mac">Mac用QuickTime Playerユーザガイド（トリミング・書き出し） - Apple サポート (日本)</a></li>
+<li><strong>[iOS]</strong> <a href="https://support.apple.com/ja-jp/guide/iphone/iph1d13452f2/ios">iPhoneユーザガイド（写真アプリでのビデオ編集・トリミング） - Apple サポート (日本)</a></li>
+<li><strong>[Android]</strong> <a href="https://support.google.com/photos/answer/6128850?hl=ja">写真や動画を編集する - Google フォト ヘルプ</a></li>
+</ul>
+    </article>
+  </main>
+  <footer>Generated with Local Ollama (qwen3.5 / gemma4) &amp; Draw Things (FLUX.2 klein 4B)</footer>
+</body>
+</html>

@@ -8,7 +8,7 @@ writer_model: gemma4:12b (fact-checked against official docs)
 verified_refs_count: 6
 -->
 
-# 【4OS徹底比較】スクリーンショット・画面録画の最短手順と保存先トラブル対処｜Windows・macOS・iOS・Android
+# スクリーンショット・画面録画の最短手順と保存先トラブル対処｜Windows・macOS・iOS・Android
 
 「急に画面を撮りたいのにショートカットを忘れてしまった」「録画した動画がどこに保存されたか分からない」「Webページ全体を縦長に丸ごと保存したい」——。
 
