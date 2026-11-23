@@ -29,10 +29,11 @@ python -m src.main -n 1 --push
 python -m src.main -n 1 --category 11
 ```
 
-## 書き溜め済み記事一覧（全 45 本 / 最終更新: 2026-11-23 17:59 JST）
+## 書き溜め済み記事一覧（全 46 本 / 最終更新: 2026-11-23 18:04 JST）
 
 | No. | 17分類カテゴリ | 記事タイトル（Markdown） | 挿絵 | 生成日 |
 | :---: | :--- | :--- | :---: | :---: |
+| #46 | 分類12: セキュリティ・プライバシー対策 | [フリーWi-Fiを安全に使うプライバシー設定とログイン画面が出ない時の対処｜Windows・macOS・iOS・Android](content/2026-11-23_art46_public_wifi_vpn_privacy_check.md) | あり | 2026-11-23 |
 | #45 | 分類11: ネットワーク・サーバー・インフラ構築 | [スマホのテザリング（インターネット共有）接続手順と繋がらない時の解決実例｜Windows・macOS・iOS・Android](content/2026-11-23_art45_tethering_hotspot_connection_fix.md) | あり | 2026-11-23 |
 | #44 | 分類10: システム管理・OS設定・メンテナンス | [バッテリーの減りが早い原因特定と劣化を防ぐ充電設定の実例｜Windows・macOS・iOS・Android](content/2026-11-23_art44_battery_health_power_saving.md) | なし | 2026-11-23 |
 | #43 | 分類09: データ分析・科学計算・AI活用 | [表計算ソフトでグラフ作成＆スマホでの確認・修正実例｜Windows・macOS・iOS・Android](content/2026-11-23_art43_spreadsheet_graph_chart_mobile.md) | あり | 2026-11-23 |
