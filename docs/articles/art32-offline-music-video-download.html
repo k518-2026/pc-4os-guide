@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>動画・音楽のオフライン保存とダウンロードできない・容量圧迫の対策実例｜Windows・macOS・iOS・Android | PC 4OS実例ガイド</title>
+  <style>
+:root {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --muted: #475569;
+  --accent: #0284c7;
+  --accent-soft: #e0f2fe;
+  --border: #e2e8f0;
+  --code-bg: #0f172a;
+  --code-text: #e2e8f0;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Noto Sans JP", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+}
+header.site-header {
+  background: linear-gradient(135deg, #0f172a 0%, #0369a1 100%);
+  color: #fff;
+  padding: 2.2rem 1.25rem;
+}
+header.site-header .inner { max-width: 980px; margin: 0 auto; }
+header.site-header h1 { margin: 0 0 0.4rem; font-size: 1.75rem; }
+header.site-header p { margin: 0; opacity: 0.9; font-size: 0.96rem; }
+main { max-width: 980px; margin: 2rem auto; padding: 0 1.25rem 3rem; }
+.badge {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: var(--accent-soft);
+  color: #0369a1;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1.25rem;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08); }
+.card img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; display: block; background: #e2e8f0; }
+.card-body { padding: 1rem 1.1rem 1.2rem; flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+.card-title { font-size: 1.02rem; font-weight: 700; margin: 0; line-height: 1.45; }
+.card-meta { font-size: 0.82rem; color: var(--muted); margin-top: auto; }
+article.post {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 2rem;
+}
+article.post img.eyecatch {
+  width: 100%;
+  max-height: 460px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+}
+article.post h1 { font-size: 1.65rem; line-height: 1.35; margin-top: 0; }
+article.post h2 {
+  font-size: 1.3rem;
+  margin-top: 2.1rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 2px solid var(--accent-soft);
+}
+article.post h3 { font-size: 1.08rem; margin-top: 1.4rem; }
+article.post table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.2rem 0;
+  font-size: 0.92rem;
+  display: block;
+  overflow-x: auto;
+}
+article.post th, article.post td {
+  border: 1px solid var(--border);
+  padding: 0.6rem 0.8rem;
+  text-align: left;
+}
+article.post th { background: #f1f5f9; font-weight: 700; }
+article.post pre {
+  background: var(--code-bg);
+  color: var(--code-text);
+  padding: 1rem 1.15rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+article.post code {
+  background: #f1f5f9;
+  padding: 0.15rem 0.38rem;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+article.post pre code { background: transparent; padding: 0; color: inherit; }
+article.post blockquote {
+  margin: 1.2rem 0;
+  padding: 0.8rem 1.1rem;
+  border-left: 4px solid var(--accent);
+  background: #f0f9ff;
+  border-radius: 0 8px 8px 0;
+}
+.back-link { display: inline-block; margin-bottom: 1rem; color: var(--accent); text-decoration: none; font-weight: 600; }
+.filter-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.15rem 1.25rem;
+  margin-bottom: 1.5rem;
+}
+.filter-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) auto;
+  gap: 0.9rem;
+  align-items: end;
+}
+.filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.filter-field label {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.filter-field input[type="search"],
+.filter-field select {
+  font: inherit;
+  font-size: max(1rem, 1em);
+  min-height: 48px;
+  padding: 0.55rem 0.85rem;
+  border: 1.5px solid #767676;
+  border-radius: 8px;
+  background: #fff;
+  color: var(--text);
+  width: 100%;
+}
+.filter-field input[type="search"]:focus-visible,
+.filter-field select:focus-visible,
+.filter-actions button:focus-visible {
+  outline: 3px solid #0284c7;
+  outline-offset: 2px;
+}
+.filter-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+.filter-actions button {
+  font: inherit;
+  font-size: max(1rem, 0.95em);
+  font-weight: 600;
+  min-height: 48px;
+  padding: 0 1.05rem;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+}
+.btn-primary {
+  background: #0369a1;
+  color: #fff;
+}
+.btn-primary:hover { background: #075985; }
+.btn-secondary {
+  background: #f1f5f9;
+  color: var(--text);
+  border-color: #94a3b8;
+}
+.btn-secondary:hover { background: #e2e8f0; }
+.results-status {
+  color: var(--muted);
+  font-size: 0.92rem;
+  margin: 0 0 1.1rem;
+}
+.empty-state {
+  background: var(--surface);
+  border: 1px dashed #94a3b8;
+  border-radius: 12px;
+  padding: 2rem 1.25rem;
+  text-align: center;
+  color: var(--muted);
+}
+.card[hidden],
+.empty-state[hidden] { display: none; }
+footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2rem 1rem; }
+@media (max-width: 720px) {
+  .filter-form { grid-template-columns: 1fr; }
+  .filter-actions { width: 100%; }
+  .filter-actions button { flex: 1; }
+}
+@media (max-width: 640px) {
+  article.post { padding: 1.2rem; }
+}
+</style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="inner">
+      <h1>PC 4OS実例ガイド</h1>
+      <p>Windows・macOS・iOS・Android の実践比較＆トラブル解決アーカイブ</p>
+    </div>
+  </header>
+  <main>
+    <a class="back-link" href="../index.html">← 記事一覧へ戻る</a>
+    <article class="post">
+      <p><span class="badge">#32｜分類15: エンターテインメント・趣味</span> <small style="color:#64748b;margin-left:0.5rem;">2026-11-23</small></p>
+      <img class="eyecatch" src="../images/2026-11-23_art32_offline_music_video_download.png" alt="動画・音楽のオフライン保存とダウンロードできない・容量圧迫の対策実例｜Windows・macOS・iOS・Android">
+      <h1>動画・音楽のオフライン保存とダウンロードできない・容量圧迫の対策実例｜Windows・macOS・iOS・Android</h1>
+<p>「お気に入りの動画を移動中も見たいからダウンロードしたいのに、なぜか保存できない……」「動画を保存しすぎてスマホやPCの容量がいっぱいになって困っている」といった悩みをお持ちではありませんか？</p>
+<p>結論から申し上げますと、YouTubeやNetflixなどの主要な配信サービスにおいて、<strong>OSの標準機能（ファイルマネージャー）だけで動画ファイルを直接ダウンロードして永続的に保存することは、著作権保護（DRM）の観点から不可能</strong>です。これらは「アプリ内キャッシュ」として一時的に保持されるものであり、期限が切れると消去される仕様となっています。</p>
+<p>この記事では、各OSにおける公式な「オフライン視聴」の手順、容量を圧迫するキャッシュの掃除方法、そしてどうしてもファイルとして保存したい場合の標準機能（画面録画）の活用術を徹底解説します。</p>
+<h2>4OS比較早見表</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">機能・項目</th>
+<th style="text-align: left;">Windows 11</th>
+<th style="text-align: left;">macOS</th>
+<th style="text-align: left;">iOS (iPhone/iPad)</th>
+<th style="text-align: left;">Android</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>公式オフライン保存</strong></td>
+<td style="text-align: left;">YouTubeアプリ内のみ</td>
+<td style="text-align: left;">YouTubeアプリ内のみ</td>
+<td style="text-align: left;">YouTubeアプリ内のみ</td>
+<td style="text-align: left;">YouTubeアプリ内のみ</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>標準録画機能</strong></td>
+<td style="text-align: left;">Xbox Game Bar</td>
+<td style="text-align: left;">QuickTime / ショートカット</td>
+<td style="text-align: left;">スクリーンレコーダー</td>
+<td style="text-align: left;">スクリーンレコーダー</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>外部出力(キャスト)</strong></td>
+<td style="text-align: left;">外部機器依存</td>
+<td style="text-align: left;">AirPlay</td>
+<td style="text-align: left;">AirPlay</td>
+<td style="text-align: left;">Google Cast</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>主な容量圧迫原因</strong></td>
+<td style="text-align: left;">ブラウザキャッシュ</td>
+<td style="text-align: left;">Safariキャッシュ/インデックス</td>
+<td style="text-align: left;">アプリ内一時ファイル</td>
+<td style="text-align: left;">アプリキャッシュ/システムメモリ</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>1. Windows 11 での実例手順</h2>
+<p>Windows環境では、ブラウザでの操作よりも「公式アプリ」の活用が安定したオフライン視聴の鍵となります。</p>
+<h3>実例手順：YouTube のオフライン視聴設定</h3>
+<p>Webブラウザ（Edge/Chrome）では標準機能によるダウンロードはできません。以下の手順でアプリ版を利用します。<br />
+1. <strong>Microsoft Store</strong> から「YouTube」アプリをインストールします。<br />
+2. アプリを起動し、ログインします。<br />
+3. 「ライブラリ」タブを開き、「ダウンロード済み動画」からオフライン視聴が可能です。</p>
+<h3>実例手順：大容量の動画ファイルへの対応（画面録画）</h3>
+<p>どうしてもMP4等のファイルとして手元に残したい場合は、OS標準の録画機能を使います。<br />
+1. <strong>Windowsキー + G</strong> を同時に押し、「Xbox Game Bar」を起動します。<br />
+2. 録画したいアプリやウィンドウを選択し、「スクリーンキャプチャ開始」ボタンをクリックします。<br />
+3. 保存先を指定して録画を開始します。<br />
+   * ※注意：Snipping Tool（画面切り取りツール）では現在、動画録画はサポートされていません。</p>
+<h3>よくあるトラブルと解決法</h3>
+<ul>
+<li><strong>トラブル A: 「ダウンロードできない」と表示される</strong><ul>
+<li><strong>原因</strong>: Webブラウザでの保存を試みているか、Netflix等の有料コンテンツにアクセスしている。</li>
+<li><strong>解決策</strong>: 公式アプリ内限定の「オフライン視聴」機能を利用するか、画面録画でMP4に変換する必要があります。</li>
+</ul>
+</li>
+<li><strong>トラブル B: キャッシュ容量が異常に増大して動作が遅い</strong><ul>
+<li><strong>原因</strong>: EdgeやChromeなどのブラウザ、またはアプリ内の一時ファイルの蓄積。</li>
+<li><strong>解決策</strong>: 「設定 &gt; システム &gt; ストレージ &gt; ストレージを整理」から「キャッシュとブラウザデータ」を選択して削除します。</li>
+</ul>
+</li>
+<li><strong>トラブル C: ダウンロードした動画が再生できない</strong><ul>
+<li><strong>原因</strong>: アプリの再インストールや、オフライン視聴期限の切れ。</li>
+<li><strong>解決策</strong>: アプリを一度アンインストールし、ストアから最新版を再インストールしてログイン直後に再度ダウンロードを行ってください。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2>2. macOS での実例手順</h2>
+<p>MacではFinderで直接動画ファイルを保存することはできませんが、純正アプリを組み合わせることでスマートに管理できます。</p>
+<h3>実例手順：YouTube のオフライン視聴設定</h3>
+<ol>
+<li><strong>App Store</strong> から「YouTube」アプリ（または公式提供のデスクトップ版）をインストールします。</li>
+<li>アプリを起動し、「ライブラリ」タブからダウンロード済み動画を確認します。</li>
+</ol>
+<h3>実例手順：大容量ファイルへの対応（画面録画）</h3>
+<p>Mac標準の強力な録画機能を利用します。<br />
+1. <strong>Command + Shift + 5</strong> を押して、画面収録メニューを表示します。<br />
+2. 録画したい領域を選択し、「オプション」で「内蔵マイク」や「システムオーディオ」の設定を確認します。<br />
+3. 「記録」ボタンを押し、終了後にデスクトップ等へ直接出力されます。</p>
+<h3>よくあるトラブルと解決法</h3>
+<ul>
+<li><strong>トラブル A: AirPlay で画面をミラーリング中に動画が止まる</strong><ul>
+<li><strong>原因</strong>: ネットワークの不安定さやルーターの帯域不足。</li>
+<li><strong>解決策</strong>: 両方の端末とルーターを有線LANで接続するか、Wi-Fiの5GHz帯を使用してください。</li>
+</ul>
+</li>
+<li><strong>トラブル B: キャッシュ容量が圧迫され「空き領域不足」エラーが出る</strong><ul>
+<li><strong>原因</strong>: SafariのWebサイトデータやSpotlightインデックスの肥大化。</li>
+<li><strong>解決策</strong>: 「システム設定 &gt; Safari &gt; 詳細 &gt; 履歴を消去」から「キャッシュ」を選択して削除します。また、ディスク使用量を確認し不要なファイルを整理してください。</li>
+</ul>
+</li>
+<li><strong>トラブル C: 公式アプリからダウンロードできない（期限切れ）</strong><ul>
+<li><strong>原因</strong>: YouTubeのポリシー変更によるオフライン視聴期間の短縮。</li>
+<li><strong>解決策</strong>: アプリを最新版にアップデートするか、QuickTime Playerを用いた画面録画で代替手段をとります。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2>3. iOS（iPhone / iPad）での実例手順</h2>
+<p>モバイル端末では「ファイル」アプリへの直接保存は制限されていますが、公式アプリの機能をフル活用しましょう。</p>
+<h3>実例手順：YouTube のオフライン視聴設定</h3>
+<ol>
+<li><strong>YouTubeアプリ</strong>を起動します。</li>
+<li>「ライブラリ」タブへ進み、「ダウンロード済み動画」から選択して再生します。</li>
+<li>※「ファイル」アプリやSafariでの直接保存は標準機能では不可です。</li>
+</ol>
+<h3>実例手順：AirPlay を使った画面ミラーリングとストリーミング</h3>
+<ol>
+<li>コントロールセンターから <strong>AirPlayアイコン</strong> をタップします。</li>
+<li>Apple TVや対応テレビを選択し、動画を大画面で再生します。</li>
+</ol>
+<h3>よくあるトラブルと解決法</h3>
+<ul>
+<li><strong>トラブル A: 「ダウンロードできません」と表示される</strong><ul>
+<li><strong>原因</strong>: OSのバージョンが古く、アプリとの互換性が失われている。</li>
+<li><strong>解決策</strong>: App StoreでYouTubeを更新し、「設定 &gt; 一般 &gt; iPhoneストレージ」からOSが最新か確認してください。</li>
+</ul>
+</li>
+<li><strong>トラブル B: AirPlay が接続できない・映像が止まる</strong><ul>
+<li><strong>原因</strong>: Wi-FiとBluetoothの同期不具合。</li>
+<li><strong>解決策</strong>: 両端末の電源を入れ直し、同じWi-Fiネットワークに再接続してから再度AirPlayを選択します。</li>
+</ul>
+</li>
+<li><strong>トラブル C: アプリ内のキャッシュ容量が膨大化</strong><ul>
+<li><strong>原因</strong>: 視聴履歴や一時ファイルの蓄積。</li>
+<li><strong>解決策</strong>: YouTubeアプリの設定から「ダウンロード済み」を全て削除、またはアプリを一度アンインストールして再インストール（キャッシュリセット）を行います。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2>4. Android での実例手順</h2>
+<p>Androidは機種ごとにUIが異なりますが、Google公式アプリの挙動は共通しています。</p>
+<h3>実例手順：YouTube のオフライン視聴設定</h3>
+<ol>
+<li><strong>YouTubeアプリ</strong>を起動します。</li>
+<li>「ライブラリ」タブを開き、「ダウンロード済み動画」を確認します。</li>
+<li>※PixelやGalaxyなど機種を問わず、Google Playストア版アプリで操作可能です。</li>
+</ol>
+<h3>実例手順：画面キャストとオフライン視聴の代替手段</h3>
+<ol>
+<li><strong>Google Homeアプリ</strong> または再生中の「Cast」アイコンを使用して、Chromecastやスマートテレビに送信します。</li>
+<li>ファイルとして保存したい場合は、設定内の「スクリーンレコーダー」を使用します。</li>
+</ol>
+<h3>よくあるトラブルと解決法</h3>
+<ul>
+<li><strong>トラブル A: 「ダウンロードできません」と表示される</strong><ul>
+<li><strong>原因</strong>: Googleアカウントの認証エラーやメーカー独自のカスタムROMによる制限。</li>
+<li><strong>解決策</strong>: PlayストアからYouTubeを更新。機種によっては「設定 &gt; アプリ &gt; YouTube &gt; ストレージとキャッシュ」でキャッシュをクリアしてください。</li>
+</ul>
+</li>
+<li><strong>トラブル B: キャッシュ容量が圧迫され端末が重くなる</strong><ul>
+<li><strong>原因</strong>: ブラウザ履歴やアプリの一時ファイル蓄積。</li>
+<li><strong>解決策</strong>: 「設定 &gt; アプリ &gt; [対象アプリ] &gt; ストレージとキャッシュ」から「キャッシュをクリア」を実行します。</li>
+</ul>
+</li>
+<li><strong>トラブル C: キャスト（Cast）中に動画が途切れる</strong><ul>
+<li><strong>原因</strong>: Wi-Fi電波の不安定さ、キャスト先デバイスのフリーズ。</li>
+<li><strong>解決策</strong>: ルーターを再起動し、スマホとキャスト先を同じネットワークに確保してください。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2>まとめ：快適なマルチOS環境を作るポイント</h2>
+<p>動画や音楽のオフライン視聴・保存において最も重要なのは、<strong>「著作権保護（DRM）への理解」と「適切な公式アプリの活用」</strong>です。無理にファイルとして抽出するのではなく、各OSが提供する標準的な録画機能や、公式アプリ内のダウンロード機能を使い分けることが、トラブルを避ける近道となります。</p>
+<p>また、快適な視聴体験を追求するのであれば、デバイス側の対策だけでなく周辺機器の充実も重要です。<br />
+* <strong>高精細な映像</strong>を楽しむなら、リフレッシュレートの高い<strong>ゲーミングモニター</strong>の導入。<br />
+* <strong>没入感のある音響</strong>を求めるなら、<strong>DAC（デジタル・アナログコンバーター）と高品質ヘッドホン</strong>の組み合わせ。<br />
+* <strong>操作性の向上</strong>には、遅延の少ない<strong>ゲームパッド</strong>や、安定したストリーミングを実現する<strong>専用ストリーミング機器</strong>の導入が非常に効果的です。</p>
+<p>OSごとの特性を理解し、適切なツールを組み合わせることで、ストレスのないエンターテインメント環境を構築しましょう。</p>
+<hr />
+<h2>参考文献・公式ドキュメント（一次情報ソース）</h2>
+<p>本記事の手順・仕様は以下の各OSおよびツールの公式ドキュメントに基づいています。OSアップデートによりメニュー名称や挙動が変わる場合があるため、最新仕様の確認にもご活用ください。</p>
+<ul>
+<li><strong>[Windows]</strong> <a href="https://support.microsoft.com/ja-jp/windows/windows-%E3%81%A7%E7%94%BB%E9%9D%A2%E3%82%92%E3%83%9F%E3%83%A9%E3%83%BC%E3%83%AA%E3%83%B3%E3%82%B0%E3%81%99%E3%82%8B%E3%81%8B%E3%82%AD%E3%83%A3%E3%82%B9%E3%83%88%E3%81%99%E3%82%8B-5af9f371-c704-1c7f-8f0d-fa607551d09c">Windows で画面をミラーリングするかキャストする - Microsoft サポート</a></li>
+<li><strong>[macOS / iOS]</strong> <a href="https://support.apple.com/ja-jp/102661">AirPlayを使ってiPhoneやiPadからビデオをストリーミングする／画面をミラーリングする - Apple サポート (日本)</a></li>
+<li><strong>[Android]</strong> <a href="https://support.google.com/chromecast/answer/6059461?hl=ja">Google Home アプリで Android の画面をキャストする - Google ヘルプ</a></li>
+</ul>
+    </article>
+  </main>
+  <footer>Generated with Local Ollama (qwen3.5 / gemma4) &amp; Draw Things (FLUX.2 klein 4B)</footer>
+</body>
+</html>
