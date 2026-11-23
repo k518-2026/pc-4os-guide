@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>スマホの計測・3Dスキャンで家具サイズや間取りを確認・共有する実例｜Windows・macOS・iOS・Android | PC 4OS実例ガイド</title>
+  <style>
+:root {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --muted: #475569;
+  --accent: #0284c7;
+  --accent-soft: #e0f2fe;
+  --border: #e2e8f0;
+  --code-bg: #0f172a;
+  --code-text: #e2e8f0;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Noto Sans JP", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+}
+header.site-header {
+  background: linear-gradient(135deg, #0f172a 0%, #0369a1 100%);
+  color: #fff;
+  padding: 2.2rem 1.25rem;
+}
+header.site-header .inner { max-width: 980px; margin: 0 auto; }
+header.site-header h1 { margin: 0 0 0.4rem; font-size: 1.75rem; }
+header.site-header p { margin: 0; opacity: 0.9; font-size: 0.96rem; }
+main { max-width: 980px; margin: 2rem auto; padding: 0 1.25rem 3rem; }
+.badge {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: var(--accent-soft);
+  color: #0369a1;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1.25rem;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08); }
+.card img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; display: block; background: #e2e8f0; }
+.card-body { padding: 1rem 1.1rem 1.2rem; flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+.card-title { font-size: 1.02rem; font-weight: 700; margin: 0; line-height: 1.45; }
+.card-meta { font-size: 0.82rem; color: var(--muted); margin-top: auto; }
+article.post {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 2rem;
+}
+article.post img.eyecatch {
+  width: 100%;
+  max-height: 460px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+}
+article.post h1 { font-size: 1.65rem; line-height: 1.35; margin-top: 0; }
+article.post h2 {
+  font-size: 1.3rem;
+  margin-top: 2.1rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 2px solid var(--accent-soft);
+}
+article.post h3 { font-size: 1.08rem; margin-top: 1.4rem; }
+article.post table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.2rem 0;
+  font-size: 0.92rem;
+  display: block;
+  overflow-x: auto;
+}
+article.post th, article.post td {
+  border: 1px solid var(--border);
+  padding: 0.6rem 0.8rem;
+  text-align: left;
+}
+article.post th { background: #f1f5f9; font-weight: 700; }
+article.post pre {
+  background: var(--code-bg);
+  color: var(--code-text);
+  padding: 1rem 1.15rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+article.post code {
+  background: #f1f5f9;
+  padding: 0.15rem 0.38rem;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+article.post pre code { background: transparent; padding: 0; color: inherit; }
+article.post blockquote {
+  margin: 1.2rem 0;
+  padding: 0.8rem 1.1rem;
+  border-left: 4px solid var(--accent);
+  background: #f0f9ff;
+  border-radius: 0 8px 8px 0;
+}
+.back-link { display: inline-block; margin-bottom: 1rem; color: var(--accent); text-decoration: none; font-weight: 600; }
+footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2rem 1rem; }
+@media (max-width: 640px) {
+  article.post { padding: 1.2rem; }
+}
+</style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="inner">
+      <h1>PC 4OS実例ガイド</h1>
+      <p>Windows・macOS・iOS・Android の実践比較＆トラブル解決アーカイブ</p>
+    </div>
+  </header>
+  <main>
+    <a class="back-link" href="../index.html">← 記事一覧へ戻る</a>
+    <article class="post">
+      <p><span class="badge">#23｜分類06: 3D・CAD・ものづくり</span> <small style="color:#64748b;margin-left:0.5rem;">2026-11-23</small></p>
+      <img class="eyecatch" src="../images/2026-11-23_art23_room_3d_scan_floorplan_measure.png" alt="スマホの計測・3Dスキャンで家具サイズや間取りを確認・共有する実例｜Windows・macOS・iOS・Android">
+      <h1>スマホの計測・3Dスキャンで家具サイズや間取りを確認・共有する実例｜Windows・macOS・iOS・Android</h1>
+<p>「新しく買いたいソファが、この部屋に収まるか不安」「リフォームの前に正確な間取りをスマホで測って、図面として共有したい」……そんな悩みを持つ方は多いはずです。</p>
+<p>最近ではスマートフォンのカメラ性能やAR（拡張現実）技術の向上により、スマホ一台で空間をスキャンし、3Dモデルとして活用するワークフローが現実的になってきました。しかし、いざ実践しようとすると<strong>「どのOSで何ができるのか？」「標準機能だけで完結するのか？」</strong>という壁に突き当たることが少なくありません。</p>
+<p>この記事では、Windows、macOS、iOS、Androidの4つの主要OSにおいて、スマホを使った計測・3Dスキャンデータの確認・共有をどのように実現すべきか、プロの視点で徹底解説します。</p>
+<h2>4OS比較早見表</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">機能</th>
+<th style="text-align: left;">Windows 11</th>
+<th style="text-align: left;">macOS</th>
+<th style="text-align: left;">iOS (iPhone/iPad)</th>
+<th style="text-align: left;">Android</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>3Dモデル表示</strong></td>
+<td style="text-align: left;">Edgeブラウザ / 専用ビューア</td>
+<td style="text-align: left;">クイックルック（標準）</td>
+<td style="text-align: left;">クイックルック（標準）</td>
+<td style="text-align: left;">Scene Viewer（アプリ）</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>AR計測・スキャン</strong></td>
+<td style="text-align: left;">非対応（専用アプリ必須）</td>
+<td style="text-align: left;">非対応（専用アプリ必須）</td>
+<td style="text-align: left;"><strong>Measureアプリ(標準)</strong></td>
+<td style="text-align: left;"><strong>Google Measure等(アプリ)</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>3Dデータ出力</strong></td>
+<td style="text-align: left;">ファイル保存・共有</td>
+<td style="text-align: left;">iCloud / AirDrop共有</td>
+<td style="text-align: left;">USDZ形式での書き出し</td>
+<td style="text-align: left;">GLTF/CSV等の書き出し</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>主な用途</strong></td>
+<td style="text-align: left;">PCでの図面管理・閲覧</td>
+<td style="text-align: left;">Macでのプレビュー確認</td>
+<td style="text-align: left;"><strong>現場での計測・スキャン</strong></td>
+<td style="text-align: left;">現場での計測・スキャン</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>1. Windows 11 での実例手順</h2>
+<p>Windows環境は、主に「スマホで取得したデータの管理・共有・詳細確認」を行うハブとして機能します。</p>
+<h3>公式仕様に基づく実例手順（標準機能限定）</h3>
+<p>Windowsの「カメラ」アプリや「フォト」アプリ単体では、ARによる自動計測や3Dメッシュの生成は行えません。以下の手順でワークフローを構築します。</p>
+<ol>
+<li><strong>データの転送</strong>: iOS/Android端末でスキャンした<code>.usdz</code>ファイルや画像をOneDrive、Dropbox、またはUSB接続でPCへ転送します。</li>
+<li><strong>モデルの確認</strong>: Windows標準の「フォト」アプリではUSDZの完全なAR表示が難しい場合があるため、<strong>Microsoft Edgeブラウザ</strong>にファイルをドラッグ＆ドロップしてプレビューするか、Microsoft Storeから「USD Viewer」等の専用ソフトを使用します。</li>
+<li><strong>図面のスキャン</strong>: 現場で手書きした図面などは、<strong>Microsoft Lens</strong>（Storeアプリ）を使用してスキャンし、PDFや画像として保存・共有するのが最も確実な標準的フローです。</li>
+</ol>
+<h3>標準機能の制限事項・代替手段</h3>
+<ul>
+<li><strong>計測機能</strong>: WindowsカメラでのLiDAR対応自動計測は「非対応」です。計測自体はスマホ側で行う必要があります。</li>
+<li><strong>3Dスキャン出力</strong>: 純正ソフトでのメッシュ生成は「非対応」です。Scaniverseなどのサードパーティ製アプリで作成したデータを、PCは「閲覧・管理用」として活用してください。</li>
+</ul>
+<h3>よくあるトラブルと解決法</h3>
+<ul>
+<li><strong>トラブルA: USDZファイルが開けない</strong><ul>
+<li>原因：Windows標準ビューアがUSDZ形式に対応していない。</li>
+<li>解決：Edgeブラウザで開くか、Microsoft Storeから「USD Viewer」をインストールする。</li>
+</ul>
+</li>
+<li><strong>トラブルB: ARモデルが表示されない（黒画面）</strong><ul>
+<li>原因：GPUドライバーの古さまたはDirectXの不具合。</li>
+<li>解決：Microsoft Storeで「DirectX End-User Runtime Web Installer」を実行し、グラフィックドライバーを最新に更新する。</li>
+</ul>
+</li>
+<li><strong>トラブルC: ファイル転送時に拡張子が消える</strong><ul>
+<li>原因：クラウド同期時の設定ミスやファイル名の競合。</li>
+<li>解決：OneDriveの「ファイルのアップロードとダウンロード」を手動更新するか、USBで直接コピーして<code>.usdz</code>拡張子を再確認する。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2>2. macOS での実例手順</h2>
+<p>Macユーザーにとって、Appleエコシステムは3Dデータのプレビューにおいて非常に強力な武器となります。</p>
+<h3>公式仕様に基づく実例手順（標準機能限定）</h3>
+<p>macOSには「クイックルック」という強力な標準機能があります。</p>
+<ol>
+<li><strong>ARクイックルック</strong>: Finderで<code>.usdz</code>ファイルを選択し、ダブルクリック（または右クリック→「クイックルックで開く」）をします。Apple Silicon搭載機やLiDAR搭載機であれば、デスクトップ上で3Dモデルのプレビューが可能です。</li>
+<li><strong>共有手順</strong>: 生成したデータはiCloud Driveに保存し、Time Machineでバックアップを取ります。他のAppleデバイスへはAirDropで瞬時に送信可能です。</li>
+</ol>
+<h3>標準機能の制限事項・代替手段</h3>
+<ul>
+<li><strong>計測機能</strong>: クイックルック内には「距離測定」や「体積計算」ツールは存在しません。「非対応（代替：Measureアプリや専用AR計測アプリを使用）」となります。</li>
+</ul>
+<h3>よくあるトラブルと解決法</h3>
+<ul>
+<li><strong>トラブルA: 「クイックルックで開く」がグレーアウトしている</strong><ul>
+<li>原因：macOSのバージョン相性、またはファイル破損。</li>
+<li>解決：Xcodeの「Scene Viewer for Mac」をインストールして代替表示するか、iPhoneから確認する。</li>
+</ul>
+</li>
+<li><strong>トラブルB: ARモデルが表示されたが回転・拡大縮小できない</strong><ul>
+<li>原因：GPUアクセラレーションの不具合。</li>
+<li>解決：システム設定→ディスプレイでグラフィック設定を確認。まずはXcodeのScene Viewerでの動作を優先的に試す。</li>
+</ul>
+</li>
+<li><strong>トラブルC: ファイルサイズが巨大すぎて転送できない</strong><ul>
+<li>原因：テクスチャ解像度が高すぎる。</li>
+<li>解決：作成元のアプリでテクスチャ圧縮を行うか、ZIPアーカイブ化してからAirDropで送信する。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2>3. iOS（iPhone / iPad）での実例手順</h2>
+<p>iOSは「現場での計測・スキャン」の主役です。ARKitを基盤とした高度な機能を利用します。</p>
+<h3>公式仕様に基づく実例手順（標準機能＋必須サードパーティ）</h3>
+<ol>
+<li><strong>AR表示</strong>: 「ファイル」アプリから<code>.usdz</code>を選択し、クイックルックアイコンをタップして確認します。</li>
+<li><strong>計測・スキャンの実現方法</strong>: <ul>
+<li><strong>純正アプリの活用</strong>: Apple純正の「Measure（計測）」アプリを使用すれば、カメラをかざすだけで距離や面積を測定できます。</li>
+<li><strong>3Dスキャンの実行</strong>: より高度な間取りスキャンには、<strong>IKEA Place, RoomScan AI, AR 測定器</strong>などのサードパーティ製アプリが必須です。これらのアプリで部屋を走査し、3Dモデル（USDZ等）として書き出します。</li>
+</ul>
+</li>
+</ol>
+<h3>標準機能の制限事項・代替手段</h3>
+<ul>
+<li><strong>自動計測</strong>: 「クイックルック」内には距離測定UIはありません。「Measure」アプリに限定されます。</li>
+<li><strong>3Dモデル保存</strong>: 「Measure」アプリは画像のみの保存となるため、3Dモデルとして共有したい場合は上記サードパーティ製アプリを併用してください。</li>
+</ul>
+<h3>よくあるトラブルと解決法</h3>
+<ul>
+<li><strong>トラブルA: ARクイックルックでモデルが歪んで表示される</strong><ul>
+<li>原因：IMU（加速度計・ジャイロ）のキャリブレーション不具合。</li>
+<li>解決：「設定」→「一般」→「iPhoneを再起動」を行うか、Measureアプリ内でセンサーの再キャリブを実行する。</li>
+</ul>
+</li>
+<li><strong>トラブルB: LiDARスキャンが反応しない</strong><ul>
+<li>原因：機種にLiDAR非搭載、またはアプリ権限不足。</li>
+<li>解決：「設定」→「プライバシーとセキュリティ」からカメラ/アクセラロメータの許可を確認する。</li>
+</ul>
+</li>
+<li><strong>トラブルC: USDZファイルがiCloud Driveに保存されない</strong><ul>
+<li>原因：アプリごとの共有設定の違い。</li>
+<li>解決：Share Sheet（共有ボタン）から「ファイルをコピーしてiCloud Driveに移動」を明示的に選択する。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2>4. Android での実例手順</h2>
+<p>Androidはメーカーや機種による差異が大きいものの、Googleの標準的なARフレームワークを活用します。</p>
+<h3>公式仕様に基づく実例手順（標準機能＋必須サードパーティ）</h3>
+<ol>
+<li><strong>AR表示</strong>: Google Playストアから「Scene Viewer」をインストールします。これによりUSDZ/GLTFファイルをARで確認可能です。</li>
+<li><strong>計測・スキャンの実現方法</strong>: <ul>
+<li>Androidでは、Google提供の「Measure（計測）」アプリや、<strong>RoomScan AI</strong>, <strong>LiDAR Scanner（Pixel専用）</strong>等のアプリを使用します。</li>
+<li>これらのアプリで測定データをCSVや画像としてエクスポートし、PCと共有するワークフローが一般的です。</li>
+</ul>
+</li>
+</ol>
+<h3>標準機能の制限事項・代替手段</h3>
+<ul>
+<li><strong>統一された計測UI</strong>: Android標準カメラにAR計測ボタンは備わっていません。「非対応（代替：専用アプリをインストール）」となります。</li>
+<li><strong>注意点</strong>: Google「Measure」はPlayストアで入手可能ですが、システム設定に含まれる「標準機能」とは異なるため、アプリとしての導入が必要です。</li>
+</ul>
+<h3>よくあるトラブルと解決法</h3>
+<ul>
+<li><strong>トラブルA: Scene Viewerでモデルが表示されない</strong><ul>
+<li>原因：ARCoreの未対応またはGoogle Play Servicesのバージョン不足。</li>
+<li>解決：Google Playストアで「ARCore」を更新し、デバイスが対応機種か確認する。</li>
+</ul>
+</li>
+<li><strong>トラブルB: 測定精度が安定しない</strong><ul>
+<li>原因：照明不足や平坦でない床面でのスキャン。</li>
+<li>解決：明るい環境で、できるだけ平らな床面を基準にスキャンを開始する。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2>よくあるトラブルと解決チェックリスト</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">トラブル内容</th>
+<th style="text-align: left;">原因の可能性</th>
+<th style="text-align: left;">解決策・チェック項目</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>3Dモデルが重くて開けない</strong></td>
+<td style="text-align: left;">テクスチャ解像度が高すぎる</td>
+<td style="text-align: left;">作成アプリで「Low Poly」または「圧縮テクスチャ」を選択して再出力する。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>AR空間でモデルが「浮く」</strong></td>
+<td style="text-align: left;">床面の認識失敗（平面検知エラー）</td>
+<td style="text-align: left;">床にコントラストのある模様があるか確認し、スキャン開始時に床をしっかり動かす。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>ファイル転送で拡張子が消える</strong></td>
+<td style="text-align: left;">クラウド同期の自動リネーム</td>
+<td style="text-align: left;">ファイル名を「.usdz」を含まない名称にし、手動で拡張子を付与して再アップロードする。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>LiDARが反応しない（iPhone）</strong></td>
+<td style="text-align: left;">権限設定または機種の制限</td>
+<td style="text-align: left;">「設定」からカメラ・アクセラロメータの許可を確認。Proモデル以外はLiDAR非対応。</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>まとめ：快適なマルチOS環境を作るポイント</h2>
+<p>スマホを使った計測や3Dスキャンを実用的なレベルに引き上げるには、<strong>「現場での正確なデータ取得（iOS/Android）」と「PCでの高度な管理・編集（Windows/macOS）」の役割分担</strong>が重要です。</p>
+<p>よりスムーズなワークフローを実現するためのポイントをまとめます：</p>
+<ol>
+<li><strong>周辺機器の活用</strong>: <ul>
+<li>PCでの3Dモデル操作や図面確認を快適にするなら、<strong>3Dマウス</strong>や<strong>左手デバイス</strong>の導入を検討してください。これらは複雑な視点移動や操作を劇的に効率化します。</li>
+</ul>
+</li>
+<li><strong>ハードウェアの選定</strong>: <ul>
+<li>高精度なスキャンデータを取り扱うなら、<strong>高スペックPCと強力なGPU（NVIDIA RTXシリーズ等）</strong>は必須です。特にメッシュデータのレンダリングにはVRAM容量が重要になります。</li>
+</ul>
+</li>
+<li><strong>アウトプットの検討</strong>: <ul>
+<li>計測した間取りを実際に形にするなら、<strong>3Dプリンター</strong>での模型製作や、正確なCADデータへの変換へと繋げるのが理想的です。</li>
+</ul>
+</li>
+</ol>
+<p>標準機能だけで全てを解決しようとせず、適切なサードパーティ製アプリとデバイスを組み合わせることで、あなたの「ものづくり」の精度は飛躍的に向上するはずです。</p>
+<hr />
+<h2>参考文献・公式ドキュメント（一次情報ソース）</h2>
+<p>本記事の手順・仕様は以下の各OSおよびツールの公式ドキュメントに基づいています。OSアップデートによりメニュー名称や挙動が変わる場合があるため、最新仕様の確認にもご活用ください。</p>
+<ul>
+<li><strong>[Windows]</strong> <a href="https://support.microsoft.com/ja-jp/windows">Windows のヘルプとラーニング - Microsoft サポート</a></li>
+<li><strong>[macOS]</strong> <a href="https://support.apple.com/ja-jp/guide/mac-help/mh14119/mac">Macのクイックルックでファイルを表示する/編集する - Apple サポート (日本)</a></li>
+<li><strong>[iOS]</strong> <a href="https://developer.apple.com/jp/augmented-reality/quick-look/">ARクイックルック（USDZ 3Dモデル表示） - Apple Developer</a></li>
+<li><strong>[Android]</strong> <a href="https://developers.google.com/ar/develop/scene-viewer">Scene Viewer（Androidでの3D/ARモデル表示） - Google Developers</a></li>
+</ul>
+    </article>
+  </main>
+  <footer>Generated with Local Ollama (qwen3.5 / gemma4) &amp; Draw Things (FLUX.2 klein 4B)</footer>
+</body>
+</html>
