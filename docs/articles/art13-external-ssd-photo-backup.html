@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>外付けSSDを4OSで共用するバックアップ手順と認識しない時の対処｜Windows・macOS・iOS・Android | PC 4OS実例ガイド</title>
+  <style>
+:root {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --muted: #475569;
+  --accent: #0284c7;
+  --accent-soft: #e0f2fe;
+  --border: #e2e8f0;
+  --code-bg: #0f172a;
+  --code-text: #e2e8f0;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Noto Sans JP", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+}
+header.site-header {
+  background: linear-gradient(135deg, #0f172a 0%, #0369a1 100%);
+  color: #fff;
+  padding: 2.2rem 1.25rem;
+}
+header.site-header .inner { max-width: 980px; margin: 0 auto; }
+header.site-header h1 { margin: 0 0 0.4rem; font-size: 1.75rem; }
+header.site-header p { margin: 0; opacity: 0.9; font-size: 0.96rem; }
+main { max-width: 980px; margin: 2rem auto; padding: 0 1.25rem 3rem; }
+.badge {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: var(--accent-soft);
+  color: #0369a1;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1.25rem;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08); }
+.card img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; display: block; background: #e2e8f0; }
+.card-body { padding: 1rem 1.1rem 1.2rem; flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+.card-title { font-size: 1.02rem; font-weight: 700; margin: 0; line-height: 1.45; }
+.card-meta { font-size: 0.82rem; color: var(--muted); margin-top: auto; }
+article.post {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 2rem;
+}
+article.post img.eyecatch {
+  width: 100%;
+  max-height: 460px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+}
+article.post h1 { font-size: 1.65rem; line-height: 1.35; margin-top: 0; }
+article.post h2 {
+  font-size: 1.3rem;
+  margin-top: 2.1rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 2px solid var(--accent-soft);
+}
+article.post h3 { font-size: 1.08rem; margin-top: 1.4rem; }
+article.post table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.2rem 0;
+  font-size: 0.92rem;
+  display: block;
+  overflow-x: auto;
+}
+article.post th, article.post td {
+  border: 1px solid var(--border);
+  padding: 0.6rem 0.8rem;
+  text-align: left;
+}
+article.post th { background: #f1f5f9; font-weight: 700; }
+article.post pre {
+  background: var(--code-bg);
+  color: var(--code-text);
+  padding: 1rem 1.15rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+article.post code {
+  background: #f1f5f9;
+  padding: 0.15rem 0.38rem;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+article.post pre code { background: transparent; padding: 0; color: inherit; }
+article.post blockquote {
+  margin: 1.2rem 0;
+  padding: 0.8rem 1.1rem;
+  border-left: 4px solid var(--accent);
+  background: #f0f9ff;
+  border-radius: 0 8px 8px 0;
+}
+.back-link { display: inline-block; margin-bottom: 1rem; color: var(--accent); text-decoration: none; font-weight: 600; }
+footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2rem 1rem; }
+@media (max-width: 640px) {
+  article.post { padding: 1.2rem; }
+}
+</style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="inner">
+      <h1>PC 4OS実例ガイド</h1>
+      <p>Windows・macOS・iOS・Android の実践比較＆トラブル解決アーカイブ</p>
+    </div>
+  </header>
+  <main>
+    <a class="back-link" href="../index.html">← 記事一覧へ戻る</a>
+    <article class="post">
+      <p><span class="badge">#13｜分類13: ファイル管理・バックアップ・データ復旧</span> <small style="color:#64748b;margin-left:0.5rem;">2026-11-23</small></p>
+      <img class="eyecatch" src="../images/2026-11-23_art13_external_ssd_photo_backup.png" alt="外付けSSDを4OSで共用するバックアップ手順と認識しない時の対処｜Windows・macOS・iOS・Android">
+      <h1>外付けSSDを4OSで共用するバックアップ手順と認識しない時の対処｜Windows・macOS・iOS・Android</h1>
+<p>「外付けSSDを1台用意して、Windows PCでもMacでも、さらにはiPhoneやAndroidスマホでも使い回したい」と考えていませんか？</p>
+<p>しかし、いざ接続してみると「Macでは読み込めるのにWindowsでは書き込めない」「スマホに繋いだら認識されない」といったトラブルに直面し、挫折してしまう方も少なくありません。これはOSごとに推奨される「ファイルシステム（フォーマット）」が異なることが原因です。</p>
+<p>この記事では、<strong>Windows、macOS、iOS、Androidの4つのOSすべてで快適に共用するための最適解「exFAT」を軸とした運用術</strong>と、各OSでの具体的なバックアップ手順、そして「認識しない時」のトラブルシューティングを徹底解説します。</p>
+<h2>4OS比較早見表</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">OS</th>
+<th style="text-align: left;">推奨フォーマット</th>
+<th style="text-align: left;">特徴・注意点</th>
+<th style="text-align: left;">バックアップ機能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Windows 11</strong></td>
+<td style="text-align: left;">exFAT</td>
+<td style="text-align: left;">標準はNTFSだが、exFATならMac/スマホとも互換。</td>
+<td style="text-align: left;">システムイメージ作成（Pro以上）</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>macOS</strong></td>
+<td style="text-align: left;">exFAT</td>
+<td style="text-align: left;">標準はAPFS/HFS+。exFATではTime Machine不可。</td>
+<td style="text-align: left;">Time Machine</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>iOS (iPhone)</strong></td>
+<td style="text-align: left;">exFAT</td>
+<td style="text-align: left;">USB-Cモデルは直接接続可。ファイルアプリで操作。</td>
+<td style="text-align: left;">iCloud / ローカルコピー</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Android</strong></td>
+<td style="text-align: left;">exFAT</td>
+<td style="text-align: left;">MTPモード経由、または直接接続（機種による）。</td>
+<td style="text-align: left;">Google Drive / ローカルコピー</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>1. Windows 11 での実例手順</h2>
+<p>Windows環境では、外付けSSDを「大容量の移動式ストレージ」として最も自由に扱えます。</p>
+<h3>標準機能での実例手順</h3>
+<ul>
+<li><strong>ファイル共有</strong>: 「エクスプローラー」を開き、接続したSSDを選択します。バックアップしたい写真フォルダや動画ファイルをドラッグ＆ドロップするだけでコピーが完了します。</li>
+<li><strong>システムバックアップ（イメージ作成）</strong>: <ul>
+<li>「設定」→「Windows の更新とセキュリティ」→「バックアップ」へ進みます。</li>
+<li>公式機能「PC のバックアップおよび復元」を使用し、外付けSSDを宛先として選択します。</li>
+<li><strong>注意</strong>: この機能は Windows 10/11 <strong>Proエディション以上</strong>でのみフル機能が利用可能です。</li>
+</ul>
+</li>
+</ul>
+<h3>標準機能の制限事項・注意点</h3>
+<ul>
+<li><strong>システムファイルへの書き込み不可</strong>: SSDを接続していても、Windowsのシステムフォルダ（Windows, Program Filesなど）へ直接上書きすることは保護機能により制限されます。</li>
+<li><strong>Home エディションの制限</strong>: Homeエディションでは「PC をバックアップおよび復元」機能が標準で提供されないため、後述する「ファイル履歴」やサードパーティ製ソフトの活用が必要です。</li>
+</ul>
+<h3>よくあるトラブルと解決法 3 選</h3>
+<ol>
+<li><strong>「外付け SSD が認識しない・表示されない」</strong><ul>
+<li><strong>原因</strong>: USBケーブルの接触不良、USB Hub経由による電力不足、またはフォーマットが非互換（NTFS/FAT32等）の場合。</li>
+<li><strong>解決策</strong>: 別のUSBポートに直接接続し直す。デバイスマネージャーで「ディスクドライブ」を確認し、黄色い感嘆符がある場合はドライバーを再インストールしてください。</li>
+</ul>
+</li>
+<li><strong>「コピー中に『読み取り専用』エラーが出る」</strong><ul>
+<li><strong>原因</strong>: SSDの物理的なロックスイッチが入っているか、ファイルシステムのエラーによる自己防衛。</li>
+<li><strong>解決策</strong>: 物理スイッチを確認。改善しない場合、管理者権限でコマンドプロンプトを開き <code>chkdsk X: /f</code>（Xはドライブ文字）を実行して修復を試みてください（※データ損失リスクがあるため注意）。</li>
+</ul>
+</li>
+<li><strong>「バックアップ設定画面からドライブが選択できない」</strong><ul>
+<li><strong>原因</strong>: 容量不足、またはHomeエディションの制限。</li>
+<li><strong>解決策</strong>: 空き容量を確認する。Homeユーザーは「ファイル履歴」を設定するか、クラウドバックアップを検討してください。</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h2>2. macOS での実例手順</h2>
+<p>MacではTime Machineという強力なバックアップ機能がありますが、4OS共用を優先する場合は操作に注意が必要です。</p>
+<h3>標準機能での実例手順</h3>
+<ul>
+<li><strong>手動バックアップ</strong>: 「Finder」を開き、SSDを選択します。iCloudフォトライブラリやデスクトップ上のファイルをコピーして保存します。</li>
+<li><strong>外付けストレージとしての認識</strong>: 「システム設定」→「一般」→「AirDrop や Time Machine で利用可能なネットワークと外付けストレージ」からSSDを確認できます。</li>
+</ul>
+<h3>標準機能の制限事項・注意点</h3>
+<ul>
+<li><strong>exFAT と Time Machine の不両立</strong>: <strong>ここが重要です。</strong> exFATでフォーマットされたSSDは、Macの標準バックアップ機能「Time Machine」の宛先として選択できません（Time MachineはAPFS/HFS+を要求するため）。</li>
+<li><strong>ファイル名の制限</strong>: exFATでは日本語の特殊文字や極端に長いパス名において、稀に不具合が生じることがあります。</li>
+</ul>
+<h3>よくあるトラブルと解決法 3 選</h3>
+<ol>
+<li><strong>「Time Machine の設定画面に SSD が表示されない」</strong><ul>
+<li><strong>原因</strong>: SSDがexFATでフォーマットされているため、バックアップ宛先として認識されない。</li>
+<li><strong>解決策</strong>: Time Machineを優先するなら「ディスクユーティリティ」でSSDを「APFS」に再フォーマットしてください（※全データ消去されます）。</li>
+</ul>
+</li>
+<li><strong>「コピー中に『読み取り専用』エラー」</strong><ul>
+<li><strong>原因</strong>: WindowsからMacへコピーした際、フォーマットがNTFSのままになっている。</li>
+<li><strong>解決策</strong>: 「ディスクユーティリティ」でSSDを「exFAT」に再フォーマットしてください。</li>
+</ul>
+</li>
+<li><strong>「バックアップが中断し、エラーメッセージが出る」</strong><ul>
+<li><strong>原因</strong>: USBケーブルの断線やポートからの脱離。</li>
+<li><strong>解決策</strong>: Time Machineを一度オフにし、再度SSDをしっかり接続してからオンに切り替えてください。</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h2>3. iOS（iPhone / iPad）での実例手順</h2>
+<p>近年のiPhone（USB-Cモデル等）は外付けストレージとの親和性が高まっていますが、操作にはコツが必要です。</p>
+<h3>標準機能での実例手順</h3>
+<ul>
+<li><strong>ケーブル接続</strong>: iPhoneにSSDを接続します。iOS 17.4以降では「設定」→「一般」→「AirDrop と外付けストレージで利用可能なネットワークと外付けストレージ」からファイル共有の設定が可能です。</li>
+<li><strong>写真のバックアップ</strong>: 標準の「写真」アプリから直接SSDへ「全選択→共有→ファイル」という操作は、機種やOSバージョンにより制限があるため、<strong>「ファイル」アプリ</strong>を介した管理が最も確実です。</li>
+</ul>
+<h3>標準機能の制限事項・注意点</h3>
+<ul>
+<li><strong>直接コピー不可（USB ケーブル時）</strong>: iOSのセキュリティポリシーにより、写真アプリからワンタップでSSDへ保存できない場合があります。その場合はPCを経由するか、「ファイル」アプリ内で操作を行うのが公式推奨に近い挙動です。</li>
+<li><strong>ファイル形式の制限</strong>: exFATは対応していますが、特定の動画コーデック（HEVC等）をそのまま保存すると再生できないケースがあります。</li>
+</ul>
+<h3>よくあるトラブルと解決法 3 選</h3>
+<ol>
+<li><strong>「USB を繋いでも『信頼』または『ファイルを転送』が表示されない」</strong><ul>
+<li><strong>原因</strong>: 設定で「PC と iTunes で利用可能なネットワーク」がオフ、またはケーブルの接触不良。</li>
+<li><strong>解決策</strong>: 「設定」→「一般」→「AirDrop や Time Machine で利用可能なネットワークと外付けストレージ」から該当デバイスを選択し、「ファイルを転送」をオンにします。</li>
+</ul>
+</li>
+<li><strong>「写真アプリで SSD が選択肢にない」</strong><ul>
+<li><strong>原因</strong>: セキュリティポリシーによる書き込み制限。</li>
+<li><strong>解決策</strong>: PCに接続し、PC側の「ファイル」アプリやFinderからiPhone内のデータを抽出・コピーしてください。</li>
+</ul>
+</li>
+<li><strong>「バックアップ中に画面がフリーズ」</strong><ul>
+<li><strong>原因</strong>: SSDの容量不足またはケーブルの電力供給不足。</li>
+<li><strong>解決策</strong>: 一度転送をキャンセルし、USBケーブルを抜き差しして再試行してください。</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h2>4. Android での実例手順</h2>
+<p>Androidは機種（Pixel, Galaxy等）によってメニュー構成が異なりますが、基本は「MTPモード」の活用です。</p>
+<h3>標準機能での実例手順</h3>
+<ul>
+<li><strong>PCとの接続</strong>: USBを繋ぎ、通知パネルから「ファイルの転送」を選択します。</li>
+<li><strong>設定の確認</strong>: 「設定」→「接続」→「USB デバイス使用法」等で「メディア転送（MTP）」がオンになっているか確認します。</li>
+<li><strong>SSDへの保存</strong>: Androidの「ファイル」アプリ（または機種独自のファイルマネージャー）を開き、外付けSSDを選択してファイルをコピーします。</li>
+</ul>
+<h3>標準機能の制限事項・注意点</h3>
+<ul>
+<li><strong>直接接続の制限</strong>: 一部の安価なモデルや古いモデルでは、USBポートからの給電能力が低く、SSDを認識しないことがあります。その場合はセルフパワー式のUSBハブが必要です。</li>
+</ul>
+<h3>よくあるトラブルと解決法 3 選</h3>
+<ol>
+<li><strong>「PCに繋いでも中身が見られない」</strong><ul>
+<li><strong>原因</strong>: スマホ側が「充電のみ」モードになっている。</li>
+<li><strong>解決策</strong>: 通知欄から「ファイル転送」をタップしてください。</li>
+</ul>
+</li>
+<li><strong>「SSDのフォルダが開けない・読み取れない」</strong><ul>
+<li><strong>原因</strong>: フォーマットがNTFSである（Androidは標準でexFAT/FAT32を推奨）。</li>
+<li><strong>解決策</strong>: PCに接続し、SSDを「exFAT」に再フォーマットしてください。</li>
+</ul>
+</li>
+<li><strong>「転送中にアプリが強制終了する」</strong><ul>
+<li><strong>原因</strong>: 大容量ファイルの連続転送によるメモリ不足や電力不足。</li>
+<li><strong>解決策</strong>: ファイルを小分けにしてコピーするか、給電の安定したポートを使用してください。</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h2>まとめ：快適なマルチOS環境を作るポイント</h2>
+<p>4つのOSすべてで外付けSSDを共用するための鍵は、<strong>「exFATフォーマット」の徹底</strong>と<strong>「物理的な接続環境（電力・ケーブル）」の整備</strong>にあります。</p>
+<p>快適なバックアップ環境を構築するために、以下の要素を組み合わせるのがプロの推奨です。</p>
+<ul>
+<li><strong>外付けHDD/SSD</strong>: 物理的なバックアップの第一歩です。exFATでフォーマットされた高速なNVMe SSDを選べば、4OSでのストレスが激減します。</li>
+<li><strong>データ復旧ソフト</strong>: 万が一の誤操作やファイル破損に備え、信頼できるデータ復旧ツールを常備しておくことは安心に繋がります。</li>
+<li><strong>バックアップソフト</strong>: Windowsの「ファイル履歴」やMacの「Time Machine」など、OS標準の自動化機能を活用することで、手動コピーの手間を省けます。</li>
+<li><strong>クラウドバックアップ</strong>: 物理的なSSDに加え、Google DriveやiCloudなどのクラウドへも重要なデータを同期させる「二重の守り」が、現代のデータ管理における最適解です。</li>
+</ul>
+<p>適切なフォーマットとツール選びで、デバイスの垣根を超えたスムーズなデータ運用を実現しましょう。</p>
+<hr />
+<h2>参考文献・公式ドキュメント（一次情報ソース）</h2>
+<p>本記事の手順・仕様は以下の各OSおよびツールの公式ドキュメントに基づいています。OSアップデートによりメニュー名称や挙動が変わる場合があるため、最新仕様の確認にもご活用ください。</p>
+<ul>
+<li><strong>[Windows]</strong> <a href="https://support.microsoft.com/ja-jp/windows/windows-%E3%81%A7-pc-%E3%82%92%E3%83%90%E3%83%83%E3%82%AF%E3%82%A2%E3%83%83%E3%83%97%E3%81%8A%E3%82%88%E3%81%B3%E5%BE%A9%E5%85%83%E3%81%99%E3%82%8B-352091d2-bb9d-3ea3-ed18-52ef2b88cbef">Windows で PC をバックアップおよび復元する - Microsoft サポート</a></li>
+<li><strong>[macOS]</strong> <a href="https://support.apple.com/ja-jp/104984">Time MachineでMacをバックアップする - Apple サポート (日本)</a></li>
+<li><strong>[iOS]</strong> <a href="https://support.apple.com/ja-jp/guide/iphone/iph95baac91f/ios">iPhoneに外部ストレージデバイスを接続する - Apple サポート (日本)</a></li>
+<li><strong>[Android]</strong> <a href="https://support.google.com/android/answer/9064445?hl=ja">パソコンと Android デバイス間でファイルを転送する - Android ヘルプ</a></li>
+</ul>
+    </article>
+  </main>
+  <footer>Generated with Local Ollama (qwen3.5 / gemma4) &amp; Draw Things (FLUX.2 klein 4B)</footer>
+</body>
+</html>
