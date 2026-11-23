@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>初心者向けMarkdownメモの書き方と全端末同期・プレビュー実例｜Windows・macOS・iOS・Android | PC 4OS実例ガイド</title>
+  <style>
+:root {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --muted: #475569;
+  --accent: #0284c7;
+  --accent-soft: #e0f2fe;
+  --border: #e2e8f0;
+  --code-bg: #0f172a;
+  --code-text: #e2e8f0;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Noto Sans JP", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+}
+header.site-header {
+  background: linear-gradient(135deg, #0f172a 0%, #0369a1 100%);
+  color: #fff;
+  padding: 2.2rem 1.25rem;
+}
+header.site-header .inner { max-width: 980px; margin: 0 auto; }
+header.site-header h1 { margin: 0 0 0.4rem; font-size: 1.75rem; }
+header.site-header p { margin: 0; opacity: 0.9; font-size: 0.96rem; }
+main { max-width: 980px; margin: 2rem auto; padding: 0 1.25rem 3rem; }
+.badge {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: var(--accent-soft);
+  color: #0369a1;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1.25rem;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08); }
+.card img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; display: block; background: #e2e8f0; }
+.card-body { padding: 1rem 1.1rem 1.2rem; flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+.card-title { font-size: 1.02rem; font-weight: 700; margin: 0; line-height: 1.45; }
+.card-meta { font-size: 0.82rem; color: var(--muted); margin-top: auto; }
+article.post {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 2rem;
+}
+article.post img.eyecatch {
+  width: 100%;
+  max-height: 460px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+}
+article.post h1 { font-size: 1.65rem; line-height: 1.35; margin-top: 0; }
+article.post h2 {
+  font-size: 1.3rem;
+  margin-top: 2.1rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 2px solid var(--accent-soft);
+}
+article.post h3 { font-size: 1.08rem; margin-top: 1.4rem; }
+article.post table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.2rem 0;
+  font-size: 0.92rem;
+  display: block;
+  overflow-x: auto;
+}
+article.post th, article.post td {
+  border: 1px solid var(--border);
+  padding: 0.6rem 0.8rem;
+  text-align: left;
+}
+article.post th { background: #f1f5f9; font-weight: 700; }
+article.post pre {
+  background: var(--code-bg);
+  color: var(--code-text);
+  padding: 1rem 1.15rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+article.post code {
+  background: #f1f5f9;
+  padding: 0.15rem 0.38rem;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+article.post pre code { background: transparent; padding: 0; color: inherit; }
+article.post blockquote {
+  margin: 1.2rem 0;
+  padding: 0.8rem 1.1rem;
+  border-left: 4px solid var(--accent);
+  background: #f0f9ff;
+  border-radius: 0 8px 8px 0;
+}
+.back-link { display: inline-block; margin-bottom: 1rem; color: var(--accent); text-decoration: none; font-weight: 600; }
+footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2rem 1rem; }
+@media (max-width: 640px) {
+  article.post { padding: 1.2rem; }
+}
+</style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="inner">
+      <h1>PC 4OS実例ガイド</h1>
+      <p>Windows・macOS・iOS・Android の実践比較＆トラブル解決アーカイブ</p>
+    </div>
+  </header>
+  <main>
+    <a class="back-link" href="../index.html">← 記事一覧へ戻る</a>
+    <article class="post">
+      <p><span class="badge">#24｜分類07: プログラミング・ソフトウェア開発</span> <small style="color:#64748b;margin-left:0.5rem;">2026-11-23</small></p>
+      <img class="eyecatch" src="../images/2026-11-23_art24_markdown_editor_sync_beginners.png" alt="初心者向けMarkdownメモの書き方と全端末同期・プレビュー実例｜Windows・macOS・iOS・Android">
+      <h1>初心者向けMarkdownメモの書き方と全端末同期・プレビュー実例｜Windows・macOS・iOS・Android</h1>
+<p>「技術的なメモや学習内容を、PCでもスマホでもいつでも確認できるようにしたい」「でも、OSごとにアプリを使い分けるのは面倒……」そんな悩みをお持ちではありませんか？</p>
+<p>プログラミングやソフトウェア開発の現場では、情報の断片化を防ぐために<strong>Markdown（マークダウン）</strong>形式でのメモ管理が標準となっています。本記事では、単に「書き方」を学ぶだけでなく、<strong>GitHubを共通のソース（共有元）として活用し、Windows、macOS、iOS、Androidの4つのOSでシームレスに同期・閲覧する実践的なワークフロー</strong>を解説します。</p>
+<p>この記事を読めば、デバイスの壁を超えた「自分だけのナレッジベース」を構築する手順がすべて分かります。</p>
+<h2>4OS比較早見表</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">機能 / OS</th>
+<th style="text-align: left;">Windows 11</th>
+<th style="text-align: left;">macOS</th>
+<th style="text-align: left;">iOS (iPhone/iPad)</th>
+<th style="text-align: left;">Android</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>主な執筆環境</strong></td>
+<td style="text-align: left;"><code>github.dev</code> (Web版)</td>
+<td style="text-align: left;">Visual Studio Code</td>
+<td style="text-align: left;">GitHubアプリ / Safari</td>
+<td style="text-align: left;">GitHubアプリ / Chrome</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>同期の仕組み</strong></td>
+<td style="text-align: left;">GitHubリポジトリ経由</td>
+<td style="text-align: left;">Git Push / Pull</td>
+<td style="text-align: left;">自動同期（GitHub経由）</td>
+<td style="text-align: left;">自動同期（GitHub経由）</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>プレビュー</strong></td>
+<td style="text-align: left;">ブラウザ内レンダリング</td>
+<td style="text-align: left;">VS Code内プレビュー</td>
+<td style="text-align: left;">アプリ内/Web表示</td>
+<td style="text-align: left;">アプリ内/ブラウザ表示</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>主な用途</strong></td>
+<td style="text-align: left;">集中した執筆・管理</td>
+<td style="text-align: left;">高度な編集・開発</td>
+<td style="text-align: left;">移動中の確認・補足</td>
+<td style="text-align: left;">移動中の確認・補足</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>1. Windows 11 での実例手順</h2>
+<p>Windows環境では、ローカルの環境を汚さず、かつクラウドとの同期を最優先した「Webベースのエディタ」を活用する構成を推奨します。</p>
+<h3>標準機能・公式アプリ操作手順</h3>
+<ol>
+<li><strong>執筆環境の準備</strong>: ブラウザで <a href="https://github.dev">github.dev</a> にアクセスし、GitHubアカウントでログインします。</li>
+<li><strong>ファイル作成</strong>: 既存のリポジトリを選択するか、新規リポジトリを作成して「New file」ボタンをクリック。ファイル名を <code>memo.md</code> とし、Markdown記法（例：<code># 見出し</code>, <code>```python</code>）を入力します。</li>
+<li><strong>プレビュー確認</strong>: Webエディタ上でリアルタイムにレンダリングされる内容を確認します。</li>
+<li><strong>モバイル連携</strong>: <strong>GitHub Mobile</strong> アプリをインストールしておけば、PCで保存した内容が即座にスマホへ反映されます。</li>
+</ol>
+<h3>標準機能の制限事項・代替手段</h3>
+<ul>
+<li><strong>ローカル保存の非対応</strong>: <code>github.dev</code> はブラウザ上のエディタであるため、PCのハードディスクに直接ファイルを落として編集する「ローカルファースト」な操作はできません。<ul>
+<li><em>代替手段</em>: 完全にローカルで管理したい場合は、Microsoft Storeから <strong>Visual Studio Code</strong> をインストールし、Gitコマンドまたは拡張機能を利用してください。</li>
+</ul>
+</li>
+<li><strong>プレビュー機能</strong>: 標準的なレンダリングは可能ですが、高度なCSSカスタマイズを反映させるにはWebエディタでは制限があります。</li>
+</ul>
+<h3>よくあるトラブルと解決法 3 選</h3>
+<ol>
+<li><strong>「ファイルが保存されない」「反映されない」エラー</strong><ul>
+<li><strong>原因</strong>: ブラウザのキャッシュやネットワーク接続の問題、またはリポジトリへのアクセス権限不足。</li>
+<li><strong>解決策</strong>: ページを再読み込み（F5）し、GitHub Mobileアプリから同じリポジトリを開いて「最新化（Pull）」ボタンを押すことで反映を確認します。</li>
+</ul>
+</li>
+<li><strong>「コードブロックの言語指定で色付けされない」エラー</strong><ul>
+<li><strong>原因</strong>: 記述した言語名がGitHubが認識していない拡張子または名前であること。</li>
+<li><strong>解決策</strong>: <code>```python</code> のように、必ずバッククォート内の言語名を正確に書く（例：<code>cpp</code>, <code>java</code>, <code>javascript</code>）。</li>
+</ul>
+</li>
+<li><strong>「プレビュー画面が崩れる・文字化けする」</strong><ul>
+<li><strong>原因</strong>: ブラウザの設定（Cookie/JavaScript）ブロックや、GitHubのサーバー側の一時的な不具合。</li>
+<li><strong>解決策</strong>: プライバシー設定で「サイトへのアクセスを許可」し直すか、EdgeやChromeなど別のブラウザから再アクセスしてください。</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h2>2. macOS での実例手順</h2>
+<p>macOSユーザーにとって、最も安定した体験を提供するのはネイティブアプリである <strong>Visual Studio Code (VS Code)</strong> を活用する構成です。</p>
+<h3>標準機能・公式アプリ操作手順</h3>
+<ol>
+<li><strong>執筆環境の準備</strong>: 公式サイトまたはMac App Storeから「Visual Studio Code」をインストールします。</li>
+<li><strong>同期方法</strong>: VS Codeでリポジトリをクローン（<code>git clone</code>）または初期化（<code>git init</code>）します。</li>
+<li><strong>編集とプッシュ</strong>: <code>.md</code> ファイルを作成・編集後、「Source Control」パネルでコミットし、GitHubへ「Push」します。</li>
+<li><strong>プレビュー</strong>: VS Code内の「Preview」ボタンをクリックして、エディタ内で直接レンダリング結果を確認します。</li>
+</ol>
+<h3>標準機能の制限事項・代替手段</h3>
+<ul>
+<li><strong>「OneDrive/Google Drive」との同期非対応</strong>: macOSのシステムファイルやクラウドストレージ上のファイルを <code>github.dev</code> で直接編集することはできません（GitHubリポジトリとは別物です）。<ul>
+<li><em>代替手段</em>: VS Code内で「Remote Explorer」拡張機能を使用し、GitHub Cloudをリモートとして扱うのがスムーズです。</li>
+</ul>
+</li>
+<li><strong>キーボードショートカットの差異</strong>: Windowsと異なる操作系がありますが、VS Codeはクロスプラットフォーム対応のため、基本操作は統一されます。</li>
+</ul>
+<h3>よくあるトラブルと解決法 3 選</h3>
+<ol>
+<li><strong>「Git: No remote configured」エラー</strong><ul>
+<li><strong>原因</strong>: リポジトリを作成したが、GitHubのリモート倉庫を指定していない状態。</li>
+<li><strong>解決策</strong>: 「Source Control」パネルの「+」ボタンからGitHubアカウントでログインし、「New Repository」を選択して作成するか、ターミナルで <code>git remote add origin &lt;URL&gt;</code> を実行します。</li>
+</ul>
+</li>
+<li><strong>「ファイルがロックされている」「保存できない」</strong><ul>
+<li><strong>原因</strong>: Finderや他のアプリが開いているか、Gitのインデックスに競合が発生。</li>
+<li><strong>解決策</strong>: Finderで該当ファイルを閉じ、VS Codeを再起動してください。直らない場合はターミナルで <code>git status</code> を確認します。</li>
+</ul>
+</li>
+<li><strong>「プレビュー画面が暗い・読みづらい」</strong><ul>
+<li><strong>原因</strong>: VS Codeのテーマ設定とMarkdownプレビューの表示モードが不一致。</li>
+<li><strong>解決策</strong>: コマンドパレット（Cmd+Shift+P）から「Markdown Preview: Open with Current Theme」を選択します。</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h2>3. iOS（iPhone / iPad）での実例手順</h2>
+<p>iOSでは、高度な執筆よりも「確認」「補足」「クイックな修正」に特化した運用が現実的です。</p>
+<h3>標準機能・公式アプリ操作手順</h3>
+<ol>
+<li><strong>同期の前提</strong>: PC側でVS Codeや <code>github.dev</code> を使い、最新の状態をPush済みとします。</li>
+<li><strong>閲覧方法</strong>: iPhoneの「GitHub」アプリを開き、該当リポジトリを選択。「Files」タブで <code>.md</code> ファイルをタップして閲覧します。</li>
+<li><strong>簡易編集</strong>: 「Edit（編集）」ボタンを押すとテキストエディタが起動し、簡単な修正が可能になります。</li>
+</ol>
+<h3>標準機能の制限事項・代替手段</h3>
+<ul>
+<li><strong>「完全な Markdown エディタとしての非対応」</strong>: GitHubアプリは複雑なコード入力や高度な拡張機能には不向きです。<ul>
+<li><em>代替手段</em>: 執筆を重視する場合は、iA WriterやBearなどのサードパーティ製エディタで作成し、「Share」→「Save to Files」等で管理する手法もありますが、本構成では公式アプリのみを対象とします。</li>
+</ul>
+</li>
+<li><strong>ファイルシステムの非公開</strong>: iOSの標準機能（Filesアプリ）に保存されたファイルを直接GitHubへプッシュすることは、Git知識なしでは困難です。</li>
+</ul>
+<h3>よくあるトラブルと解決法 3 選</h3>
+<ol>
+<li><strong>「編集ボタンを押しても入力欄が反応しない」</strong><ul>
+<li><strong>原因</strong>: アプリのバグ、またはリポジトリへの書き込み権限不足。</li>
+<li><strong>解決策</strong>: アプリを再起動し、SafariでGitHubサイトを開いて「Edit」ボタンを確認してください。</li>
+</ul>
+</li>
+<li><strong>「画像やコードブロックが正しく表示されない」</strong><ul>
+<li><strong>原因</strong>: ブラウザキャッシュの問題、または拡張子が <code>.txt</code> になっている。</li>
+<li><strong>解決策</strong>: Safariの「履歴とWebサイトデータ」を削除するか、PCから正しい拡張子（<code>.md</code>）で再プッシュします。</li>
+</ul>
+</li>
+<li><strong>「コメントを投稿しても反映されない」</strong><ul>
+<li><strong>原因</strong>: ネットワーク接続の不安定さ。</li>
+<li><strong>解決策</strong>: 「Settings」→「Network」でデータ通信を許可するか、アプリを一度終了して再起動し、「Pull changes」を実行します。</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h2>4. Android での実例手順</h2>
+<p>Androidは機種によってUIが異なりますが、基本的にはGitHub公式アプリとChromeブラウザの組み合わせで対応します。</p>
+<h3>標準機能・公式アプリ操作手順</h3>
+<ol>
+<li><strong>執筆環境</strong>: PCで管理したリポジトリに対し、Androidでは「GitHub」アプリまたはChromeブラウザを使用します。</li>
+<li><strong>同期方法</strong>: PCで更新した内容は、AndroidのGitHubアプリを開くことで自動的に反映されます。</li>
+<li><strong>閲覧・編集</strong>: アプリ内の「Files」タブから <code>.md</code> ファイルをタップして内容を確認します。</li>
+</ol>
+<h3>標準機能の制限事項・代替手段</h3>
+<ul>
+<li><strong>機種によるメニュー差異</strong>: PixelやGalaxyなど、メーカーによってボタン配置や名称が異なる場合があります。</li>
+<li><strong>標準機能のみでは制限あり</strong>: Android OSのファイルシステム上でのGit操作は標準機能では難しいため、編集はPCで行い、Androidは「確認・閲覧」に特化させるのが最も安定したワークフローです。</li>
+</ul>
+<h3>よくあるトラブルと解決法 3 選</h3>
+<ol>
+<li><strong>「リポジトリの内容が更新されない」</strong><ul>
+<li><strong>原因</strong>: アプリのバックグラウンド同期が停止している。</li>
+<li><strong>解決策</strong>: GitHubアプリを開き、手動で「Pull」操作を行うか、一度アプリを強制終了して再起動します。</li>
+</ul>
+</li>
+<li><strong>「MarkdownのプレビューがWeb表示にならない」</strong><ul>
+<li><strong>原因</strong>: アプリ内レンダリングの不具合。</li>
+<li><strong>解決策</strong>: ChromeブラウザでGitHubのリポジトリURLを直接開き、Web版のプレビュー機能を利用してください。</li>
+</ul>
+</li>
+<li><strong>「画像が表示されない（リンク切れ）」</strong><ul>
+<li><strong>原因</strong>: 画像パスがローカルパス（例：<code>C:\Users\...</code>）になっている。</li>
+<li><strong>解決策</strong>: 画像はGitHubリポジトリ内のディレクトリにアップロードし、相対パスで記述するようにPC側で修正してください。</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h2>まとめ：快適なマルチOS環境を作るポイント</h2>
+<p>4つのOSを横断してMarkdownメモを同期させる鍵は、<strong>「GitHubを唯一の真実（Single Source of Truth）とする」</strong>ことです。各デバイスで個別のアプリに保存するのではなく、常にクラウド上のリポジトリを参照することで、情報の断片化を防ぐことができます。</p>
+<p>このワークフローをより快適にするために、以下の環境整備も検討してみてください：</p>
+<ul>
+<li><strong>入力の質を高める</strong>: Windows/macOSでの執筆時、<strong>メカニカルキーボード</strong>を導入することで打鍵感が向上し、長時間のメモ作成でも疲れにくくなります。</li>
+<li><strong>視認性を確保する</strong>: <strong>ウルトラワイドモニター</strong>があれば、左側にVS Codeのエディタ、右側にプレビュー画面やブラウザを表示して、広大な作業スペースを確保できます。</li>
+<li><strong>知識の深化</strong>: 常に最新の技術動向をキャッチアップするために、物理的な<strong>技術書</strong>とデジタルなクラウド環境を組み合わせるのが理想的です。</li>
+<li><strong>インフラの活用</strong>: より高度な開発メモや自動化スクリプトを試すなら、<strong>VPSやクラウド環境</strong>を活用して、自分のマシンとは別の場所で常に動く「自分専用の実験場」を持つこともおすすめです。</li>
+</ul>
+<p>正しいツールとワークフローを組み合わせることで、あなたの学習体験は劇的に向上するはずです。</p>
+<hr />
+<h2>参考文献・公式ドキュメント（一次情報ソース）</h2>
+<p>本記事の手順・仕様は以下の各OSおよびツールの公式ドキュメントに基づいています。OSアップデートによりメニュー名称や挙動が変わる場合があるため、最新仕様の確認にもご活用ください。</p>
+<ul>
+<li><strong>[Windows / macOS]</strong> <a href="https://docs.github.com/ja/codespaces/the-githubdev-web-based-editor">GitHubからの Web 用 VS Code の使用 (github.dev) - GitHubドキュメント</a></li>
+<li><strong>[共通]</strong> <a href="https://docs.github.com/ja/repositories/working-with-files/managing-files/editing-files">GitHub上でファイルを編集する - GitHubドキュメント</a></li>
+<li><strong>[iOS / Android]</strong> <a href="https://docs.github.com/ja/get-started/using-github/github-mobile">GitHub Mobile 公式ガイド - GitHubドキュメント</a></li>
+</ul>
+    </article>
+  </main>
+  <footer>Generated with Local Ollama (qwen3.5 / gemma4) &amp; Draw Things (FLUX.2 klein 4B)</footer>
+</body>
+</html>
