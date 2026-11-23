@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>仕事と私用を分けるブラウザ「プロファイル」管理と拡張機能トラブル対策｜Windows・macOS・iOS・Android | PC 4OS実例ガイド</title>
+  <style>
+:root {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --muted: #475569;
+  --accent: #0284c7;
+  --accent-soft: #e0f2fe;
+  --border: #e2e8f0;
+  --code-bg: #0f172a;
+  --code-text: #e2e8f0;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Noto Sans JP", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+}
+header.site-header {
+  background: linear-gradient(135deg, #0f172a 0%, #0369a1 100%);
+  color: #fff;
+  padding: 2.2rem 1.25rem;
+}
+header.site-header .inner { max-width: 980px; margin: 0 auto; }
+header.site-header h1 { margin: 0 0 0.4rem; font-size: 1.75rem; }
+header.site-header p { margin: 0; opacity: 0.9; font-size: 0.96rem; }
+main { max-width: 980px; margin: 2rem auto; padding: 0 1.25rem 3rem; }
+.badge {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: var(--accent-soft);
+  color: #0369a1;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1.25rem;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08); }
+.card img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; display: block; background: #e2e8f0; }
+.card-body { padding: 1rem 1.1rem 1.2rem; flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+.card-title { font-size: 1.02rem; font-weight: 700; margin: 0; line-height: 1.45; }
+.card-meta { font-size: 0.82rem; color: var(--muted); margin-top: auto; }
+article.post {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 2rem;
+}
+article.post img.eyecatch {
+  width: 100%;
+  max-height: 460px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+}
+article.post h1 { font-size: 1.65rem; line-height: 1.35; margin-top: 0; }
+article.post h2 {
+  font-size: 1.3rem;
+  margin-top: 2.1rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 2px solid var(--accent-soft);
+}
+article.post h3 { font-size: 1.08rem; margin-top: 1.4rem; }
+article.post table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.2rem 0;
+  font-size: 0.92rem;
+  display: block;
+  overflow-x: auto;
+}
+article.post th, article.post td {
+  border: 1px solid var(--border);
+  padding: 0.6rem 0.8rem;
+  text-align: left;
+}
+article.post th { background: #f1f5f9; font-weight: 700; }
+article.post pre {
+  background: var(--code-bg);
+  color: var(--code-text);
+  padding: 1rem 1.15rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+article.post code {
+  background: #f1f5f9;
+  padding: 0.15rem 0.38rem;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+article.post pre code { background: transparent; padding: 0; color: inherit; }
+article.post blockquote {
+  margin: 1.2rem 0;
+  padding: 0.8rem 1.1rem;
+  border-left: 4px solid var(--accent);
+  background: #f0f9ff;
+  border-radius: 0 8px 8px 0;
+}
+.back-link { display: inline-block; margin-bottom: 1rem; color: var(--accent); text-decoration: none; font-weight: 600; }
+.filter-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.15rem 1.25rem;
+  margin-bottom: 1.5rem;
+}
+.filter-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) auto;
+  gap: 0.9rem;
+  align-items: end;
+}
+.filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.filter-field label {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.filter-field input[type="search"],
+.filter-field select {
+  font: inherit;
+  font-size: max(1rem, 1em);
+  min-height: 48px;
+  padding: 0.55rem 0.85rem;
+  border: 1.5px solid #767676;
+  border-radius: 8px;
+  background: #fff;
+  color: var(--text);
+  width: 100%;
+}
+.filter-field input[type="search"]:focus-visible,
+.filter-field select:focus-visible,
+.filter-actions button:focus-visible {
+  outline: 3px solid #0284c7;
+  outline-offset: 2px;
+}
+.filter-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+.filter-actions button {
+  font: inherit;
+  font-size: max(1rem, 0.95em);
+  font-weight: 600;
+  min-height: 48px;
+  padding: 0 1.05rem;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+}
+.btn-primary {
+  background: #0369a1;
+  color: #fff;
+}
+.btn-primary:hover { background: #075985; }
+.btn-secondary {
+  background: #f1f5f9;
+  color: var(--text);
+  border-color: #94a3b8;
+}
+.btn-secondary:hover { background: #e2e8f0; }
+.results-status {
+  color: var(--muted);
+  font-size: 0.92rem;
+  margin: 0 0 1.1rem;
+}
+.empty-state {
+  background: var(--surface);
+  border: 1px dashed #94a3b8;
+  border-radius: 12px;
+  padding: 2rem 1.25rem;
+  text-align: center;
+  color: var(--muted);
+}
+.card[hidden],
+.empty-state[hidden] { display: none; }
+footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2rem 1rem; }
+@media (max-width: 720px) {
+  .filter-form { grid-template-columns: 1fr; }
+  .filter-actions { width: 100%; }
+  .filter-actions button { flex: 1; }
+}
+@media (max-width: 640px) {
+  article.post { padding: 1.2rem; }
+}
+</style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="inner">
+      <h1>PC 4OS実例ガイド</h1>
+      <p>Windows・macOS・iOS・Android の実践比較＆トラブル解決アーカイブ</p>
+    </div>
+  </header>
+  <main>
+    <a class="back-link" href="../index.html">← 記事一覧へ戻る</a>
+    <article class="post">
+      <p><span class="badge">#42｜分類08: Web制作・ブログ・デジタルマーケティング</span> <small style="color:#64748b;margin-left:0.5rem;">2026-11-23</small></p>
+      <img class="eyecatch" src="../images/2026-11-23_art42_browser_profile_work_private.png" alt="仕事と私用を分けるブラウザ「プロファイル」管理と拡張機能トラブル対策｜Windows・macOS・iOS・Android">
+      <h1>仕事と私用を分けるブラウザ「プロファイル」管理と拡張機能トラブル対策｜Windows・macOS・iOS・Android</h1>
+<p>「仕事で使っているWeb制作のツールやSEO分析サイトのログイン情報が、プライベートのSNSやショッピングサイトと混ざってしまい、意図しない挙動を起こすことがある……」<br />
+「特定のプロジェクトでテストしているWebサイトのCookieが残っていて、別の作業に支障が出ている……」</p>
+<p>Web制作やデジタルマーケティングに携わる方にとって、ブラウザの環境分離（プロファイル管理）は、単なる整理整頓以上の意味を持ちます。<strong>Cookie、履歴、パスワード、そして拡張機能の干渉を防ぐことは、正確なデータ分析と安全な開発環境を保つための必須スキルです。</strong></p>
+<p>この記事では、主要な4つのOS（Windows, macOS, iOS, Android）において、ブラウザのプロファイルを正しく使い分け、拡張機能のトラブルを回避するための実践的な手順を徹底解説します。</p>
+<h2>4OS比較早見表</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">OS</th>
+<th style="text-align: left;">推奨ブラウザ</th>
+<th style="text-align: left;">プロファイル管理</th>
+<th style="text-align: left;">特徴・注意点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Windows</strong></td>
+<td style="text-align: left;">Edge / Chrome</td>
+<td style="text-align: left;"><strong>完全対応</strong></td>
+<td style="text-align: left;">拡張機能の独立性が高く、仕事用と私用を完全に分離可能。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>macOS</strong></td>
+<td style="text-align: left;">Chrome / Safari</td>
+<td style="text-align: left;"><strong>一部制限あり</strong></td>
+<td style="text-align: left;">Safariは標準で複数プロファイル非対応。Chromeでの運用が推奨。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>iOS</strong></td>
+<td style="text-align: left;">Chrome / Safari</td>
+<td style="text-align: left;"><strong>限定的</strong></td>
+<td style="text-align: left;">Safariはプロファイル非対応。Chromeアプリでの切り替えが必要。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Android</strong></td>
+<td style="text-align: left;">Chrome</td>
+<td style="text-align: left;"><strong>完全対応</strong></td>
+<td style="text-align: left;">複数プロフィールをサポート。拡張機能は標準では非対応。</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>1. Windows 11 での実例手順</h2>
+<p>Windows環境では、Microsoft EdgeとGoogle Chromeの両方で高度なプロファイル管理が可能です。</p>
+<h3>Microsoft Edge（デフォルトブラウザ推奨）</h3>
+<p>EdgeはWindowsとの親和性が高く、仕事用アカウントとの連携もスムーズです。<br />
+- <strong>設定方法</strong>: Edgeアプリを起動 → 右上の「…」メニュー → 「プロフィール」を選択 → 「他のユーザーに切り替え」または「プロフィールの追加」から新規作成。<br />
+- <strong>履歴・キャッシュの整理</strong>: 各プロファイルごとに独立しています。「…」メニュー → 「設定」→「プライバシー、検索、サービス」から、各プロファイル固有の閲覧データを個別にクリア可能です。</p>
+<h3>Google Chrome（拡張機能管理重視）</h3>
+<p>Web制作で特定のツールを多用する場合、Chromeのプロファイル分離が最も強力です。<br />
+- <strong>設定方法</strong>: ブラウザ右上の円形アイコンをクリック → 「+ 新しいプロフィール」を選択 → プロフィール名を入力して作成。<br />
+- <strong>切り替え手順</strong>: タブ行のユーザーアイコンをクリックし、作成した仕事用・私用プロファイルを瞬時に切り替えます。</p>
+<h3>標準機能の制限事項</h3>
+<ul>
+<li><strong>拡張機能の共有不可</strong>: Windows版Chromeでは、異なるプロファイル間で拡張機能を直接同期・共有することはできません。各環境に最適なツールを個別にインストールする必要があります。</li>
+</ul>
+<h3>よくあるトラブルと解決法</h3>
+<ol>
+<li><strong>トラブル: 「拡張機能が重い」「動作が遅い」</strong></li>
+<li><strong>原因</strong>: プライベート用プロファイルに、仕事で使うSEOツールやデバッグツールが大量に残っている。</li>
+<li><strong>対策</strong>: 各プロファイルの「設定 &gt; 拡張機能」を開き、その環境で不要なものを無効化または削除してください。</li>
+<li><strong>トラブル: 「パスワードが混ざってログインできない」</strong></li>
+<li><strong>原因</strong>: 同期機能が有効なまま別のアカウントを登録している。</li>
+<li><strong>対策</strong>: <code>設定 &gt; システム</code> で「Googleアカウントとの同期」をオフにし、各プロファイルで保存するパスワードを整理してください。</li>
+<li><strong>トラブル: 「モバイルデバイスとの連携が切れる」</strong></li>
+<li><strong>原因</strong>: Chrome DevToolsのDevice Mode（シミュレーション）と実機のセッションデータが混同している。</li>
+<li><strong>対策</strong>: DevToolsはあくまでシミュレーションです。実際の同期をリセットしたい場合は、ブラウザを再起動してキャッシュをクリアしてください。</li>
+</ol>
+<hr />
+<h2>2. macOS での実例手順</h2>
+<p>Macユーザーの場合、Safariの仕様に注意が必要です。</p>
+<h3>Safari（Apple システム統合型）</h3>
+<ul>
+<li><strong>設定方法</strong>: <strong>重要：Safariは標準機能として「複数の独立したプロファイル」をサポートしていません。</strong></li>
+<li><strong>代替手段</strong>: 「システム設定 &gt; ユーザーとグループ」でOSユーザー自体を分けるか、仕事用にはGoogle Chrome、私用にはSafariといった「ブラウザの使い分け」が最も現実的な解決策です。</li>
+<li><strong>履歴・キャッシュ整理</strong>: <code>Safari &gt; 設定 &gt; プライバシー</code> から「閲覧データの管理」を行い、定期的にCookieを削除します。</li>
+</ul>
+<h3>Google Chrome（Mac版）</h3>
+<ul>
+<li><strong>設定方法</strong>: 右上の円形アイコン → 「+ 新しいプロフィール」。Windowsと同様の手順で、仕事用と私用の環境を完全に分離できます。</li>
+<li><strong>履歴・キャッシュ整理</strong>: <code>Chrome メニュー &gt; 閲覧データ &gt; 表示するコンテンツを消去</code> から実施します。</li>
+</ul>
+<h3>標準機能の制限事項</h3>
+<ul>
+<li><strong>Safariの複数プロファイル非対応</strong>: 前述の通り、Cookieや履歴を完全に分離した状態でSafariを複数起動することはできません。仕事用にはChromeの使用を強く推奨します。</li>
+</ul>
+<h3>よくあるトラブルと解決法</h3>
+<ol>
+<li><strong>トラブル: 「Safariで履歴が混在している」</strong></li>
+<li><strong>原因</strong>: Safariが単一のプロファイルしか持たないため。</li>
+<li><strong>対策</strong>: 仕事用はChrome、私用はSafariとブラウザ自体を固定して使い分けるのがベストです。</li>
+<li><strong>トラブル: 「拡張機能が重い（メモリ不足）」</strong></li>
+<li><strong>原因</strong>: 複数のタブで重い拡張機能を同時に動作させている。</li>
+<li><strong>対策</strong>: <code>Safari &gt; 設定 &gt; 詳細</code> でJavaScriptの挙動を確認するか、Chromeへ移行してプロファイルごとに拡張機能を整理してください。</li>
+<li><strong>トラブル: 「パスワードが同期されない」</strong></li>
+<li><strong>原因</strong>: iCloud KeychainとChromeのアカウント連携の不一致。</li>
+<li><strong>対策</strong>: <code>システム設定 &gt; Apple ID &gt; iCloud</code> で「キーチェーン」の状態を確認し、Chrome内のGoogleアカウント管理と整合性を取ってください。</li>
+</ol>
+<hr />
+<h2>3. iOS（iPhone / iPad）での実例手順</h2>
+<p>モバイル環境では、デスクトップ版のような高度なプロファイル分離は制限されます。</p>
+<h3>Safari（iOS デフォルト）</h3>
+<ul>
+<li><strong>設定方法</strong>: iOSのSafariは独立したプロファイルをサポートしていません。</li>
+<li><strong>代替手段</strong>: 「履歴と Web サイトデータをクリア」を定期的に実行するか、仕事用には別のブラウザアプリを使用します。</li>
+<li><strong>操作手順</strong>: <code>Safariアプリ &gt; 三点リーダー &gt; 履歴と Web サイトデータをクリア</code>。</li>
+</ul>
+<h3>Google Chrome / Edge (iOS)</h3>
+<ul>
+<li><strong>設定方法</strong>: アプリ起動時、ユーザーアイコンからプロファイル切り替えが可能です（※ただしSafariとの連携は限定的）。</li>
+<li><strong>注意点</strong>: iOS版Chromeは複数プロフィールをサポートしていますが、デスクトップ版ほど自由な拡張機能の管理はできません。</li>
+</ul>
+<h3>標準機能の制限事項</h3>
+<ul>
+<li><strong>拡張機能のインストール不可</strong>: iOS Safariでは標準で拡張機能を直接インストールできないため、「動作が重い」原因の多くはブラウザ自体のキャッシュ蓄積です。</li>
+</ul>
+<h3>よくあるトラブルと解決法</h3>
+<ol>
+<li><strong>トラブル: 「Safariで履歴が混在している」</strong></li>
+<li><strong>対策</strong>: 仕事用にはChromeアプリを使い、私用はSafariという「アプリの住み分け」を徹底してください。</li>
+<li><strong>トラブル: 「動作が重い（メモリ不足）」</strong></li>
+<li><strong>原因</strong>: キャッシュやCookieの過度な蓄積。</li>
+<li><strong>対策</strong>: <code>設定 &gt; Safari &gt; 履歴と Web サイトデータをクリア</code> を実行し、リフレッシュしてください。</li>
+<li><strong>トラブル: 「パスワードが同期されない」</strong></li>
+<li><strong>対策</strong>: <code>設定 &gt; Apple ID &gt; iCloud &gt; キーチェーン</code> のオン/オフを確認し、Chromeアプリ内のGoogleアカウント管理と一致しているか確認してください。</li>
+</ol>
+<hr />
+<h2>4. Android での実例手順</h2>
+<p>AndroidはGoogle純正のChromeをベースとしているため、プロファイル管理が非常にスムーズです。</p>
+<h3>Google Chrome（全機種共通）</h3>
+<ul>
+<li><strong>設定方法</strong>: ブラウザ右上の円形アイコン → 「+ 新しいプロフィール」。PixelやGalaxyなど、機種を問わず共通の操作で作成可能です。</li>
+<li><strong>履歴・キャッシュ整理</strong>: <code>Chrome &gt; 設定 &gt; プライバシーとセキュリティ &gt; 閲覧データを消去</code> から実施します。</li>
+</ul>
+<h3>標準機能の制限事項</h3>
+<ul>
+<li><strong>拡張機能のインストール不可</strong>: Android版Chromeは公式に拡張機能をサポートしていません（実験的機能を除く）。そのため、動作が重い場合は「プロファイルごとのキャッシュ管理」を徹底することが重要です。</li>
+</ul>
+<h3>よくあるトラブルと解決法</h3>
+<ol>
+<li><strong>トラブル: 「拡張機能が重い（または動かない）」</strong></li>
+<li><strong>原因</strong>: Android版Chromeは拡張機能をサポートしていないため。</li>
+<li><strong>対策</strong>: 拡張機能が必要な作業（Web制作のデバッグ等）は、PCブラウザで行うか、Firefoxなどの拡張機能対応アプリを別途インストールして使い分けてください。</li>
+</ol>
+<hr />
+<h2>よくあるトラブルと解決チェックリスト</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">エラー・症状</th>
+<th style="text-align: left;">原因の可能性</th>
+<th style="text-align: left;">対処法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>「ログイン情報が勝手に切り替わる」</strong></td>
+<td style="text-align: left;">プロファイル間の同期設定がONになっている</td>
+<td style="text-align: left;">各プロファイルの <code>設定 &gt; 同期</code> を確認し、不要な同期をオフにする。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>「特定のサイトだけ表示がおかしい」</strong></td>
+<td style="text-align: left;">過去のキャッシュやCookieが干渉している</td>
+<td style="text-align: left;">そのプロファイルのみで「閲覧データの消去」を実行する。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>「拡張機能が動作しない（モバイル）」</strong></td>
+<td style="text-align: left;">モバイルOSでは拡張機能が非対応</td>
+<td style="text-align: left;">PCブラウザでの作業に切り替えるか、代替アプリを検討する。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>「パスワードの自動入力が出ない」</strong></td>
+<td style="text-align: left;">別のプロファイルでログインしている</td>
+<td style="text-align: left;">現在開いているウィンドウのユーザーアイコンを確認する。</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>まとめ：快適なマルチOS環境を作るポイント</h2>
+<p>仕事と私用のブラウザ環境を分離することは、単なる効率化だけでなく、<strong>セキュリティの確保や正確なWeb制作・マーケティング分析を行うための基盤</strong>です。</p>
+<p>特にWeb制作に携わる方であれば、以下のステップで環境を整えることをお勧めします。</p>
+<ol>
+<li><strong>PC環境</strong>: Windows/macOSでは、Google ChromeまたはEdgeの「プロファイル機能」を使い、仕事用（SEOツール・制作素材・教材）と私用を完全に分離する。</li>
+<li><strong>モバイル環境</strong>: iOS/Androidでは、ブラウザアプリ自体を「仕事用（Chrome）」と「私用（Safari）」で分けるのが最も安定した運用方法。</li>
+<li><strong>周辺機器の活用</strong>: 複数のプロファイルをスムーズに切り替えるために、ショートカットキーの習熟や、マルチモニター環境での「作業用ウィンドウ」の固定も有効です。</li>
+</ol>
+<p>さらに一歩進んで本格的なWeb制作やブログ運営を目指すなら、<strong>レンタルサーバーや独自ドメインの取得</strong>、そして正確な分析のための<strong>SEOツール</strong>を導入することで、プロフェッショナルな制作環境が完成します。適切なブラウザ管理から始め、質の高いコンテンツ制作・マーケティングへと繋げていきましょう。</p>
+<hr />
+<h2>参考文献・公式ドキュメント（一次情報ソース）</h2>
+<p>本記事の手順・仕様は以下の各OSおよびツールの公式ドキュメントに基づいています。OSアップデートによりメニュー名称や挙動が変わる場合があるため、最新仕様の確認にもご活用ください。</p>
+<ul>
+<li><strong>[Windows]</strong> <a href="https://support.microsoft.com/ja-jp/microsoft-edge/microsoft-edge-%E3%81%AE%E9%96%B2%E8%A6%A7%E5%B1%A5%E6%AD%B4%E3%82%92%E8%A1%A8%E7%A4%BA%E3%81%8A%E3%82%88%E3%81%B3%E5%89%8A%E9%99%A4%E3%81%99%E3%82%8B-00cf7943-a9e1-975a-a33d-ac10ce454ca4">Microsoft Edge の閲覧履歴・キャッシュを表示および削除する - Microsoft サポート</a></li>
+<li><strong>[Windows / macOS]</strong> <a href="https://developer.chrome.com/docs/devtools/device-mode?hl=ja">Device Mode でモバイル デバイスをシミュレートする | Chrome DevTools</a></li>
+<li><strong>[iOS]</strong> <a href="https://support.apple.com/ja-jp/105082">iPhoneでSafariの閲覧履歴、キャッシュ、Cookieを消去する - Apple サポート (日本)</a></li>
+<li><strong>[Android]</strong> <a href="https://support.google.com/chrome/answer/2392709?hl=ja">Chrome の閲覧データ・キャッシュを削除する - Google Chrome ヘルプ</a></li>
+</ul>
+    </article>
+  </main>
+  <footer>Generated with Local Ollama (qwen3.5 / gemma4) &amp; Draw Things (FLUX.2 klein 4B)</footer>
+</body>
+</html>
