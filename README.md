@@ -29,10 +29,11 @@ python -m src.main -n 1 --push
 python -m src.main -n 1 --category 11
 ```
 
-## 書き溜め済み記事一覧（全 21 本 / 最終更新: 2026-11-23 12:52 JST）
+## 書き溜め済み記事一覧（全 22 本 / 最終更新: 2026-11-23 13:41 JST）
 
 | No. | 17分類カテゴリ | 記事タイトル（Markdown） | 挿絵 | 生成日 |
 | :---: | :--- | :--- | :---: | :---: |
+| #22 | 分類05: 動画・音声・音楽制作 | [ボイスメモ・会議録音の文字起こしと音声ファイル共有の実例｜Windows・macOS・iOS・Android](content/2026-11-23_art22_voice_memo_transcription_sync.md) | あり | 2026-11-23 |
 | #21 | 分類04: 画像・イラスト・デザイン制作 | [Instagram 投稿ワークフロー：PC デザインからスマホ投稿まで｜Windows・macOS・iOS・Android](content/2026-11-23_art21_social_media_schedule.md) | あり | 2026-11-23 |
 | #20 | 分類03: 情報収集・リサーチ・Web 利用 | [クロスデバイス検索：ブラウザ間でのブックマークとメモ共有｜Windows・macOS・iOS・Android](content/2026-11-23_art20_news_verification_flow.md) | あり | 2026-11-23 |
 | #19 | 分類02: コミュニケーション・情報共有 | [PC での PDF 注釈とスマホからの即時返答｜Windows・macOS・iOS・Android](content/2026-11-23_art19_meeting_notes_sync.md) | あり | 2026-11-23 |
