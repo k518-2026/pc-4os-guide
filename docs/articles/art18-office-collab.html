@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>複数 OS で同時編集：Google ドキュメント vs ローカルファイル｜Windows・macOS・iOS・Android | PC 4OS実例ガイド</title>
+  <style>
+:root {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --muted: #475569;
+  --accent: #0284c7;
+  --accent-soft: #e0f2fe;
+  --border: #e2e8f0;
+  --code-bg: #0f172a;
+  --code-text: #e2e8f0;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Noto Sans JP", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+}
+header.site-header {
+  background: linear-gradient(135deg, #0f172a 0%, #0369a1 100%);
+  color: #fff;
+  padding: 2.2rem 1.25rem;
+}
+header.site-header .inner { max-width: 980px; margin: 0 auto; }
+header.site-header h1 { margin: 0 0 0.4rem; font-size: 1.75rem; }
+header.site-header p { margin: 0; opacity: 0.9; font-size: 0.96rem; }
+main { max-width: 980px; margin: 2rem auto; padding: 0 1.25rem 3rem; }
+.badge {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: var(--accent-soft);
+  color: #0369a1;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1.25rem;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08); }
+.card img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; display: block; background: #e2e8f0; }
+.card-body { padding: 1rem 1.1rem 1.2rem; flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+.card-title { font-size: 1.02rem; font-weight: 700; margin: 0; line-height: 1.45; }
+.card-meta { font-size: 0.82rem; color: var(--muted); margin-top: auto; }
+article.post {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 2rem;
+}
+article.post img.eyecatch {
+  width: 100%;
+  max-height: 460px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+}
+article.post h1 { font-size: 1.65rem; line-height: 1.35; margin-top: 0; }
+article.post h2 {
+  font-size: 1.3rem;
+  margin-top: 2.1rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 2px solid var(--accent-soft);
+}
+article.post h3 { font-size: 1.08rem; margin-top: 1.4rem; }
+article.post table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.2rem 0;
+  font-size: 0.92rem;
+  display: block;
+  overflow-x: auto;
+}
+article.post th, article.post td {
+  border: 1px solid var(--border);
+  padding: 0.6rem 0.8rem;
+  text-align: left;
+}
+article.post th { background: #f1f5f9; font-weight: 700; }
+article.post pre {
+  background: var(--code-bg);
+  color: var(--code-text);
+  padding: 1rem 1.15rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+article.post code {
+  background: #f1f5f9;
+  padding: 0.15rem 0.38rem;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+article.post pre code { background: transparent; padding: 0; color: inherit; }
+article.post blockquote {
+  margin: 1.2rem 0;
+  padding: 0.8rem 1.1rem;
+  border-left: 4px solid var(--accent);
+  background: #f0f9ff;
+  border-radius: 0 8px 8px 0;
+}
+.back-link { display: inline-block; margin-bottom: 1rem; color: var(--accent); text-decoration: none; font-weight: 600; }
+footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2rem 1rem; }
+@media (max-width: 640px) {
+  article.post { padding: 1.2rem; }
+}
+</style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="inner">
+      <h1>PC 4OS実例ガイド</h1>
+      <p>Windows・macOS・iOS・Android の実践比較＆トラブル解決アーカイブ</p>
+    </div>
+  </header>
+  <main>
+    <a class="back-link" href="../index.html">← 記事一覧へ戻る</a>
+    <article class="post">
+      <p><span class="badge">#18｜分類01: 文書作成・オフィス業務・事務作業</span> <small style="color:#64748b;margin-left:0.5rem;">2026-11-23</small></p>
+      <img class="eyecatch" src="../images/2026-11-23_art18_office_collab.png" alt="複数 OS で同時編集：Google ドキュメント vs ローカルファイル｜Windows・macOS・iOS・Android">
+      <h1>複数 OS で同時編集：Google ドキュメント vs ローカルファイル｜Windows・macOS・iOS・Android</h1>
+<p>「チームで資料を更新したいけれど、誰かが開いているから編集できないと言われたことはありませんか？」<br />
+「PCでは動くのに、スマホやタブレットで見るとレイアウトが崩れて困ったことはありませんか？」</p>
+<p>現代のビジネスシーンにおいて、<strong>「どこからでも、誰とでも、リアルタイムに」</strong>文書を編集できる環境は必須です。しかし、Windows、macOS、iOS、Androidという異なるOSを使い分ける場合、クラウドツール（Google ドキュメント等）とローカルファイル（Word/Pages等）のどちらを選ぶべきか、あるいはどう共存させるべきか迷うことも多いでしょう。</p>
+<p>この記事では、主要な4つのOSにおける「共同編集」の実践的な手順と、それぞれの環境で発生しやすいトラブルの解決策を徹底解説します。この記事を読めば、あなたのチームに最適なワークフローが見つかるはずです。</p>
+<h2>4OS比較早見表</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">特徴</th>
+<th style="text-align: left;">Windows 11</th>
+<th style="text-align: left;">macOS</th>
+<th style="text-align: left;">iOS (iPhone/iPad)</th>
+<th style="text-align: left;">Android</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>推奨クラウド</strong></td>
+<td style="text-align: left;">OneDrive / Google Drive</td>
+<td style="text-align: left;">iCloud / Google Drive</td>
+<td style="text-align: left;">iCloud / Google Drive</td>
+<td style="text-align: left;">Google Drive</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>標準オフィスソフト</strong></td>
+<td style="text-align: left;">Microsoft Word / Excel</td>
+<td style="text-align: left;">Pages / Numbers</td>
+<td style="text-align: left;">Pages / Numbers</td>
+<td style="text-align: left;">Google ドキュメント等</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>共同編集の強み</strong></td>
+<td style="text-align: left;">高い互換性とOffice連携</td>
+<td style="text-align: left;">Appleエコシステム内での同期</td>
+<td style="text-align: left;">モバイル特化の操作性</td>
+<td style="text-align: left;">機種を問わないGoogle連携</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>主な制約</strong></td>
+<td style="text-align: left;">ブラウザ版は一部機能制限</td>
+<td style="text-align: left;">.pages形式は他OSで不可</td>
+<td style="text-align: left;">画面サイズによるレイアウト差</td>
+<td style="text-align: left;">機種によりUIが異なる</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>1. Windows 11 での実例手順</h2>
+<p>Windows環境では、Microsoft Officeの強力なデスクトップアプリと、ブラウザベースのGoogleドキュメントを使い分けるのが一般的です。</p>
+<p><strong>【実践手順】</strong><br />
+1.  <strong>Office 365 (Word) を使う場合</strong>:<br />
+    *   「ファイル」&gt;「共有」を選択し、チームメンバーを招待します。<br />
+    *   ファイルをOneDriveに保存することで、デスクトップアプリから直接リアルタイム共同編集が可能です。<br />
+    *   ※EdgeブラウザでもWord Onlineで閲覧・軽微な編集が可能ですが、高度な書式設定はアプリ版を推奨します。<br />
+2.  <strong>Google ドキュメントを使う場合</strong>:<br />
+    *   Chromeを起動し、「新規作成」&gt;「ドキュメント」を選択してログインします。<br />
+    *   「共有」ボタンからメンバーを招待します。保存先はブラウザのキャッシュ領域となるため、オフライン時は編集できません。<br />
+3.  <strong>ファイル同期</strong>:<br />
+    *   エクスプローラー内の「OneDrive」フォルダが自動同期されるため、PCからクラウドへの変換操作を意識せずに作業を進められます。</p>
+<p><strong>【注意点】</strong><br />
+GoogleドキュメントはWindowsのネイティブアプリではないため、「Ctrl+S」によるローカル保存ができません（PDFやDOCXへの書き出しが必要です）。また、Officeアプリ未導入の場合はフォントがGoogleフォントに限定されます。</p>
+<hr />
+<h2>2. macOS での実例手順</h2>
+<p>macOSではApple純正アプリとiCloudの親和性が高く、シームレスな連携が可能です。</p>
+<p><strong>【実践手順】</strong><br />
+1.  <strong>Numbers / Pages を使う場合</strong>:<br />
+    *   「ファイル」&gt;「共有」でiCloudドキュメントを有効化します。<br />
+    *   Magic Keyboard等を使用しながら、複数人で同じiCloudドキュメントを開いて同時編集を行います。<br />
+2.  <strong>Google ドキュメントを使う場合</strong>:<br />
+    *   SafariまたはChromeでアクセスします。<br />
+    *   iCloud Driveと連携させるには、「ショートカット」アプリを使用してiCloudとローカルフォルダのリンクを作成し、Googleアプリから直接開く運用がスムーズです。<br />
+3.  <strong>Office for Mac を使う場合</strong>:<br />
+    *   App Storeから「Microsoft Word」をインストールし、iCloud Driveに保存することで他のAppleデバイスと同期させます。</p>
+<p><strong>【注意点】</strong><br />
+Pages形式（.pages）で保存するとWindowsでは開けないため、共有時は必ず「ファイル」&gt;「エクスポート」からPDFまたはDOCXへ変換してください。</p>
+<hr />
+<h2>3. iOS（iPhone / iPad）での実例手順</h2>
+<p>モバイル環境では、クラウド中心の操作が基本となります。特にiPadOSではマルチタッチを活用した編集が可能です。</p>
+<p><strong>【実践手順】</strong><br />
+1.  <strong>Google ドキュメント/Sheets を使う場合</strong>:<br />
+    *   「ファイル」アプリからGoogleドライブ内のドキュメントを開きます。<br />
+    *   「共有」ボタンからリンクをコピーし、LINEやSlack等で送信します。iPadOSではマルチタッチにより直感的な操作が可能です。<br />
+2.  <strong>Pages/Numbers を使う場合</strong>:<br />
+    *   「ファイル」アプリまたは各アプリ内でiCloudドキュメントを作成。<br />
+    *   「共有」&gt;「メッセージ」で他のAppleユーザーと共同編集を開始します。<br />
+3.  <strong>Office for iOS を使う場合</strong>:<br />
+    *   App Storeからインストールし、OneDrive上のファイルを「ファイル」アプリ経由で開き共同編集します。</p>
+<p><strong>【注意点】</strong><br />
+Googleドキュメントはネイティブアプリではないため、iOS特有のスワイプジェスチャーが一部制限される場合があります。また、画面解像度によりレイアウトが崩れることがあるため、共有前に「詳細情報」からサイズを最適化することをお勧めします。</p>
+<hr />
+<h2>4. Android での実例手順</h2>
+<p>Androidは機種の多様性が特徴ですが、Googleサービスとの親和性が非常に高いのが強みです。</p>
+<p><strong>【実践手順】</strong><br />
+1.  <strong>Google ドキュメント/Sheets を使う場合</strong>:<br />
+    *   「ファイル」マネージャーまたは「Google ドライブ」アプリでドキュメントを開きます。<br />
+    *   「共有」ボタンからメンバーを招待します。Chromeブラウザでも同様の操作が可能です。<br />
+2.  <strong>Office for Android を使う場合</strong>:<br />
+    *   Google Playストアから「Microsoft Office アプリ」を入手し、OneDrive上のファイルを共同編集します。<br />
+3.  <strong>Pages/Numbers の代替</strong>:<br />
+    *   Apple製アプリは非対応のため、「LibreOffice」や「WPS Office」等の代替手段、あるいは事実上の共通言語である「Google ドキュメント」を使用します。</p>
+<p><strong>【注意点】</strong><br />
+機種（Pixel, Galaxy等）によってメニューの配置やアイコンのデザインが異なるため、チームで操作マニュアルを共有する際はスクリーンショットを活用するのがコツです。</p>
+<hr />
+<h2>よくあるトラブルと解決チェックリスト</h2>
+<p>作業中に躓きやすいポイントと、その解決策をまとめました。</p>
+<ul>
+<li><strong>「ファイルが開けない/読み込み中」というエラー</strong><ul>
+<li><strong>原因</strong>: OneDriveの同期停止やOfficeアプリのキャッシュ破損。</li>
+<li><strong>対策</strong>: 「設定」&gt;「アプリ」でOfficeを再起動するか、エクスプローラーのOneDriveアイコンを右クリックして「フォルダを開く」から手動更新を試してください。</li>
+</ul>
+</li>
+<li><strong>「共同編集中にファイルがロックされる」現象</strong><ul>
+<li><strong>原因</strong>: ネットワーク遅延による競合や他ユーザーの保存操作。</li>
+<li><strong>対策</strong>: 「共有」&gt;「アクセス権限」を確認。また、「バージョン履歴」から前の状態に戻す操作を行ってください（※共同編集中のCtrl+Zは反映されない場合があります）。</li>
+</ul>
+</li>
+<li><strong>「印刷/PDF保存時のレイアウト崩れ」</strong><ul>
+<li><strong>原因</strong>: ブラウザ拡張機能の干渉やプリンタドライバーの不整合。</li>
+<li><strong>対策</strong>: Chromeで「Ctrl+P」から「PDFに保存」を選択し、ページ範囲を正しく指定してください。</li>
+</ul>
+</li>
+<li><strong>「iCloudドキュメントが同期されていない」エラー</strong><ul>
+<li><strong>原因</strong>: システム設定で「書類」アプリの同期が無効化されている。</li>
+<li><strong>対策</strong>: 「システム環境設定」&gt;「Apple ID」&gt;「iCloud」から同期を再開し、ファイルの場所を確認してください。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2>まとめ：快適なマルチOS環境を作るポイント</h2>
+<p>異なるOSを跨いでスムーズに共同編集を行うための鍵は、<strong>「共通のプラットフォーム選び」</strong>と<strong>「適切な周辺機器の導入」</strong>です。</p>
+<p>基本的にはGoogleドキュメントやOneDrive/iCloudを活用したクラウド中心の運用が最もトラブルが少ない方法です。しかし、より高度な事務作業をこなすためには、以下のツールを組み合わせることで生産性が劇的に向上します。</p>
+<ul>
+<li><strong>Office互換ソフト</strong>: 複雑なマクロや高度な書式が必要な場合は、Microsoft 365のデスクトップ版をメインに据えつつ、共有用にGoogleドキュメントへ書き出すフローを確立しましょう。</li>
+<li><strong>PDF編集ソフト</strong>: OSを問わず最終成果物を共有する際は、Adobe Acrobat等の信頼できるツールでレイアウトを固定するのが安全です。</li>
+<li><strong>周辺機器の活用</strong>: モバイル端末での編集を快適にするための「外付けキーボード」や、複数画面で資料を見比べながら作業するための「大型モニター」は、マルチOS環境における強力な味方となります。</li>
+</ul>
+<p>それぞれのデバイスの強みを理解し、最適なツールを組み合わせることで、場所や端末に縛られない自由なワークスタイルを実現しましょう。</p>
+<hr />
+<h2>参考文献・公式ドキュメント（一次情報ソース）</h2>
+<p>本記事の手順・仕様は以下の各OSおよびツールの公式ドキュメントに基づいています。OSアップデートによりメニュー名称や挙動が変わる場合があるため、最新仕様の確認にもご活用ください。</p>
+<ul>
+<li><strong>[Windows]</strong> <a href="https://learn.microsoft.com/ja-jp/deployedge/microsoft-edge-policies#printing">Microsoft Edge 印刷・PDF関連ポリシー公式ドキュメント | Microsoft Learn</a></li>
+<li><strong>[macOS]</strong> <a href="https://support.apple.com/ja-jp/guide/preview/prvw43696/mac">Macの「プレビュー」でPDFを結合する - Apple サポート (日本)</a></li>
+<li><strong>[macOS]</strong> <a href="https://support.apple.com/ja-jp/guide/preview/prvw1509/mac">Macの「プレビュー」でPDFのサイズを減らす - Apple サポート (日本)</a></li>
+<li><strong>[iOS]</strong> <a href="https://support.apple.com/ja-jp/guide/iphone/iphc61044c11/ios">iPhoneの「ファイル」でファイルやフォルダを変更する - Apple サポート (日本)</a></li>
+<li><strong>[iOS]</strong> <a href="https://support.apple.com/ja-jp/guide/shortcuts/welcome/ios">ショートカット ユーザガイド - Apple サポート (日本)</a></li>
+<li><strong>[Android]</strong> <a href="https://support.google.com/drive/answer/3145835?hl=ja">Google ドライブでドキュメントをスキャンする（PDF保存） - Google ドライブ ヘルプ</a></li>
+<li><strong>[Android]</strong> <a href="https://support.google.com/chrome/answer/1069693?hl=ja">Chrome から印刷（PDF として保存・ページ範囲指定） - Google Chrome ヘルプ</a></li>
+</ul>
+    </article>
+  </main>
+  <footer>Generated with Local Ollama (qwen3.5 / gemma4) &amp; Draw Things (FLUX.2 klein 4B)</footer>
+</body>
+</html>

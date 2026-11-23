@@ -219,5 +219,65 @@
       "確定申告 データ 保存",
       "電子帳簿 整理"
     ]
+  },
+  {
+    "id": "art18-office-collab",
+    "article_num": 18,
+    "cat_num": 1,
+    "category": "文書作成・オフィス業務・事務作業",
+    "task_topic": "Google ドキュメントと Word/Numbers/Pages をリアルタイムで同期してチーム編集する設定比較",
+    "title": "複数 OS で同時編集：Google ドキュメント vs ローカルファイル｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "共同編集",
+      "クラウドドキュメント",
+      "Office 365",
+      "Pages"
+    ],
+    "id_slug": "art18-collab-docs"
+  },
+  {
+    "id": "art19-meeting-notes-sync",
+    "article_num": 19,
+    "cat_num": 2,
+    "category": "コミュニケーション・情報共有",
+    "task_topic": "会議資料の PDF ファイルを PC で編集し、スマホで QR コードから即座にコメントするワークフロー比較",
+    "title": "PC での PDF 注釈とスマホからの即時返答｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "PDF アノテーション",
+      "Zoom インテグレーション",
+      "Teams",
+      "Slack"
+    ],
+    "id_slug": "art19-meeting-notes"
+  },
+  {
+    "id": "art20-news-verification-flow",
+    "article_num": 20,
+    "cat_num": 3,
+    "category": "情報収集・リサーチ・Web 利用",
+    "task_topic": "複数ブラウザの履歴を自動同期し、スマホで見かけたニュース記事を検索して PC で深掘りする手順比較",
+    "title": "クロスデバイス検索：ブラウザ間でのブックマークとメモ共有｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "Cross-browser sync",
+      "Safari Bookmarks",
+      "Chrome Sync",
+      "Pocket"
+    ],
+    "id_slug": "art20-news-verify"
+  },
+  {
+    "id": "art21-social-media-schedule",
+    "article_num": 21,
+    "cat_num": 4,
+    "category": "画像・イラスト・デザイン制作",
+    "task_topic": "PC で作成した Instagram 用画像をスマホで最終確認し、OS に合わせて自動投稿するスケジュール管理方法比較",
+    "title": "Instagram 投稿ワークフロー：PC デザインからスマホ投稿まで｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "Social Media Management",
+      "Canva for Teams",
+      "Preview.app",
+      "Shortcuts"
+    ],
+    "id_slug": "art21-social-schedule"
   }
 ]

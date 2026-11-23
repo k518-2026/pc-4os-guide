@@ -29,10 +29,11 @@ python -m src.main -n 1 --push
 python -m src.main -n 1 --category 11
 ```
 
-## 書き溜め済み記事一覧（全 17 本 / 最終更新: 2026-11-23 12:25 JST）
+## 書き溜め済み記事一覧（全 18 本 / 最終更新: 2026-11-23 12:39 JST）
 
 | No. | 17分類カテゴリ | 記事タイトル（Markdown） | 挿絵 | 生成日 |
 | :---: | :--- | :--- | :---: | :---: |
+| #18 | 分類01: 文書作成・オフィス業務・事務作業 | [複数 OS で同時編集：Google ドキュメント vs ローカルファイル｜Windows・macOS・iOS・Android](content/2026-11-23_art18_office_collab.md) | あり | 2026-11-23 |
 | #17 | 分類17: 生活・行政手続き・家計・資産管理 | [領収書スキャン・確定申告データの整理と安全な保存手順｜Windows・macOS・iOS・Android](content/2026-11-23_art17_etax_receipt_scan_pdf_archive.md) | あり | 2026-11-23 |
 | #16 | 分類16: 学習・教育・自己啓発 | [デジタル学習ノート・暗記カードの全端末同期とトラブル対策｜Windows・macOS・iOS・Android](content/2026-11-23_art16_digital_notes_sync_study.md) | あり | 2026-11-23 |
 | #15 | 分類15: エンターテインメント・趣味 | [画面ミラーリング・テレビ投影の実例と映らない・音ズレ対処｜Windows・macOS・iOS・Android](content/2026-11-23_art15_screen_mirroring_casting.md) | あり | 2026-11-23 |
