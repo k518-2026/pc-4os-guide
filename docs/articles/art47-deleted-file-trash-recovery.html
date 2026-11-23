@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>誤削除した写真・書類をごみ箱やクラウド履歴から復元する緊急ガイド｜Windows・macOS・iOS・Android | PC 4OS実例ガイド</title>
+  <style>
+:root {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --muted: #475569;
+  --accent: #0284c7;
+  --accent-soft: #e0f2fe;
+  --border: #e2e8f0;
+  --code-bg: #0f172a;
+  --code-text: #e2e8f0;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Noto Sans JP", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+}
+header.site-header {
+  background: linear-gradient(135deg, #0f172a 0%, #0369a1 100%);
+  color: #fff;
+  padding: 2.2rem 1.25rem;
+}
+header.site-header .inner { max-width: 980px; margin: 0 auto; }
+header.site-header h1 { margin: 0 0 0.4rem; font-size: 1.75rem; }
+header.site-header p { margin: 0; opacity: 0.9; font-size: 0.96rem; }
+main { max-width: 980px; margin: 2rem auto; padding: 0 1.25rem 3rem; }
+.badge {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: var(--accent-soft);
+  color: #0369a1;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1.25rem;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08); }
+.card img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; display: block; background: #e2e8f0; }
+.card-body { padding: 1rem 1.1rem 1.2rem; flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+.card-title { font-size: 1.02rem; font-weight: 700; margin: 0; line-height: 1.45; }
+.card-meta { font-size: 0.82rem; color: var(--muted); margin-top: auto; }
+article.post {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 2rem;
+}
+article.post img.eyecatch {
+  width: 100%;
+  max-height: 460px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+}
+article.post h1 { font-size: 1.65rem; line-height: 1.35; margin-top: 0; }
+article.post h2 {
+  font-size: 1.3rem;
+  margin-top: 2.1rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 2px solid var(--accent-soft);
+}
+article.post h3 { font-size: 1.08rem; margin-top: 1.4rem; }
+article.post table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.2rem 0;
+  font-size: 0.92rem;
+  display: block;
+  overflow-x: auto;
+}
+article.post th, article.post td {
+  border: 1px solid var(--border);
+  padding: 0.6rem 0.8rem;
+  text-align: left;
+}
+article.post th { background: #f1f5f9; font-weight: 700; }
+article.post pre {
+  background: var(--code-bg);
+  color: var(--code-text);
+  padding: 1rem 1.15rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+article.post code {
+  background: #f1f5f9;
+  padding: 0.15rem 0.38rem;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+article.post pre code { background: transparent; padding: 0; color: inherit; }
+article.post blockquote {
+  margin: 1.2rem 0;
+  padding: 0.8rem 1.1rem;
+  border-left: 4px solid var(--accent);
+  background: #f0f9ff;
+  border-radius: 0 8px 8px 0;
+}
+.back-link { display: inline-block; margin-bottom: 1rem; color: var(--accent); text-decoration: none; font-weight: 600; }
+.filter-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.15rem 1.25rem;
+  margin-bottom: 1.5rem;
+}
+.filter-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) auto;
+  gap: 0.9rem;
+  align-items: end;
+}
+.filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.filter-field label {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.filter-field input[type="search"],
+.filter-field select {
+  font: inherit;
+  font-size: max(1rem, 1em);
+  min-height: 48px;
+  padding: 0.55rem 0.85rem;
+  border: 1.5px solid #767676;
+  border-radius: 8px;
+  background: #fff;
+  color: var(--text);
+  width: 100%;
+}
+.filter-field input[type="search"]:focus-visible,
+.filter-field select:focus-visible,
+.filter-actions button:focus-visible {
+  outline: 3px solid #0284c7;
+  outline-offset: 2px;
+}
+.filter-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+.filter-actions button {
+  font: inherit;
+  font-size: max(1rem, 0.95em);
+  font-weight: 600;
+  min-height: 48px;
+  padding: 0 1.05rem;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+}
+.btn-primary {
+  background: #0369a1;
+  color: #fff;
+}
+.btn-primary:hover { background: #075985; }
+.btn-secondary {
+  background: #f1f5f9;
+  color: var(--text);
+  border-color: #94a3b8;
+}
+.btn-secondary:hover { background: #e2e8f0; }
+.results-status {
+  color: var(--muted);
+  font-size: 0.92rem;
+  margin: 0 0 1.1rem;
+}
+.empty-state {
+  background: var(--surface);
+  border: 1px dashed #94a3b8;
+  border-radius: 12px;
+  padding: 2rem 1.25rem;
+  text-align: center;
+  color: var(--muted);
+}
+.card[hidden],
+.empty-state[hidden] { display: none; }
+footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2rem 1rem; }
+@media (max-width: 720px) {
+  .filter-form { grid-template-columns: 1fr; }
+  .filter-actions { width: 100%; }
+  .filter-actions button { flex: 1; }
+}
+@media (max-width: 640px) {
+  article.post { padding: 1.2rem; }
+}
+</style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="inner">
+      <h1>PC 4OS実例ガイド</h1>
+      <p>Windows・macOS・iOS・Android の実践比較＆トラブル解決アーカイブ</p>
+    </div>
+  </header>
+  <main>
+    <a class="back-link" href="../index.html">← 記事一覧へ戻る</a>
+    <article class="post">
+      <p><span class="badge">#47｜分類13: ファイル管理・バックアップ・データ復旧</span> <small style="color:#64748b;margin-left:0.5rem;">2026-11-23</small></p>
+      <img class="eyecatch" src="../images/2026-11-23_art47_deleted_file_trash_recovery.png" alt="誤削除した写真・書類をごみ箱やクラウド履歴から復元する緊急ガイド｜Windows・macOS・iOS・Android">
+      <h1>誤削除した写真・書類をごみ箱やクラウド履歴から復元する緊急ガイド｜Windows・macOS・iOS・Android</h1>
+<p>「大事な仕事の資料を間違えて消してしまった…」「昨日撮った大切な写真をゴミ箱に入れてしまった！」そんな絶望的な瞬間、誰しもが経験するトラブルです。</p>
+<p>しかし、焦ってパソコンやスマホを操作し続ける前に落ち着いてください。多くのOSには、削除した直後のファイルを取り戻すための「セーフティネット」が備わっています。この記事では、Windows、macOS、iOS、Androidの4つの主要OSにおいて、標準機能を使ってデータを復元する具体的な手順を徹底解説します。</p>
+<p><strong>この記事で分かること：</strong><br />
+*   各OSにおける「ごみ箱」や「最近削除した項目」の正しい操作手順<br />
+*   クラウド連携（OneDrive, iCloud等）を活用した高度な復元方法<br />
+*   標準機能では手に負えない場合の注意点と対策</p>
+<hr />
+<h2>4OS比較早見表</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">OS</th>
+<th style="text-align: left;">主なゴミ箱機能</th>
+<th style="text-align: left;">クラウド連携による復元</th>
+<th style="text-align: left;">備考</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Windows 11</strong></td>
+<td style="text-align: left;">ごみ箱 (Recycle Bin)</td>
+<td style="text-align: left;">OneDrive「最近削除した項目」</td>
+<td style="text-align: left;">OneDrive同期時はクラウド側も確認可能</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>macOS</strong></td>
+<td style="text-align: left;">ゴミ箱 (Trash)</td>
+<td style="text-align: left;">iCloud Drive「最近削除した項目」</td>
+<td style="text-align: left;">Time Machineによるスナップショット復元が強力</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>iOS</strong></td>
+<td style="text-align: left;">「ファイル」アプリ内のゴミ箱</td>
+<td style="text-align: left;">iCloud Drive「最近削除した項目」</td>
+<td style="text-align: left;">写真アプリは別枠の「最近削除された項目」</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Android</strong></td>
+<td style="text-align: left;">Google フォト / ファイルアプリ</td>
+<td style="text-align: left;">Google ドライブ / Google フォト</td>
+<td style="text-align: left;">アプリごとにゴミ箱の仕様が異なる</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>1. Windows 11 での実例手順</h2>
+<p>Windowsでは、ローカルのごみ箱とOneDriveのクラウド履歴の両方を確認することが重要です。</p>
+<h3>📌 実例手順：ごみ箱とクラウド履歴からの復元</h3>
+<ol>
+<li><strong>ファイルエクスプローラーを開く</strong>: デスクトップまたはタスクバーから「エクスプローラー」を起動し、「この PC」&gt;「ごみ箱」をクリックします。</li>
+<li><strong>対象ファイルを選択</strong>: 誤って削除した写真や書類を探します。見つけたら右クリックし、<strong>「元に戻す」</strong>（または「ここに移動する」）を選択します。通常は元のフォルダに自動で戻ります。</li>
+<li><strong>OneDrive の場合（クラウド同期中）</strong>:<ul>
+<li>ファイルがOneDriveフォルダ内にあった場合、ローカルのごみ箱にないことがあります。</li>
+<li>ブラウザで <a href="https://onedrive.live.com">onedrive.live.com</a> にアクセスします。</li>
+<li>左メニューの<strong>「ゴミ箱」</strong>をクリックし、対象ファイルを右クリックして<strong>「復元」</strong>を選択します。</li>
+</ul>
+</li>
+</ol>
+<h3>⚠️ 標準機能の制限事項・注意点</h3>
+<ul>
+<li><strong>保持期間</strong>: OneDriveと統合されている場合、クラウド側の「最近削除した項目」は通常<strong>30日間</strong>保存されます。この期間を過ぎると永久に消去されます。</li>
+<li><strong>「ごみ箱を空にする」操作の影響</strong>: Windowsの設定から「今すぐ空にする」を実行すると、ローカルデータだけでなく、同期状態によってはクラウド上のデータも即座に削除される可能性があるため注意が必要です。</li>
+<li><strong>システムファイルの除外</strong>: OSのシステムファイルやインストール済みのアプリはごみ箱に入らないため、標準機能での復元は不可能です。</li>
+</ul>
+<h3>🚨 よくあるトラブルと解決法</h3>
+<ol>
+<li><strong>「ごみ箱」を開くと「この PC にアクセスできません」と表示される</strong><ul>
+<li><strong>原因</strong>: OneDriveの同期停止や権限エラー、またはクラウド上のデータが既に削除されている可能性があります。</li>
+<li><strong>解決策</strong>: ネットワーク接続を確認し、タスクトレイのOneDriveアイコンを右クリックして「同期」を再開してください。改善しない場合はMicrosoft公式サポートに従い再インストールを検討します。</li>
+</ul>
+</li>
+<li><strong>「最近削除した項目」が Web ブラウザでも見当たらない</strong><ul>
+<li><strong>原因</strong>: 保持期間（30日）を過ぎているか、自動削除設定が有効になっている可能性があります。</li>
+<li><strong>解決策</strong>: 標準機能では復元不能と判断せざるを得ません。この場合は専門のデータ復旧ツールが必要になります。</li>
+</ul>
+</li>
+<li><strong>ファイルを開くと「以前に別の場所で保存されています」と警告が出る</strong><ul>
+<li><strong>原因</strong>: ローカルの同期ファイルを削除し、クラウド版のみが残っている状態です。</li>
+<li><strong>解決策</strong>: OneDrive Webサイトから「この PC にダウンロード」を選択してローカルコピーを取得してください。</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h2>2. macOS での実例手順</h2>
+<p>macOSでは、Time Machineによるバックアップ戦略とiCloudの履歴確認を組み合わせます。</p>
+<h3>📌 実例手順：ごみ箱と Time Machine からの復元</h3>
+<ol>
+<li><strong>Finder を開く</strong>: Finderを開き、「最近の場所」&gt;「ゴミ箱」をクリックします。</li>
+<li><strong>ファイルを選択して復元</strong>: 対象ファイルを右クリックし、<strong>「元の場所に移動させる」</strong>を選択します。</li>
+<li><strong>Time Machine を使った復元（推奨）</strong>:<ul>
+<li>バックアップディスクが接続されている場合、Finderメニューの<strong>「移動」&gt;「Time Machine」</strong>をクリックします。</li>
+<li>タイムラインから削除されたファイルが存在する過去の日時を選択します。</li>
+<li>対象ファイルを右クリックし、<strong>「この Mac にコピー」</strong>を選択します。</li>
+</ul>
+</li>
+</ol>
+<h3>⚠️ 標準機能の制限事項・注意点</h3>
+<ul>
+<li><strong>ごみ箱の自動空化</strong>: macOS標準では「最近削除した項目」を直接管理する独立メニューはバージョンにより挙動が異なります。基本的にはTime Machineのスナップショットに依存します。</li>
+<li><strong>外付け HDD 接続必須</strong>: Time Machineを利用するには、必ず外部ストレージへの定期的なバックアップが必要です。iCloud Driveと同期していない限り、クラウド履歴からの復元は行えません。</li>
+</ul>
+<h3>🚨 よくあるトラブルと解決法</h3>
+<ol>
+<li><strong>Time Machine のスナップショットが見つからない</strong><ul>
+<li><strong>原因</strong>: バックアップディスクが未接続、またはOSアップデートにより再初期化されている可能性があります。</li>
+<li><strong>解決策</strong>: 「システム設定」&gt;「Time Machine」を開き、ディスクが正しく認識されているか確認し、必要に応じてバックアップを再起動してください。</li>
+</ul>
+</li>
+<li><strong>ごみ箱からファイルを移動すると「場所が見つかりません」と表示される</strong><ul>
+<li><strong>原因</strong>: 削除直後にスナップショットが更新されず、参照先を見失っている可能性があります。</li>
+<li><strong>解決策</strong>: 直ちにFinderのゴミ箱を開き、「ここにコピーする」を選択して特定のフォルダを指定してください。</li>
+</ul>
+</li>
+<li><strong>「最近削除した項目」が表示されない</strong><ul>
+<li><strong>原因</strong>: Finderのサイドバー設定で非表示になっているか、OSの仕様変更によるものです。</li>
+<li><strong>解決策</strong>: 「Finder」&gt;「環境設定」&gt;「一般」タブで、関連するチェック項目を確認してください。</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h2>3. iOS（iPhone / iPad）での実例手順</h2>
+<p>iOSは「ファイル」アプリと「写真」アプリで仕組みが異なります。</p>
+<h3>📌 実例手順：ごみ箱と iCloud ドライブからの復元</h3>
+<ol>
+<li><strong>「ファイル」アプリを開く</strong>: ホーム画面の「ファイル」アイコンをタップします。</li>
+<li><strong>場所を選択</strong>: 「iCloud ドライブ」または「OneDrive」などのフォルダを開きます。</li>
+<li><strong>ごみ箱の確認と復元</strong>:<ul>
+<li>ファイルリストから<strong>「最近削除した項目」</strong>（通常は画面下部やサイドバー）をタップします。</li>
+<li>対象ファイルを選択し、<strong>「復元」</strong>をタップします。※iCloud Driveでの保持期間は<strong>30日間</strong>です。</li>
+</ul>
+</li>
+<li><strong>写真アプリの場合</strong>: 「写真」&gt;「アルバム」&gt;「最近削除された項目」から選択し、「復元」をタップします。</li>
+</ol>
+<h3>⚠️ 標準機能の制限事項・注意点</h3>
+<ul>
+<li><strong>クラウド依存</strong>: iOSではローカルストレージのみでのごみ箱操作は限定的です。基本的にはiCloud Drive等のクラウド連携が有効な状態での復元を前提としています。</li>
+<li><strong>「すべて削除」の罠</strong>: 写真アプリ等で「すべて削除」を実行すると、iCloudから即座に消去されるケースがあり、バックアップがない場合は復元が極めて困難になります。</li>
+</ul>
+<hr />
+<h2>4. Android での実例手順</h2>
+<p>Androidはメーカーや機種によって「ファイル」アプリの挙動が異なりますが、Google公式アプリを基準とした手順を解説します。</p>
+<h3>📌 実例手順：Google フォト / ファイルアプリからの復元</h3>
+<ol>
+<li><strong>Google フォト（写真の場合）</strong>:<ul>
+<li>「Google フォト」アプリを開き、下のメニューから<strong>「ライブラリ」</strong>をタップ。</li>
+<li><strong>「ゴミ箱」</strong>を選択し、復元したい写真を選んで<strong>「復元」</strong>をタップします。※保持期間は通常60日間です。</li>
+</ul>
+</li>
+<li><strong>Files by Google（書類等の場合）</strong>:<ul>
+<li>「Files by Google」アプリを開きます。</li>
+<li>メニュー（三本線）から<strong>「ゴミ箱」</strong>を選択します。</li>
+<li>対象ファイルを選択し、<strong>「復元」</strong>をタップします。</li>
+</ul>
+</li>
+</ol>
+<h3>⚠️ 標準機能の制限事項・注意点</h3>
+<ul>
+<li><strong>アプリによる差異</strong>: SamsungやSonyなどメーカー独自のファイルマネージャーを使用している場合、ゴミ箱機能自体が備わっていない、あるいは操作方法が異なる場合があります。</li>
+<li><strong>自動削除設定</strong>: Google フォト等の設定で「ゴミ箱を自動的に空にする」といった挙動（または期間経過による自動削除）があるため、早急な対応が必要です。</li>
+</ul>
+<hr />
+<h2>よくあるトラブルと解決チェックリスト</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">トラブル事象</th>
+<th style="text-align: left;">原因の可能性</th>
+<th style="text-align: left;">解決策・チェック項目</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>ごみ箱にファイルが表示されない</strong></td>
+<td style="text-align: left;">すでに「空にする」を実行した、またはクラウド同期が切れている。</td>
+<td style="text-align: left;">クラウド（OneDrive/iCloud）のWebサイト版へログインしてゴミ箱を確認する。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>復元ボタンがグレーアウトしている</strong></td>
+<td style="text-align: left;">保持期間（30日等）を過ぎた、またはファイルが破損している。</td>
+<td style="text-align: left;">標準機能では復元不可。データ復旧ソフトの導入を検討する。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>「場所が見つかりません」と出る</strong></td>
+<td style="text-align: left;">ファイルのパス情報が消失した、または移動中にエラーが発生した。</td>
+<td style="text-align: left;">別のフォルダへ「コピー」として保存し直す操作を試みる。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>特定のアプリ内データだけ消えた</strong></td>
+<td style="text-align: left;">アプリ独自のデータベース管理のためOSのごみ箱には入らない。</td>
+<td style="text-align: left;">アプリ内の設定や、公式のバックアップ機能を確認する。</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>まとめ：快適なマルチOS環境を作るポイント</h2>
+<p>今回のガイドで紹介した「ごみ箱」や「クラウド履歴」からの復元は、あくまで<strong>「削除直後の緊急事態」に対応するための応急処置</strong>です。標準機能には必ず「保持期間」という期限があり、それを過ぎた瞬間にデータを取り戻すことは極めて困難になります。</p>
+<p>大切なデータを守り、ストレスのないマルチOS環境を作るためには、以下の3層のバックアップ戦略を組み合わせることを強くお勧めします。</p>
+<ol>
+<li><strong>外付けHDD/SSDによる物理バックアップ</strong>:<ul>
+<li>特にmacOSユーザーならTime Machine、Windowsユーザーなら「ファイル履歴」機能を使い、定期的に物理ドライブへデータを逃がすのが最も確実です。</li>
+</ul>
+</li>
+<li><strong>クラウドバックアップの常時利用</strong>:<ul>
+<li>OneDriveやiCloud Driveを常に「同期」状態にしておくことで、デバイスの紛失や故障時にもWebからいつでもアクセス可能になります。</li>
+</ul>
+</li>
+<li><strong>データ復旧ソフト・バックアップソフトの導入</strong>:<ul>
+<li>「うっかり消去」に備え、自動で増分バックアップを取る専用ソフトを導入しておけば、万が一の際も数クリックで過去の状態へ戻せます。</li>
+</ul>
+</li>
+</ol>
+<p>「消えてから慌てる」のではなく、「消えても大丈夫な仕組み」を整えることこそが、プロフェッショナルなデータ管理の第一歩です。</p>
+<hr />
+<h2>参考文献・公式ドキュメント（一次情報ソース）</h2>
+<p>本記事の手順・仕様は以下の各OSおよびツールの公式ドキュメントに基づいています。OSアップデートによりメニュー名称や挙動が変わる場合があるため、最新仕様の確認にもご活用ください。</p>
+<ul>
+<li><strong>[Windows]</strong> <a href="https://support.microsoft.com/ja-jp/windows/windows-%E3%81%A7-pc-%E3%82%92%E3%83%90%E3%83%83%E3%82%AF%E3%82%A2%E3%83%83%E3%83%97%E3%81%8A%E3%82%88%E3%81%B3%E5%BE%A9%E5%85%83%E3%81%99%E3%82%8B-352091d2-bb9d-3ea3-ed18-52ef2b88cbef">Windows で PC をバックアップおよび復元する - Microsoft サポート</a></li>
+<li><strong>[macOS]</strong> <a href="https://support.apple.com/ja-jp/104984">Time MachineでMacをバックアップする - Apple サポート (日本)</a></li>
+<li><strong>[iOS]</strong> <a href="https://support.apple.com/ja-jp/guide/iphone/iph95baac91f/ios">iPhoneに外部ストレージデバイスを接続する - Apple サポート (日本)</a></li>
+<li><strong>[Android]</strong> <a href="https://support.google.com/android/answer/9064445?hl=ja">パソコンと Android デバイス間でファイルを転送する - Android ヘルプ</a></li>
+</ul>
+    </article>
+  </main>
+  <footer>Generated with Local Ollama (qwen3.5 / gemma4) &amp; Draw Things (FLUX.2 klein 4B)</footer>
+</body>
+</html>
