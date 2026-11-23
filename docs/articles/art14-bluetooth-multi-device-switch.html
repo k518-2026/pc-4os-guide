@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bluetooth機器のマルチペアリング設定と繋がらない時の解決法｜Windows・macOS・iOS・Android | PC 4OS実例ガイド</title>
+  <style>
+:root {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --muted: #475569;
+  --accent: #0284c7;
+  --accent-soft: #e0f2fe;
+  --border: #e2e8f0;
+  --code-bg: #0f172a;
+  --code-text: #e2e8f0;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Noto Sans JP", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+}
+header.site-header {
+  background: linear-gradient(135deg, #0f172a 0%, #0369a1 100%);
+  color: #fff;
+  padding: 2.2rem 1.25rem;
+}
+header.site-header .inner { max-width: 980px; margin: 0 auto; }
+header.site-header h1 { margin: 0 0 0.4rem; font-size: 1.75rem; }
+header.site-header p { margin: 0; opacity: 0.9; font-size: 0.96rem; }
+main { max-width: 980px; margin: 2rem auto; padding: 0 1.25rem 3rem; }
+.badge {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: var(--accent-soft);
+  color: #0369a1;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1.25rem;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08); }
+.card img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; display: block; background: #e2e8f0; }
+.card-body { padding: 1rem 1.1rem 1.2rem; flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+.card-title { font-size: 1.02rem; font-weight: 700; margin: 0; line-height: 1.45; }
+.card-meta { font-size: 0.82rem; color: var(--muted); margin-top: auto; }
+article.post {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 2rem;
+}
+article.post img.eyecatch {
+  width: 100%;
+  max-height: 460px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+}
+article.post h1 { font-size: 1.65rem; line-height: 1.35; margin-top: 0; }
+article.post h2 {
+  font-size: 1.3rem;
+  margin-top: 2.1rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 2px solid var(--accent-soft);
+}
+article.post h3 { font-size: 1.08rem; margin-top: 1.4rem; }
+article.post table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.2rem 0;
+  font-size: 0.92rem;
+  display: block;
+  overflow-x: auto;
+}
+article.post th, article.post td {
+  border: 1px solid var(--border);
+  padding: 0.6rem 0.8rem;
+  text-align: left;
+}
+article.post th { background: #f1f5f9; font-weight: 700; }
+article.post pre {
+  background: var(--code-bg);
+  color: var(--code-text);
+  padding: 1rem 1.15rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+article.post code {
+  background: #f1f5f9;
+  padding: 0.15rem 0.38rem;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+article.post pre code { background: transparent; padding: 0; color: inherit; }
+article.post blockquote {
+  margin: 1.2rem 0;
+  padding: 0.8rem 1.1rem;
+  border-left: 4px solid var(--accent);
+  background: #f0f9ff;
+  border-radius: 0 8px 8px 0;
+}
+.back-link { display: inline-block; margin-bottom: 1rem; color: var(--accent); text-decoration: none; font-weight: 600; }
+footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2rem 1rem; }
+@media (max-width: 640px) {
+  article.post { padding: 1.2rem; }
+}
+</style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="inner">
+      <h1>PC 4OS実例ガイド</h1>
+      <p>Windows・macOS・iOS・Android の実践比較＆トラブル解決アーカイブ</p>
+    </div>
+  </header>
+  <main>
+    <a class="back-link" href="../index.html">← 記事一覧へ戻る</a>
+    <article class="post">
+      <p><span class="badge">#14｜分類14: ハードウェア・周辺機器・IoT連携</span> <small style="color:#64748b;margin-left:0.5rem;">2026-11-23</small></p>
+      <img class="eyecatch" src="../images/2026-11-23_art14_bluetooth_multi_device_switch.png" alt="Bluetooth機器のマルチペアリング設定と繋がらない時の解決法｜Windows・macOS・iOS・Android">
+      <h1>Bluetooth機器のマルチペアリング設定と繋がらない時の解決法｜Windows・macOS・iOS・Android</h1>
+<p>「仕事で使うPC（Windows）と、プライベートで使うスマホやタブレット（iOS/Android）を、同じBluetoothキーボードやマウスで使い回したい」と思ったことはありませんか？</p>
+<p>しかし、いざ複数のデバイスを登録しようとすると、「なぜか片方のOSでは認識されない」「接続が切れてしまう」「切り替え方がわからない」といったトラブルに直面することが少なくありません。</p>
+<p>本記事では、Windows、macOS、iOS、Androidの4つの主要OSにおいて、Bluetooth機器のマルチペアリング設定手順と、よくある接続トラブルの解決策を徹底解説します。この記事を読めば、複数のデバイスをスムーズに行き来する快適なマルチOS環境の構築ポイントがすべて分かります。</p>
+<h2>4OS比較早見表</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">機能・項目</th>
+<th style="text-align: left;">Windows 11</th>
+<th style="text-align: left;">macOS</th>
+<th style="text-align: left;">iOS (iPhone/iPad)</th>
+<th style="text-align: left;">Android</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>基本操作</strong></td>
+<td style="text-align: left;">設定 &gt; Bluetooth</td>
+<td style="text-align: left;">システム設定 &gt; Bluetooth</td>
+<td style="text-align: left;">設定 &gt; Bluetooth</td>
+<td style="text-align: left;">設定 &gt; Bluetooth</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>マルチペアリング</strong></td>
+<td style="text-align: left;">デバイス依存（手動切替）</td>
+<td style="text-align: left;">デバイス依存（手動切換）</td>
+<td style="text-align: left;">独立した登録が必要</td>
+<td style="text-align: left;">デバイス依存（手動切換）</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>OS間自動連携</strong></td>
+<td style="text-align: left;">非対応（標準機能のみ）</td>
+<td style="text-align: left;">Apple製品のみ対応</td>
+<td style="text-align: left;">Apple製品のみ対応</td>
+<td style="text-align: left;">機種による（Fast Pair等）</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>主なトラブル例</strong></td>
+<td style="text-align: left;">ドライバ不整合、サービス停止</td>
+<td style="text-align: left;">キャッシュ残留、遅延</td>
+<td style="text-align: left;">出力ルーティング競合</td>
+<td style="text-align: left;">機種固有の権限設定</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>1. Windows 11 での実例手順</h2>
+<p>Windows環境では、Bluetooth機器を「入力デバイス」として安定して動作させることが重要です。</p>
+<h3>公式実例手順：マルチペアリングと切り替え</h3>
+<ol>
+<li><strong>接続</strong>: 「設定」&gt;「Bluetooth とその他のデバイス」を開き、「デバイスの追加」をクリックします。</li>
+<li><strong>登録</strong>: 機器を選択し、画面の指示に従ってペアリングを完了させます。<ul>
+<li><strong>注意点</strong>: Windowsは一度に1つのOSとして認識するため、他のOSに登録していてもWindows側では単なる入力機器として動作します。OS間での自動切替機能は標準では備わっていません。</li>
+</ul>
+</li>
+<li><strong>切り替え</strong>: 機器自体が「マルチデバイスモード」キー（例：Logitech Flow対応製品など）を備えている場合は、ボタン操作で切り替えます。そうでない場合は、Windows側で一度ペアリングを解除し、再度登録し直す必要があります。</li>
+</ol>
+<h3>標準機能の制限事項</h3>
+<ul>
+<li><strong>OS間連携</strong>: WindowsとmacOSの間では、Apple ContinuityやAndroid Fast Pairに相当する<strong>自動接続・同期機能は標準で非対応</strong>です。手動での切り替え操作が基本となります。</li>
+<li><strong>同時接続数</strong>: Bluetoothアダプタの仕様によりますが、Windows 11の設定画面では管理できるデバイス数に制限がかかる場合があります。</li>
+</ul>
+<h3>よくあるトラブルと解決法</h3>
+<ul>
+<li><strong>エラーA：デバイスが検索されない</strong><ul>
+<li>原因：Bluetoothサービスの停止またはドライバ不具合。</li>
+<li>解決：該当デバイスを削除し、PCを再起動。改善しない場合は「設定 &gt; システム &gt; トラブルシューティング」から「Bluetoothトラブルシューティングツール」を実行してください。</li>
+</ul>
+</li>
+<li><strong>エラーB：キーボード入力がおかしい/マウスが反応しない</strong><ul>
+<li>原因：ドライバと機器のファームウェア不整合。</li>
+<li>解決：「デバイスマネージャー」&gt;「Bluetooth デバイス」で該当アダプタを右クリックし、「ドライバーの更新」または「デバイスのアンインストール（再起動）」を実行してください。</li>
+</ul>
+</li>
+<li><strong>エラーC：接続はできるがペアリング解除できない</strong><ul>
+<li>原因：機器側の電源オフ/オン忘れや、Windows内のキャッシュデータ残留。</li>
+<li>解決：機器の電源を完全に切り、10秒以上待ってから再接続を試みてください。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2>2. macOS での実例手順</h2>
+<p>Macユーザーにとって、Appleエコシステム内での連携はスムーズですが、他OSとの混在には注意が必要です。</p>
+<h3>公式実例手順：マルチペアリングと切り替え</h3>
+<ol>
+<li><strong>接続</strong>: 「システム設定」&gt;「Bluetooth」を開き、表示された機器をクリックしてパスワードを入力します。</li>
+<li><strong>切り替え</strong>: Mac側ではAirDropやHandoffと連携したAppleデバイス間でのシームレスな動作が可能ですが、Windows/Androidからは非対応です。他OSへ切り替える際は、Macのペアリングリストから「このデバイスを削除」するか、機器側のボタンで接続先を変更します。</li>
+</ol>
+<h3>標準機能の制限事項</h3>
+<ul>
+<li><strong>クロスOS接続</strong>: macOSとWindowsの間では<strong>Bluetoothプロファイルやペアリング情報が共有されません</strong>。Windowsに登録したキーボードも、Macでは「新しいデバイス」として再ペアリングが必要です。</li>
+<li><strong>マルチポイント接続</strong>: 機器側の仕様（Multi-point）自体は動作しますが、Mac側で同時接続数を調整する設定項目はありません。</li>
+</ul>
+<h3>よくあるトラブルと解決法</h3>
+<ul>
+<li><strong>エラーA：「ペアリング中」と表示されず反応しない</strong><ul>
+<li>原因：Bluetoothサービスの停止またはキャッシュデータ。</li>
+<li>解決：機器を削除しMacを再起動。「ターミナル」を開き <code>sudo killall CoreBluetooth</code> と入力してサービスをリセットするのが公式推奨の代替手段です。</li>
+</ul>
+</li>
+<li><strong>エラーB：接続はできるがキーボード入力が遅延する</strong><ul>
+<li>原因：ドライバと機器のファームウェア不整合、またはOSリソース不足。</li>
+<li>解決：「システム設定」アプリでBluetoothのオン/オフを切り替え、再接続を試みてください。</li>
+</ul>
+</li>
+<li><strong>エラーC：イヤホンが接続された直後に音が鳴らない</strong><ul>
+<li>原因：AirPlayルーティング競合、または出力デバイス選択の遅延。</li>
+<li>解決：「サウンド」設定で正しいBluetoothデバイスが選定されているか確認。「コントロールセンター」から音量スライダーを一度ゼロにし、再度上げることで接続状態をリセットします。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2>3. iOS（iPhone / iPad）での実例手順</h2>
+<p>モバイルデバイスでは、省電力とセキュリティの観点から独自の挙動を示します。</p>
+<h3>公式実例手順：マルチペアリングと切り替え</h3>
+<ol>
+<li><strong>接続</strong>: 「設定」&gt;「Bluetooth」で機器を選択します。</li>
+<li><strong>切り替え</strong>: iOSは他のOSとの同時接続を認識しないため、物理的に別の端末へ移動するか、一度「このデバイスを削除（忘れる）」を選択して再登録する必要があります。</li>
+</ol>
+<h3>標準機能の制限事項</h3>
+<ul>
+<li><strong>クロスプラットフォーム連携</strong>: iOSからWindows/AndroidのBluetoothデバイスを直接管理することはできません。他OSのペアリング状態は表示されません。</li>
+<li><strong>マルチポイント接続</strong>: iPhone/iPadが一つのキーボードを複数のPCと同時に使うことは、iOS側の仕様上<strong>非対応</strong>です。</li>
+</ul>
+<h3>よくあるトラブルと解決法</h3>
+<ul>
+<li><strong>エラーA：「ペアリング中」と表示されても機器が選択できない</strong><ul>
+<li>原因：Bluetoothサービスの停止またはキャッシュデータ。</li>
+<li>解決：「設定」&gt;「Bluetooth」でスイッチをオフにし、数秒待ってから再度オンにします。改善しない場合は端末を再起動してください。</li>
+</ul>
+</li>
+<li><strong>エラーB：イヤホンが接続されたまま音が出ない</strong><ul>
+<li>原因：出力デバイスの未選択、またはAirPods特有のルーティング問題。</li>
+<li>解決：「設定」&gt;「Bluetooth」で機器を削除し再ペアリング。「コントロールセンター」からマイクとスピーカーのアイコンを確認してください。</li>
+</ul>
+</li>
+<li><strong>エラーC：マウス/キーボードのカーソル移動が遅延・停止</strong><ul>
+<li>原因：iOS側のBluetoothプロトコル制限またはバッテリー残量不足。</li>
+<li>解決：機器を削除し、再度ペアリングを行ってください。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2>4. Android での実例手順</h2>
+<p>Androidはメーカーや機種（Pixel, Galaxy等）によりメニュー階層が異なりますが、基本構造は共通しています。</p>
+<h3>公式実例手順：マルチペアリングと切り替え</h3>
+<ol>
+<li><strong>接続</strong>: 「設定」&gt;「Bluetooth」で機器を検索し追加します。</li>
+<li><strong>自動連携</strong>: Pixel等の機種では「Nearby Connect（旧Quick Share）」やメーカー固有アプリ（Samsung Galaxy Wearable等）を使用することで、よりスムーズな登録が可能です。</li>
+<li><strong>切り替え</strong>: 機器側のマルチポイント機能に対応しているか確認してください。Android側で削除し、別のOSに再登録する操作が基本となります。</li>
+</ol>
+<h3>標準機能の制限事項</h3>
+<ul>
+<li><strong>機種依存</strong>: ペアリング解除の場所やBluetoothプロファイルへの対応状況は、メーカー（Samsung, Google, Sony等）によって大きく異なります。標準機能のみでは他OSとの完全な同期は保証されません。</li>
+</ul>
+<h3>よくあるトラブルと解決法</h3>
+<ul>
+<li><strong>エラーA：デバイスがリストに現れない</strong><ul>
+<li>原因：位置情報サービス（GPS）のオフ、またはBluetooth権限の制限。</li>
+<li>解決：「設定」&gt;「位置情報」をオンにし、Bluetoothの権限を許可してください。</li>
+</ul>
+</li>
+<li><strong>エラーB：接続はされるが操作を受け付けない</strong><ul>
+<li>原因：ペアリング情報の不整合。</li>
+<li>解決：一度「解除（Unpair）」を行い、端末のBluetoothを再起動してから再度ペアリングを行ってください。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2>よくあるトラブルと解決チェックリスト</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">トラブル事象</th>
+<th style="text-align: left;">推奨される確認手順</th>
+<th style="text-align: left;">備考</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>デバイスが検索されない</strong></td>
+<td style="text-align: left;">1. 機器の電池残量を確認<br>2. 他のデバイスとの接続を一度切断<br>3. OS側のBluetoothをオフ→オンにする</td>
+<td style="text-align: left;">多くのケースで「他端末への接続」が原因です。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>入力遅延・カクつき</strong></td>
+<td style="text-align: left;">1. 周囲のWi-Fi/Bluetooth干渉源を確認<br>2. ドライバ/ファームウェアを最新に更新<br>3. 機器の再起動</td>
+<td style="text-align: left;">電波干渉（特に2.4GHz帯）の影響を受けやすいです。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>接続が頻繁に切れる</strong></td>
+<td style="text-align: left;">1. ペアリング情報の削除と再登録<br>2. 省電力モードのオフを確認<br>3. Bluetoothアダプタの物理的な位置確認</td>
+<td style="text-align: left;">WindowsではUSB延長ケーブル等で距離を確保すると改善します。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>ペアリング解除できない</strong></td>
+<td style="text-align: left;">1. 機器の電源を完全に切る（10秒以上）<br>2. OSのBluetoothキャッシュ削除<br>3. 再起動後に再度試行</td>
+<td style="text-align: left;">キャッシュが残っている場合、再起動が最も有効です。</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>まとめ：快適なマルチOS環境を作るポイント</h2>
+<p>Bluetooth機器のマルチペアリングは、基本的には「各OSに個別に登録し、機器側のボタンで切り替える」という手動操作が標準的な挙動です。しかし、この手間を最小限にするためには、以下の周辺機器やツールの導入を検討するのがプロの推奨です。</p>
+<ul>
+<li><strong>マルチペアリング対応キーボード・マウス</strong>: Logitech（Logicool）の「Flow」シリーズのように、ボタン一つでOS間を瞬時に切り替えられる製品を選ぶことで、ストレスのない環境が構築できます。</li>
+<li><strong>USB-Cドッキングステーション</strong>: Windows PCとMacを交互に使う場合、ハブやドッキングステーションを介することで、周辺機器の接続状態を安定させることができます。</li>
+<li><strong>KVM切替器</strong>: 物理的に2台のPCを1組のキーボード・マウスで操作したい場合は、Bluetoothよりも信頼性の高い有線接続＋KVM切替器の組み合わせが、遅延や切断トラブルを防ぐための最も確実な解決策となります。</li>
+</ul>
+<p>自分のワークスタイルに合わせて、これらのツールを組み合わせることで、OSの壁を感じさせないシームレスな作業環境を実現しましょう。</p>
+<hr />
+<h2>参考文献・公式ドキュメント（一次情報ソース）</h2>
+<p>本記事の手順・仕様は以下の各OSおよびツールの公式ドキュメントに基づいています。OSアップデートによりメニュー名称や挙動が変わる場合があるため、最新仕様の確認にもご活用ください。</p>
+<ul>
+<li><strong>[Windows]</strong> <a href="https://support.microsoft.com/ja-jp/windows/windows-%E3%81%A7-bluetooth-%E3%81%AE%E5%95%8F%E9%A1%8C%E3%82%92%E8%A7%A3%E6%B1%BA%E3%81%99%E3%82%8B-723e092f-03fa-858b-5c80-131ec3fba75c">Windows で Bluetooth の問題を解決する - Microsoft サポート</a></li>
+<li><strong>[macOS]</strong> <a href="https://support.apple.com/ja-jp/guide/mac-help/blth1004/mac">BluetoothデバイスをMacに接続する - Apple サポート (日本)</a></li>
+<li><strong>[iOS]</strong> <a href="https://support.apple.com/ja-jp/guide/iphone/iph3c50f191/ios">iPhoneをBluetoothアクセサリに接続する - Apple サポート (日本)</a></li>
+<li><strong>[Android]</strong> <a href="https://support.google.com/android/answer/9769184?hl=ja">Android での Bluetooth に関する問題を解決する - Android ヘルプ</a></li>
+</ul>
+    </article>
+  </main>
+  <footer>Generated with Local Ollama (qwen3.5 / gemma4) &amp; Draw Things (FLUX.2 klein 4B)</footer>
+</body>
+</html>
