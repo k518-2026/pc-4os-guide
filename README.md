@@ -29,10 +29,11 @@ python -m src.main -n 1 --push
 python -m src.main -n 1 --category 11
 ```
 
-## 書き溜め済み記事一覧（全 48 本 / 最終更新: 2026-11-23 18:13 JST）
+## 書き溜め済み記事一覧（全 49 本 / 最終更新: 2026-11-23 18:18 JST）
 
 | No. | 17分類カテゴリ | 記事タイトル（Markdown） | 挿絵 | 生成日 |
 | :---: | :--- | :--- | :---: | :---: |
+| #49 | 分類15: エンターテインメント・趣味 | [電子書籍・PDF読書の全端末同期とストレージ節約の管理実例｜Windows・macOS・iOS・Android](content/2026-11-23_art49_ebook_manga_library_sync.md) | あり | 2026-11-23 |
 | #48 | 分類14: ハードウェア・周辺機器・IoT連携 | [Wi-Fiプリンターへのワイヤレス印刷設定と「オフライン」エラー解決実例｜Windows・macOS・iOS・Android](content/2026-11-23_art48_wireless_printer_airprint_setup.md) | あり | 2026-11-23 |
 | #47 | 分類13: ファイル管理・バックアップ・データ復旧 | [誤削除した写真・書類をごみ箱やクラウド履歴から復元する緊急ガイド｜Windows・macOS・iOS・Android](content/2026-11-23_art47_deleted_file_trash_recovery.md) | あり | 2026-11-23 |
 | #46 | 分類12: セキュリティ・プライバシー対策 | [フリーWi-Fiを安全に使うプライバシー設定とログイン画面が出ない時の対処｜Windows・macOS・iOS・Android](content/2026-11-23_art46_public_wifi_vpn_privacy_check.md) | あり | 2026-11-23 |
