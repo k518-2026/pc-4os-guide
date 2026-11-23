@@ -29,10 +29,11 @@ python -m src.main -n 1 --push
 python -m src.main -n 1 --category 11
 ```
 
-## 書き溜め済み記事一覧（全 43 本 / 最終更新: 2026-11-23 17:51 JST）
+## 書き溜め済み記事一覧（全 44 本 / 最終更新: 2026-11-23 17:54 JST）
 
 | No. | 17分類カテゴリ | 記事タイトル（Markdown） | 挿絵 | 生成日 |
 | :---: | :--- | :--- | :---: | :---: |
+| #44 | 分類10: システム管理・OS設定・メンテナンス | [バッテリーの減りが早い原因特定と劣化を防ぐ充電設定の実例｜Windows・macOS・iOS・Android](content/2026-11-23_art44_battery_health_power_saving.md) | なし | 2026-11-23 |
 | #43 | 分類09: データ分析・科学計算・AI活用 | [表計算ソフトでグラフ作成＆スマホでの確認・修正実例｜Windows・macOS・iOS・Android](content/2026-11-23_art43_spreadsheet_graph_chart_mobile.md) | あり | 2026-11-23 |
 | #42 | 分類08: Web制作・ブログ・デジタルマーケティング | [仕事と私用を分けるブラウザ「プロファイル」管理と拡張機能トラブル対策｜Windows・macOS・iOS・Android](content/2026-11-23_art42_browser_profile_work_private.md) | あり | 2026-11-23 |
 | #41 | 分類07: プログラミング・ソフトウェア開発 | [プログラミング不要で毎日を時短！標準自動化ツール活用の実例｜Windows・macOS・iOS・Android](content/2026-11-23_art41_shortcuts_automator_routine.md) | あり | 2026-11-23 |
