@@ -29,10 +29,11 @@ python -m src.main -n 1 --push
 python -m src.main -n 1 --category 11
 ```
 
-## 書き溜め済み記事一覧（全 26 本 / 最終更新: 2026-11-23 14:00 JST）
+## 書き溜め済み記事一覧（全 27 本 / 最終更新: 2026-11-23 14:08 JST）
 
 | No. | 17分類カテゴリ | 記事タイトル（Markdown） | 挿絵 | 生成日 |
 | :---: | :--- | :--- | :---: | :---: |
+| #27 | 分類10: システム管理・OS設定・メンテナンス | [OSアップデートが終わらない・失敗するときの安全な対処手順｜Windows・macOS・iOS・Android の比較ガイド](content/2026-11-23_art27_os_update_stuck_recovery.md) | あり | 2026-11-23 |
 | #26 | 分類09: データ分析・科学計算・AI活用 | [生成AI（ChatGPT/Gemini）をPCとスマホで連携・履歴活用する実例｜Windows・macOS・iOS・Android](content/2026-11-23_art26_ai_chat_history_prompt_sync.md) | あり | 2026-11-23 |
 | #25 | 分類08: Web制作・ブログ・デジタルマーケティング | [QRコード作成・読み取りとPC〜スマホ間のURL即時共有実例｜Windows・macOS・iOS・Android](content/2026-11-23_art25_qr_code_short_url_share.md) | あり | 2026-11-23 |
 | #24 | 分類07: プログラミング・ソフトウェア開発 | [初心者向けMarkdownメモの書き方と全端末同期・プレビュー実例｜Windows・macOS・iOS・Android](content/2026-11-23_art24_markdown_editor_sync_beginners.md) | あり | 2026-11-23 |
