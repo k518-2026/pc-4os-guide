@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wi-Fiが遅い・突然切れる原因の切り分けと改善チェック実例｜Windows・macOS・iOS・Android | PC 4OS実例ガイド</title>
+  <style>
+:root {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --muted: #475569;
+  --accent: #0284c7;
+  --accent-soft: #e0f2fe;
+  --border: #e2e8f0;
+  --code-bg: #0f172a;
+  --code-text: #e2e8f0;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Noto Sans JP", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+}
+header.site-header {
+  background: linear-gradient(135deg, #0f172a 0%, #0369a1 100%);
+  color: #fff;
+  padding: 2.2rem 1.25rem;
+}
+header.site-header .inner { max-width: 980px; margin: 0 auto; }
+header.site-header h1 { margin: 0 0 0.4rem; font-size: 1.75rem; }
+header.site-header p { margin: 0; opacity: 0.9; font-size: 0.96rem; }
+main { max-width: 980px; margin: 2rem auto; padding: 0 1.25rem 3rem; }
+.badge {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: var(--accent-soft);
+  color: #0369a1;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1.25rem;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08); }
+.card img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; display: block; background: #e2e8f0; }
+.card-body { padding: 1rem 1.1rem 1.2rem; flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+.card-title { font-size: 1.02rem; font-weight: 700; margin: 0; line-height: 1.45; }
+.card-meta { font-size: 0.82rem; color: var(--muted); margin-top: auto; }
+article.post {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 2rem;
+}
+article.post img.eyecatch {
+  width: 100%;
+  max-height: 460px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+}
+article.post h1 { font-size: 1.65rem; line-height: 1.35; margin-top: 0; }
+article.post h2 {
+  font-size: 1.3rem;
+  margin-top: 2.1rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 2px solid var(--accent-soft);
+}
+article.post h3 { font-size: 1.08rem; margin-top: 1.4rem; }
+article.post table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.2rem 0;
+  font-size: 0.92rem;
+  display: block;
+  overflow-x: auto;
+}
+article.post th, article.post td {
+  border: 1px solid var(--border);
+  padding: 0.6rem 0.8rem;
+  text-align: left;
+}
+article.post th { background: #f1f5f9; font-weight: 700; }
+article.post pre {
+  background: var(--code-bg);
+  color: var(--code-text);
+  padding: 1rem 1.15rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+article.post code {
+  background: #f1f5f9;
+  padding: 0.15rem 0.38rem;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+article.post pre code { background: transparent; padding: 0; color: inherit; }
+article.post blockquote {
+  margin: 1.2rem 0;
+  padding: 0.8rem 1.1rem;
+  border-left: 4px solid var(--accent);
+  background: #f0f9ff;
+  border-radius: 0 8px 8px 0;
+}
+.back-link { display: inline-block; margin-bottom: 1rem; color: var(--accent); text-decoration: none; font-weight: 600; }
+footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2rem 1rem; }
+@media (max-width: 640px) {
+  article.post { padding: 1.2rem; }
+}
+</style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="inner">
+      <h1>PC 4OS実例ガイド</h1>
+      <p>Windows・macOS・iOS・Android の実践比較＆トラブル解決アーカイブ</p>
+    </div>
+  </header>
+  <main>
+    <a class="back-link" href="../index.html">← 記事一覧へ戻る</a>
+    <article class="post">
+      <p><span class="badge">#28｜分類11: ネットワーク・サーバー・インフラ構築</span> <small style="color:#64748b;margin-left:0.5rem;">2026-11-23</small></p>
+      <img class="eyecatch" src="../images/2026-11-23_art28_wifi_slow_disconnect_fix.png" alt="Wi-Fiが遅い・突然切れる原因の切り分けと改善チェック実例｜Windows・macOS・iOS・Android">
+      <h1>Wi-Fiが遅い・突然切れる原因の切り分けと改善チェック実例｜Windows・macOS・iOS・Android</h1>
+<p>「動画を見ようとしたら急に止まる」「Webサイトの読み込みが異常に遅い」「Wi-Fiがつながっているはずなのにネットに繋がらない」……。こうしたネットワークトラブルは、仕事やプライベートの時間を阻害する大きなストレスです。</p>
+<p>原因は「ルーターの不調」「周囲の電波干渉」「端末固有の設定」「ISP（プロバイダー）の制限」など多岐にわたります。この記事では、Windows、macOS、iOS、Androidの4つの主要OSにおいて、<strong>標準機能だけでできるトラブルシューティングと設定の見直し手順</strong>を徹底解説します。</p>
+<p>まずは基本の切り分けフローを確認し、ご自身の環境に合わせた対策を実践してみましょう。</p>
+<h2>4OS比較早見表</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">機能・項目</th>
+<th style="text-align: left;">Windows 11</th>
+<th style="text-align: left;">macOS</th>
+<th style="text-align: left;">iOS (iPhone/iPad)</th>
+<th style="text-align: left;">Android</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>DNS手動設定</strong></td>
+<td style="text-align: left;">設定画面から可能</td>
+<td style="text-align: left;">システム設定から可能</td>
+<td style="text-align: left;">Wi-Fi詳細設定から可能</td>
+<td style="text-align: left;">設定のネットワーク詳細から可能</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>周波数帯固定</strong></td>
+<td style="text-align: left;">ドライバ依存（UIでは不可）</td>
+<td style="text-align: left;">非対応（ルーター側で制御）</td>
+<td style="text-align: left;">非対応（ルーター側で制御）</td>
+<td style="text-align: left;">非対応（ルーター側で制御）</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>SMB共有接続</strong></td>
+<td style="text-align: left;">標準機能で対応</td>
+<td style="text-align: left;">Finderから対応</td>
+<td style="text-align: left;">「ファイル」アプリで対応</td>
+<td style="text-align: left;">Files by Google等で対応</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>自動診断ツール</strong></td>
+<td style="text-align: left;">あり（ネットワーク診断）</td>
+<td style="text-align: left;">なし（手動確認が主）</td>
+<td style="text-align: left;">なし（再起動・リセットが主）</td>
+<td style="text-align: left;">あり（ネットワーク診断）</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>1. Windows 11 での実例手順</h2>
+<p>Windowsは高度なネットワーク管理が可能ですが、その分設定項目も多く、ドライバの状態に左右されることもあります。</p>
+<h3>標準機能に基づく実例手順</h3>
+<ul>
+<li><strong>接続問題の自動修復</strong>: 「設定」&gt;「ネットワークとインターネット」&gt;「ステータス（またはネットワークの詳細）」より「ネットワークの問題のトラブルシューティング」を実行します。これはMicrosoft公式の診断ツールで、IPの競合やDNSの不備を自動で検知します。</li>
+<li><strong>DNSの変更</strong>: 「設定」&gt;「ネットワークとインターネット」&gt;「Wi-Fi（またはイーサネット）」&gt;「プロパティ」を開きます。「IP割り当て」の「編集」をクリックし、「手動」を選択。IPv4をオンにし、DNSサーバーアドレスに <code>8.8.8.8</code> (Google) や <code>1.1.1.1</code> (Cloudflare) を入力します。</li>
+<li><strong>Wi-Fi アダプターの省電力オフ</strong>: 「デバイスマネージャー」&gt;「ネットワークアダプタ」&gt;「無線LANデバイス（Intel/Realtek等）」を右クリック &gt;「プロパティ」。<strong>「電源の管理」タブ</strong>がある場合、「コンピューターがこのデバイスの電源をオフにできるようにする」のチェックを外します。</li>
+<li><strong>ファイル共有による負荷確認</strong>: 「設定」&gt;「ネットワークとインターネット」&gt;「ネットワークの詳細設定」から、不要なSMB共有や古いプロトコルの利用状況を確認し、不要なフォルダの共有を無効化します。</li>
+</ul>
+<h3>標準機能の制限事項・注意点</h3>
+<ul>
+<li><strong>周波数帯の自動切り替え</strong>: Windowsの標準GUI上では、2.4GHzと5GHzの強制固定は行えません。これはドライバまたはルーター側の設定（SSIDの分離など）で制御する必要があります。</li>
+<li><strong>Wi-Fi 6E/7 の完全利用</strong>: 最新規格をフル活用するには、OSのアップデートだけでなく、ネットワークアダプタのドライバが最新であること、およびハードウェア自体が対応していることが必須条件です。</li>
+</ul>
+<h3>よくあるトラブルと解決法</h3>
+<ol>
+<li><strong>「インターネットなし」エラーが頻発する</strong><ul>
+<li><strong>原因</strong>: DNS解析の失敗やルーターへの再接続拒否。</li>
+<li><strong>対策</strong>: 「ネットワークの問題のトラブルシューティング」を実行し、DNSを手動で <code>8.8.8.8</code> 等に変更して再試行してください。</li>
+</ul>
+</li>
+<li><strong>「Wi-Fi が突然切断される」</strong><ul>
+<li><strong>原因</strong>: 省電力設定によるアダプタのシャットダウン。</li>
+<li><strong>対策</strong>: デバイスマネージャーから該当ドライバの「電源管理」タブを確認し、省電力機能をオフにします。</li>
+</ul>
+</li>
+<li><strong>「Wi-Fi 6E ルーターだが速度が出ない」</strong><ul>
+<li><strong>原因</strong>: ドライバが2.4GHz帯にフォールバックしている。</li>
+<li><strong>対策</strong>: メーカー公式サイトから最新ドライバをインストールし、アダプタのプロパティで高速モードが有効か確認してください。</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h2>2. macOS での実例手順</h2>
+<p>macOSは安定性が高い一方で、ネットワークの詳細設定は「システム設定」の深い階層に隠れていることが多いです。</p>
+<h3>標準機能に基づく実例手順</h3>
+<ul>
+<li><strong>DNSの変更</strong>: 「システム設定」&gt;「ネットワーク」&gt;「Wi-Fi」を選択し、「詳細...」ボタンをクリック。「TCP/IP」タブを開き、「DNSサーバー」の項目で「＋」ボタンを押し、任意のDNS（<code>1.1.1.1</code>など）を入力します。</li>
+<li><strong>ファイル共有による負荷確認</strong>: 「システム設定」&gt;「一般」&gt;「共有」からSMBファイル共有の状態を確認します。不要な共有がオンになっているとネットワーク帯域を圧迫することがあります。</li>
+<li><strong>Wi-Fi の周波数帯固定</strong>: macOSのシステム画面内では2.4GHz/5GHzの強制固定は非対応です。ルーター側でSSIDを分けるか、ルーターの設定で制御する必要があります。</li>
+</ul>
+<h3>標準機能の制限事項・注意点</h3>
+<ul>
+<li><strong>DNSの自動取得優先</strong>: 「使用 DNS サーバー」を空欄にするとISPから自動割り当てされます。手動入力時に「接続できない」と表示される場合は、一度デフォルトに戻してから再設定を試みてください。</li>
+<li><strong>「ファイル」アプリからの直接アクセス制限</strong>: FinderからSMBサーバーへ接続する際、ユーザー名・パスワードの正確な入力が必要です。認証プロトコルの不一致がある場合、標準機能のみでは解決できないことがあります。</li>
+</ul>
+<h3>よくあるトラブルと解決法</h3>
+<ol>
+<li><strong>「インターネットなし」表示だがブラウザが使える</strong><ul>
+<li><strong>原因</strong>: DNSのみ不通（キャッシュやプロキシ設定の誤り）。</li>
+<li><strong>対策</strong>: 「システム設定」&gt;「ネットワーク」でDNSを再入力し、ルーターを再起動後に再接続してください。</li>
+</ul>
+</li>
+<li><strong>「Wi-Fi が突然切断される」</strong><ul>
+<li><strong>原因</strong>: 省電力機能によるスリープまたは干渉。</li>
+<li><strong>対策</strong>: 「システム情報」からワイヤレスカードのモデルを確認し、Appleサポートページで最新のファームウェア/OSアップデートがないか確認してください。</li>
+</ul>
+</li>
+<li><strong>「SMB ファイル共有が接続できない」</strong><ul>
+<li><strong>原因</strong>: Windowsサーバー側のSMBv1無効化や認証プロトコルの不一致。</li>
+<li><strong>対策</strong>: 接続先（Windows側）でSMBプロトコルバージョンを確認し、macOS側で正しいユーザー情報を入力して再構成してください。</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h2>3. iOS（iPhone / iPad）での実例手順</h2>
+<p>モバイル端末では「省電力」と「移動による切断」が主な要因となります。</p>
+<h3>標準機能に基づく実例手順</h3>
+<ul>
+<li><strong>DNSの変更</strong>: 「設定」&gt;「Wi-Fi」&gt;該当ネットワーク名の横の「i」マークをタップ。「DNS」を選択し、「手動」に切り替えてIPアドレスを入力します。</li>
+<li><strong>「ファイル」アプリからサーバへ接続</strong>: 標準の「ファイル」アプリを開き、サイドバーの「…」ボタン（または場所を追加）から、SMBサーバーのIPアドレスとユーザー情報を入力して接続します。</li>
+</ul>
+<h3>標準機能の制限事項・注意点</h3>
+<ul>
+<li><strong>DNS の変更方法</strong>: iOSでは静的IPの設定などは非対応であり、DNSの変更のみが主なカスタマイズ項目です。</li>
+<li><strong>「ファイル」アプリの接続条件</strong>: サーバー側の共有フォルダにアクセスするには適切な認証が必要です。標準機能では高度な暗号化プロトコルの選定ができないため、サーバー側でNTLMv2などの対応を有効にする必要があります。</li>
+</ul>
+<h3>よくあるトラブルと解決法</h3>
+<ol>
+<li><strong>「Wi-Fi が突然切断される」</strong><ul>
+<li><strong>原因</strong>: 省電力設定やルーターの接続制限（MACアドレスフィルタリング）。</li>
+<li><strong>対策</strong>: 「設定」&gt;「一般」で最新OSに更新。また、一度ネットワークを削除し、パスワードを再入力してセッションを確立し直してください。</li>
+</ul>
+</li>
+<li><strong>「ファイルアプリがサーバーに接続できない」</strong><ul>
+<li><strong>原因</strong>: サーバー側のSMB認証エラーまたはDNS不通。</li>
+<li><strong>対策</strong>: 「設定」でDNSを変更し、「ファイル」アプリ内でユーザー名とパスワードを再入力して試行してください。</li>
+</ul>
+</li>
+<li><strong>「Wi-Fi に接続できるが速度が遅い」</strong><ul>
+<li><strong>原因</strong>: 2.4GHzバンドでの干渉または帯域制限。</li>
+<li><strong>対策</strong>: ルーター側でiOSデバイスを5GHz/6GHzベースバンドに固定するか、iPhoneのWi-Fi設定から一度オフにして再接続してください。</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h2>4. Android での実例手順</h2>
+<p>Androidはメーカー（Pixel, Galaxy等）によってUIが異なりますが、基本構造は共通しています。</p>
+<h3>標準機能に基づく実例手順</h3>
+<ul>
+<li><strong>DNSの変更</strong>: 「設定」&gt;「ネットワークとインターネット」&gt;「インターネット（またはWi-Fi）」&gt;該当ネットワークの歯車アイコン &gt;「詳細設定（または編集）」から、プライベートDNSまたはDNSサーバーを手動入力します。</li>
+<li><strong>「ファイル」アプリからのサーバー接続</strong>: Google公式の「Files by Google」や端末標準の「マイファイル」等から、SMBプロトコルを使用して共有フォルダへアクセスします。</li>
+</ul>
+<h3>標準機能の制限事項・注意点</h3>
+<ul>
+<li><strong>周波数帯の固定不可</strong>: Androidのシステム設定画面内では2.4GHzと5GHzの強制切り替えは非対応です。ルーター側での制御が必要です。</li>
+<li><strong>「ファイル」アプリの実装差</strong>: メーカー固有のファイルマネージャーにより、SMB接続時のプロトコルバージョン選択画面の有無に差異があります。</li>
+</ul>
+<h3>よくあるトラブルと解決法</h3>
+<ol>
+<li><strong>「Wi-Fi が突然切断される」</strong><ul>
+<li><strong>原因</strong>: 省電力設定によるスリープまたはドライバの不安定化。</li>
+<li><strong>対策</strong>: 「設定」&gt;「バッテリー &amp; デバイスケア」からWi-Fiの最適化をオフにし、システムアップデートを確認してください。</li>
+</ul>
+</li>
+<li><strong>「ファイルアプリがサーバーに接続できない」</strong><ul>
+<li><strong>原因</strong>: サーバー側のSMBv1無効化または認証エラー。</li>
+<li><strong>対策</strong>: 「設定」&gt;「Wi-Fi」でDNSを確認し、正しいユーザー情報を入力して再試行してください。</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h2>よくあるトラブルと解決チェックリスト</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">現象</th>
+<th style="text-align: left;">チェック項目</th>
+<th style="text-align: left;">推奨されるアクション</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>速度が極端に遅い</strong></td>
+<td style="text-align: left;">周波数帯の確認</td>
+<td style="text-align: left;">2.4GHz（干渉多）ではなく5GHz/6GHzを優先的に使用する。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>頻繁に切断される</strong></td>
+<td style="text-align: left;">省電力設定の確認</td>
+<td style="text-align: left;">PC・スマホ共に「Wi-Fi省電力モード」や「スリープ時の接続維持」を確認。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>特定のサイトだけ開けない</strong></td>
+<td style="text-align: left;">DNSの不備</td>
+<td style="text-align: left;">Google DNS (8.8.8.8) や Cloudflare (1.1.1.1) へ変更してみる。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>サーバーに繋がらない</strong></td>
+<td style="text-align: left;">SMBプロトコル</td>
+<td style="text-align: left;">サーバー側のSMBv1が無効化されていないか、認証情報が正しいか確認。</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>まとめ：快適なマルチOS環境を作るポイント</h2>
+<p>Wi-Fiのトラブルは、端末の設定を見直すことで解決することも多いですが、根本的な解決には「インフラ（ハードウェア）」の見直しも非常に重要です。</p>
+<p>特に複数のデバイス（Windows, Mac, iPhone, Android）を同時に利用する場合、以下の導入を検討することで劇的に安定性が向上します。</p>
+<ul>
+<li><strong>Wi-Fi 6/6E/7ルーター</strong>: 最新規格のルーターは、多数のデバイスが同時接続しても帯域を効率よく分配し、遅延を最小限に抑えます。</li>
+<li><strong>家庭用NAS</strong>: ファイル共有の負荷を端末から切り離し、安定したデータアクセス環境を構築できます。</li>
+<li><strong>LANケーブル &amp; スイッチングハブ</strong>: 可能な限りデスクトップPCやサーバーは有線接続に。高品質なLANケーブルとスイッチングハブを導入することで、Wi-Fiの干渉に左右されない「鉄板」の通信環境が手に入ります。</li>
+</ul>
+<p>まずは今回紹介したOSごとの設定チェックを行い、それでも改善しない場合はルーターやネットワーク機器のアップグレードを検討してみてください。</p>
+<hr />
+<h2>参考文献・公式ドキュメント（一次情報ソース）</h2>
+<p>本記事の手順・仕様は以下の各OSおよびツールの公式ドキュメントに基づいています。OSアップデートによりメニュー名称や挙動が変わる場合があるため、最新仕様の確認にもご活用ください。</p>
+<ul>
+<li><strong>[Windows]</strong> <a href="https://support.microsoft.com/ja-jp/windows/windows-%E3%81%A7%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF%E3%82%92%E4%BB%8B%E3%81%97%E3%81%9F%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E5%85%B1%E6%9C%89-b58704b2-f53a-4b82-7bc1-80f9994725bf">Windows でネットワークを介したファイル共有（SMB） - Microsoft サポート</a></li>
+<li><strong>[macOS]</strong> <a href="https://support.apple.com/ja-jp/guide/mac-help/mchlp1140/mac">Macを共有コンピュータおよびサーバへ接続する（SMB） - Apple サポート (日本)</a></li>
+<li><strong>[iOS]</strong> <a href="https://support.apple.com/ja-jp/guide/iphone/iph8d8f0f1a0/ios">iPhoneユーザガイド（「ファイル」アプリからサーバへ接続） - Apple サポート (日本)</a></li>
+<li><strong>[Android]</strong> <a href="https://support.google.com/android/?hl=ja">Android ヘルプ - Google サポート</a></li>
+</ul>
+    </article>
+  </main>
+  <footer>Generated with Local Ollama (qwen3.5 / gemma4) &amp; Draw Things (FLUX.2 klein 4B)</footer>
+</body>
+</html>
