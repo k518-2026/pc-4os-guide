@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>カレンダー予定の家族共有・全端末同期と通知が来ない時の対処実例｜Windows・macOS・iOS・Android | PC 4OS実例ガイド</title>
+  <style>
+:root {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --muted: #475569;
+  --accent: #0284c7;
+  --accent-soft: #e0f2fe;
+  --border: #e2e8f0;
+  --code-bg: #0f172a;
+  --code-text: #e2e8f0;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Noto Sans JP", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+}
+header.site-header {
+  background: linear-gradient(135deg, #0f172a 0%, #0369a1 100%);
+  color: #fff;
+  padding: 2.2rem 1.25rem;
+}
+header.site-header .inner { max-width: 980px; margin: 0 auto; }
+header.site-header h1 { margin: 0 0 0.4rem; font-size: 1.75rem; }
+header.site-header p { margin: 0; opacity: 0.9; font-size: 0.96rem; }
+main { max-width: 980px; margin: 2rem auto; padding: 0 1.25rem 3rem; }
+.badge {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: var(--accent-soft);
+  color: #0369a1;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1.25rem;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08); }
+.card img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; display: block; background: #e2e8f0; }
+.card-body { padding: 1rem 1.1rem 1.2rem; flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+.card-title { font-size: 1.02rem; font-weight: 700; margin: 0; line-height: 1.45; }
+.card-meta { font-size: 0.82rem; color: var(--muted); margin-top: auto; }
+article.post {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 2rem;
+}
+article.post img.eyecatch {
+  width: 100%;
+  max-height: 460px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+}
+article.post h1 { font-size: 1.65rem; line-height: 1.35; margin-top: 0; }
+article.post h2 {
+  font-size: 1.3rem;
+  margin-top: 2.1rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 2px solid var(--accent-soft);
+}
+article.post h3 { font-size: 1.08rem; margin-top: 1.4rem; }
+article.post table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.2rem 0;
+  font-size: 0.92rem;
+  display: block;
+  overflow-x: auto;
+}
+article.post th, article.post td {
+  border: 1px solid var(--border);
+  padding: 0.6rem 0.8rem;
+  text-align: left;
+}
+article.post th { background: #f1f5f9; font-weight: 700; }
+article.post pre {
+  background: var(--code-bg);
+  color: var(--code-text);
+  padding: 1rem 1.15rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+article.post code {
+  background: #f1f5f9;
+  padding: 0.15rem 0.38rem;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+article.post pre code { background: transparent; padding: 0; color: inherit; }
+article.post blockquote {
+  margin: 1.2rem 0;
+  padding: 0.8rem 1.1rem;
+  border-left: 4px solid var(--accent);
+  background: #f0f9ff;
+  border-radius: 0 8px 8px 0;
+}
+.back-link { display: inline-block; margin-bottom: 1rem; color: var(--accent); text-decoration: none; font-weight: 600; }
+.filter-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.15rem 1.25rem;
+  margin-bottom: 1.5rem;
+}
+.filter-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) auto;
+  gap: 0.9rem;
+  align-items: end;
+}
+.filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.filter-field label {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.filter-field input[type="search"],
+.filter-field select {
+  font: inherit;
+  font-size: max(1rem, 1em);
+  min-height: 48px;
+  padding: 0.55rem 0.85rem;
+  border: 1.5px solid #767676;
+  border-radius: 8px;
+  background: #fff;
+  color: var(--text);
+  width: 100%;
+}
+.filter-field input[type="search"]:focus-visible,
+.filter-field select:focus-visible,
+.filter-actions button:focus-visible {
+  outline: 3px solid #0284c7;
+  outline-offset: 2px;
+}
+.filter-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+.filter-actions button {
+  font: inherit;
+  font-size: max(1rem, 0.95em);
+  font-weight: 600;
+  min-height: 48px;
+  padding: 0 1.05rem;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+}
+.btn-primary {
+  background: #0369a1;
+  color: #fff;
+}
+.btn-primary:hover { background: #075985; }
+.btn-secondary {
+  background: #f1f5f9;
+  color: var(--text);
+  border-color: #94a3b8;
+}
+.btn-secondary:hover { background: #e2e8f0; }
+.results-status {
+  color: var(--muted);
+  font-size: 0.92rem;
+  margin: 0 0 1.1rem;
+}
+.empty-state {
+  background: var(--surface);
+  border: 1px dashed #94a3b8;
+  border-radius: 12px;
+  padding: 2rem 1.25rem;
+  text-align: center;
+  color: var(--muted);
+}
+.card[hidden],
+.empty-state[hidden] { display: none; }
+footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2rem 1rem; }
+@media (max-width: 720px) {
+  .filter-form { grid-template-columns: 1fr; }
+  .filter-actions { width: 100%; }
+  .filter-actions button { flex: 1; }
+}
+@media (max-width: 640px) {
+  article.post { padding: 1.2rem; }
+}
+</style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="inner">
+      <h1>PC 4OS実例ガイド</h1>
+      <p>Windows・macOS・iOS・Android の実践比較＆トラブル解決アーカイブ</p>
+    </div>
+  </header>
+  <main>
+    <a class="back-link" href="../index.html">← 記事一覧へ戻る</a>
+    <article class="post">
+      <p><span class="badge">#34｜分類17: 生活・行政手続き・家計・資産管理</span> <small style="color:#64748b;margin-left:0.5rem;">2026-11-23</small></p>
+      <img class="eyecatch" src="../images/2026-11-23_art34_household_budget_calendar_sync.png" alt="カレンダー予定の家族共有・全端末同期と通知が来ない時の対処実例｜Windows・macOS・iOS・Android">
+      <h1>カレンダー予定の家族共有・全端末同期と通知が来ない時の対処実例｜Windows・macOS・iOS・Android</h1>
+<p>「家族で予定を共有したいけれど、スマホでは見れるのにPCでは更新されない」「カレンダーに予定を入れたはずなのに、通知だけが届かない」といった悩みは、マルチデバイス環境で非常に多く聞かれます。</p>
+<p>実は、これらはOSごとの仕様や、バックグラウンド動作の制限（バッテリー最適化）によるものがほとんどです。この記事では、Windows、macOS、iOS、Androidの4つの主要OSにおけるカレンダー連携の仕組みを整理し、<strong>「なぜ同期しないのか」「どうすれば通知が来るのか」</strong>という実用的な解決策を徹底解説します。</p>
+<h2>4OS比較早見表</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">OS</th>
+<th style="text-align: left;">推奨される共有基盤</th>
+<th style="text-align: left;">標準アプリでのGoogle連携</th>
+<th style="text-align: left;">通知の主な要因</th>
+<th style="text-align: left;">特徴・制限事項</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Windows 11</strong></td>
+<td style="text-align: left;">Google / Outlook</td>
+<td style="text-align: left;">Webブラウザ推奨</td>
+<td style="text-align: left;">ブラウザの通知許可設定</td>
+<td style="text-align: left;">iCloud連携は標準アプリで非対応</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>macOS</strong></td>
+<td style="text-align: left;">iCloud / Google</td>
+<td style="text-align: left;">システム設定から同期</td>
+<td style="text-align: left;">バッテリー最適化制限</td>
+<td style="text-align: left;">Google/iCloudの統合ビューに制約あり</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>iOS</strong></td>
+<td style="text-align: left;">iCloud / Google</td>
+<td style="text-align: left;">設定からアカウント追加</td>
+<td style="text-align: left;">バックグラウンド更新</td>
+<td style="text-align: left;">家族共有はApple ID連携がスムーズ</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Android</strong></td>
+<td style="text-align: left;">Google</td>
+<td style="text-align: left;">標準で完全統合</td>
+<td style="text-align: left;">バッテリー最適化設定</td>
+<td style="text-align: left;">機種によりカレンダーアプリが異なる</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>1. Windows 11 での実例手順</h2>
+<p>Windows環境では、OS標準の「カレンダー」アプリよりも、Webブラウザ（Microsoft EdgeやGoogle Chrome）をベースとした運用が最も確実です。</p>
+<h3>共有設定と同期方法</h3>
+<ul>
+<li><strong>共有設定</strong>: <a href="https://calendar.google.com">Google カレンダー</a>にアクセスし、予定の「詳細情報」から「リンクをコピー」するか、家族のメールアドレスへ招待を送ります。</li>
+<li><strong>同期方法</strong>: ChromeやEdgeでGoogleアカウントにログインしていれば自動同期されます。ブラウザの設定（<code>edge://settings/syncSetup</code>）からカレンダー同期がオンになっているか確認してください。</li>
+</ul>
+<h3>標準機能の制限事項と通知設定</h3>
+<ul>
+<li><strong>制限事項</strong>: Windows 11標準の「カレンダー」アプリは、<strong>iCloudカレンダーとの直接連携をサポートしていません</strong>。iCloudカレンダーを表示したい場合は、Microsoft Storeから「Outlook for Windows（旧 Outlook）」をインストールするか、Webブラウザでの確認が推奨されます。</li>
+<li><strong>通知設定</strong>: 「設定」&gt;「システム」&gt;「通知とアクション」にて、使用しているブラウザ（Chrome/Edge）の通知許可をオンにする必要があります。また、「バッテリー最適化」が強力な場合、バックグラウンドプロセスが停止して通知が届かないことがあるため、アプリ個別のバックグラウンド実行許可を確認してください。</li>
+</ul>
+<hr />
+<h2>2. macOS での実例手順</h2>
+<p>macOSはAppleエコシステムとの親和性が高い反面、Googleカレンダーとの「統合表示」には注意が必要です。</p>
+<h3>共有設定と同期方法</h3>
+<ul>
+<li><strong>共有設定</strong>: 「カレンダー」アプリで「ファイル」&gt;「インポート...」やWebブラウザ経由の招待リンクを利用します。</li>
+<li><strong>同期方法</strong>: 「システム設定」&gt;「[自分の名前]」&gt;「iCloud」から「カレンダー」をオンにします。Googleアカウントも同様にシステム設定から追加することで、標準アプリ内で両方の予定を表示可能です。</li>
+</ul>
+<h3>標準機能の制限事項と通知設定</h3>
+<ul>
+<li><strong>制限事項</strong>: macOS標準の「カレンダー」アプリは、<strong>GoogleとiCloudのカレンダーを同じウィンドウ内で完全に統合して編集・表示する機能に制約がある</strong>場合があります。高度な同時管理が必要な場合は、「Outlook for Mac」などのサードパーティ製クライアントの使用が推奨されます。</li>
+<li><strong>通知設定</strong>: 「システム設定」&gt;「通知」で各アプリの許可を確認します。MacBook等の場合、バッテリー最適化の設定が厳しすぎるとGoogleカレンダーのバックグラウンドプロセスが停止することがあるため、その際はブラウザの再起動やプロファイルの確認が必要です。</li>
+</ul>
+<hr />
+<h2>3. iOS（iPhone / iPad）での実例手順</h2>
+<p>iPhone/iPadでは、Apple IDとGoogleアカウントを「共存」させる形での運用が一般的です。</p>
+<h3>共有設定と同期方法</h3>
+<ul>
+<li><strong>共有設定</strong>: 「カレンダー」アプリの右下「＋」&gt;「アカウントを追加」からGoogleアカウントを選択します。家族への招待はメールから直接開くか、イベント作成画面から参加者を追加します。</li>
+<li><strong>同期方法</strong>: 「設定」&gt;「[自分の名前]」&gt;「iCloud」&gt;「カレンダー」をオンにすると、iCloudとGoogleの両方が表示されます。ただし、<strong>編集権限はアカウントごとに分離</strong>される点に注意してください。</li>
+</ul>
+<h3>標準機能の制限事項と通知設定</h3>
+<ul>
+<li><strong>制限事項</strong>: iOS標準アプリでは、GoogleとiCloudのカレンダーを同じウィンドウ内で並べて比較表示する機能は非対応です。また、iCloud+のファミリー共有プランに加入していない場合、家族間での権限設定が簡略化されることがあります。</li>
+<li><strong>通知設定</strong>: 「設定」&gt;「通知」でカレンダーアプリをオンにし、「ロック画面」「バナー」を選択します。iOS 17以降ではバッテリー最適化によりバックグラウンド更新が制限されることがあるため、届かない場合はアプリの再起動やOSのアップデートを確認してください。</li>
+</ul>
+<hr />
+<h2>4. Android での実例手順</h2>
+<p>Android（Pixel / Samsung Galaxy等）はGoogleサービスとの親和性が最も高く、同期のトラブルは比較的少ない傾向にあります。</p>
+<h3>共有設定と同期方法</h3>
+<ul>
+<li><strong>共有設定</strong>: Googleカレンダーアプリを開き、右上メニューから「カレンダー」&gt;「アカウントを追加」を行います。招待リンクはメールやチャットで送付するのが一般的です。</li>
+<li><strong>同期方法</strong>: 「設定」&gt;「Googleアカウント」からログイン済みであれば自動同期されます。</li>
+</ul>
+<h3>標準機能の制限事項と通知設定</h3>
+<ul>
+<li><strong>制限事項</strong>: 機種（特にSamsung Galaxyなど）によっては、メーカー独自の「Samsung Calendar」と「Googleカレンダー」が共存し、UIやメニュー階層が異なる場合があります。</li>
+<li><strong>通知設定</strong>: 「設定」&gt;「アプリと通知」&gt;「カレンダー」で許可を確認します。<strong>最も多いトラブルは「バッテリー最適化」です。</strong> 設定の「アプリ」項目からGoogleカレンダーを選択し、「バッテリー使用量」を「制限なし」または「バックグラウンド処理を許す」に設定することで、通知漏れを防げます。</li>
+</ul>
+<hr />
+<h2>よくあるトラブルと解決チェックリスト</h2>
+<h3>トラブル A: 「予定は登録されたのに通知が来ない」</h3>
+<ul>
+<li><strong>原因</strong>: OSのバッテリー最適化機能により、ブラウザやカレンダーアプリのバックグラウンドプロセスが停止している。またはWebブラウザ自体の通知許可がOFF。</li>
+<li><strong>解決策</strong>: <ol>
+<li>システム設定の「バッテリー」項目で、該当アプリのプロセス制限を解除する。</li>
+<li>ブラウザの設定（Chrome: <code>chrome://settings/content/notifications</code>）から通知許可を再設定し、ブラウザを再起動する。</li>
+</ol>
+</li>
+</ul>
+<h3>トラブル B: 「家族が共有した予定が見えない・編集できない」</h3>
+<ul>
+<li><strong>原因</strong>: Googleカレンダーの「リンクをコピー」で送ったURLに「閲覧のみ」制限がかかっている。またはiCloudの共有リストへの追加忘れ。</li>
+<li><strong>解決策</strong>: <ul>
+<li>Google: 「イベントの作成」&gt;「詳細情報」から「アクセス許可」を「特定のユーザーとグループ」とし、家族のアドレスを入力して招待メールを送信する。</li>
+<li>iCloud: 共有カレンダーアプリ内で直接参加者を追加するか、Apple IDの設定画面から管理する。</li>
+</ul>
+</li>
+</ul>
+<h3>トラブル C: 「PC とスマホの予定がズレる・同期されない」</h3>
+<ul>
+<li><strong>原因</strong>: ブラウザキャッシュに古いデータが残っている、または別々のアカウントでログインしている。</li>
+<li><strong>解決策</strong>: <ul>
+<li>Chrome/Edgeの「設定」&gt;「プライバシーとセキュリティ」&gt;「クリアブラウジングデータ」からキャッシュを削除し、再起動する。</li>
+<li>PC・スマホ両方でGoogleアカウントに再度ログインし直す。</li>
+</ul>
+</li>
+</ul>
+<h3>トラブル D: 「iCloud カレンダーが Windows/macOS で表示されない」</h3>
+<ul>
+<li><strong>原因</strong>: 標準アプリの仕様上、Googleカレンダーとの同時統合表示が困難なため。</li>
+<li><strong>解決策</strong>: <ul>
+<li>Windows/macOSで両方を同時に管理したい場合は、「Outlook for Mac/Windows」を導入し、両方のアカウントを登録して表示する。またはWebブラウザでの切り替え運用を徹底する。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2>まとめ：快適なマルチOS環境を作るポイント</h2>
+<p>カレンダーの同期と通知を完璧にするコツは、<strong>「各OSの標準機能の限界を知り、適切なツールを組み合わせること」</strong>です。特にGoogleカレンダーを軸にする場合、AndroidやiOSでは標準アプリで完結しますが、Windows/macOSではブラウザや専用クライアント（Outlook等）を賢く使い分けるのが正解です。</p>
+<p>また、家族での資産管理や事務作業を効率化するなら、以下のツールも併せて導入を検討すると、カレンダーでの「納期・支払日共有」がよりスムーズになります。</p>
+<ul>
+<li><strong>ICカードリーダー（e-Tax対応）</strong>: 税務申告の際、PCと連携してスムーズに手続きを進めるために必須です。</li>
+<li><strong>会計ソフト・家計管理アプリ</strong>: Googleカレンダーと同期可能なクラウド型を選べば、入金日や支払予定を家族で共有しながら、自動で支出を記録する仕組みが作れます。</li>
+<li><strong>モバイルスキャナー</strong>: iPhone/Androidで撮影した領収書をGoogleドライブ等へ即座に保存。OCR機能（Googleドキュメント等）と組み合わせることで、カレンダー上の「経費精算日」と連動した正確な資産管理が可能になります。</li>
+</ul>
+<p>これらのツールを組み合わせることで、単なる予定の共有を超えた「家族の資産を守る仕組み」を構築しましょう。</p>
+<hr />
+<h2>参考文献・公式ドキュメント（一次情報ソース）</h2>
+<p>本記事の手順・仕様は以下の各OSおよびツールの公式ドキュメントに基づいています。OSアップデートによりメニュー名称や挙動が変わる場合があるため、最新仕様の確認にもご活用ください。</p>
+<ul>
+<li><strong>[日本公式（税務）]</strong> <a href="https://www.nta.go.jp/law/joho-zeikaishaku/sonota/jirei/index.htm">電子帳簿保存法関係（領収書・電子取引データの保存要件） - 国税庁</a></li>
+<li><strong>[Windows]</strong> <a href="https://support.microsoft.com/ja-jp/windows/windows-%E3%81%A7-pc-%E3%82%92%E3%83%90%E3%83%83%E3%82%AF%E3%82%A2%E3%83%83%E3%83%97%E3%81%8A%E3%82%88%E3%81%B3%E5%BE%A9%E5%85%83%E3%81%99%E3%82%8B-352091d2-bb9d-3ea3-ed18-52ef2b88cbef">Windows で PC をバックアップおよび復元する - Microsoft サポート</a></li>
+<li><strong>[macOS / iOS]</strong> <a href="https://support.apple.com/ja-jp/108963">iPhoneやiPadで書類をスキャンする方法 - Apple サポート (日本)</a></li>
+<li><strong>[Android]</strong> <a href="https://support.google.com/drive/answer/3145835?hl=ja">Google ドライブでドキュメントをスキャンする - Google ドライブ ヘルプ</a></li>
+</ul>
+    </article>
+  </main>
+  <footer>Generated with Local Ollama (qwen3.5 / gemma4) &amp; Draw Things (FLUX.2 klein 4B)</footer>
+</body>
+</html>
