@@ -64,6 +64,29 @@ CATEGORY_OFFICIAL_REFS: Dict[int, List[Dict[str, str]]] = {
         {"os": "iOS", "title": "iPhoneでSafariの閲覧履歴、キャッシュ、Cookieを消去する - Apple サポート (日本)", "url": "https://support.apple.com/ja-jp/105082"},
         {"os": "Android", "title": "Chrome の閲覧データ・キャッシュを削除する - Google Chrome ヘルプ", "url": "https://support.google.com/chrome/answer/2392709?hl=ja"},
     ],
+    9: [
+        {"os": "Windows", "title": "テキスト (.txt) または CSV ファイルをインポートまたはエクスポートする - Microsoft サポート", "url": "https://support.microsoft.com/ja-jp/office/%E3%83%86%E3%82%AD%E3%82%B9%E3%83%88-txt-%E3%81%BE%E3%81%9F%E3%81%AF-csv-%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%92%E3%82%A4%E3%83%B3%E3%83%9D%E3%83%BC%E3%83%88%E3%81%BE%E3%81%9F%E3%81%AF%E3%82%A8%E3%82%AF%E3%82%B9%E3%83%9D%E3%83%BC%E3%83%88%E3%81%99%E3%82%8B-5250ac4c-663c-47ce-937b-339e391393ba"},
+        {"os": "macOS", "title": "Mac用Numbersユーザガイド（CSV読み込み・書き出し） - Apple サポート (日本)", "url": "https://support.apple.com/ja-jp/guide/numbers/tan581f5365e/mac"},
+        {"os": "iOS / Android / 共通", "title": "Google スプレッドシートでデータセット・CSVを読み込む - Google ドキュメント エディタ ヘルプ", "url": "https://support.google.com/docs/answer/40608?hl=ja"},
+    ],
+    10: [
+        {"os": "Windows", "title": "Windows でドライブの空き領域を増やす（ストレージ センサー） - Microsoft サポート", "url": "https://support.microsoft.com/ja-jp/windows/windows-%E3%81%A7%E3%83%89%E3%83%A9%E3%82%A4%E3%83%96%E3%81%AE%E7%A9%BA%E3%81%8D%E9%A0%98%E5%9F%9F%E3%82%92%E5%A2%97%E3%82%84%E3%81%99-85529ccb-c365-490d-b548-831022bc9b32"},
+        {"os": "macOS", "title": "Macストレージの空き領域を増やす - Apple サポート (日本)", "url": "https://support.apple.com/ja-jp/102624"},
+        {"os": "iOS", "title": "iPhoneやiPadのストレージを確認・整理する方法 - Apple サポート (日本)", "url": "https://support.apple.com/ja-jp/108429"},
+        {"os": "Android", "title": "Android デバイスの空き容量を増やす - Android ヘルプ", "url": "https://support.google.com/android/answer/7431795?hl=ja"},
+    ],
+    11: [
+        {"os": "Windows", "title": "Windows でネットワークを介したファイル共有（SMB） - Microsoft サポート", "url": "https://support.microsoft.com/ja-jp/windows/windows-%E3%81%A7%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF%E3%82%92%E4%BB%8B%E3%81%97%E3%81%9F%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E5%85%B1%E6%9C%89-b58704b2-f53a-4b82-7bc1-80f9994725bf"},
+        {"os": "macOS", "title": "Macを共有コンピュータおよびサーバへ接続する（SMB） - Apple サポート (日本)", "url": "https://support.apple.com/ja-jp/guide/mac-help/mchlp1140/mac"},
+        {"os": "iOS", "title": "iPhoneユーザガイド（「ファイル」アプリからサーバへ接続） - Apple サポート (日本)", "url": "https://support.apple.com/ja-jp/guide/iphone/iph8d8f0f1a0/ios"},
+        {"os": "Android", "title": "Android ヘルプ - Google サポート", "url": "https://support.google.com/android/?hl=ja"},
+    ],
+    12: [
+        {"os": "Windows", "title": "Windows のパスキー（Passkey）公式ガイド - Microsoft サポート", "url": "https://support.microsoft.com/ja-jp/windows/windows-%E3%81%AE%E3%83%91%E3%82%B9%E3%82%AD%E3%83%BC-301c8944-5ea2-452b-9886-97e4d2ef4422"},
+        {"os": "macOS / iOS", "title": "パスキーのセキュリティについて - Apple サポート (日本)", "url": "https://support.apple.com/ja-jp/102195"},
+        {"os": "Android / 共通", "title": "パスワードの代わりにパスキーでログインする - Google アカウント ヘルプ", "url": "https://support.google.com/accounts/answer/13548313?hl=ja"},
+        {"os": "共通", "title": "2 段階認証プロセスを有効にする - Google アカウント ヘルプ", "url": "https://support.google.com/accounts/answer/185839?hl=ja"},
+    ],
 }
 
 FALLBACK_OFFICIAL_REFS: List[Dict[str, str]] = [
