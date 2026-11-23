@@ -29,10 +29,11 @@ python -m src.main -n 1 --push
 python -m src.main -n 1 --category 11
 ```
 
-## 書き溜め済み記事一覧（全 30 本 / 最終更新: 2026-11-23 16:10 JST）
+## 書き溜め済み記事一覧（全 31 本 / 最終更新: 2026-11-23 16:21 JST）
 
 | No. | 17分類カテゴリ | 記事タイトル（Markdown） | 挿絵 | 生成日 |
 | :---: | :--- | :--- | :---: | :---: |
+| #31 | 分類14: ハードウェア・周辺機器・IoT連携 | [外部モニター・サブディスプレイ接続の設定と映らない・解像度ズレ対処｜Windows・macOS・iOS・Android](content/2026-11-23_art31_dual_monitor_external_display.md) | あり | 2026-11-23 |
 | #30 | 分類13: ファイル管理・バックアップ・データ復旧 | [ZIPファイルの圧縮・解凍と文字化け・開けない時の解決実例｜Windows・macOS・iOS・Android](content/2026-11-23_art30_zip_unzip_mojibake_password.md) | あり | 2026-11-23 |
 | #29 | 分類12: セキュリティ・プライバシー対策 | [PC・スマホ紛失時の遠隔ロック・位置検索（探す機能）の設定実例｜Windows・macOS・iOS・Android](content/2026-11-23_art29_lost_device_find_lock_wipe.md) | あり | 2026-11-23 |
 | #28 | 分類11: ネットワーク・サーバー・インフラ構築 | [Wi-Fiが遅い・突然切れる原因の切り分けと改善チェック実例｜Windows・macOS・iOS・Android](content/2026-11-23_art28_wifi_slow_disconnect_fix.md) | あり | 2026-11-23 |

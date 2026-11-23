@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>外部モニター・サブディスプレイ接続の設定と映らない・解像度ズレ対処｜Windows・macOS・iOS・Android | PC 4OS実例ガイド</title>
+  <style>
+:root {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --muted: #475569;
+  --accent: #0284c7;
+  --accent-soft: #e0f2fe;
+  --border: #e2e8f0;
+  --code-bg: #0f172a;
+  --code-text: #e2e8f0;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Noto Sans JP", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+}
+header.site-header {
+  background: linear-gradient(135deg, #0f172a 0%, #0369a1 100%);
+  color: #fff;
+  padding: 2.2rem 1.25rem;
+}
+header.site-header .inner { max-width: 980px; margin: 0 auto; }
+header.site-header h1 { margin: 0 0 0.4rem; font-size: 1.75rem; }
+header.site-header p { margin: 0; opacity: 0.9; font-size: 0.96rem; }
+main { max-width: 980px; margin: 2rem auto; padding: 0 1.25rem 3rem; }
+.badge {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: var(--accent-soft);
+  color: #0369a1;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1.25rem;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08); }
+.card img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; display: block; background: #e2e8f0; }
+.card-body { padding: 1rem 1.1rem 1.2rem; flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+.card-title { font-size: 1.02rem; font-weight: 700; margin: 0; line-height: 1.45; }
+.card-meta { font-size: 0.82rem; color: var(--muted); margin-top: auto; }
+article.post {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 2rem;
+}
+article.post img.eyecatch {
+  width: 100%;
+  max-height: 460px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+}
+article.post h1 { font-size: 1.65rem; line-height: 1.35; margin-top: 0; }
+article.post h2 {
+  font-size: 1.3rem;
+  margin-top: 2.1rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 2px solid var(--accent-soft);
+}
+article.post h3 { font-size: 1.08rem; margin-top: 1.4rem; }
+article.post table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.2rem 0;
+  font-size: 0.92rem;
+  display: block;
+  overflow-x: auto;
+}
+article.post th, article.post td {
+  border: 1px solid var(--border);
+  padding: 0.6rem 0.8rem;
+  text-align: left;
+}
+article.post th { background: #f1f5f9; font-weight: 700; }
+article.post pre {
+  background: var(--code-bg);
+  color: var(--code-text);
+  padding: 1rem 1.15rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+article.post code {
+  background: #f1f5f9;
+  padding: 0.15rem 0.38rem;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+article.post pre code { background: transparent; padding: 0; color: inherit; }
+article.post blockquote {
+  margin: 1.2rem 0;
+  padding: 0.8rem 1.1rem;
+  border-left: 4px solid var(--accent);
+  background: #f0f9ff;
+  border-radius: 0 8px 8px 0;
+}
+.back-link { display: inline-block; margin-bottom: 1rem; color: var(--accent); text-decoration: none; font-weight: 600; }
+.filter-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.15rem 1.25rem;
+  margin-bottom: 1.5rem;
+}
+.filter-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) auto;
+  gap: 0.9rem;
+  align-items: end;
+}
+.filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.filter-field label {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.filter-field input[type="search"],
+.filter-field select {
+  font: inherit;
+  font-size: max(1rem, 1em);
+  min-height: 48px;
+  padding: 0.55rem 0.85rem;
+  border: 1.5px solid #767676;
+  border-radius: 8px;
+  background: #fff;
+  color: var(--text);
+  width: 100%;
+}
+.filter-field input[type="search"]:focus-visible,
+.filter-field select:focus-visible,
+.filter-actions button:focus-visible {
+  outline: 3px solid #0284c7;
+  outline-offset: 2px;
+}
+.filter-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+.filter-actions button {
+  font: inherit;
+  font-size: max(1rem, 0.95em);
+  font-weight: 600;
+  min-height: 48px;
+  padding: 0 1.05rem;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+}
+.btn-primary {
+  background: #0369a1;
+  color: #fff;
+}
+.btn-primary:hover { background: #075985; }
+.btn-secondary {
+  background: #f1f5f9;
+  color: var(--text);
+  border-color: #94a3b8;
+}
+.btn-secondary:hover { background: #e2e8f0; }
+.results-status {
+  color: var(--muted);
+  font-size: 0.92rem;
+  margin: 0 0 1.1rem;
+}
+.empty-state {
+  background: var(--surface);
+  border: 1px dashed #94a3b8;
+  border-radius: 12px;
+  padding: 2rem 1.25rem;
+  text-align: center;
+  color: var(--muted);
+}
+.card[hidden],
+.empty-state[hidden] { display: none; }
+footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2rem 1rem; }
+@media (max-width: 720px) {
+  .filter-form { grid-template-columns: 1fr; }
+  .filter-actions { width: 100%; }
+  .filter-actions button { flex: 1; }
+}
+@media (max-width: 640px) {
+  article.post { padding: 1.2rem; }
+}
+</style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="inner">
+      <h1>PC 4OS実例ガイド</h1>
+      <p>Windows・macOS・iOS・Android の実践比較＆トラブル解決アーカイブ</p>
+    </div>
+  </header>
+  <main>
+    <a class="back-link" href="../index.html">← 記事一覧へ戻る</a>
+    <article class="post">
+      <p><span class="badge">#31｜分類14: ハードウェア・周辺機器・IoT連携</span> <small style="color:#64748b;margin-left:0.5rem;">2026-11-23</small></p>
+      <img class="eyecatch" src="../images/2026-11-23_art31_dual_monitor_external_display.png" alt="外部モニター・サブディスプレイ接続の設定と映らない・解像度ズレ対処｜Windows・macOS・iOS・Android">
+      <h1>外部モニター・サブディスプレイ接続の設定と映らない・解像度ズレ対処｜Windows・macOS・iOS・Android</h1>
+<p>「新しい外部モニターを買ったのに、なぜか画面が映らない」「ノートPCを繋いだら文字が小さすぎて読めない」といった悩みは、マルチデバイス時代において非常に多く聞かれる問題です。</p>
+<p>実は、Windows、macOS、iOS、Androidの4つのOSでは、<strong>映像出力の仕組みや設定の優先順位が大きく異なります。</strong> 自分のデバイスの特性を正しく理解していないと、ケーブルを買い直したり、無駄な設定に時間を費やしたりすることになりかねません。</p>
+<p>この記事では、主要4OSにおける外部ディスプレイ接続の基本手順から、よくあるトラブルの解決策までを徹底的に解説します。この記事を読めば、どのデバイスでもスムーズなマルチモニター環境を構築できるようになります。</p>
+<h2>4OS比較早見表</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">OS</th>
+<th style="text-align: left;">主な接続規格</th>
+<th style="text-align: left;">設定の自由度</th>
+<th style="text-align: left;">特徴・注意点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Windows 11</strong></td>
+<td style="text-align: left;">HDMI / DP / USB-C</td>
+<td style="text-align: left;">高い</td>
+<td style="text-align: left;">解像度・スケーリングを細かく調整可能。GPUドライバーに依存する。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>macOS</strong></td>
+<td style="text-align: left;">Thunderbolt / USB-C</td>
+<td style="text-align: left;">中</td>
+<td style="text-align: left;">Apple Siliconモデルはポート数や出力制限に注意が必要。AirPlay連携が強力。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>iOS (iPhone/iPad)</strong></td>
+<td style="text-align: left;">Lightning / USB-C</td>
+<td style="text-align: left;">低い</td>
+<td style="text-align: left;">物理アダプター必須。解像度調整はほぼモニター側（OSD）に依存する。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Android</strong></td>
+<td style="text-align: left;">USB-C (DisplayPort Alt Mode)</td>
+<td style="text-align: left;">機種依存</td>
+<td style="text-align: left;">モデルにより映像出力自体が非対応な機種が多い。設定項目も機種ごとに異なる。</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>1. Windows 11 での実例手順</h2>
+<p>Windowsは最も自由度が高く、複数のモニターを「拡張」してデスクトップを広げるための標準機能が充実しています。</p>
+<h3>標準機能手順（公式仕様）</h3>
+<ul>
+<li><strong>接続確認</strong>: 「スタート」＞「設定」＞「システム」＞「ディスプレイ」を開きます。<ul>
+<li><strong>マルチモニタの検出</strong>: 接続直後、画面右下に「この PC に複数のディスプレイが接続されています」と表示されるか確認してください。</li>
+<li><strong>拡張モード切り替え</strong>: 同じメニュー内の「マルチモニターの設定」から「これらのディスプレイを拡張して使用します」を選択します。その後、画面上の「1」「2」の番号をドラッグ＆ドロップで実際の配置に合わせて並べ替えます。</li>
+</ul>
+</li>
+<li><strong>解像度・DPI 調整</strong>: 「設定」＞「システム」＞「ディスプレイ」へ進みます。<ul>
+<li><strong>スケーリング（文字サイズ）</strong>: 「拡大縮小（変更）」から推奨値（100% や 150% など）を選択します。高解像度モニターで文字が小さすぎる場合は、ここを調整するのが基本です。</li>
+</ul>
+</li>
+</ul>
+<h3>標準機能の制限事項</h3>
+<ul>
+<li><strong>HDMI/DP ポート不足</strong>: PC本体にポートがない場合、USB-C ドッキングステーション（ドック）経由での接続が必要ですが、ドック側の帯域や仕様によって出力できる最大解像度が制限されることがあります。</li>
+<li><strong>グラフィックドライバー依存</strong>: 標準設定で反映されない高リフレッシュレートや特殊な解像度の場合は、NVIDIAコントロールパネルやAMD Softwareなどの専用ツールでの再設定が必要になるケースがあります。</li>
+</ul>
+<h3>よくあるトラブルと解決法</h3>
+<ol>
+<li><strong>「モニターが認識されない・黒画面」</strong><ul>
+<li><strong>原因</strong>: ドライバー不具合またはケーブル接続不良。</li>
+<li><strong>対策</strong>: 「デバイスマネージャー」＞「ディスプレイアダプター」でGPUを右クリックし「ドライバーの更新」を実行。改善しない場合は、グラフィックボード側のポートに直接差し替えるか、別のHDMI/DPケーブルを試してください。</li>
+</ul>
+</li>
+<li><strong>「文字が極端に小さい・ぼやける」</strong><ul>
+<li><strong>原因</strong>: スケーリング設定とOSのDPIレイアウトの不一致。</li>
+<li><strong>対策</strong>: 「ディスプレイ」設定でスケーリングを調整する際、特定のアプリだけ表示がおかしい場合は、アプリのプロパティから「高DPI設定の変更」を行い、オーバーライド設定を確認してください。</li>
+</ul>
+</li>
+<li><strong>「マルチモニター設定が保存されない」</strong><ul>
+<li><strong>原因</strong>: Windows Updateや高速スタートアップの影響で認識状態がリセットされることがあります。</li>
+<li><strong>対策</strong>: 設定画面で再度配置を確定させた後、PCを完全に再起動（シャットダウンではなく再起動）することで認識状態をリセットします。</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h2>2. macOS での実例手順</h2>
+<p>macOSは洗練されたインターフェースを持ちますが、Apple Silicon（M1/M2/M3チップ）以降のモデルでは接続の制約に注意が必要です。</p>
+<h3>標準機能手順（公式仕様）</h3>
+<ul>
+<li><strong>外部モニター追加</strong>: 「システム設定」＞「ディスプレイ」を開きます。<ul>
+<li>ThunderboltやUSB-CポートからHDMI/DVIモニターを接続します。ドック経由でもこのメニューで一括管理可能です。</li>
+<li><strong>解像度調整</strong>: 同じメニュー内でスライダーまたはプリセット（1920x1080など）を選択。「ディスプレイのレイアウト」タブで「拡張」として配置順序を変更します。</li>
+</ul>
+</li>
+<li><strong>AirPlay 接続</strong>: 「システム設定」＞「サイドバー」に AirPlay を追加し、MacBook Pro/Intel Mac から Apple TV や対応モニターへワイヤレス出力が可能です（macOS Sonoma以降）。</li>
+</ul>
+<h3>標準機能の制限事項</h3>
+<ul>
+<li><strong>USB-C のポート数制限</strong>: M1/M2/M3 MacBookの一部モデルは外部ディスプレイ出力に制約がある場合があり、映像出力には必ずドックまたはHDMIアダプターが必須となります。</li>
+<li><strong>AirPlay の非対応機器</strong>: 一部のモニターでは遅延や画質低下が発生するため、安定した作業環境を求める場合は有線接続が強く推奨されます。</li>
+</ul>
+<h3>よくあるトラブルと解決法</h3>
+<ol>
+<li><strong>「外部ディスプレイに何も映らない」</strong><ul>
+<li><strong>原因</strong>: ドックの電源不足またはThunderboltポート経由での認識失敗。</li>
+<li><strong>対策</strong>: モニターを直接Macのポートへ接続するか、ドックとMacの間にあるアダプターが「映像出力対応」であることを確認してください（データ転送専用では映りません）。</li>
+</ul>
+</li>
+<li><strong>「解像度が自動で低く設定される」</strong><ul>
+<li><strong>原因</strong>: Apple Siliconチップの省電力モードまたはモニター側のEDID情報読み取りエラー。</li>
+<li><strong>対策</strong>: 「システム設定」＞「ディスプレイ」から手動で解像度を選択し、適用します。改善しない場合は再起動を試してください。</li>
+</ul>
+</li>
+<li><strong>「AirPlay で映像が途切れる・音が出ない」</strong><ul>
+<li><strong>原因</strong>: Wi-Fi帯域の混雑またはアクセスポイントとの接続不安定。</li>
+<li><strong>対策</strong>: 「システム設定」＞「ネットワークとインターネット」でセキュリティ設定を確認し、可能な限り有線HDMIへの切り替えを優先してください。</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h2>3. iOS（iPhone / iPad）での実例手順</h2>
+<p>iOS/iPadOSはモバイルデバイスであるため、PCとは根本的に異なる挙動をします。特に解像度の自由度は低いです。</p>
+<h3>標準機能手順（公式仕様）</h3>
+<ul>
+<li><strong>映像出力接続</strong>: 「デジタル AV アダプター」または「USB-C ドッキングステーション」（iPad Pro等の対応機種のみ）を使用します。<ul>
+<li>Lightning/Thunderboltポートにアダプターを挿し、HDMIケーブルでモニターへ接続します。設定画面は自動起動せず、即座にミラーリング（または拡張）されます。</li>
+</ul>
+</li>
+<li><strong>解像度・表示調整</strong>: iOS/iPadOSのシステム設定内には「外部ディスプレイの解像度」を直接変更する機能はありません。基本的にはモニター側の自動検知に従います。</li>
+</ul>
+<h3>標準機能の制限事項</h3>
+<ul>
+<li><strong>Lightning ケーブル単体での出力不可</strong>: iPhoneではLightningからHDMIへの変換アダプターが必須です。</li>
+<li><strong>音声出力の非対応</strong>: 安価なAVアダプターでは映像のみで音声が出ない場合があるため、純正またはMFi認証製品の選択が重要です。</li>
+</ul>
+<h3>よくあるトラブルと解決法</h3>
+<ol>
+<li><strong>「アダプターを挿してもモニターに映らない」</strong><ul>
+<li><strong>原因</strong>: データ転送用ケーブルとの混同、またはアダプターの品質不足。</li>
+<li><strong>対策</strong>: Apple推奨の「デジタル AV アダプター」かMFi認証製品を使用しているか確認してください。「設定」＞「一般」＞「AirPlay と Handoff」の状態も確認し、再起動を試します。</li>
+</ul>
+</li>
+<li><strong>「画面が黒いままになる」</strong><ul>
+<li><strong>原因</strong>: HDMIケーブルの接触不良またはモニター側の入力ソース選択ミス。</li>
+<li><strong>対策</strong>: モニターの電源を入れ直し、「Input」ボタンで正しい端子（HDMI 1など）を選択してください。アダプター側に映像出力LEDが点灯しているかも確認します。</li>
+</ul>
+</li>
+<li><strong>「文字が小さすぎる・拡大できない」</strong><ul>
+<li><strong>原因</strong>: iOSは外部ディスプレイでもスケーリング設定を適用しない仕様です。</li>
+<li><strong>対策</strong>: モニター側のメニュー（OSD）から「PC入力モード」や「モバイル対応モード」を選択し、モニター側で文字サイズを調整してください。</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h2>4. Android での実例手順</h2>
+<p>Androidはメーカー（Samsung, Google, Xiaomi等）によって仕様が大きく異なるため、まずは自分の機種が「映像出力に対応しているか」の確認が最優先です。</p>
+<h3>標準機能手順（公式仕様）</h3>
+<ul>
+<li><strong>接続確認</strong>: 「設定」＞「ディスプレイ」または「画面」という項目を探します。<ul>
+<li>モデルにより「外部モニター」「USB デバイス設定」などの名称があります。「Pixel」なら「デバイス」＞「ディスプレイとサウンド」。</li>
+<li><strong>映像出力の切り替え</strong>: HDMI/DVIアダプターを挿入後、自動的に認識されるか確認します。手動切替が必要な場合は該当メニューから選択します（機種依存）。</li>
+</ul>
+</li>
+<li><strong>解像度・DPI</strong>: 「設定」＞「ディスプレイ」＞「画面サイズと明るさ」または「表示」で調整可能です。ただし、アダプター経由の場合はモニター側のOSDが優先されることが多々あります。</li>
+</ul>
+<h3>標準機能の制限事項</h3>
+<ul>
+<li><strong>「USB データ転送のみ対応」機種</strong>: Galaxy Sシリーズの一部や中低端モデルでは、HDMIアダプターを挿してもファームウェア上の制限で映像が出力されないことがあります。</li>
+<li><strong>設定メニュー名の多様性</strong>: 「ディスプレイ」「画面と明るさ」「デバイス」など、メーカーごとに名称がバラバラなため注意が必要です。</li>
+</ul>
+<h3>よくあるトラブルと解決法</h3>
+<ol>
+<li><strong>「HDMIを挿しても反応がない」</strong><ul>
+<li><strong>原因</strong>: 機種がDisplayPort Alt Mode（映像出力）に対応していない。</li>
+<li><strong>対策</strong>: 自身の機種のスペック表を確認してください。対応しているにもかかわらず映らない場合は、USB-Cケーブル自体が「映像出力対応」であるか確認が必要です。</li>
+</ul>
+</li>
+<li><strong>「画面が横向きになってしまう」</strong><ul>
+<li><strong>原因</strong>: Android標準の回転ロックや外部ディスプレイの自動回転設定。</li>
+<li><strong>対策</strong>: 「設定」＞「ディスプレイ」から「自動回転」をオンにするか、モニター側のOSDで回転方向を固定します。</li>
+</ul>
+</li>
+<li><strong>「接続中に充電ができない」</strong><ul>
+<li><strong>原因</strong>: 使用しているアダプターが給電（PD）に対応していない。</li>
+<li><strong>対策</strong>: PD（Power Delivery）対応のドッキングステーションを使用するか、給電ポート付きのアダプターに変更してください。</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h2>よくあるトラブルと解決チェックリスト</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">トラブル内容</th>
+<th style="text-align: left;">原因の切り分け</th>
+<th style="text-align: left;">推奨される対処法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>モニターが認識されない</strong></td>
+<td style="text-align: left;">ケーブル・アダプターの不備</td>
+<td style="text-align: left;">他のHDMI/DPケーブルで試す。ドックを使用しているなら直接接続を試す。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>画面がちらつく・ノイズ</strong></td>
+<td style="text-align: left;">帯域不足またはリフレッシュレート過多</td>
+<td style="text-align: left;">リフレッシュレートを60Hz以下に下げる、または高品質な認証ケーブルに変更する。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>解像度が低く固定される</strong></td>
+<td style="text-align: left;">OSの制限またはモニター側の設定</td>
+<td style="text-align: left;">モニターのOSDメニューで「入力ソース」や「アスペクト比」を再確認する。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>特定のアプリだけ映らない</strong></td>
+<td style="text-align: left;">アプリ固有の描画エラー（Windows）</td>
+<td style="text-align: left;">「高DPI設定の変更」からスケーリングを上書きする。</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>まとめ：快適なマルチOS環境を作るポイント</h2>
+<p>外部モニターやサブディスプレイの接続トラブルの多くは、<strong>「OSごとの仕様の違い」と「ハードウェアの帯域制限」</strong>に起因します。特にWindowsやmacOSでは解像度の自由度が高い反面、iOSやAndroidでは物理的なアダプターの品質や機種の対応可否が鍵を握ります。</p>
+<p>快適なマルチOS環境を構築するためには、以下の周辺機器を賢く導入することをお勧めします。</p>
+<ul>
+<li><strong>USB-C ドッキングステーション</strong>: 1つのポートから電源供給、映像出力、USBハブ機能を一括で解決します。特にMacBookやノートPCでの拡張には必須級のアイテムです。</li>
+<li><strong>KVM切替器</strong>: 1組のキーボード・マウスでWindowsとMacを交互に操作したい場合、デスクをスッキリ保ちつつスムーズな切り替えが可能になります。</li>
+<li><strong>マルチペアリングキーボード・マウス</strong>: ロジクールMXシリーズなどの製品を使えば、ボタン一つでデバイス間を瞬時に切り替えられ、OSの壁を感じさせないシームレスな作業環境が手に入ります。</li>
+</ul>
+<p>自分のデバイスの特性を正しく把握し、最適な周辺機器を組み合わせることで、ストレスのないクリエイティブなワークスペースを実現しましょう。</p>
+<hr />
+<h2>参考文献・公式ドキュメント（一次情報ソース）</h2>
+<p>本記事の手順・仕様は以下の各OSおよびツールの公式ドキュメントに基づいています。OSアップデートによりメニュー名称や挙動が変わる場合があるため、最新仕様の確認にもご活用ください。</p>
+<ul>
+<li><strong>[Windows]</strong> <a href="https://support.microsoft.com/ja-jp/windows/windows-%E3%81%A7-bluetooth-%E3%81%AE%E5%95%8F%E9%A1%8C%E3%82%92%E8%A7%A3%E6%B1%BA%E3%81%99%E3%82%8B-723e092f-03fa-858b-5c80-131ec3fba75c">Windows で Bluetooth の問題を解決する - Microsoft サポート</a></li>
+<li><strong>[macOS]</strong> <a href="https://support.apple.com/ja-jp/guide/mac-help/blth1004/mac">BluetoothデバイスをMacに接続する - Apple サポート (日本)</a></li>
+<li><strong>[iOS]</strong> <a href="https://support.apple.com/ja-jp/guide/iphone/iph3c50f191/ios">iPhoneをBluetoothアクセサリに接続する - Apple サポート (日本)</a></li>
+<li><strong>[Android]</strong> <a href="https://support.google.com/android/answer/9769184?hl=ja">Android での Bluetooth に関する問題を解決する - Android ヘルプ</a></li>
+</ul>
+    </article>
+  </main>
+  <footer>Generated with Local Ollama (qwen3.5 / gemma4) &amp; Draw Things (FLUX.2 klein 4B)</footer>
+</body>
+</html>
