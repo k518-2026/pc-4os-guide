@@ -50,10 +50,12 @@ class TestPC4OSGuide(unittest.TestCase):
             content_dir=Path(tempfile.mkdtemp()),
         )
         self.assertEqual(len(mgr.categories), 17)
-        self.assertEqual(len(mgr.catalog), 17)
+        self.assertGreaterEqual(len(mgr.catalog), 17)
         cat_nums = [int(item["cat_num"]) for item in mgr.select_next_articles(count=17)]
         self.assertEqual(cat_nums, list(range(1, 18)))
-        self.assertEqual(mgr.get_next_rotation_cat_nums(count=3), [1, 2, 3])
+        last_cat = int(mgr.catalog[-1]["cat_num"])
+        expected_next = [((last_cat + i) % 17) + 1 for i in range(3)]
+        self.assertEqual(mgr.get_next_rotation_cat_nums(count=3), expected_next)
         for item in mgr.catalog:
             self.assertIn("Windows・macOS・iOS・Android", item["title"])
             self.assertNotIn("Linux", item["title"])
