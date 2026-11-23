@@ -87,6 +87,35 @@ CATEGORY_OFFICIAL_REFS: Dict[int, List[Dict[str, str]]] = {
         {"os": "Android / 共通", "title": "パスワードの代わりにパスキーでログインする - Google アカウント ヘルプ", "url": "https://support.google.com/accounts/answer/13548313?hl=ja"},
         {"os": "共通", "title": "2 段階認証プロセスを有効にする - Google アカウント ヘルプ", "url": "https://support.google.com/accounts/answer/185839?hl=ja"},
     ],
+    13: [
+        {"os": "Windows", "title": "Windows で PC をバックアップおよび復元する - Microsoft サポート", "url": "https://support.microsoft.com/ja-jp/windows/windows-%E3%81%A7-pc-%E3%82%92%E3%83%90%E3%83%83%E3%82%AF%E3%82%A2%E3%83%83%E3%83%97%E3%81%8A%E3%82%88%E3%81%B3%E5%BE%A9%E5%85%83%E3%81%99%E3%82%8B-352091d2-bb9d-3ea3-ed18-52ef2b88cbef"},
+        {"os": "macOS", "title": "Time MachineでMacをバックアップする - Apple サポート (日本)", "url": "https://support.apple.com/ja-jp/104984"},
+        {"os": "iOS", "title": "iPhoneに外部ストレージデバイスを接続する - Apple サポート (日本)", "url": "https://support.apple.com/ja-jp/guide/iphone/iph95baac91f/ios"},
+        {"os": "Android", "title": "パソコンと Android デバイス間でファイルを転送する - Android ヘルプ", "url": "https://support.google.com/android/answer/9064445?hl=ja"},
+    ],
+    14: [
+        {"os": "Windows", "title": "Windows で Bluetooth の問題を解決する - Microsoft サポート", "url": "https://support.microsoft.com/ja-jp/windows/windows-%E3%81%A7-bluetooth-%E3%81%AE%E5%95%8F%E9%A1%8C%E3%82%92%E8%A7%A3%E6%B1%BA%E3%81%99%E3%82%8B-723e092f-03fa-858b-5c80-131ec3fba75c"},
+        {"os": "macOS", "title": "BluetoothデバイスをMacに接続する - Apple サポート (日本)", "url": "https://support.apple.com/ja-jp/guide/mac-help/blth1004/mac"},
+        {"os": "iOS", "title": "iPhoneをBluetoothアクセサリに接続する - Apple サポート (日本)", "url": "https://support.apple.com/ja-jp/guide/iphone/iph3c50f191/ios"},
+        {"os": "Android", "title": "Android での Bluetooth に関する問題を解決する - Android ヘルプ", "url": "https://support.google.com/android/answer/9769184?hl=ja"},
+    ],
+    15: [
+        {"os": "Windows", "title": "Windows で画面をミラーリングするかキャストする - Microsoft サポート", "url": "https://support.microsoft.com/ja-jp/windows/windows-%E3%81%A7%E7%94%BB%E9%9D%A2%E3%82%92%E3%83%9F%E3%83%A9%E3%83%BC%E3%83%AA%E3%83%B3%E3%82%B0%E3%81%99%E3%82%8B%E3%81%8B%E3%82%AD%E3%83%A3%E3%82%B9%E3%83%88%E3%81%99%E3%82%8B-5af9f371-c704-1c7f-8f0d-fa607551d09c"},
+        {"os": "macOS / iOS", "title": "AirPlayを使ってiPhoneやiPadからビデオをストリーミングする／画面をミラーリングする - Apple サポート (日本)", "url": "https://support.apple.com/ja-jp/102661"},
+        {"os": "Android", "title": "Google Home アプリで Android の画面をキャストする - Google ヘルプ", "url": "https://support.google.com/chromecast/answer/6059461?hl=ja"},
+    ],
+    16: [
+        {"os": "Windows / 共通", "title": "OneNote が同期できない場合の問題を解決する - Microsoft サポート", "url": "https://support.microsoft.com/ja-jp/office/onenote-%E3%81%8C%E5%90%8C%E6%9C%9F%E3%81%A7%E3%81%8D%E3%81%AA%E3%81%84%E5%A0%B4%E5%90%88%E3%81%AE%E5%95%8F%E9%A1%8C%E3%82%92%E8%A7%A3%E6%B1%BA%E3%81%99%E3%82%8B-299495ef-66d1-448f-90c1-b785a6968d45"},
+        {"os": "macOS", "title": "Mac用メモユーザガイド - Apple サポート (日本)", "url": "https://support.apple.com/ja-jp/guide/notes/welcome/mac"},
+        {"os": "iOS", "title": "iPhoneでメモを作成する/書式を設定する - Apple サポート (日本)", "url": "https://support.apple.com/ja-jp/guide/iphone/iph1ac0b3a2/ios"},
+        {"os": "Android / 共通", "title": "Google Keep の使い方 - Google Keep ヘルプ", "url": "https://support.google.com/keep/answer/2888240?hl=ja"},
+    ],
+    17: [
+        {"os": "日本公式（税務）", "title": "電子帳簿保存法関係（領収書・電子取引データの保存要件） - 国税庁", "url": "https://www.nta.go.jp/law/joho-zeikaishaku/sonota/jirei/index.htm"},
+        {"os": "Windows", "title": "Windows で PC をバックアップおよび復元する - Microsoft サポート", "url": "https://support.microsoft.com/ja-jp/windows/windows-%E3%81%A7-pc-%E3%82%92%E3%83%90%E3%83%83%E3%82%AF%E3%82%A2%E3%83%83%E3%83%97%E3%81%8A%E3%82%88%E3%81%B3%E5%BE%A9%E5%85%83%E3%81%99%E3%82%8B-352091d2-bb9d-3ea3-ed18-52ef2b88cbef"},
+        {"os": "macOS / iOS", "title": "iPhoneやiPadで書類をスキャンする方法 - Apple サポート (日本)", "url": "https://support.apple.com/ja-jp/108963"},
+        {"os": "Android", "title": "Google ドライブでドキュメントをスキャンする - Google ドライブ ヘルプ", "url": "https://support.google.com/drive/answer/3145835?hl=ja"},
+    ],
 }
 
 FALLBACK_OFFICIAL_REFS: List[Dict[str, str]] = [
