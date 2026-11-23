@@ -29,10 +29,11 @@ python -m src.main -n 1 --push
 python -m src.main -n 1 --category 11
 ```
 
-## 書き溜め済み記事一覧（全 14 本 / 最終更新: 2026-11-23 12:10 JST）
+## 書き溜め済み記事一覧（全 15 本 / 最終更新: 2026-11-23 12:15 JST）
 
 | No. | 17分類カテゴリ | 記事タイトル（Markdown） | 挿絵 | 生成日 |
 | :---: | :--- | :--- | :---: | :---: |
+| #15 | 分類15: エンターテインメント・趣味 | [画面ミラーリング・テレビ投影の実例と映らない・音ズレ対処｜Windows・macOS・iOS・Android](content/2026-11-23_art15_screen_mirroring_casting.md) | あり | 2026-11-23 |
 | #14 | 分類14: ハードウェア・周辺機器・IoT連携 | [Bluetooth機器のマルチペアリング設定と繋がらない時の解決法｜Windows・macOS・iOS・Android](content/2026-11-23_art14_bluetooth_multi_device_switch.md) | あり | 2026-11-23 |
 | #13 | 分類13: ファイル管理・バックアップ・データ復旧 | [外付けSSDを4OSで共用するバックアップ手順と認識しない時の対処｜Windows・macOS・iOS・Android](content/2026-11-23_art13_external_ssd_photo_backup.md) | あり | 2026-11-23 |
 | #12 | 分類12: セキュリティ・プライバシー対策 | [パスキー・パスワード管理＆2段階認証の安全な同期実例｜Windows・macOS・iOS・Android](content/2026-11-23_art12_passkey_password_security.md) | あり | 2026-11-23 |

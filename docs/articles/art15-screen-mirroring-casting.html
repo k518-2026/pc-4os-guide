@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>画面ミラーリング・テレビ投影の実例と映らない・音ズレ対処｜Windows・macOS・iOS・Android | PC 4OS実例ガイド</title>
+  <style>
+:root {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --muted: #475569;
+  --accent: #0284c7;
+  --accent-soft: #e0f2fe;
+  --border: #e2e8f0;
+  --code-bg: #0f172a;
+  --code-text: #e2e8f0;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Noto Sans JP", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+}
+header.site-header {
+  background: linear-gradient(135deg, #0f172a 0%, #0369a1 100%);
+  color: #fff;
+  padding: 2.2rem 1.25rem;
+}
+header.site-header .inner { max-width: 980px; margin: 0 auto; }
+header.site-header h1 { margin: 0 0 0.4rem; font-size: 1.75rem; }
+header.site-header p { margin: 0; opacity: 0.9; font-size: 0.96rem; }
+main { max-width: 980px; margin: 2rem auto; padding: 0 1.25rem 3rem; }
+.badge {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: var(--accent-soft);
+  color: #0369a1;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1.25rem;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08); }
+.card img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; display: block; background: #e2e8f0; }
+.card-body { padding: 1rem 1.1rem 1.2rem; flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+.card-title { font-size: 1.02rem; font-weight: 700; margin: 0; line-height: 1.45; }
+.card-meta { font-size: 0.82rem; color: var(--muted); margin-top: auto; }
+article.post {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 2rem;
+}
+article.post img.eyecatch {
+  width: 100%;
+  max-height: 460px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+}
+article.post h1 { font-size: 1.65rem; line-height: 1.35; margin-top: 0; }
+article.post h2 {
+  font-size: 1.3rem;
+  margin-top: 2.1rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 2px solid var(--accent-soft);
+}
+article.post h3 { font-size: 1.08rem; margin-top: 1.4rem; }
+article.post table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.2rem 0;
+  font-size: 0.92rem;
+  display: block;
+  overflow-x: auto;
+}
+article.post th, article.post td {
+  border: 1px solid var(--border);
+  padding: 0.6rem 0.8rem;
+  text-align: left;
+}
+article.post th { background: #f1f5f9; font-weight: 700; }
+article.post pre {
+  background: var(--code-bg);
+  color: var(--code-text);
+  padding: 1rem 1.15rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+article.post code {
+  background: #f1f5f9;
+  padding: 0.15rem 0.38rem;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+article.post pre code { background: transparent; padding: 0; color: inherit; }
+article.post blockquote {
+  margin: 1.2rem 0;
+  padding: 0.8rem 1.1rem;
+  border-left: 4px solid var(--accent);
+  background: #f0f9ff;
+  border-radius: 0 8px 8px 0;
+}
+.back-link { display: inline-block; margin-bottom: 1rem; color: var(--accent); text-decoration: none; font-weight: 600; }
+footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2rem 1rem; }
+@media (max-width: 640px) {
+  article.post { padding: 1.2rem; }
+}
+</style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="inner">
+      <h1>PC 4OS実例ガイド</h1>
+      <p>Windows・macOS・iOS・Android の実践比較＆トラブル解決アーカイブ</p>
+    </div>
+  </header>
+  <main>
+    <a class="back-link" href="../index.html">← 記事一覧へ戻る</a>
+    <article class="post">
+      <p><span class="badge">#15｜分類15: エンターテインメント・趣味</span> <small style="color:#64748b;margin-left:0.5rem;">2026-11-23</small></p>
+      <img class="eyecatch" src="../images/2026-11-23_art15_screen_mirroring_casting.png" alt="画面ミラーリング・テレビ投影の実例と映らない・音ズレ対処｜Windows・macOS・iOS・Android">
+      <h1>画面ミラーリング・テレビ投影の実例と映らない・音ズレ対処｜Windows・macOS・iOS・Android</h1>
+<p>「スマホやPCの画面を大きなテレビに映したいけれど、操作方法がOSごとにバラバラで混乱する」「接続はできたのに音がテレビから出ない」「映像がカクついたり、音が遅れて聞こえたりする」といった悩みをお持ちではありませんか？</p>
+<p>画面ミラーリングやキャスト機能は、現代のエンターテインメントにおいて欠かせない技術ですが、実は<strong>Windows、macOS、iOS、Androidのそれぞれで採用されているプロトコル（通信規格）が異なる</strong>ため、同じテレビでも「映るもの」と「映らないもの」が存在します。</p>
+<p>この記事では、主要な4つのOSにおける標準機能を使ったミラーリング手順から、初心者が陥りやすいトラブルの解決策までを徹底的に解説します。この記事を読めば、あなたのデバイスで最適な視聴環境を構築するための知識がすべて手に入ります。</p>
+<h2>4OS比較早見表</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">OS</th>
+<th style="text-align: left;">主なプロトコル</th>
+<th style="text-align: left;">対応機器の例</th>
+<th style="text-align: left;">特徴</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Windows 11</strong></td>
+<td style="text-align: left;">Miracast / Google Cast</td>
+<td style="text-align: left;">Miracast対応TV、Chromecast</td>
+<td style="text-align: left;">汎用性が高く、ビジネス・ゲーム共に強い。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>macOS</strong></td>
+<td style="text-align: left;">AirPlay</td>
+<td style="text-align: left;">Apple TV、AirPlay対応テレビ</td>
+<td style="text-align: left;">Apple製品間でのシームレスな連携が強み。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>iOS</strong></td>
+<td style="text-align: left;">AirPlay</td>
+<td style="text-align: left;">Apple TV、AirPlay対応テレビ</td>
+<td style="text-align: left;">iPhone/iPadとの親和性が非常に高い。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Android</strong></td>
+<td style="text-align: left;">Google Cast / Miracast</td>
+<td style="text-align: left;">Chromecast、Miracast対応TV</td>
+<td style="text-align: left;">機種により「Smart View」等の独自名称がある。</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>1. Windows 11 での実例手順</h2>
+<p>Windows 11では、主に「Miracast」という規格を用いてワイヤレスで画面を投影します。</p>
+<h3>① 正確な実例手順</h3>
+<p><strong>準備</strong>: テレビ側がMiracast対応、またはGoogle Chromecast / Amazon Fire TV Stickなどが接続されていることを確認してください。PCはWi-Fiに接続している必要があります。</p>
+<ol>
+<li>キーボードの <strong><code>Win + K</code></strong> キーを同時に押し、「画面共有」ウィンドウを開きます（または「設定」&gt;「システム」&gt;「投影」から操作も可能です）。</li>
+<li>右側に表示されるリストから、接続したいテレビやストリーミング機器の名前をクリックします。</li>
+<li>テレビ画面に接続要求が表示されたら、リモコン等で「許可」を選択します。</li>
+</ol>
+<p><strong>代替手段</strong>: Miracastが正常に動作しない場合、Microsoft Storeから公式の「Connect（旧 Connect to a wireless display）」アプリをインストールすることで、より安定した操作感を得られる場合があります。</p>
+<h3>② 標準機能の制限事項・非対応項目</h3>
+<ul>
+<li><strong>AirPlay 非搭載</strong>: Windows 11の標準機能では、Apple TVなどへのAirPlay送信は<strong>実装されていません</strong>。これらを利用するには「LonelyScreen」などのサードパーティ製アプリが必要です。</li>
+<li><strong>音ズレの原因</strong>: デフォルト設定で音声出力がPCスピーカーのままの場合、映像だけがテレビに映り音がPCから流れることがあります。接続直後に <strong><code>Win + G</code></strong>（ゲームバー）またはタスクバーのサウンドアイコンから、出力先を「テレビ」に変更する必要があります。</li>
+</ul>
+<h3>③ よくあるトラブルと解決法</h3>
+<ul>
+<li><strong>エラー: 「デバイスが見つかりません」</strong><ul>
+<li>原因：テレビ側でMiracastが起動していない、あるいはPCとの距離が遠すぎる。</li>
+<li>対策：テレビのリモコンから「画面共有」または「Miracast」メニューを開き待機状態にします。ルーター経由の通信を安定させるため、できるだけルーターに近い場所で試してください。</li>
+</ul>
+</li>
+<li><strong>エラー: 「接続が切断されました」</strong><ul>
+<li>原因：無線通信の不安定さや、Windowsの「省電力機能」によるネットワークカードのスリープ。</li>
+<li>対策：<code>コントロールパネル</code> &gt; <code>電源オプション</code> で高速スリープを無効化するほか、「デバイスマネージャー」&gt;「ネットワークアダプター」からWi-Fiカードのプロパティを開き、「電力管理」タブで「コンピューターの電源節約のためにこのデバイスを手動でシャットダウンしないようにする」にチェックを入れます。</li>
+</ul>
+</li>
+<li><strong>音が出ない場合</strong><ul>
+<li>対策：接続直後に <code>Win + G</code> でゲームバーを開き、右上のギアアイコンから出力先をTVに変更するか、システム設定のサウンド項目より出力デバイスをテレビへ切り替えます。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2>2. macOS での実例手順</h2>
+<p>macOSはApple独自の「AirPlay」プロトコルをベースとしています。</p>
+<h3>① 正確な実例手順</h3>
+<p><strong>準備</strong>: Apple TV または AirPlay 対応のスマートテレビに接続済みとし、Macが同じWi-Fiに接続されていることを確認します。</p>
+<ol>
+<li>メニューバー右上の <strong><code>Control Center（コントロールセンター）</code></strong> をクリックします。</li>
+<li>「画面と音声」アイコンをクリックし、リストからApple TVまたはテレビ名を選択します。</li>
+<li>「すべてのコンテンツを映す」「ビデオのみ」「オーディオのみ」のいずれかを選択します（「すべて」がミラーリングです）。</li>
+</ol>
+<h3>② 標準機能の制限事項・非対応項目</h3>
+<ul>
+<li><strong>Miracast 非搭載</strong>: Windowsで一般的なMiracastプロトコルはmacOSでは<strong>標準でサポートされていません</strong>。Android TVや一部の廉価なスマートテレビへの接続には、AirPlay非対応のため「Duet Display」などのサードパーティ製アプリが必要です。</li>
+<li><strong>画面共有の制限</strong>: 「すべてのコンテンツ」を送信すると、Macのシステム音や通知音が相手に流れます。プライバシー設定でカメラ・マイクをオフにしても映像は送信される点に注意が必要です。</li>
+</ul>
+<h3>③ よくあるトラブルと解決法</h3>
+<ul>
+<li><strong>エラー: テレビのリストに表示されない</strong><ul>
+<li>原因：Macとテレビが異なるWi-Fiネットワークにある、またはAirPlayが無効。</li>
+<li>対策：両端末を同じルーターに接続し直します。「設定」&gt;「一般」&gt;「AirDrop や Handoff を使うネットワーク」で「すべてのネットワーク」を選択しているか確認してください。</li>
+</ul>
+</li>
+<li><strong>エラー: 「このデバイスには AirPlay がありません」</strong><ul>
+<li>原因：古いテレビや、設定が誤ってAirPlayをオフにしている。</li>
+<li>対策：Apple TVの場合は「設定」&gt;「AirPlay と HomeKit」でオンにします。スマートテレビの場合はメーカーメニューから「AirPlay」を有効化してください。</li>
+</ul>
+</li>
+<li><strong>音ズレが発生する</strong><ul>
+<li>原因：Macの音声出力遅延と、テレビ側のバッファ処理の不一致。</li>
+<li>対策：macOS標準機能では詳細な遅延調整が難しいため、安定性を求めるならHDMIケーブルでの有線接続を推奨します。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2>3. iOS（iPhone / iPad）での実例手順</h2>
+<p>iPhoneやiPadはAirPlayとの親和性が最も高く、直感的な操作が可能です。</p>
+<h3>① 正確な実例手順</h3>
+<p><strong>準備</strong>: Apple TV または AirPlay 対応機器に接続済みとし、Wi-Fiに接続します。</p>
+<ul>
+<li><strong>コントロールセンターから</strong>: 画面を下にスワイプして開き、「画面と音声」アイコンを長押しし、テレビを選択。「すべてのコンテンツを送信する」を選びます。</li>
+<li><strong>Safariブラウザ内（YouTubeなど）の場合</strong>: 再生中の動画の右上に「キャスト」または「AirPlay」アイコンが表示される場合がありますが、iOSの標準機能では<strong>Safari内のWebサイト全体をミラーリングすることは非対応</strong>です。アプリ固有の共有ボタンを使用してください。</li>
+</ul>
+<h3>② 標準機能の制限事項・非対応項目</h3>
+<ul>
+<li><strong>Miracast 非搭載</strong>: iOSではMiracastは存在しません。「キャスト」アイコンが表示されるのはAirPlay対応機器のみであることに注意してください。</li>
+<li><strong>Webブラウザからのミラーリング不可</strong>: SafariやChrome（iOS）でWebページ全体をテレビに映す機能は、標準では<strong>実装されていません</strong>。</li>
+</ul>
+<h3>③ よくあるトラブルと解決法</h3>
+<ul>
+<li><strong>エラー: 「AirPlay が利用できません」</strong><ul>
+<li>原因：iPhoneとテレビが異なるネットワークにある、または「プライベート Wi-Fi ネットワーク」設定の影響。</li>
+<li>対策：両端末を同じSSIDのルーターに接続し直します。「コントロールセンター」のAirPlayアイコンが灰色の場合、Apple IDで正しくログインしているか確認してください。</li>
+</ul>
+</li>
+<li><strong>エラー: 映像は出るのに音が出ない</strong><ul>
+<li>対策：iPhoneの「設定」&gt;「音楽と動画」で出力先を確認するか、AirPlay接続中に再度コントロールセンターからテレビを選択し直すことで音声チャンネルがリセットされ解決することがあります。</li>
+</ul>
+</li>
+<li><strong>画面の黒い四角（スクリーンショット）のみ映る場合</strong><ul>
+<li>原因：アプリ側の著作権保護（DRM）制限や、Safariでの稀なエラー。</li>
+<li>対策：標準機能では対応できないため、AirPlayをサポートしているネイティブアプリに切り替えるか、サードパーティ製ツールを使用する必要があります。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2>4. Android での実例手順</h2>
+<p>Androidはメーカーや機種によって「キャスト」の名称や操作方法が大きく異なります。</p>
+<h3>① 正確な実例手順</h3>
+<p><strong>準備</strong>: Chromecast 対応機器、Miracast 対応テレビ、または Android TV に接続済みであることを確認します。</p>
+<ul>
+<li><strong>方法 A (Chromecast / Google Cast)</strong>: アプリ画面の右上に「Cast to device（デバイスへ送信）」アイコンがある場合、それをタップしテレビを選択。これはGoogle Castプロトコルを使用するため、PCのブラウザなどでも動作する場合がありますが、iOS/Windowsでは非互換です。</li>
+<li><strong>方法 B (Miracast)</strong>: 「設定」&gt;「接続」&gt;「キャスト」または「スマートビュー（Smart View）」からテレビを検索し選択。「画面共有」を選択してミラーリングを開始します。</li>
+</ul>
+<h3>② 標準機能の制限事項・非対応項目</h3>
+<ul>
+<li><strong>AirPlay 非搭載</strong>: Androidの標準機能ではApple TVへのAirPlayは<strong>サポートされていません</strong>。Apple TVを使う場合は「LonelyScreen」などのサードパーティ製アプリが必要です。</li>
+<li><strong>メーカー固有の違い</strong>: 「キャスト」ボタンの位置や名称は、Google Pixel, Samsung Galaxy, Sony Xperia などによって大きく異なります。「設定&gt;接続」という共通パスではなく、各端末の「共有」アイコンを探す必要があります。</li>
+</ul>
+<h3>③ よくあるトラブルと解決法</h3>
+<ul>
+<li><strong>エラー: 接続が頻繁に切れる</strong><ul>
+<li>原因：Wi-Fiの干渉（2.4GHz帯の使用など）や、バッテリーセーバー機能による通信制限。</li>
+<li>対策：可能な限り5GHz帯のWi-Fiを使用してください。また、Androidの「バッテリー最適化」設定から、使用するミラーリングアプリを除外することで安定性が向上します。</li>
+</ul>
+</li>
+<li><strong>エラー: 映像がカクつく（遅延がある）</strong><ul>
+<li>原因：ネットワーク帯域の不足、または端末の処理能力不足。</li>
+<li>対策：ミラーリング中に他の高負荷なアプリを閉じます。また、Google Castを使用している場合は、ブラウザのタブを最小限に抑えることで改善する場合があります。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2>よくあるトラブルと解決チェックリスト</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">エラー症状</th>
+<th style="text-align: left;">主な原因</th>
+<th style="text-align: left;">対処法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>デバイスが見つからない</strong></td>
+<td style="text-align: left;">ネットワークの不一致 / Miracast未起動</td>
+<td style="text-align: left;">両端末を同じSSIDに接続。テレビ側で「ミラーリング待機」をオンにする。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>映像は映るが音が出ない</strong></td>
+<td style="text-align: left;">出力先の設定ミス</td>
+<td style="text-align: left;">OSのサウンド設定（Win+G等）から出力デバイスをテレビに変更する。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>映像がカクつく・遅延する</strong></td>
+<td style="text-align: left;">Wi-Fi干渉 / 帯域不足</td>
+<td style="text-align: left;">5GHz帯Wi-Fiへの切り替え、またはルーターとの距離を近づける。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>特定のアプリだけ映らない</strong></td>
+<td style="text-align: left;">DRM（著作権保護）制限</td>
+<td style="text-align: left;">NetflixやAmazonプライム等のコンテンツは、標準ミラーリングでは黒く映ることがあります。公式のキャスト機能を使用してください。</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>まとめ：快適なマルチOS環境を作るポイント</h2>
+<p>画面ミラーリングは非常に便利な機能ですが、OSごとのプロトコル差異（Miracast vs AirPlay vs Google Cast）を理解しておくことが、トラブルを防ぐ第一歩です。</p>
+<p>より高品質でストレスのない視聴体験を目指すなら、以下の周辺機器の導入も検討してみましょう。</p>
+<ul>
+<li><strong>ゲーミングモニター</strong>: ワイヤレスミラーリング特有の遅延を完全に排除したい場合、低遅延なゲーミングモニターへの接続は最も確実な解決策です。</li>
+<li><strong>DAC・ヘッドホン</strong>: テレビのスピーカーでは表現しきれない繊細な音を楽しみたいなら、PC/スマホから高品質なDAC（デジタル・アナログコンバーター）を経由してヘッドホンへ出力する環境がおすすめです。</li>
+<li><strong>ゲームパッド</strong>: 画面をミラーリングして大画面でプレイする場合、Bluetooth対応のゲームパッドを用意することで、没入感が飛躍的に向上します。</li>
+<li><strong>ストリーミング機器 (Apple TV / Chromecast)</strong>: OS標準機能の制限（AirPlay非対応やWebブラウザ不可など）を突破するなら、これら専用機を導入するのが最も安定した「正解」への近道です。</li>
+</ul>
+<p>それぞれのデバイス特性を理解し、最適なツールを組み合わせることで、あなたのエンターテインメント体験はより豊かなものになるはずです。</p>
+<hr />
+<h2>参考文献・公式ドキュメント（一次情報ソース）</h2>
+<p>本記事の手順・仕様は以下の各OSおよびツールの公式ドキュメントに基づいています。OSアップデートによりメニュー名称や挙動が変わる場合があるため、最新仕様の確認にもご活用ください。</p>
+<ul>
+<li><strong>[Windows]</strong> <a href="https://support.microsoft.com/ja-jp/windows/windows-%E3%81%A7%E7%94%BB%E9%9D%A2%E3%82%92%E3%83%9F%E3%83%A9%E3%83%BC%E3%83%AA%E3%83%B3%E3%82%B0%E3%81%99%E3%82%8B%E3%81%8B%E3%82%AD%E3%83%A3%E3%82%B9%E3%83%88%E3%81%99%E3%82%8B-5af9f371-c704-1c7f-8f0d-fa607551d09c">Windows で画面をミラーリングするかキャストする - Microsoft サポート</a></li>
+<li><strong>[macOS / iOS]</strong> <a href="https://support.apple.com/ja-jp/102661">AirPlayを使ってiPhoneやiPadからビデオをストリーミングする／画面をミラーリングする - Apple サポート (日本)</a></li>
+<li><strong>[Android]</strong> <a href="https://support.google.com/chromecast/answer/6059461?hl=ja">Google Home アプリで Android の画面をキャストする - Google ヘルプ</a></li>
+</ul>
+    </article>
+  </main>
+  <footer>Generated with Local Ollama (qwen3.5 / gemma4) &amp; Draw Things (FLUX.2 klein 4B)</footer>
+</body>
+</html>
