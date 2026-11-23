@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ストレージ容量不足の原因特定と安全な空き容量確保の実例｜Windows・macOS・iOS・Android | PC 4OS実例ガイド</title>
+  <style>
+:root {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --muted: #475569;
+  --accent: #0284c7;
+  --accent-soft: #e0f2fe;
+  --border: #e2e8f0;
+  --code-bg: #0f172a;
+  --code-text: #e2e8f0;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Noto Sans JP", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+}
+header.site-header {
+  background: linear-gradient(135deg, #0f172a 0%, #0369a1 100%);
+  color: #fff;
+  padding: 2.2rem 1.25rem;
+}
+header.site-header .inner { max-width: 980px; margin: 0 auto; }
+header.site-header h1 { margin: 0 0 0.4rem; font-size: 1.75rem; }
+header.site-header p { margin: 0; opacity: 0.9; font-size: 0.96rem; }
+main { max-width: 980px; margin: 2rem auto; padding: 0 1.25rem 3rem; }
+.badge {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: var(--accent-soft);
+  color: #0369a1;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1.25rem;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08); }
+.card img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; display: block; background: #e2e8f0; }
+.card-body { padding: 1rem 1.1rem 1.2rem; flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+.card-title { font-size: 1.02rem; font-weight: 700; margin: 0; line-height: 1.45; }
+.card-meta { font-size: 0.82rem; color: var(--muted); margin-top: auto; }
+article.post {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 2rem;
+}
+article.post img.eyecatch {
+  width: 100%;
+  max-height: 460px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+}
+article.post h1 { font-size: 1.65rem; line-height: 1.35; margin-top: 0; }
+article.post h2 {
+  font-size: 1.3rem;
+  margin-top: 2.1rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 2px solid var(--accent-soft);
+}
+article.post h3 { font-size: 1.08rem; margin-top: 1.4rem; }
+article.post table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.2rem 0;
+  font-size: 0.92rem;
+  display: block;
+  overflow-x: auto;
+}
+article.post th, article.post td {
+  border: 1px solid var(--border);
+  padding: 0.6rem 0.8rem;
+  text-align: left;
+}
+article.post th { background: #f1f5f9; font-weight: 700; }
+article.post pre {
+  background: var(--code-bg);
+  color: var(--code-text);
+  padding: 1rem 1.15rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+article.post code {
+  background: #f1f5f9;
+  padding: 0.15rem 0.38rem;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+article.post pre code { background: transparent; padding: 0; color: inherit; }
+article.post blockquote {
+  margin: 1.2rem 0;
+  padding: 0.8rem 1.1rem;
+  border-left: 4px solid var(--accent);
+  background: #f0f9ff;
+  border-radius: 0 8px 8px 0;
+}
+.back-link { display: inline-block; margin-bottom: 1rem; color: var(--accent); text-decoration: none; font-weight: 600; }
+footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2rem 1rem; }
+@media (max-width: 640px) {
+  article.post { padding: 1.2rem; }
+}
+</style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="inner">
+      <h1>PC 4OS実例ガイド</h1>
+      <p>Windows・macOS・iOS・Android の実践比較＆トラブル解決アーカイブ</p>
+    </div>
+  </header>
+  <main>
+    <a class="back-link" href="../index.html">← 記事一覧へ戻る</a>
+    <article class="post">
+      <p><span class="badge">#10｜分類10: システム管理・OS設定・メンテナンス</span> <small style="color:#64748b;margin-left:0.5rem;">2026-11-23</small></p>
+      <img class="eyecatch" src="../images/2026-11-23_art10_storage_cleanup_disk_usage.png" alt="ストレージ容量不足の原因特定と安全な空き容量確保の実例｜Windows・macOS・iOS・Android">
+      <h1>ストレージ容量不足の原因特定と安全な空き容量確保の実例｜Windows・macOS・iOS・Android</h1>
+<p>「スマホの容量がいっぱいで写真が撮れない」「PCの動作が重くなり、ストレージの警告が出る」といった悩みは、あらゆるデバイスユーザーにとって共通の課題です。しかし、安易にファイルを削除すると重要なデータまで消去してしまうリスクがあり、どこから手をつければいいか迷ってしまう方も多いでしょう。</p>
+<p>この記事では、主要な4つのOS（Windows, macOS, iOS, Android）において、<strong>「何が容量を圧迫しているのか」を正確に可視化し、安全に空き容量を確保するための実践的な手順</strong>を解説します。標準機能だけでできること、制限があること、そしてトラブル時の対処法まで網羅しています。</p>
+<h2>4OS比較早見表</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">OS</th>
+<th style="text-align: left;">主な管理画面</th>
+<th style="text-align: left;">特徴的な整理機能</th>
+<th style="text-align: left;">推奨されるアプローチ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Windows 11</strong></td>
+<td style="text-align: left;">設定 &gt; システム &gt; ストレージ</td>
+<td style="text-align: left;">ストレージセンサー</td>
+<td style="text-align: left;">一時ファイルや更新履歴の自動クリーンアップ</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>macOS</strong></td>
+<td style="text-align: left;">システム設定 &gt; ジェネラル &gt; ストレージ</td>
+<td style="text-align: left;">ストレージの最適化</td>
+<td style="text-align: left;">iCloud連携による古いデータのクラウド移行</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>iOS</strong></td>
+<td style="text-align: left;">設定 &gt; 一般 &gt; iPhoneのストレージ</td>
+<td style="text-align: left;">写真の最適化 / メッセージ管理</td>
+<td style="text-align: left;">クラウド同期を前提としたデバイス内容量削減</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Android</strong></td>
+<td style="text-align: left;">設定 &gt; ストレージ / デバイスケア</td>
+<td style="text-align: left;">キャッシュ削除 / 自動バックアップ</td>
+<td style="text-align: left;">アプリごとのキャッシュクリアとGoogleフォト活用</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>1. Windows 11 での実例手順</h2>
+<p>Windows環境では、システムが自動で不要なファイルを特定する「ストレージセンサー」を活用するのが最も安全で効率的です。</p>
+<h3>【実例手順：標準機能のみ】</h3>
+<ul>
+<li><strong>原因可視化</strong>:<ol>
+<li><code>設定</code> → <code>システム</code> → <code>ストレージ</code> をクリックします。</li>
+<li>画面上部に表示されるグラフで、どのカテゴリ（アプリ、一時ファイル、システムデータなど）が容量を占めているか確認します。</li>
+<li>「詳細を表示」をクリックすると、より細かい内訳を確認できます。</li>
+</ol>
+</li>
+<li><strong>安全な整理</strong>:<ol>
+<li>同じ画面にある「ストレージセンサー」をオンにします。</li>
+<li>「今すぐ最適化する」または「不要なファイルを一括削除」ボタンを押し、推奨される項目（Windows Updateの旧バージョンや一時ファイルなど）を選択して実行します。</li>
+</ol>
+</li>
+<li><strong>補足</strong>: より徹底的に掃除したい場合は、従来の「ディスククリーンアップ」も有効です。「PCを右クリック &gt; プロパティ &gt; ディスクのクリア」から起動し、「システムファイルを削除」にチェックを入れて実行すると、$Recycle.Bin（ゴミ箱）などのシステム領域まで除去可能です。</li>
+</ul>
+<h3>【標準機能の制限事項】</h3>
+<ul>
+<li><strong>アプリごとの詳細表示</strong>: 「設定 &gt; アプリ &gt; インストールされたアプリ」で容量確認は可能ですが、アプリ内部の特定のキャッシュファイルのみを抽出して削除する機能はありません。</li>
+<li><strong>システムフォルダの保護</strong>: <code>C:\Windows</code> や <code>ProgramData</code> 内の手動編集による整理は推奨されません。標準機能からは直接アクセスできない設定項目が多く、誤操作を防ぐ設計になっています。</li>
+</ul>
+<h3>【よくあるトラブルと解決法】</h3>
+<ol>
+<li><strong>「ストレージセンサー」が特定しない・反応が悪い場合</strong><ul>
+<li><strong>原因</strong>: Windows Updateの適用中やバックグラウンドプロセスの競合。</li>
+<li><strong>解決</strong>: タスクマネージャーで <code>Windows Search</code> や <code>Antimalware Scan Executable for Microsoft (AMSEM)</code> を再起動するか、PCを一度再起動して再試行してください。</li>
+</ul>
+</li>
+<li><strong>「ディスククリーンアップ」で削除できないファイルがある場合</strong><ul>
+<li><strong>原因</strong>: 保護されているシステムファイルや権限不足。</li>
+<li><strong>解決</strong>: 管理者としてコマンドプロンプトを起動し、「sfc /scannow」を実行してシステムの整合性を修復してから再度実行してください。</li>
+</ul>
+</li>
+<li><strong>仮想メモリ（ページファイル）が容量を圧迫している場合</strong><ul>
+<li><strong>解決</strong>: 「コントロールパネル &gt; システムとセキュリティ &gt; システムのプロパティ &gt; 高度なシステム設定 &gt; 環境変数」から仮想メモリのサイズを変更し、初期化を試みてください。</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h2>2. macOS での実例手順</h2>
+<p>macOSはiCloudとの親和性が高く、「デバイスには最小限のデータだけを残す」という思想の最適化機能が充実しています。</p>
+<h3>【実例手順：標準機能のみ】</h3>
+<ul>
+<li><strong>原因可視化</strong>:<ol>
+<li><code>Appleメニュー</code> → <code>システム設定</code> → <code>ジェネラル</code> → <code>ストレージ</code> を開きます。</li>
+<li>下部の「詳細を表示」をオンにすると、アプリやキャッシュの詳細なグラフが表示されます。</li>
+</ol>
+</li>
+<li><strong>安全な整理</strong>:<ol>
+<li>画面内の「iCloud Driveのバックアップと削除」「空のカゴからファイルを削除」「メッセージ履歴を管理」などの推奨アクションボタンを押して実行します。</li>
+<li>「ストレージの最適化」機能をオンにすると、古い動画や写真が自動的にiCloudへ移動され、本体の容量を節約できます。</li>
+</ol>
+</li>
+</ul>
+<h3>【標準機能の制限事項】</h3>
+<ul>
+<li><strong>サードパーティ製アプリへの依存</strong>: Adobe Creative Cloudやゲームなどの詳細なキャッシュパスを直接表示・削除する機能は標準メニューにはありません。</li>
+<li><strong>ユーザーライブラリのアクセス</strong>: <code>~/Library/Caches</code> への手動アクセスは可能ですが、設定画面からの一括削除ボタンはないため、Finderでの慎重な操作が必要です。</li>
+</ul>
+<h3>【よくあるトラブルと解決法】</h3>
+<ol>
+<li><strong>「ストレージの最適化」が動作しない場合</strong><ul>
+<li><strong>原因</strong>: iCloud Driveの同期エラーやネットワーク接続の問題。</li>
+<li><strong>解決</strong>: 「システム設定 &gt; Apple ID &gt; iCloud &gt; iCloud Drive」で一度オフにし、再度オンにすることで同期をリセットします（データはクラウドにあるため安全です）。</li>
+</ul>
+</li>
+<li><strong>「詳細を表示」してもアプリの容量が不明確な場合</strong><ul>
+<li><strong>原因</strong>: アプリ自体ではなく、マッピングされていないキャッシュやログファイルが増えているケース。</li>
+<li><strong>解決</strong>: 一度Macを再起動してバックグラウンドプロセスをクリアしてください。それでも解消しない場合はFinderで <code>~/Library/Caches</code> を手動整理します。</li>
+</ul>
+</li>
+<li><strong>Time Machine バックアップ容量不足によるストレージ圧迫</strong><ul>
+<li><strong>解決</strong>: 「システム設定 &gt; ジェネラル &gt; Time Machine」で、保存期間を短縮するか「自動管理（古いバックアップのみ保持）」を設定してください。</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h2>3. iOS（iPhone / iPad）での実例手順</h2>
+<p>iOSはユーザーが直接ファイルシステムを操作できないため、OSが提供する「最適化」ボタンの活用が基本となります。</p>
+<h3>【実例手順：標準機能のみ】</h3>
+<ul>
+<li><strong>原因可視化</strong>:<ol>
+<li><code>設定</code> → <code>一般</code>（またはトップから）→ <code>iPhoneのストレージ</code> をタップします。</li>
+<li>「詳細を表示」をオンにして、アプリごとの使用量とシステムデータの内訳を確認します。</li>
+</ol>
+</li>
+<li><strong>安全な整理</strong>:<ol>
+<li>画面内の「iCloud Driveでバックアップと削除」「空のカゴからファイルを削除」「メッセージ履歴を管理」などのボタンを押して実行します。</li>
+<li>「写真」アプリの設定で「iPhoneのストレージを最適化」を有効にすると、高画質な写真はクラウドへ、デバイスには低容量版のみが残るようになります。</li>
+</ol>
+</li>
+</ul>
+<h3>【標準機能の制限事項】</h3>
+<ul>
+<li><strong>キャッシュファイルの詳細表示</strong>: アプリ内部のキャッシュフォルダパスを直接閲覧・削除する機能はありません。</li>
+<li><strong>システムデータの一括整理</strong>: OSレベルのログなどを直接削除するボタンはありません（Apple公式でも推奨されない操作のため）。</li>
+</ul>
+<h3>【よくあるトラブルと解決法】</h3>
+<ol>
+<li><strong>「ストレージの詳細を表示」が反応しない場合</strong><ul>
+<li><strong>原因</strong>: iOSアップデート直後のフリーズやプロセス競合。</li>
+<li><strong>解決</strong>: 「設定 &gt; 一般 &gt; iPhoneを再起動」を実行してください。</li>
+</ul>
+</li>
+<li><strong>「最適化」が動作しない場合</strong><ul>
+<li><strong>原因</strong>: Wi-Fiの不安定さやiCloud同期の一時停止。</li>
+<li><strong>解決</strong>: iCloud Driveの設定を一度オフにしてから再度オンにし、同期を再開させてください。</li>
+</ul>
+</li>
+<li><strong>「メッセージ履歴」が容量の大半を占めている場合</strong><ul>
+<li><strong>解決</strong>: 「設定 &gt; メッセージ」で「メッセージの保持期間」を「30日間」や「1年間」に変更し、古いデータを自動削除させます。</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h2>4. Android（Pixel / Galaxy など）での実例手順</h2>
+<p>AndroidはメーカーごとにUIが異なりますが、基本的には「キャッシュのクリア」と「Googleフォトへの移行」が王道です。</p>
+<h3>【実例手順：公式アプリ/設定のみ】</h3>
+<ul>
+<li><strong>原因可視化</strong>:<ol>
+<li><code>設定</code> → <code>ストレージ</code> を開きます。</li>
+<li>Google Pixelであれば標準でグラフが表示され、Samsung Galaxyであれば「デバイスケア」アプリから詳細な内訳を確認できます。</li>
+</ol>
+</li>
+<li><strong>安全な整理</strong>:<ol>
+<li>「設定 &gt; アプリ &gt; [対象アプリ] &gt; ストレージとキャッシュ」から「キャッシュをクリア」を実行します。</li>
+<li>Googleフォトの「バックアップと同期」機能を活用し、端末内のメディアデータをクラウドへ移動させた後、デバイスから削除します。</li>
+</ol>
+</li>
+</ul>
+<h3>【標準機能の制限事項】</h3>
+<ul>
+<li><strong>メーカーごとのUI差</strong>: Pixelは純粋なAndroidですが、GalaxyやXiaomiなどは独自の管理アプリ（デバイスケア等）を介す必要があり、操作手順が異なる場合があります。</li>
+</ul>
+<h3>【よくあるトラブルと解決法】</h3>
+<ol>
+<li><strong>「ストレージ」メニューに詳細が出ない場合</strong><ul>
+<li><strong>原因</strong>: メーカー独自カスタマイズによる制限。</li>
+<li><strong>解決</strong>: 各メーカーの公式メンテナンスアプリ（例：Samsungの「デバイスケア」）を起動して実行してください。</li>
+</ul>
+</li>
+<li><strong>特定のアプリのキャッシュが減らない場合</strong><ul>
+<li><strong>原因</strong>: アプリ自体がデータをストレージに書き込み続けている、または権限不足。</li>
+<li><strong>解決</strong>: そのアプリの「ストレージを消去（データを削除）」を実行します（※ログイン情報などが消えるため注意）。</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h2>よくあるトラブルと解決チェックリスト</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">トラブル事象</th>
+<th style="text-align: left;">原因の可能性</th>
+<th style="text-align: left;">推奨される対処法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>「空き容量がありません」と出るが、ファイルは少ない</strong></td>
+<td style="text-align: left;">システムキャッシュや一時ファイルの蓄積</td>
+<td style="text-align: left;">Windowsならストレージセンサー、Macなら再起動とiCloud最適化を実行。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>特定のアプリだけ異常に容量を消費している</strong></td>
+<td style="text-align: left;">アプリ内の動画・画像データの未削除</td>
+<td style="text-align: left;">そのアプリの設定から「キャッシュクリア」または「データ削除」を行う。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>整理してもすぐに容量が埋まる</strong></td>
+<td style="text-align: left;">クラウド同期の不備やバックグラウンド更新</td>
+<td style="text-align: left;">iCloud/Googleフォトの同期設定を見直し、自動アップロードを有効にする。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>システムデータの割合が高すぎる</strong></td>
+<td style="text-align: left;">OSのアップデート残骸やログの肥大化</td>
+<td style="text-align: left;">標準機能での「システムファイル削除」を実行し、改善しない場合は再起動。</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>まとめ：快適なマルチOS環境を作るポイント</h2>
+<p>ストレージ管理の基本は<strong>「可視化」と「自動化」</strong>です。まずは各OSの標準機能を使い倒して、不要なゴミを取り除きましょう。しかし、日常的なメンテナンスだけでは限界があることも事実です。</p>
+<p>より快適でストレスのない環境を構築するためには、以下のステップも検討することをお勧めします。</p>
+<ul>
+<li><strong>物理的な拡張</strong>: 頻繁に容量不足に悩むなら、<strong>SSD換装キット</strong>や大容量外付けドライブの導入は最も根本的な解決策です。</li>
+<li><strong>データの移行</strong>: PCの買い替え時やメンテナンス時には、<strong>クローン作成ソフト</strong>を使用して現在の環境を丸ごとバックアップ・移行することで、設定のやり直しを防げます。</li>
+<li><strong>ハードウェアの保護</strong>: 内部に埃が溜まると熱暴走の原因となり、ストレージの寿命を縮めることもあります。定期的に<strong>エアダスター</strong>や<strong>クリーニング用品</strong>で通気口を掃除する習慣も、長く快適にデバイスを使うための秘訣です。</li>
+</ul>
+<p>適切なツールと知識を組み合わせることで、OSを問わずストレスフリーなデジタルライフを実現しましょう。</p>
+<hr />
+<h2>参考文献・公式ドキュメント（一次情報ソース）</h2>
+<p>本記事の手順・仕様は以下の各OSおよびツールの公式ドキュメントに基づいています。OSアップデートによりメニュー名称や挙動が変わる場合があるため、最新仕様の確認にもご活用ください。</p>
+<ul>
+<li><strong>[Windows]</strong> <a href="https://support.microsoft.com/ja-jp/windows/windows-%E3%81%A7%E3%83%89%E3%83%A9%E3%82%A4%E3%83%96%E3%81%AE%E7%A9%BA%E3%81%8D%E9%A0%98%E5%9F%9F%E3%82%92%E5%A2%97%E3%82%84%E3%81%99-85529ccb-c365-490d-b548-831022bc9b32">Windows でドライブの空き領域を増やす（ストレージ センサー） - Microsoft サポート</a></li>
+<li><strong>[macOS]</strong> <a href="https://support.apple.com/ja-jp/102624">Macストレージの空き領域を増やす - Apple サポート (日本)</a></li>
+<li><strong>[iOS]</strong> <a href="https://support.apple.com/ja-jp/108429">iPhoneやiPadのストレージを確認・整理する方法 - Apple サポート (日本)</a></li>
+<li><strong>[Android]</strong> <a href="https://support.google.com/android/answer/7431795?hl=ja">Android デバイスの空き容量を増やす - Android ヘルプ</a></li>
+</ul>
+    </article>
+  </main>
+  <footer>Generated with Local Ollama (qwen3.5 / gemma4) &amp; Draw Things (FLUX.2 klein 4B)</footer>
+</body>
+</html>
