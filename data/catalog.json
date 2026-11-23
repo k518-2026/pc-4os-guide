@@ -279,5 +279,122 @@
       "Shortcuts"
     ],
     "id_slug": "art21-social-schedule"
+  },
+  {
+    "id": "art22-voice-memo-transcription-sync",
+    "article_num": 22,
+    "cat_num": 5,
+    "category": "動画・音声・音楽制作",
+    "task_topic": "ボイスメモ・会議録音の文字起こしとPC・スマホ間での音声ファイル共有方法",
+    "title": "ボイスメモ・会議録音の文字起こしと音声ファイル共有の実例｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "ボイスメモ 文字起こし",
+      "録音 PC 転送",
+      "M4A MP3 再生できない"
+    ]
+  },
+  {
+    "id": "art23-room-3d-scan-floorplan-measure",
+    "article_num": 23,
+    "cat_num": 6,
+    "category": "3D・CAD・ものづくり",
+    "task_topic": "スマホで部屋の間取りや家具サイズを計測・3D確認しPCで共有する方法",
+    "title": "スマホの計測・3Dスキャンで家具サイズや間取りを確認・共有する実例｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "iPhone 計測 アプリ",
+      "AR 採寸 Android",
+      "間取り 3D 確認"
+    ]
+  },
+  {
+    "id": "art24-markdown-editor-sync-beginners",
+    "article_num": 24,
+    "cat_num": 7,
+    "category": "プログラミング・ソフトウェア開発",
+    "task_topic": "初心者向けMarkdownメモ・技術メモの作成とPC・スマホ間での同期方法",
+    "title": "初心者向けMarkdownメモの書き方と全端末同期・プレビュー実例｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "Markdown 初心者 書き方",
+      "Markdown アプリ 同期",
+      "技術メモ 整理"
+    ]
+  },
+  {
+    "id": "art25-qr-code-short-url-share",
+    "article_num": 25,
+    "cat_num": 8,
+    "category": "Web制作・ブログ・デジタルマーケティング",
+    "task_topic": "ブラウザ標準機能でのQRコード作成・読み取りとPC〜スマホ間のURL即時共有方法",
+    "title": "QRコード作成・読み取りとPC〜スマホ間のURL即時共有実例｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "QRコード 作成 無料",
+      "URL スマホ 共有",
+      "Chrome Edge QRコード"
+    ]
+  },
+  {
+    "id": "art26-ai-chat-history-prompt-sync",
+    "article_num": 26,
+    "cat_num": 9,
+    "category": "データ分析・科学計算・AI活用",
+    "task_topic": "生成AI（ChatGPT/Gemini等）の音声入力・画像相談・履歴同期をPCとスマホで使い分ける方法",
+    "title": "生成AI（ChatGPT/Gemini）をPCとスマホで連携・履歴活用する実例｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "生成AI 使い方 初心者",
+      "ChatGPT Gemini スマホ PC",
+      "AI 音声入力"
+    ]
+  },
+  {
+    "id": "art27-os-update-stuck-recovery",
+    "article_num": 27,
+    "cat_num": 10,
+    "category": "システム管理・OS設定・メンテナンス",
+    "task_topic": "OSアップデートが進まない・失敗するときの安全な原因切り分けと復旧手順",
+    "title": "OSアップデートが終わらない・失敗するときの安全な対処手順｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "Windows Update 進まない",
+      "iOS アップデート できない",
+      "Android 更新 エラー"
+    ]
+  },
+  {
+    "id": "art28-wifi-slow-disconnect-fix",
+    "article_num": 28,
+    "cat_num": 11,
+    "category": "ネットワーク・サーバー・インフラ構築",
+    "task_topic": "自宅Wi-Fiが遅い・突然切れる原因の切り分けと周波数帯（2.4GHz/5GHz）・DNS見直し手順",
+    "title": "Wi-Fiが遅い・突然切れる原因の切り分けと改善チェック実例｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "Wi-Fi 遅い 原因",
+      "Wi-Fi 切れる 対処",
+      "インターネットなし 解決"
+    ]
+  },
+  {
+    "id": "art29-lost-device-find-lock-wipe",
+    "article_num": 29,
+    "cat_num": 12,
+    "category": "セキュリティ・プライバシー対策",
+    "task_topic": "PCやスマホを紛失したときに遠隔で位置検索・画面ロック・データ消去するための事前設定と手順",
+    "title": "PC・スマホ紛失時の遠隔ロック・位置検索（探す機能）の設定実例｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "スマホ 紛失 探す",
+      "iPhone 探す 設定",
+      "デバイスの検索 Windows Android"
+    ]
+  },
+  {
+    "id": "art30-zip-unzip-mojibake-password",
+    "article_num": 30,
+    "cat_num": 13,
+    "category": "ファイル管理・バックアップ・データ復旧",
+    "task_topic": "ZIPファイルの圧縮・解凍を標準機能で行う方法と文字化け・開けないトラブルの対処法",
+    "title": "ZIPファイルの圧縮・解凍と文字化け・開けない時の解決実例｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "ZIP 解凍 方法",
+      "ZIP 文字化け Windows Mac",
+      "スマホ ZIP 開けない"
+    ]
   }
 ]
