@@ -29,10 +29,11 @@ python -m src.main -n 1 --push
 python -m src.main -n 1 --category 11
 ```
 
-## 書き溜め済み記事一覧（全 19 本 / 最終更新: 2026-11-23 12:43 JST）
+## 書き溜め済み記事一覧（全 20 本 / 最終更新: 2026-11-23 12:48 JST）
 
 | No. | 17分類カテゴリ | 記事タイトル（Markdown） | 挿絵 | 生成日 |
 | :---: | :--- | :--- | :---: | :---: |
+| #20 | 分類03: 情報収集・リサーチ・Web 利用 | [クロスデバイス検索：ブラウザ間でのブックマークとメモ共有｜Windows・macOS・iOS・Android](content/2026-11-23_art20_news_verification_flow.md) | あり | 2026-11-23 |
 | #19 | 分類02: コミュニケーション・情報共有 | [PC での PDF 注釈とスマホからの即時返答｜Windows・macOS・iOS・Android](content/2026-11-23_art19_meeting_notes_sync.md) | あり | 2026-11-23 |
 | #18 | 分類01: 文書作成・オフィス業務・事務作業 | [複数 OS で同時編集：Google ドキュメント vs ローカルファイル｜Windows・macOS・iOS・Android](content/2026-11-23_art18_office_collab.md) | あり | 2026-11-23 |
 | #17 | 分類17: 生活・行政手続き・家計・資産管理 | [領収書スキャン・確定申告データの整理と安全な保存手順｜Windows・macOS・iOS・Android](content/2026-11-23_art17_etax_receipt_scan_pdf_archive.md) | あり | 2026-11-23 |
