@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>自宅LANの共有フォルダ・NAS（SMB）接続とエラー解決の実例｜Windows・macOS・iOS・Android | PC 4OS実例ガイド</title>
+  <style>
+:root {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --muted: #475569;
+  --accent: #0284c7;
+  --accent-soft: #e0f2fe;
+  --border: #e2e8f0;
+  --code-bg: #0f172a;
+  --code-text: #e2e8f0;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Noto Sans JP", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+}
+header.site-header {
+  background: linear-gradient(135deg, #0f172a 0%, #0369a1 100%);
+  color: #fff;
+  padding: 2.2rem 1.25rem;
+}
+header.site-header .inner { max-width: 980px; margin: 0 auto; }
+header.site-header h1 { margin: 0 0 0.4rem; font-size: 1.75rem; }
+header.site-header p { margin: 0; opacity: 0.9; font-size: 0.96rem; }
+main { max-width: 980px; margin: 2rem auto; padding: 0 1.25rem 3rem; }
+.badge {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: var(--accent-soft);
+  color: #0369a1;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1.25rem;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08); }
+.card img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; display: block; background: #e2e8f0; }
+.card-body { padding: 1rem 1.1rem 1.2rem; flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+.card-title { font-size: 1.02rem; font-weight: 700; margin: 0; line-height: 1.45; }
+.card-meta { font-size: 0.82rem; color: var(--muted); margin-top: auto; }
+article.post {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 2rem;
+}
+article.post img.eyecatch {
+  width: 100%;
+  max-height: 460px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+}
+article.post h1 { font-size: 1.65rem; line-height: 1.35; margin-top: 0; }
+article.post h2 {
+  font-size: 1.3rem;
+  margin-top: 2.1rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 2px solid var(--accent-soft);
+}
+article.post h3 { font-size: 1.08rem; margin-top: 1.4rem; }
+article.post table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.2rem 0;
+  font-size: 0.92rem;
+  display: block;
+  overflow-x: auto;
+}
+article.post th, article.post td {
+  border: 1px solid var(--border);
+  padding: 0.6rem 0.8rem;
+  text-align: left;
+}
+article.post th { background: #f1f5f9; font-weight: 700; }
+article.post pre {
+  background: var(--code-bg);
+  color: var(--code-text);
+  padding: 1rem 1.15rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+article.post code {
+  background: #f1f5f9;
+  padding: 0.15rem 0.38rem;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+article.post pre code { background: transparent; padding: 0; color: inherit; }
+article.post blockquote {
+  margin: 1.2rem 0;
+  padding: 0.8rem 1.1rem;
+  border-left: 4px solid var(--accent);
+  background: #f0f9ff;
+  border-radius: 0 8px 8px 0;
+}
+.back-link { display: inline-block; margin-bottom: 1rem; color: var(--accent); text-decoration: none; font-weight: 600; }
+footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2rem 1rem; }
+@media (max-width: 640px) {
+  article.post { padding: 1.2rem; }
+}
+</style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="inner">
+      <h1>PC 4OS実例ガイド</h1>
+      <p>Windows・macOS・iOS・Android の実践比較＆トラブル解決アーカイブ</p>
+    </div>
+  </header>
+  <main>
+    <a class="back-link" href="../index.html">← 記事一覧へ戻る</a>
+    <article class="post">
+      <p><span class="badge">#11｜分類11: ネットワーク・サーバー・インフラ構築</span> <small style="color:#64748b;margin-left:0.5rem;">2026-11-23</small></p>
+      <img class="eyecatch" src="../images/2026-11-23_art11_lan_smb_file_sharing.png" alt="自宅LANの共有フォルダ・NAS（SMB）接続とエラー解決の実例｜Windows・macOS・iOS・Android">
+      <h1>自宅LANの共有フォルダ・NAS（SMB）接続とエラー解決の実例｜Windows・macOS・iOS・Android</h1>
+<p>「自宅にNASを導入したけれど、スマホやPCからうまく繋がらない」「機種ごとに接続方法が違って混乱する」といった悩みをお持ちではありませんか？</p>
+<p>自宅のデータを一元管理するNAS（Network Attached Storage）は非常に便利ですが、OSごとに操作手順や認証の仕組みが異なるため、初期設定でつまずくケースは非常に多いです。この記事では、主要な4つのOS（Windows, macOS, iOS, Android）におけるSMB接続の手順と、初心者が陥りやすいエラーへの対処法を徹底解説します。</p>
+<p>この記事を読めば、どのデバイスからでもスムーズに自宅の共有フォルダへアクセスできるようになります。</p>
+<h2>4OS比較早見表</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">OS</th>
+<th style="text-align: left;">標準アプリ / 操作場所</th>
+<th style="text-align: left;">接続用プロトコル</th>
+<th style="text-align: left;">特徴・注意点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Windows 11</strong></td>
+<td style="text-align: left;">ファイルエクスプローラー</td>
+<td style="text-align: left;">SMB (v2/v3)</td>
+<td style="text-align: left;">最も標準的な操作。ネットワークドライブとして固定可能。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>macOS</strong></td>
+<td style="text-align: left;">Finder (Command+K)</td>
+<td style="text-align: left;">SMB (v2/v3)</td>
+<td style="text-align: left;">キーチェーンによるパスワード管理が強力。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>iOS</strong></td>
+<td style="text-align: left;">「ファイル」アプリ</td>
+<td style="text-align: left;">SMB (v2/v3)</td>
+<td style="text-align: left;">iCloudとは独立した「手動接続」のストレージとして動作。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Android</strong></td>
+<td style="text-align: left;">Files by Google / 各社純正</td>
+<td style="text-align: left;">SMB (v2/v3)</td>
+<td style="text-align: left;">機種により標準アプリが異なるため、設定場所に注意。</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>1. Windows 11 での実例手順</h2>
+<p>Windowsは最も一般的な接続環境です。エクスプローラーから直接パスを入力する方法が最も確実です。</p>
+<p><strong>【操作手順】</strong><br />
+1. <strong>ファイルエクスプローラー</strong>を開きます。<br />
+2. 上部の「アドレスバー」をクリックし、以下の形式で入力してEnterキーを押します。<br />
+   - 入力例：<code>\\192.168.0.5\Public</code>（※NASのIPアドレスと共有フォルダ名）<br />
+3. <strong>認証</strong>: パスワード保護が有効な場合、ユーザー名とパスワードを求められます。ここで入力するのは「Windowsのログイン情報」ではなく、<strong>「NAS管理画面で作成したアカウント情報」</strong>です。<br />
+4. <strong>保存</strong>: 接続できたフォルダを右クリックし、「ネットワークドライブの割り当て」を選択すると、マイコンピュータ内にドライブとして固定でき、次回からワンクリックでアクセス可能になります。</p>
+<h3>【標準機能の制限事項】</h3>
+<ul>
+<li><strong>同期機能なし</strong>: WindowsのSMBコネクタは「ネットワークドライブ」としての動作であり、クラウドストレージのような自動同期（変更を常にバックグラウンドで反映する）機能は内蔵されていません。</li>
+<li><strong>SMB 1.0 デフォルト無効化</strong>: セキュリティ上の理由から、古いNASで使用されるSMBv1は標準でオフになっています。古い機器と繋がらない場合はNAS側の設定確認が必要です。</li>
+</ul>
+<h3>【よくあるトラブルと解決法】</h3>
+<ol>
+<li><strong>「ネットワーク位置」への追加が失敗する</strong></li>
+<li><strong>原因</strong>: IPアドレスの入力ミスや、Windowsファイアウォールによるブロック。</li>
+<li><strong>解決</strong>: ブラウザで <code>http://[NAS_IP]</code> にアクセスし、Web管理画面が開くか確認してください。開ける場合はIPは正しいです。ポート番号（通常445）が開放されているか再確認しましょう。</li>
+<li><strong>「ユーザー名とパスワードが間違っています」とエラー</strong></li>
+<li><strong>原因</strong>: Windowsのローカルアカウントで認証しようとしている。</li>
+<li><strong>解決</strong>: NAS側の管理画面で、入力したユーザー名が存在するか、およびそのユーザーに共有フォルダへのアクセス権が付与されているかを確認してください。</li>
+<li><strong>「読み取り専用」または接続エラーが出る</strong></li>
+<li><strong>原因</strong>: 暗号化方式（NTLMv2など）の不一致。</li>
+<li><strong>解決</strong>: NAS側の設定でSMBプロトコルを「SMB3」に固定するか、NAS側からWindowsクライアントへのアクセス制限を緩和する設定を行ってください。</li>
+</ol>
+<hr />
+<h2>2. macOS での実例手順</h2>
+<p>MacではFinderの「サーバへ接続」機能を使用するのが最も標準的な方法です。</p>
+<p><strong>【操作手順】</strong><br />
+1. <strong>Finder</strong>を開きます。<br />
+2. メニューバーの「移動」→「サーバへ接続」を選択（または <code>Command + K</code>）。<br />
+3. サーバアドレスに以下を入力します。<br />
+   - 入力例：<code>smb://192.168.0.5/Public</code><br />
+4. <strong>認証</strong>: ダイアログが表示されたら、<strong>NASに登録したアカウント情報</strong>を入力します。</p>
+<h3>【標準機能の制限事項】</h3>
+<ul>
+<li><strong>自動同期・バックアップなし</strong>: Finder経由の接続は単なるネットワークドライブです。Time Machineのバックアップ先として使う場合は、システム設定の「共有」から別途サーバー登録が必要です。</li>
+<li><strong>ファイルロック競合</strong>: 複数ユーザーが同時に同じファイルを編集しようとすると、SMBの仕様上、保存エラーが発生することがあります。</li>
+</ul>
+<h3>【よくあるトラブルと解決法】</h3>
+<ol>
+<li><strong>「接続できません」と表示され続ける</strong></li>
+<li><strong>原因</strong>: macOSのセキュリティ強化により、古い暗号化方式や匿名アクセスがブロックされている。</li>
+<li><strong>解決</strong>: NAS側で「ゲストアクセス」をオフにし、必ず正しいユーザー名とパスワードを設定してください。</li>
+<li><strong>「ユーザー名とパスワードが間違っています」</strong></li>
+<li><strong>原因</strong>: macOSの「キーチェーン」に古い（または誤った）認証情報がキャッシュされている。</li>
+<li><strong>解決</strong>: 「システム設定」→「一般」→「キーチェーンアクセス」を開き、NASのIPアドレスに関連する項目を削除してから再試行してください。</li>
+<li><strong>「読み取り専用」と表示される</strong></li>
+<li><strong>原因</strong>: macOS側の権限設定や、NAS側のACL（アクセス制御リスト）で書き込み権限が与えられていない。</li>
+<li><strong>解決</strong>: NASの管理画面で、該当ユーザーに「フルコントロール」または「読み書き」の権限が付与されているか確認してください。</li>
+</ol>
+<hr />
+<h2>3. iOS（iPhone / iPad）での実例手順</h2>
+<p>iPhoneやiPadでは、標準の「ファイル」アプリを使ってNASをマウントします。</p>
+<p><strong>【操作手順】</strong><br />
+1. <strong>「ファイル」アプリ</strong>を開きます。<br />
+2. 下部の「ブラウズ」タブで、右上の「…」ボタン（または共有ボタン）をタップし、「サーバへ接続」を選択。<br />
+3. サーバーアドレスに以下を入力します。<br />
+   - 入力例：<code>smb://192.168.0.5/Public</code><br />
+4. <strong>認証</strong>: NASのアカウント情報を入力します。</p>
+<h3>【標準機能の制限事項】</h3>
+<ul>
+<li><strong>同期・バックアップ不可</strong>: iCloud Driveとは別枠のストレージとして扱われます。ファイルを移動させるには手動操作が必要です。</li>
+<li><strong>Time Machine 非対応</strong>: iOSデバイスからNASへTime Machineバックアップを直接行うことはできません。</li>
+</ul>
+<h3>【よくあるトラブルと解決法】</h3>
+<ol>
+<li><strong>「サーバーに接続できません」</strong></li>
+<li><strong>原因</strong>: Wi-Fiのプライバシー設定や、IPv6環境でのアドレス不一致。</li>
+<li><strong>解決</strong>: Wi-Fi設定で「プライベートアドレス」をオフにするか、IPアドレスが正しいか再確認してください。また、WebDAVプロトコル対応NASであれば、<code>http://[IP]/webdav</code> を試すのも有効です。</li>
+<li><strong>「ユーザー名とパスワードが間違っています」</strong></li>
+<li><strong>原因</strong>: セッションタイムアウトや古い情報の自動入力。</li>
+<li><strong>解決</strong>: 一度接続を解除し、アプリを再起動してから再度手動で情報を入力してください。</li>
+<li><strong>「読み取り専用」</strong></li>
+<li><strong>原因</strong>: iOSのセキュリティ仕様による書き込み制限。</li>
+<li><strong>解決</strong>: NAS側のSMB設定でアクセス制御を緩和するか、どうしても書き込めない場合はサードパーティ製のファイル管理アプリ（FileBrowser等）の導入を検討してください。</li>
+</ol>
+<hr />
+<h2>4. Android での実例手順</h2>
+<p>Androidはメーカーや機種によって標準アプリが異なりますが、Google純正の「Files by Google」や各社独自の「マイファイル」で対応可能です。</p>
+<p><strong>【操作手順】</strong><br />
+1. <strong>「Files by Google」</strong>（または端末固有のエクスプローラー）を開きます。<br />
+2. 「ネットワークストレージ」または「SMB」項目を探し、「新しいサーバーを追加」をタップ。<br />
+3. サーバーアドレスに <code>smb://[NAS_IP アドレス]/共有フォルダ名</code> を入力します。<br />
+4. <strong>認証</strong>: NASのアカウント情報を入力します。</p>
+<h3>【標準機能の制限事項】</h3>
+<ul>
+<li><strong>機種依存性大</strong>: Samsung GalaxyやSony Xperiaなど、メーカー独自のファイルマネージャーを使用する場合、SMB接続のUIや設定項目が大きく異なることがあります。</li>
+<li><strong>バックグラウンド動作</strong>: アプリを閉じると接続が切断される挙動があるため、常に接続を維持したい場合はアプリを常駐させる必要があります。</li>
+</ul>
+<hr />
+<h2>よくあるトラブルと解決チェックリスト</h2>
+<p>ネットワーク接続でつまずいたときは、以下の順で確認してください。</p>
+<ul>
+<li>[ ] <strong>IPアドレスの再確認</strong>: NASの電源を入れ直し、管理画面から現在のIPアドレス（例: 192.168.x.x）を正確に取得しているか？</li>
+<li>[ ] <strong>同一ネットワークの確認</strong>: 操作するデバイスが、NASと同じルーターに接続されているか？（ゲストWi-Fiなど、隔離されたネットワークではないか？）</li>
+<li>[ ] <strong>ユーザー権限の再付与</strong>: NAS側で「そのユーザー」に対して「そのフォルダ」へのアクセス許可を与えているか？</li>
+<li>[ ] <strong>プロトコルの互換性</strong>: NASの設定でSMBv2またはSMBv3が有効になっているか？（古いNASの場合、設定変更が必要なことがあります）</li>
+</ul>
+<hr />
+<h2>まとめ：快適なマルチOS環境を作るポイント</h2>
+<p>自宅のLAN環境を快適に保つためには、単に「繋がる」だけでなく、「安定して高速にアクセスできる」環境作りが重要です。</p>
+<p>スムーズなファイル転送を実現するためには、以下の周辺機器の見直しも効果的です。</p>
+<ul>
+<li><strong>Wi-Fi 6/6E/7ルーター</strong>: 多数のデバイスを同時に接続しても速度を落とさず、低遅延でNASへアクセスできます。</li>
+<li><strong>家庭用NAS</strong>: 外付けHDDをPCに繋ぐよりも、専用のNAS（SynologyやQNAPなど）を導入することで、OSを問わず安定したSMB接続が可能になります。</li>
+<li><strong>LANケーブル &amp; スイッチングハブ</strong>: NAS本体はWi-Fiではなく、必ず<strong>LANケーブルでルーター/スイッチングハブに有線接続</strong>してください。これにより、ワイヤレス環境での速度低下や切断トラブルを劇的に減らすことができます。</li>
+</ul>
+<p>正しい設定と適切なインフラ整備を行うことで、WindowsでもMacでもスマホでも、家中どこからでも自由自在にデータへアクセスできる快適な環境が手に入ります。</p>
+<hr />
+<h2>参考文献・公式ドキュメント（一次情報ソース）</h2>
+<p>本記事の手順・仕様は以下の各OSおよびツールの公式ドキュメントに基づいています。OSアップデートによりメニュー名称や挙動が変わる場合があるため、最新仕様の確認にもご活用ください。</p>
+<ul>
+<li><strong>[Windows]</strong> <a href="https://support.microsoft.com/ja-jp/windows/windows-%E3%81%A7%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF%E3%82%92%E4%BB%8B%E3%81%97%E3%81%9F%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E5%85%B1%E6%9C%89-b58704b2-f53a-4b82-7bc1-80f9994725bf">Windows でネットワークを介したファイル共有（SMB） - Microsoft サポート</a></li>
+<li><strong>[macOS]</strong> <a href="https://support.apple.com/ja-jp/guide/mac-help/mchlp1140/mac">Macを共有コンピュータおよびサーバへ接続する（SMB） - Apple サポート (日本)</a></li>
+<li><strong>[iOS]</strong> <a href="https://support.apple.com/ja-jp/guide/iphone/iph8d8f0f1a0/ios">iPhoneユーザガイド（「ファイル」アプリからサーバへ接続） - Apple サポート (日本)</a></li>
+<li><strong>[Android]</strong> <a href="https://support.google.com/android/?hl=ja">Android ヘルプ - Google サポート</a></li>
+</ul>
+    </article>
+  </main>
+  <footer>Generated with Local Ollama (qwen3.5 / gemma4) &amp; Draw Things (FLUX.2 klein 4B)</footer>
+</body>
+</html>
