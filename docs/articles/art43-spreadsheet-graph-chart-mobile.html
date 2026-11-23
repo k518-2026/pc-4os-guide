@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>表計算ソフトでグラフ作成＆スマホでの確認・修正実例｜Windows・macOS・iOS・Android | PC 4OS実例ガイド</title>
+  <style>
+:root {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --muted: #475569;
+  --accent: #0284c7;
+  --accent-soft: #e0f2fe;
+  --border: #e2e8f0;
+  --code-bg: #0f172a;
+  --code-text: #e2e8f0;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Noto Sans JP", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+}
+header.site-header {
+  background: linear-gradient(135deg, #0f172a 0%, #0369a1 100%);
+  color: #fff;
+  padding: 2.2rem 1.25rem;
+}
+header.site-header .inner { max-width: 980px; margin: 0 auto; }
+header.site-header h1 { margin: 0 0 0.4rem; font-size: 1.75rem; }
+header.site-header p { margin: 0; opacity: 0.9; font-size: 0.96rem; }
+main { max-width: 980px; margin: 2rem auto; padding: 0 1.25rem 3rem; }
+.badge {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: var(--accent-soft);
+  color: #0369a1;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1.25rem;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08); }
+.card img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; display: block; background: #e2e8f0; }
+.card-body { padding: 1rem 1.1rem 1.2rem; flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+.card-title { font-size: 1.02rem; font-weight: 700; margin: 0; line-height: 1.45; }
+.card-meta { font-size: 0.82rem; color: var(--muted); margin-top: auto; }
+article.post {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 2rem;
+}
+article.post img.eyecatch {
+  width: 100%;
+  max-height: 460px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+}
+article.post h1 { font-size: 1.65rem; line-height: 1.35; margin-top: 0; }
+article.post h2 {
+  font-size: 1.3rem;
+  margin-top: 2.1rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 2px solid var(--accent-soft);
+}
+article.post h3 { font-size: 1.08rem; margin-top: 1.4rem; }
+article.post table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.2rem 0;
+  font-size: 0.92rem;
+  display: block;
+  overflow-x: auto;
+}
+article.post th, article.post td {
+  border: 1px solid var(--border);
+  padding: 0.6rem 0.8rem;
+  text-align: left;
+}
+article.post th { background: #f1f5f9; font-weight: 700; }
+article.post pre {
+  background: var(--code-bg);
+  color: var(--code-text);
+  padding: 1rem 1.15rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+article.post code {
+  background: #f1f5f9;
+  padding: 0.15rem 0.38rem;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+article.post pre code { background: transparent; padding: 0; color: inherit; }
+article.post blockquote {
+  margin: 1.2rem 0;
+  padding: 0.8rem 1.1rem;
+  border-left: 4px solid var(--accent);
+  background: #f0f9ff;
+  border-radius: 0 8px 8px 0;
+}
+.back-link { display: inline-block; margin-bottom: 1rem; color: var(--accent); text-decoration: none; font-weight: 600; }
+.filter-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.15rem 1.25rem;
+  margin-bottom: 1.5rem;
+}
+.filter-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) auto;
+  gap: 0.9rem;
+  align-items: end;
+}
+.filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.filter-field label {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.filter-field input[type="search"],
+.filter-field select {
+  font: inherit;
+  font-size: max(1rem, 1em);
+  min-height: 48px;
+  padding: 0.55rem 0.85rem;
+  border: 1.5px solid #767676;
+  border-radius: 8px;
+  background: #fff;
+  color: var(--text);
+  width: 100%;
+}
+.filter-field input[type="search"]:focus-visible,
+.filter-field select:focus-visible,
+.filter-actions button:focus-visible {
+  outline: 3px solid #0284c7;
+  outline-offset: 2px;
+}
+.filter-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+.filter-actions button {
+  font: inherit;
+  font-size: max(1rem, 0.95em);
+  font-weight: 600;
+  min-height: 48px;
+  padding: 0 1.05rem;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+}
+.btn-primary {
+  background: #0369a1;
+  color: #fff;
+}
+.btn-primary:hover { background: #075985; }
+.btn-secondary {
+  background: #f1f5f9;
+  color: var(--text);
+  border-color: #94a3b8;
+}
+.btn-secondary:hover { background: #e2e8f0; }
+.results-status {
+  color: var(--muted);
+  font-size: 0.92rem;
+  margin: 0 0 1.1rem;
+}
+.empty-state {
+  background: var(--surface);
+  border: 1px dashed #94a3b8;
+  border-radius: 12px;
+  padding: 2rem 1.25rem;
+  text-align: center;
+  color: var(--muted);
+}
+.card[hidden],
+.empty-state[hidden] { display: none; }
+footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2rem 1rem; }
+@media (max-width: 720px) {
+  .filter-form { grid-template-columns: 1fr; }
+  .filter-actions { width: 100%; }
+  .filter-actions button { flex: 1; }
+}
+@media (max-width: 640px) {
+  article.post { padding: 1.2rem; }
+}
+</style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="inner">
+      <h1>PC 4OS実例ガイド</h1>
+      <p>Windows・macOS・iOS・Android の実践比較＆トラブル解決アーカイブ</p>
+    </div>
+  </header>
+  <main>
+    <a class="back-link" href="../index.html">← 記事一覧へ戻る</a>
+    <article class="post">
+      <p><span class="badge">#43｜分類09: データ分析・科学計算・AI活用</span> <small style="color:#64748b;margin-left:0.5rem;">2026-11-23</small></p>
+      <img class="eyecatch" src="../images/2026-11-23_art43_spreadsheet_graph_chart_mobile.png" alt="表計算ソフトでグラフ作成＆スマホでの確認・修正実例｜Windows・macOS・iOS・Android">
+      <h1>表計算ソフトでグラフ作成＆スマホでの確認・修正実例｜Windows・macOS・iOS・Android</h1>
+<p>「PCで作成した複雑なグラフやデータ表を、外出先でもすぐに確認したい」「現場で数値が変わった際、その場でスマホから修正して共有したい」といった悩みは、ビジネスや研究の現場で非常に多く聞かれます。</p>
+<p>しかし、OSごとに操作体系が異なり、さらにモバイル端末との同期設定でつまずいてしまうことも少なくありません。この記事では、Windows、macOS、iOS、Androidの4つの環境において、表計算ソフトを使いこなし、いかにスムーズに「作成→共有→モバイル確認・修正」というワークフローを構築するかを徹底解説します。</p>
+<h2>4OS比較早見表</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">機能・項目</th>
+<th style="text-align: left;">Windows (Excel)</th>
+<th style="text-align: left;">macOS (Numbers)</th>
+<th style="text-align: left;">iOS (Numbers/Sheets)</th>
+<th style="text-align: left;">Android (Sheets/Excel)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>主なソフト</strong></td>
+<td style="text-align: left;">Microsoft Excel</td>
+<td style="text-align: left;">Numbers</td>
+<td style="text-align: left;">Numbers / Google Sheets</td>
+<td style="text-align: left;">Google Sheets / Excel</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>クラウド連携</strong></td>
+<td style="text-align: left;">OneDrive</td>
+<td style="text-align: left;">iCloud</td>
+<td style="text-align: left;">iCloud / Google Drive</td>
+<td style="text-align: left;">Google Drive</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>グラフ作成</strong></td>
+<td style="text-align: left;">高機能・高度な分析</td>
+<td style="text-align: left;">直感的・自動レイアウト</td>
+<td style="text-align: left;">タッチ操作に最適化</td>
+<td style="text-align: left;">タッチ操作に最適化</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>モバイル同期</strong></td>
+<td style="text-align: left;">OneDrive経由推奨</td>
+<td style="text-align: left;">iCloud経由（Apple製品）</td>
+<td style="text-align: left;">標準連携</td>
+<td style="text-align: left;">Googleドライブ連携が強力</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>互換性</strong></td>
+<td style="text-align: left;">業界標準</td>
+<td style="text-align: left;">Appleエコシステム内</td>
+<td style="text-align: left;">マルチプラットフォーム</td>
+<td style="text-align: left;">マルチプラットフォーム</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>1. Windows 11 での実例手順</h2>
+<p>Windows環境では、世界標準であるMicrosoft Excelを活用するのが最も確実な方法です。</p>
+<h3>公式手順：表から可視化されたグラフを作成・共有</h3>
+<ol>
+<li><strong>データ準備</strong>: Excelを開き、分析対象のデータを入力します。外部のCSVファイルを読み込む場合は、「ファイル」タブ → 「開く」→「テキスト (.txt) または CSV の読み込み」を選択します。</li>
+<li><strong>グラフ作成</strong>: グラフ化したいデータ範囲を選択し、「挿入」タブから任意のチャートタイプ（棒グラフ、折れ線グラフなど）をクリックします。「デザイン」タブでタイトルや軸のラベルを調整します。</li>
+<li><strong>スマホ共有準備</strong>: 「ファイル」→「保存先」から<strong>OneDrive</strong>を選択して保存します。これにより、iPhoneやAndroidのExcelアプリと自動的に同期されます。</li>
+</ol>
+<h3>Windows 標準機能での制限事項・代替手段</h3>
+<ul>
+<li><strong>制限</strong>: ローカルPC版Excelでは、USBケーブルを繋がない限り直接スマホへグラフを転送することはできません。また、OneDriveに保存していないファイルはモバイルアプリで編集できません。</li>
+<li><strong>代替手段</strong>: 「共有」ボタンからリンクを作成し、「任意の人のアクセス許可を与える」設定を行うか、CSVとしてエクスポートしてスマホ側で再インポートします。</li>
+</ul>
+<h3>よくあるトラブルと解決法（Windows）</h3>
+<ol>
+<li><strong>「テキストを列に区切らない」というエラー</strong></li>
+<li><strong>原因</strong>: CSVを開く際、カンマやタブが改行文字として認識されるため。</li>
+<li><strong>解決</strong>: 「ファイル」→「開く」→「テキスト (.txt) または CSV の読み込み」ダイアログで「区切り文字（カンマ）」を選択してインポートし直すか、Excel内で「データ」タブ →「テキストを列に区切る」を実行します。</li>
+<li><strong>グラフの軸ラベルが正しく表示されない</strong></li>
+<li><strong>原因</strong>: データ範囲選択時に空行が含まれているため。</li>
+<li><strong>解決</strong>: グラフを選択し、「デザイン」→「データのソースの変更」で正しいセル範囲を指定し直します。</li>
+<li><strong>スマホ側で編集できない（読み取り専用）</strong></li>
+<li><strong>対策</strong>: OneDrive上の共有設定を確認。「リンクをコピー」後、チャットツール等に貼り付ける際、相手が「開く」→「オンライン表示と共同編集」を選択できる権限になっているか確認します。</li>
+</ol>
+<hr />
+<h2>2. macOS での実例手順</h2>
+<p>Macユーザーであれば、Apple純正のNumbersを活用することで非常にスムーズな操作感を得られます。</p>
+<h3>公式手順：表から可視化されたグラフを作成・共有</h3>
+<ol>
+<li><strong>データ準備</strong>: Numbersを開き、CSVを読み込む場合は「ファイル」→「インポート」→CSVを選択します。</li>
+<li><strong>グラフ作成</strong>: データを選択し、「挿入」メニューからグラフを追加。「デザインとフォーマット」パネルでスタイルや色を調整します。Numbersは自動レイアウト機能が強力なため、データ追加に合わせてグラフが動的に更新される点に注意してください。</li>
+<li><strong>スマホ共有準備</strong>: 「共有」ボタン →「iCloud ドライブ」で保存し、iPhone/iPadの「ファイル」アプリまたはNumbersアプリと同期させます。</li>
+</ol>
+<h3>macOS 標準機能での制限事項・代替手段</h3>
+<ul>
+<li><strong>制限</strong>: NumbersはWindowsやAndroidとのネイティブ互換性が低く、CSVエクスポート時に数式やグラフが崩れることがあります。また、.numbers形式をAndroidで直接編集することはできません。</li>
+<li><strong>代替手段</strong>: 「ファイル」→「書き出し」からCSVを作成し、スマホ側でGoogleスプレッドシートやExcelアプリにインポートします。</li>
+</ul>
+<h3>よくあるトラブルと解決法（macOS）</h3>
+<ol>
+<li><strong>「数式が計算されない」という現象</strong></li>
+<li><strong>原因</strong>: Numbersの自動レイアウト機能により、セル範囲の再定義が行われ、参照元が変わったため。</li>
+<li><strong>解決</strong>: グラフを選択し、「データソース」を確認して正しい範囲を指定します。「表示オプション」でグリッド線を表示させて確認するのがコツです。</li>
+<li><strong>グラフが意図せず更新される</strong></li>
+<li><strong>対策</strong>: 編集前にもう一度「ファイル」→「書き出し」→CSVで保存し、スマホ側で再読み込みすることで、特定のバージョンを固定できます（数式は失われる点に注意）。</li>
+<li><strong>iCloud シンクが止まっている</strong></li>
+<li><strong>解決</strong>: 「システム設定」→「Apple ID」→「iCloud」でNumbersをオンにし、「ファイルの同期と共有」を確認します。</li>
+</ol>
+<hr />
+<h2>3. iOS（iPhone / iPad）での実例手順</h2>
+<p>モバイル端末では、Googleスプレッドシートがマルチデバイス間での最も汎用性の高いツールとなります。</p>
+<h3>公式手順：表から可視化されたグラフを作成・共有</h3>
+<ol>
+<li><strong>アプリ</strong>: Google スプレッドシートを使用します。</li>
+<li><strong>データ準備</strong>: CSVファイルを「ファイル」→「インポート」→URLまたはアップロードを選択し読み込みます。</li>
+<li><strong>グラフ作成</strong>: データ範囲を選択し、「挿入」→「図表」で種類を選びます。「編集する」ボタンから詳細設定を行い、タッチ操作で軸や凡例を調整します。</li>
+<li><strong>共有・修正</strong>: 「ファイル」→「共有」でリンクを作成。共同編集機能により、他のデバイス（AndroidからiOSなど）とリアルタイムでの修正が可能です。</li>
+</ol>
+<h3>iOS 標準機能での制限事項・代替手段</h3>
+<ul>
+<li><strong>制限</strong>: 高度なマクロやVBAは非対応です。「ファイル」→「書き出し」でCSVやPDFに変換する必要があります。</li>
+<li><strong>代替手段</strong>: Excel/Numbersで作成したグラフは、CSVエクスポート後にGoogleスプレッドシートにインポートする必要があり、複雑なフォーマットは失われる可能性があります。</li>
+</ul>
+<h3>よくあるトラブルと解決法（iOS / Android）</h3>
+<ol>
+<li><strong>「データが正しく読み込まれない」（区切り文字認識エラー）</strong></li>
+<li><strong>原因</strong>: CSVに改行が含まれていたり、日本語の全角カンマが使われていたため。</li>
+<li><strong>解決</strong>: Googleスプレッドシート上で「ファイル」→「インポート」→テキスト形式を選択し、「区切り文字（カンマ）」を指定して再読み込みします。</li>
+<li><strong>「グラフがスマホ画面に収まらない」</strong></li>
+<li><strong>対策</strong>: 「図表のオプション」から「軸のラベル」「凡例」を表示/非表示を使い、スペースを確保します。</li>
+<li><strong>「共同編集中にデータが消失した」</strong></li>
+<li><strong>原因</strong>: 自動保存機能の不具合やネットワーク切断による同期遅延。</li>
+<li><strong>解決</strong>: 「ファイル履歴」（バージョン管理）から以前の状態に戻します。「共有」設定で「すべてのユーザーに書き込み権限を与える」ことを確認してください。</li>
+</ol>
+<hr />
+<h2>4. Android での実例手順</h2>
+<p>Android端末では、Googleスプレッドシートとの親和性が非常に高く、システム標準のファイル管理と連携しやすいのが特徴です。</p>
+<h3>公式手順：表から可視化されたグラフを作成・共有</h3>
+<ul>
+<li><strong>アプリ</strong>: Google スプレッドシート（iOSと同様）。</li>
+<li><strong>データ準備</strong>: CSVファイルを「インポート」し読み込みます。</li>
+<li><strong>グラフ作成</strong>: データ範囲を選択し、「挿入」→「図表」で種類を選びます。スマホ画面でもタッチ操作で軸や凡例を調整可能です。</li>
+<li><strong>共有・修正</strong>: 「ファイル」→「共有」でリンクを作成。AndroidからiOSなど、OSを跨いだ共同編集もスムーズです。</li>
+</ul>
+<h3>Android 標準機能での制限事項・代替手段</h3>
+<ul>
+<li><strong>制限</strong>: 高度なマクロやVBAは非対応。「ファイル」→「書き出し」でCSVやPDFに変換する必要があります。</li>
+<li><strong>機種依存</strong>: Pixelは「Googleフォルダ」を標準表示しやすく、GalaxyなどはSamsungファイルアプリとの連携など、メーカー独自の挙動がある場合があります。</li>
+</ul>
+<h3>よくあるトラブルと解決法（iOS / Android）</h3>
+<ol>
+<li><strong>「データが正しく読み込まれない」（区切り文字認識エラー）</strong></li>
+<li><strong>原因</strong>: CSVに改行が含まれていたり、日本語の全角カンマが使われていたため。</li>
+<li><strong>解決</strong>: Googleスプレッドシート上で「ファイル」→「インポート」→テキスト形式を選択し、「区切り文字（カンマ）」を指定して再読み込みします。</li>
+<li><strong>「グラフがスマホ画面に収まらない」</strong></li>
+<li><strong>対策</strong>: 「図表のオプション」から「軸のラベル」「凡例」を表示/非表示を使い、スペースを確保します。</li>
+<li><strong>「共同編集中にデータが消失した」</strong></li>
+<li><strong>原因</strong>: 自動保存機能の不具合やネットワーク切断による一時的な同期遅延。</li>
+<li><strong>解決</strong>: 「ファイル履歴」（バージョン管理）から以前の状態に戻します。「共有」設定で「すべてのユーザーに書き込み権限を与える」ことを確認してください。</li>
+</ol>
+<hr />
+<h2>よくあるトラブルと解決チェックリスト</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">エラー・現象</th>
+<th style="text-align: left;">原因の可能性</th>
+<th style="text-align: left;">解決策・対処法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>CSVを開くと文字化けする</strong></td>
+<td style="text-align: left;">文字コード（UTF-8 / Shift-JIS）の不一致</td>
+<td style="text-align: left;">Excelの「データ」タブから「テキストから取得」を使い、元のファイル形式を指定して取り込む。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>グラフの範囲がズレる</strong></td>
+<td style="text-align: left;">空白行や不要な列が含まれている</td>
+<td style="text-align: left;">グラフを選択し、「データのソースの変更」で正確なセル範囲（例: A1:D50）を再指定する。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>スマホで開くと数式が消える</strong></td>
+<td style="text-align: left;">CSVエクスポート時の仕様</td>
+<td style="text-align: left;">数式を保持したい場合はCSVではなく、Googleスプレッドシートへの直接共有またはOneDrive経由のExcelアプリ使用を検討する。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>同期が反映されない</strong></td>
+<td style="text-align: left;">通信環境やキャッシュの問題</td>
+<td style="text-align: left;">アプリを再起動するか、ブラウザ版で開き「リロード」を実行。ファイル履歴から最新の状態を確認する。</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>まとめ：快適なマルチOS環境を作るポイント</h2>
+<p>4つのOSを跨いでデータ分析を行う際、最も重要なのは<strong>「データの共通言語（CSVまたはGoogleスプレッドシート）」</strong>を意識することです。</p>
+<p>また、より高度でストレスのない環境を構築するために、以下の要素を検討することをお勧めします。</p>
+<ul>
+<li><strong>大容量メモリ・GPU搭載PCの活用</strong>: 数万行を超える大規模なデータセットをExcelやNumbersで処理する場合、計算リソース不足を防ぐために必要になります。特に複雑なグラフ描画や高度な関数を多用する際は、快適な動作に直結します。</li>
+<li><strong>外付けNVMe SSDの導入</strong>: 大量のCSVファイルを管理・保管する場合、高速な読み込み速度は作業効率を劇的に向上させます。バックアップ用途だけでなく、アクティブなプロジェクトデータの置き場所として非常に有効です。</li>
+<li><strong>AIツールの活用（補足）</strong>: 各ソフトに搭載されている「インサイト」機能や、GoogleスプレッドシートのAI連携などは標準機能とは別に用意された強力なツールです。これらを組み合わせることで、グラフ作成の先にある「分析」の精度をさらに高めることができます。</li>
+</ul>
+<p>適切なデバイスとツールを組み合わせることで、PCでの緻密な分析とスマホでの機動的な確認・修正が融合した、次世代のワークフローを実現しましょう。</p>
+<hr />
+<h2>参考文献・公式ドキュメント（一次情報ソース）</h2>
+<p>本記事の手順・仕様は以下の各OSおよびツールの公式ドキュメントに基づいています。OSアップデートによりメニュー名称や挙動が変わる場合があるため、最新仕様の確認にもご活用ください。</p>
+<ul>
+<li><strong>[Windows]</strong> <a href="https://support.microsoft.com/ja-jp/office/%E3%83%86%E3%82%AD%E3%82%B9%E3%83%88-txt-%E3%81%BE%E3%81%9F%E3%81%AF-csv-%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%92%E3%82%A4%E3%83%B3%E3%83%9D%E3%83%BC%E3%83%88%E3%81%BE%E3%81%9F%E3%81%AF%E3%82%A8%E3%82%AF%E3%82%B9%E3%83%9D%E3%83%BC%E3%83%88%E3%81%99%E3%82%8B-5250ac4c-663c-47ce-937b-339e391393ba">テキスト (.txt) または CSV ファイルをインポートまたはエクスポートする - Microsoft サポート</a></li>
+<li><strong>[macOS]</strong> <a href="https://support.apple.com/ja-jp/guide/numbers/tan581f5365e/mac">Mac用Numbersユーザガイド（CSV読み込み・書き出し） - Apple サポート (日本)</a></li>
+<li><strong>[iOS / Android / 共通]</strong> <a href="https://support.google.com/docs/answer/40608?hl=ja">Google スプレッドシートでデータセット・CSVを読み込む - Google ドキュメント エディタ ヘルプ</a></li>
+</ul>
+    </article>
+  </main>
+  <footer>Generated with Local Ollama (qwen3.5 / gemma4) &amp; Draw Things (FLUX.2 klein 4B)</footer>
+</body>
+</html>
