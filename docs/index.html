@@ -122,7 +122,93 @@ article.post blockquote {
   border-radius: 0 8px 8px 0;
 }
 .back-link { display: inline-block; margin-bottom: 1rem; color: var(--accent); text-decoration: none; font-weight: 600; }
+.filter-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.15rem 1.25rem;
+  margin-bottom: 1.5rem;
+}
+.filter-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) auto;
+  gap: 0.9rem;
+  align-items: end;
+}
+.filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.filter-field label {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.filter-field input[type="search"],
+.filter-field select {
+  font: inherit;
+  font-size: max(1rem, 1em);
+  min-height: 48px;
+  padding: 0.55rem 0.85rem;
+  border: 1.5px solid #767676;
+  border-radius: 8px;
+  background: #fff;
+  color: var(--text);
+  width: 100%;
+}
+.filter-field input[type="search"]:focus-visible,
+.filter-field select:focus-visible,
+.filter-actions button:focus-visible {
+  outline: 3px solid #0284c7;
+  outline-offset: 2px;
+}
+.filter-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+.filter-actions button {
+  font: inherit;
+  font-size: max(1rem, 0.95em);
+  font-weight: 600;
+  min-height: 48px;
+  padding: 0 1.05rem;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+}
+.btn-primary {
+  background: #0369a1;
+  color: #fff;
+}
+.btn-primary:hover { background: #075985; }
+.btn-secondary {
+  background: #f1f5f9;
+  color: var(--text);
+  border-color: #94a3b8;
+}
+.btn-secondary:hover { background: #e2e8f0; }
+.results-status {
+  color: var(--muted);
+  font-size: 0.92rem;
+  margin: 0 0 1.1rem;
+}
+.empty-state {
+  background: var(--surface);
+  border: 1px dashed #94a3b8;
+  border-radius: 12px;
+  padding: 2rem 1.25rem;
+  text-align: center;
+  color: var(--muted);
+}
+.card[hidden],
+.empty-state[hidden] { display: none; }
 footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2rem 1rem; }
+@media (max-width: 720px) {
+  .filter-form { grid-template-columns: 1fr; }
+  .filter-actions { width: 100%; }
+  .filter-actions button { flex: 1; }
+}
 @media (max-width: 640px) {
   article.post { padding: 1.2rem; }
 }
@@ -136,9 +222,44 @@ footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2
     </div>
   </header>
   <main>
-    <p style="color:#475569;margin-bottom:1.5rem;">公開記事数: <strong>30</strong> 本（最終更新: 2026-11-23 14:25 JST）</p>
-    <div class="grid">
-<a class="card" href="articles/art30-zip-unzip-mojibake-password.html">
+    <search class="filter-panel">
+      <form id="filter-form" class="filter-form" method="GET" action="">
+        <div class="filter-field">
+          <label for="search-input">キーワード検索</label>
+          <input type="search" id="search-input" name="q" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false" enterkeyhint="search" placeholder="例：PDF、Wi-Fi、バックアップ、iPhone、文字化け...">
+        </div>
+        <div class="filter-field">
+          <label for="category-select">ジャンル（17分類）</label>
+          <select id="category-select" name="cat">
+          <option value="">すべてのジャンル（30件）</option>
+          <option value="1">分類01：文書作成・オフィス業務・事務作業（2件）</option>
+          <option value="2">分類02：コミュニケーション・情報共有（2件）</option>
+          <option value="3">分類03：情報収集・リサーチ・Web利用（2件）</option>
+          <option value="4">分類04：画像・イラスト・デザイン制作（2件）</option>
+          <option value="5">分類05：動画・音声・音楽制作（2件）</option>
+          <option value="6">分類06：3D・CAD・ものづくり（2件）</option>
+          <option value="7">分類07：プログラミング・ソフトウェア開発（2件）</option>
+          <option value="8">分類08：Web制作・ブログ・デジタルマーケティング（2件）</option>
+          <option value="9">分類09：データ分析・科学計算・AI活用（2件）</option>
+          <option value="10">分類10：システム管理・OS設定・メンテナンス（2件）</option>
+          <option value="11">分類11：ネットワーク・サーバー・インフラ構築（2件）</option>
+          <option value="12">分類12：セキュリティ・プライバシー対策（2件）</option>
+          <option value="13">分類13：ファイル管理・バックアップ・データ復旧（2件）</option>
+          <option value="14">分類14：ハードウェア・周辺機器・IoT連携（1件）</option>
+          <option value="15">分類15：エンターテインメント・趣味（1件）</option>
+          <option value="16">分類16：学習・教育・自己啓発（1件）</option>
+          <option value="17">分類17：生活・行政手続き・家計・資産管理（1件）</option>
+          </select>
+        </div>
+        <div class="filter-actions">
+          <button type="submit" class="btn-primary">絞り込む</button>
+          <button type="button" id="reset-filter" class="btn-secondary">クリア</button>
+        </div>
+      </form>
+    </search>
+    <p id="results-status" class="results-status" role="status" aria-live="polite">全 <strong>30</strong> 件の記事を表示中（最終更新: 2026-11-23 16:10 JST）</p>
+    <div class="grid" id="article-grid">
+<a class="card" href="articles/art30-zip-unzip-mojibake-password.html" data-cat="13" data-search="zipファイルの圧縮・解凍と文字化け・開けない時の解決実例｜windows・macos・ios・android ファイル管理・バックアップ・データ復旧 zipファイルの圧縮・解凍を標準機能で行う方法と文字化け・開けないトラブルの対処法 zip 解凍 方法 zip 文字化け windows mac スマホ zip 開けない # zipファイルの圧縮・解凍と文字化け・開けない時の解決実例｜windows・macos・ios・android 「送られてきたzipファイルを開こうとしたら、中身のファイル名が『???』や変な記号になってしまった……」 「スマホでzipを解凍しようとしたけれど、どこに保存されたか分からない……」 このようなトラブルは、異なるos間でのデータやり取りにおいて非常によく発生する悩みです。実は、多くの原因は「osごとの標準機能の仕様差」や「文字コードの不一致」にあります。 この記事では、windows、macos、ios、androidの4つの主要osにおいて、**外部アプリを一切使わず「標準機能のみ」でzipファイルを扱うための正しい手順**と、**よくあるトラブル（文字化け・破損）への具体的な解決策**を徹底解説します。 ## 4os比較早見表 | os | 解凍の基本操作 | 圧縮の基本操作 | 文字化けへの耐性 | 特徴・制限事項 | | :--- | :--- | :--- | :--- | :--- | | **windows 11** | 右クリック ＞ 「すべて展開」 | 右クリック ＞ 「zip圧縮」 | 低め（環境依存あり） | 標準機能ではパスワード設定不可 | | **macos** | ダブルクリック | 右クリック ＞ 「圧縮」 | 高い（utf-8標準） | 解凍時の保存先指定ができない | | **ios** | 「ファイル」アプリで展開 | 長押し ＞ 「圧縮」 | 中程度 | 外付けhddの直接接続は非対応 | | **android">
   <img src="images/2026-11-23_art30_zip_unzip_mojibake_password.png" alt="ZIPファイルの圧縮・解凍と文字化け・開けない時の解決実例｜Windows・macOS・iOS・Android" loading="lazy">
   <div class="card-body">
     <div><span class="badge">分類13: ファイル管理・バックアップ・データ復旧</span></div>
@@ -146,7 +267,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2
     <div class="card-meta">#30 ・ 2026-11-23</div>
   </div>
 </a>
-<a class="card" href="articles/art29-lost-device-find-lock-wipe.html">
+<a class="card" href="articles/art29-lost-device-find-lock-wipe.html" data-cat="12" data-search="pc・スマホ紛失時の遠隔ロック・位置検索（探す機能）の設定実例｜windows・macos・ios・android セキュリティ・プライバシー対策 pcやスマホを紛失したときに遠隔で位置検索・画面ロック・データ消去するための事前設定と手順 スマホ 紛失 探す iphone 探す 設定 デバイスの検索 windows android # pc・スマホ紛失時の遠隔ロック・位置検索（探す機能）の設定実例｜windows・macos・ios・android 「もし今、自分のスマートフォンやノートpcをどこかに置き忘れたり、盗まれたりしたらどうしよう……」と不安に思ったことはありませんか？ デバイスにはプライベートな写真、仕事の機密情報、そしてあらゆるサービスへのログインパスワードが含まれています。紛失した瞬間にパニックになっても、**「事前の設定」さえ正しく済ませていれば、遠隔からデバイスをロックしたり、位置を特定したりすることは十分に可能**です。 しかし、いざという時に「設定をオンにするのを忘れていた」「ログイン用の認証コードが送れない」といった事態になれば、手遅れになることもあります。この記事では、主要な4つのos（windows, macos, ios, android）において、紛失前に必ず済ませておくべき設定と、いざ紛失した際の具体的な操作手順を徹底解説します。 --- ## 4os比較早見表 | os | 管理用アカウント | 主要な「探す」機能 | 遠隔ロック・消去の要件 | 特徴的な注意点 | | :--- | :--- | :--- | :--- | :--- | | **windows 11** | microsoft アカウント | デバイスを探す (find my device) | msアカウントへのログイン | wi-fi接続が必須。ブラウザからの操作が必要。 | | **macos** | apple id | icloud「探す」 | apple id / アクティベ">
   <img src="images/2026-11-23_art29_lost_device_find_lock_wipe.png" alt="PC・スマホ紛失時の遠隔ロック・位置検索（探す機能）の設定実例｜Windows・macOS・iOS・Android" loading="lazy">
   <div class="card-body">
     <div><span class="badge">分類12: セキュリティ・プライバシー対策</span></div>
@@ -154,7 +275,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2
     <div class="card-meta">#29 ・ 2026-11-23</div>
   </div>
 </a>
-<a class="card" href="articles/art28-wifi-slow-disconnect-fix.html">
+<a class="card" href="articles/art28-wifi-slow-disconnect-fix.html" data-cat="11" data-search="wi-fiが遅い・突然切れる原因の切り分けと改善チェック実例｜windows・macos・ios・android ネットワーク・サーバー・インフラ構築 自宅wi-fiが遅い・突然切れる原因の切り分けと周波数帯（2.4ghz/5ghz）・dns見直し手順 wi-fi 遅い 原因 wi-fi 切れる 対処 インターネットなし 解決 # wi-fiが遅い・突然切れる原因の切り分けと改善チェック実例｜windows・macos・ios・android 「動画を見ようとしたら急に止まる」「webサイトの読み込みが異常に遅い」「wi-fiがつながっているはずなのにネットに繋がらない」……。こうしたネットワークトラブルは、仕事やプライベートの時間を阻害する大きなストレスです。 原因は「ルーターの不調」「周囲の電波干渉」「端末固有の設定」「isp（プロバイダー）の制限」など多岐にわたります。この記事では、windows、macos、ios、androidの4つの主要osにおいて、**標準機能だけでできるトラブルシューティングと設定の見直し手順**を徹底解説します。 まずは基本の切り分けフローを確認し、ご自身の環境に合わせた対策を実践してみましょう。 ## 4os比較早見表 | 機能・項目 | windows 11 | macos | ios (iphone/ipad) | android | | :--- | :--- | :--- | :--- | :--- | | **dns手動設定** | 設定画面から可能 | システム設定から可能 | wi-fi詳細設定から可能 | 設定のネットワーク詳細から可能 | | **周波数帯固定** | ドライバ依存（uiでは不可） | 非対応（ルーター側で制御） | 非対応（ルーター側で制御） | 非対応（ルーター側で制御） | | **smb共有接続** | 標準機能で対応 | finderから対応 | 「ファイル」アプリで対応 | files by google等で">
   <img src="images/2026-11-23_art28_wifi_slow_disconnect_fix.png" alt="Wi-Fiが遅い・突然切れる原因の切り分けと改善チェック実例｜Windows・macOS・iOS・Android" loading="lazy">
   <div class="card-body">
     <div><span class="badge">分類11: ネットワーク・サーバー・インフラ構築</span></div>
@@ -162,7 +283,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2
     <div class="card-meta">#28 ・ 2026-11-23</div>
   </div>
 </a>
-<a class="card" href="articles/art27-os-update-stuck-recovery.html">
+<a class="card" href="articles/art27-os-update-stuck-recovery.html" data-cat="10" data-search="osアップデートが終わらない・失敗するときの安全な対処手順｜windows・macos・ios・android の比較ガイド システム管理・os設定・メンテナンス osアップデートが進まない・失敗するときの安全な原因切り分けと復旧手順 windows update 進まない ios アップデート できない android 更新 エラー # osアップデートが終わらない・失敗するときの安全な対処手順｜windows・macos・ios・android の比較ガイド 「osのアップデートを始めたものの、数時間経っても終わらない」「エラーが出てインストールが失敗する」といったトラブルに直面したことはありませんか？ 特に重要な作業や会議を控えている時、あるいは大切なデータが入っているデバイスの挙動がおかしくなった時は非常に焦るものです。実は、osアップデートの失敗や停滞には共通の「ボトルネック」が存在します。それは**ハードウェア（ssd）の状態、ストレージ容量の不足、そしてネットワーク環境の不安定さ**です。 この記事では、windows、macos、ios、androidの4つの主要osにおいて、アップデートが進まない時の原因を特定し、安全に解決するための実践的な手順を徹底解説します。 ## 4os比較早見表 | os | 主な更新手段 | 推奨空き容量（目安） | オフライン更新の可否 | 特徴的な注意点 | | :--- | :--- | :--- | :--- | :--- | | **windows 11** | windows update | 20gb以上 | 可能（カタログ利用） | サブシステム(wsl2等)の干渉に注意 | | **macos** | システム設定 | 20gb以上 | 可能（dmg/app store） | time machineとの競合に注意 | | **ios** | 設定アプリ | 10gb以上 | 可能（pc接続必須） | icloudバックアップ中のブロッ">
   <img src="images/2026-11-23_art27_os_update_stuck_recovery.png" alt="OSアップデートが終わらない・失敗するときの安全な対処手順｜Windows・macOS・iOS・Android の比較ガイド" loading="lazy">
   <div class="card-body">
     <div><span class="badge">分類10: システム管理・OS設定・メンテナンス</span></div>
@@ -170,7 +291,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2
     <div class="card-meta">#27 ・ 2026-11-23</div>
   </div>
 </a>
-<a class="card" href="articles/art26-ai-chat-history-prompt-sync.html">
+<a class="card" href="articles/art26-ai-chat-history-prompt-sync.html" data-cat="9" data-search="生成ai（chatgpt/gemini）をpcとスマホで連携・履歴活用する実例｜windows・macos・ios・android データ分析・科学計算・ai活用 生成ai（chatgpt/gemini等）の音声入力・画像相談・履歴同期をpcとスマホで使い分ける方法 生成ai 使い方 初心者 chatgpt gemini スマホ pc ai 音声入力 # 生成ai（chatgpt/gemini）をpcとスマホで連携・履歴活用する実例｜windows・macos・ios・android 「pcで調べたaiの回答を、移動中にスマホで確認したい」「スマホで思いついたアイデアを、pcで本格的な資料に落とし込みたい」といった悩みは、生成aiを活用する上で誰もが直面する課題です。 本記事では、windows、macos、ios、androidの4つの主要osにおいて、chatgptやgeminiなどの生成aiをいかにシームレスに連携させ、履歴を共有し、実務データとして活用するかを徹底解説します。デバイスごとの操作手順から、データの受け渡し方法、そしてよくあるトラブルの解決策まで、初心者の方でも実践できるワークフローを提示します。 ## 4os比較早見表 | 機能・項目 | windows 11 | macos | ios (iphone/ipad) | android | | :--- | :--- | :--- | :--- | :--- | | **推奨ブラウザ** | microsoft edge / chrome | safari / chrome | safari / chrome | chrome / samsung internet | | **主なデータ連携** | csv / テキストファイル | numbers / icloud drive | google ドキュメント / icloud | google ドライブ / ファイル | | **音声入力環境** | windows標準マイク設定 | macos">
   <img src="images/2026-11-23_art26_ai_chat_history_prompt_sync.png" alt="生成AI（ChatGPT/Gemini）をPCとスマホで連携・履歴活用する実例｜Windows・macOS・iOS・Android" loading="lazy">
   <div class="card-body">
     <div><span class="badge">分類09: データ分析・科学計算・AI活用</span></div>
@@ -178,7 +299,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2
     <div class="card-meta">#26 ・ 2026-11-23</div>
   </div>
 </a>
-<a class="card" href="articles/art25-qr-code-short-url-share.html">
+<a class="card" href="articles/art25-qr-code-short-url-share.html" data-cat="8" data-search="qrコード作成・読み取りとpc〜スマホ間のurl即時共有実例｜windows・macos・ios・android web制作・ブログ・デジタルマーケティング ブラウザ標準機能でのqrコード作成・読み取りとpc〜スマホ間のurl即時共有方法 qrコード 作成 無料 url スマホ 共有 chrome edge qrコード # qrコード作成・読み取りとpc〜スマホ間のurl即時共有実例｜windows・macos・ios・android 「pcで開いているwebサイトを、今すぐ手元のスマホで開きたい」「特定のページへ誘導するためのqrコードを、外部ツールを使わずにサクッと作りたい」といった場面は、web制作やマーケティングの現場で頻繁に発生します。 しかし、osやブラウザによって「標準機能でどこまでできるのか」はバラバラです。この記事では、windows、macos、ios、androidの4つの主要osにおいて、**外部アプリを極力使わずに標準機能だけで完結するurl共有・qrコード操作の最適解**を徹底比較します。 ## 4os比較早見表 | os / ブラウザ | qrコード生成機能 | 主要な即時共有手段 | 特徴 | | :--- | :--- | :--- | :--- | | **windows (edge)** | 標準搭載（メニュー内） | クリップボード / qr表示 | pcからスマホへのqr転送に強い | | **macos (safari)** | 非対応（拡張機能推奨） | airdrop | appleエコシステム内での超高速共有 | | **ios (safari)** | 非対応（ショートカット推奨） | share sheet / airdrop | 共有シートを活用したアプリ間連携 | | **android (chrome)** | 標準搭載（機種依存あり） | qrコード生成 / share sheet | モバイルでのqr生成・共有がスムーズ">
   <img src="images/2026-11-23_art25_qr_code_short_url_share.png" alt="QRコード作成・読み取りとPC〜スマホ間のURL即時共有実例｜Windows・macOS・iOS・Android" loading="lazy">
   <div class="card-body">
     <div><span class="badge">分類08: Web制作・ブログ・デジタルマーケティング</span></div>
@@ -186,7 +307,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2
     <div class="card-meta">#25 ・ 2026-11-23</div>
   </div>
 </a>
-<a class="card" href="articles/art24-markdown-editor-sync-beginners.html">
+<a class="card" href="articles/art24-markdown-editor-sync-beginners.html" data-cat="7" data-search="初心者向けmarkdownメモの書き方と全端末同期・プレビュー実例｜windows・macos・ios・android プログラミング・ソフトウェア開発 初心者向けmarkdownメモ・技術メモの作成とpc・スマホ間での同期方法 markdown 初心者 書き方 markdown アプリ 同期 技術メモ 整理 # 初心者向けmarkdownメモの書き方と全端末同期・プレビュー実例｜windows・macos・ios・android 「技術的なメモや学習内容を、pcでもスマホでもいつでも確認できるようにしたい」「でも、osごとにアプリを使い分けるのは面倒……」そんな悩みをお持ちではありませんか？ プログラミングやソフトウェア開発の現場では、情報の断片化を防ぐために**markdown（マークダウン）**形式でのメモ管理が標準となっています。本記事では、単に「書き方」を学ぶだけでなく、**githubを共通のソース（共有元）として活用し、windows、macos、ios、androidの4つのosでシームレスに同期・閲覧する実践的なワークフロー**を解説します。 この記事を読めば、デバイスの壁を超えた「自分だけのナレッジベース」を構築する手順がすべて分かります。 ## 4os比較早見表 | 機能 / os | windows 11 | macos | ios (iphone/ipad) | android | | :--- | :--- | :--- | :--- | :--- | | **主な執筆環境** | `github.dev` (web版) | visual studio code | githubアプリ / safari | githubアプリ / chrome | | **同期の仕組み** | githubリポジトリ経由 | git push / pull | 自動同期（github経由） | 自動同期（github経由） | | **プレビュー** | ブラウ">
   <img src="images/2026-11-23_art24_markdown_editor_sync_beginners.png" alt="初心者向けMarkdownメモの書き方と全端末同期・プレビュー実例｜Windows・macOS・iOS・Android" loading="lazy">
   <div class="card-body">
     <div><span class="badge">分類07: プログラミング・ソフトウェア開発</span></div>
@@ -194,7 +315,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2
     <div class="card-meta">#24 ・ 2026-11-23</div>
   </div>
 </a>
-<a class="card" href="articles/art23-room-3d-scan-floorplan-measure.html">
+<a class="card" href="articles/art23-room-3d-scan-floorplan-measure.html" data-cat="6" data-search="スマホの計測・3dスキャンで家具サイズや間取りを確認・共有する実例｜windows・macos・ios・android 3d・cad・ものづくり スマホで部屋の間取りや家具サイズを計測・3d確認しpcで共有する方法 iphone 計測 アプリ ar 採寸 android 間取り 3d 確認 # スマホの計測・3dスキャンで家具サイズや間取りを確認・共有する実例｜windows・macos・ios・android 「新しく買いたいソファが、この部屋に収まるか不安」「リフォームの前に正確な間取りをスマホで測って、図面として共有したい」……そんな悩みを持つ方は多いはずです。 最近ではスマートフォンのカメラ性能やar（拡張現実）技術の向上により、スマホ一台で空間をスキャンし、3dモデルとして活用するワークフローが現実的になってきました。しかし、いざ実践しようとすると**「どのosで何ができるのか？」「標準機能だけで完結するのか？」**という壁に突き当たることが少なくありません。 この記事では、windows、macos、ios、androidの4つの主要osにおいて、スマホを使った計測・3dスキャンデータの確認・共有をどのように実現すべきか、プロの視点で徹底解説します。 ## 4os比較早見表 | 機能 | windows 11 | macos | ios (iphone/ipad) | android | | :--- | :--- | :--- | :--- | :--- | | **3dモデル表示** | edgeブラウザ / 専用ビューア | クイックルック（標準） | クイックルック（標準） | scene viewer（アプリ） | | **ar計測・スキャン** | 非対応（専用アプリ必須） | 非対応（専用アプリ必須） | **measureアプリ(標準)** | **google measure等(アプリ)** | | **3dデータ出力**">
   <img src="images/2026-11-23_art23_room_3d_scan_floorplan_measure.png" alt="スマホの計測・3Dスキャンで家具サイズや間取りを確認・共有する実例｜Windows・macOS・iOS・Android" loading="lazy">
   <div class="card-body">
     <div><span class="badge">分類06: 3D・CAD・ものづくり</span></div>
@@ -202,7 +323,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2
     <div class="card-meta">#23 ・ 2026-11-23</div>
   </div>
 </a>
-<a class="card" href="articles/art22-voice-memo-transcription-sync.html">
+<a class="card" href="articles/art22-voice-memo-transcription-sync.html" data-cat="5" data-search="ボイスメモ・会議録音の文字起こしと音声ファイル共有の実例｜windows・macos・ios・android 動画・音声・音楽制作 ボイスメモ・会議録音の文字起こしとpc・スマホ間での音声ファイル共有方法 ボイスメモ 文字起こし 録音 pc 転送 m4a mp3 再生できない # ボイスメモ・会議録音の文字起こしと音声ファイル共有の実例｜windows・macos・ios・android 「会議やインタビューの録音をしたけれど、どうやってテキスト化すればいい？」「録音したファイルをスマホとpcの両方で共有したいけれど、一番スムーズな方法はどれ？」 こうした悩みは、クリエイターやビジネスパーソンにとって共通の課題です。特に、osごとに標準アプリの挙動が異なるため、慣れない操作で「ファイルが開けない」「文字起こし機能が見当たらない」といった壁に突き当たりがちです。 この記事では、windows、macos、ios、androidの4つの主要osにおいて、**「録音→文字起こし（またはテキスト化）→デバイス間転送」**という一連の流れを、標準機能をフル活用した手順で徹底比較します。 --- ## 4os比較早見表 | 機能 | windows 11 | macos | ios (iphone/ipad) | android | | :--- | :--- | :--- | :--- | :--- | | **主な録音アプリ** | clipchamp / マイクツール | ボイスメモ (voice memos) | ボイスメモ (voice memos) | ボイスレコーダー（機種依存） | | **標準文字起こし** | clipchamp ai字幕機能 | 標準機能では制限あり | モデル・osにより制限あり | 機種による（googleアプリ等） | | **主な共有手段** | near share / onedrive | airdr">
   <img src="images/2026-11-23_art22_voice_memo_transcription_sync.png" alt="ボイスメモ・会議録音の文字起こしと音声ファイル共有の実例｜Windows・macOS・iOS・Android" loading="lazy">
   <div class="card-body">
     <div><span class="badge">分類05: 動画・音声・音楽制作</span></div>
@@ -210,7 +331,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2
     <div class="card-meta">#22 ・ 2026-11-23</div>
   </div>
 </a>
-<a class="card" href="articles/art21-social-media-schedule.html">
+<a class="card" href="articles/art21-social-media-schedule.html" data-cat="4" data-search="instagram 投稿ワークフロー：pc デザインからスマホ投稿まで｜windows・macos・ios・android 画像・イラスト・デザイン制作 pc で作成した instagram 用画像をスマホで最終確認し、os に合わせて自動投稿するスケジュール管理方法比較 social media management canva for teams preview.app shortcuts # instagram 投稿ワークフロー：pc デザインからスマホ投稿まで｜windows・macos・ios・android 「pcでじっくりデザインした画像が、スマホに送った途端に画質が落ちる」「osごとに転送方法がバラバラで効率が悪い」といった悩みをお持ちではありませんか？ instagramの運用において、高品質なクリエイティブを維持しながらスムーズに投稿するワークフローの構築は非常に重要です。しかし、実は**「pcからスマホへ画像をプッシュして即座に自動投稿する」という公式のクロスプラットフォーム同期機能は、現在の主要osには存在しません。** この記事では、windows、macos、ios、androidの4つのosを徹底比較しながら、それぞれの標準機能を最大限に活用した「失敗しない画像転送・投稿ワークフロー」を解説します。 ## 4os比較早見表 | 機能・項目 | windows 11 | macos | ios (iphone/ipad) | android | | :--- | :--- | :--- | :--- | :--- | | **主な転送手段** | onedrive / usb / bluetooth | airdrop / icloud drive | airdrop / icloud drive | google drive / usb otg | | **標準リサイズ** | powertoys image resizer | finder クイックアクション | 写真アプリ（編集） | google フォト | | **推奨">
   <img src="images/2026-11-23_art21_social_media_schedule.png" alt="Instagram 投稿ワークフロー：PC デザインからスマホ投稿まで｜Windows・macOS・iOS・Android" loading="lazy">
   <div class="card-body">
     <div><span class="badge">分類04: 画像・イラスト・デザイン制作</span></div>
@@ -218,7 +339,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2
     <div class="card-meta">#21 ・ 2026-11-23</div>
   </div>
 </a>
-<a class="card" href="articles/art20-news-verification-flow.html">
+<a class="card" href="articles/art20-news-verification-flow.html" data-cat="3" data-search="クロスデバイス検索：ブラウザ間でのブックマークとメモ共有｜windows・macos・ios・android 情報収集・リサーチ・web 利用 複数ブラウザの履歴を自動同期し、スマホで見かけたニュース記事を検索して pc で深掘りする手順比較 cross-browser sync safari bookmarks chrome sync pocket # クロスデバイス検索：ブラウザ間でのブックマークとメモ共有｜windows・macos・ios・android 「pcで調べたあのサイト、スマホでも見たいのにどこに保存したか忘れてしまった……」 「外出先で見つけた面白い記事を、後でじっくりpcで読みたいけれど、どうやって同期すればいいの？」 情報収集やリサーチを行う際、デバイスを跨いでスムーズに情報を引き継げることは、生産性を左右する極めて重要な要素です。しかし、windowsとiphone、あるいはandroidとmacといった異なるos間では、標準機能の挙動が異なり、戸惑うことも少なくありません。 この記事では、主要な4つのos（windows, macos, ios, android）におけるブラウザ同期・メモ共有の実例を徹底比較します。この記事を読めば、あなたのデバイス環境に最適な「情報のハブ」を作るための具体的な手順がすべてわかります。 ## 4os比較早見表 | 機能 | windows (chrome/edge) | macos (safari/chrome) | ios (safari/chrome) | android (chrome/edge) | | :--- | :--- | :--- | :--- | :--- | | **主な同期手段** | google / ms アカウント | icloud / google アカウント | icloud / google アカウント | google アカウント | | **ブックマーク共有** | ブラウザアカウント連携 | safari (ic">
   <img src="images/2026-11-23_art20_news_verification_flow.png" alt="クロスデバイス検索：ブラウザ間でのブックマークとメモ共有｜Windows・macOS・iOS・Android" loading="lazy">
   <div class="card-body">
     <div><span class="badge">分類03: 情報収集・リサーチ・Web 利用</span></div>
@@ -226,7 +347,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2
     <div class="card-meta">#20 ・ 2026-11-23</div>
   </div>
 </a>
-<a class="card" href="articles/art19-meeting-notes-sync.html">
+<a class="card" href="articles/art19-meeting-notes-sync.html" data-cat="2" data-search="pc での pdf 注釈とスマホからの即時返答｜windows・macos・ios・android コミュニケーション・情報共有 会議資料の pdf ファイルを pc で編集し、スマホで qr コードから即座にコメントするワークフロー比較 pdf アノテーション zoom インテグレーション teams slack # pc での pdf 注釈とスマホからの即時返答｜windows・macos・ios・android 「会議中にpcで資料を見ながら、スマホからサッとコメントを書き込みたい」「チームで共有しているpdfに、リアルタイムでフィードバックを反映させたい」といった場面が増えています。しかし、osごとに操作感や同期の仕組みが異なるため、スムーズな連携に戸惑うことも少なくありません。 この記事では、windows、macos、ios、androidの4つの主要osにおいて、**「pcでのpdf編集 → クラウド同期 → スマホでの即時コメント」**というワークフローを徹底比較します。各osの標準機能や推奨アプリを使いこなし、ストレスのないマルチデバイス環境を構築するための実践的な手順を解説します。 ## 4os比較早見表 | os | 推奨pdf編集ツール | 主要クラウドストレージ | 特徴・強み | | :--- | :--- | :--- | :--- | | **windows** | microsoft edge / adobe acrobat reader | onedrive | ビジネス標準の操作性。エクスプローラーとの親和性が高い。 | | **macos** | プレビュー (preview) | icloud drive | appleエコシステム内でのシームレスな同期と直感的な注釈。 | | **ios** | ファイルアプリ / プレビュー | icloud / onedrive | iphone/ipadでの操作性に特化。airdropとの連携が強力">
   <img src="images/2026-11-23_art19_meeting_notes_sync.png" alt="PC での PDF 注釈とスマホからの即時返答｜Windows・macOS・iOS・Android" loading="lazy">
   <div class="card-body">
     <div><span class="badge">分類02: コミュニケーション・情報共有</span></div>
@@ -234,7 +355,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2
     <div class="card-meta">#19 ・ 2026-11-23</div>
   </div>
 </a>
-<a class="card" href="articles/art18-office-collab.html">
+<a class="card" href="articles/art18-office-collab.html" data-cat="1" data-search="複数 os で同時編集：google ドキュメント vs ローカルファイル｜windows・macos・ios・android 文書作成・オフィス業務・事務作業 google ドキュメントと word/numbers/pages をリアルタイムで同期してチーム編集する設定比較 共同編集 クラウドドキュメント office 365 pages # 複数 os で同時編集：google ドキュメント vs ローカルファイル｜windows・macos・ios・android 「チームで資料を更新したいけれど、誰かが開いているから編集できないと言われたことはありませんか？」 「pcでは動くのに、スマホやタブレットで見るとレイアウトが崩れて困ったことはありませんか？」 現代のビジネスシーンにおいて、**「どこからでも、誰とでも、リアルタイムに」**文書を編集できる環境は必須です。しかし、windows、macos、ios、androidという異なるosを使い分ける場合、クラウドツール（google ドキュメント等）とローカルファイル（word/pages等）のどちらを選ぶべきか、あるいはどう共存させるべきか迷うことも多いでしょう。 この記事では、主要な4つのosにおける「共同編集」の実践的な手順と、それぞれの環境で発生しやすいトラブルの解決策を徹底解説します。この記事を読めば、あなたのチームに最適なワークフローが見つかるはずです。 ## 4os比較早見表 | 特徴 | windows 11 | macos | ios (iphone/ipad) | android | | :--- | :--- | :--- | :--- | :--- | | **推奨クラウド** | onedrive / google drive | icloud / google drive | icloud / google drive | google drive | | **標準オフィスソフト** | microsoft word /">
   <img src="images/2026-11-23_art18_office_collab.png" alt="複数 OS で同時編集：Google ドキュメント vs ローカルファイル｜Windows・macOS・iOS・Android" loading="lazy">
   <div class="card-body">
     <div><span class="badge">分類01: 文書作成・オフィス業務・事務作業</span></div>
@@ -242,7 +363,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2
     <div class="card-meta">#18 ・ 2026-11-23</div>
   </div>
 </a>
-<a class="card" href="articles/art17-etax-receipt-scan-pdf-archive.html">
+<a class="card" href="articles/art17-etax-receipt-scan-pdf-archive.html" data-cat="17" data-search="領収書スキャン・確定申告データの整理と安全な保存手順｜windows・macos・ios・android 生活・行政手続き・家計・資産管理 領収書スキャン・確定申告データの整理と安全な長期保存フローの作り方 領収書 スキャン pdf 確定申告 データ 保存 電子帳簿 整理 # 領収書スキャン・確定申告データの整理と安全な保存手順｜windows・macos・ios・android 「電子帳簿保存法」の改正により、紙の領収書をデジタルデータとして保存することが義務化されました。しかし、「どのアプリを使えばいいのか？」「スマホで撮っただけで証拠として認められるのか？」「セキュリティは大丈夫か？」と不安を感じている方も多いはずです。 この記事では、windows、macos、ios、androidの4つの主要osごとに、標準機能を活用した「領収書スキャンから確定申告データの整理・安全な保存」までの実践的なフローを徹底解説します。この記事を読めば、デバイスごとの特性を活かした最適な管理体制を構築できるようになります。 ## 4os比較早見表 | 機能 | windows 11 | macos | ios (iphone/ipad) | android | | :--- | :--- | :--- | :--- | :--- | | **主なスキャン手段** | windows スキャナー / microsoft lens | 「メモ」アプリ / 「ファイル」アプリ | 「メモ」アプリ / 「ファイル」アプリ | google ドライブ統合カメラ | | **ストレージ連携** | onedrive / 外部hdd | icloud / time machine | icloud / google drive | google ドライブ / google フォト | | **ocr（文字認識）** | 標準機能では制限あり | 標準機能では制限あり">
   <img src="images/2026-11-23_art17_etax_receipt_scan_pdf_archive.png" alt="領収書スキャン・確定申告データの整理と安全な保存手順｜Windows・macOS・iOS・Android" loading="lazy">
   <div class="card-body">
     <div><span class="badge">分類17: 生活・行政手続き・家計・資産管理</span></div>
@@ -250,7 +371,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2
     <div class="card-meta">#17 ・ 2026-11-23</div>
   </div>
 </a>
-<a class="card" href="articles/art16-digital-notes-sync-study.html">
+<a class="card" href="articles/art16-digital-notes-sync-study.html" data-cat="16" data-search="デジタル学習ノート・暗記カードの全端末同期とトラブル対策｜windows・macos・ios・android 学習・教育・自己啓発 デジタルノート・pdf教材・暗記アプリをpcとスマホで同期して効率よく学習する方法 ノートアプリ 同期 勉強 アプリ pc スマホ onenote notion 比較 # デジタル学習ノート・暗記カードの全端末同期とトラブル対策｜windows・macos・ios・android 効率的な学習において、最も重要な要素の一つは「情報の同期」です。pcでまとめた講義ノートを移動中にスマホで確認し、ipadで書き込んだpdf教材を自宅のデスクトップで振り返る。このシームレスな体験を実現するためには、各os（windows, macos, ios, android）の特性を理解した上での戦略的なツール選びが必要です。 この記事では、主要4osにおける標準機能を使った学習ノート・暗記カードの管理術と、初心者が陥りやすい同期トラブルの解決策を徹底解説します。 ## 4os比較早見表 | 機能・項目 | windows 11 | macos | ios (iphone/ipad) | android | | :--- | :--- | :--- | :--- | :--- | | **推奨標準アプリ** | microsoft onenote | メモ（notes） | メモ（notes） | google keep | | **クラウド基盤** | onedrive | icloud | icloud | google drive / keep | | **pdf注釈機能** | edge連携 / onenote | プレビュー / ipad共有 | 標準搭載（強力） | サードパーティ推奨 | | **同期の強み** | office製品との親和性 | appleエコシステム内 | デバイス間シームレス | googleサービス統合 | --">
   <img src="images/2026-11-23_art16_digital_notes_sync_study.png" alt="デジタル学習ノート・暗記カードの全端末同期とトラブル対策｜Windows・macOS・iOS・Android" loading="lazy">
   <div class="card-body">
     <div><span class="badge">分類16: 学習・教育・自己啓発</span></div>
@@ -258,7 +379,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2
     <div class="card-meta">#16 ・ 2026-11-23</div>
   </div>
 </a>
-<a class="card" href="articles/art15-screen-mirroring-casting.html">
+<a class="card" href="articles/art15-screen-mirroring-casting.html" data-cat="15" data-search="画面ミラーリング・テレビ投影の実例と映らない・音ズレ対処｜windows・macos・ios・android エンターテインメント・趣味 pcやスマホの画面をテレビ・外部モニターへワイヤレスミラーリング／キャストする方法 画面ミラーリング 方法 テレビ 映らない airplay キャスト 比較 # 画面ミラーリング・テレビ投影の実例と映らない・音ズレ対処｜windows・macos・ios・android 「スマホやpcの画面を大きなテレビに映したいけれど、操作方法がosごとにバラバラで混乱する」「接続はできたのに音がテレビから出ない」「映像がカクついたり、音が遅れて聞こえたりする」といった悩みをお持ちではありませんか？ 画面ミラーリングやキャスト機能は、現代のエンターテインメントにおいて欠かせない技術ですが、実は**windows、macos、ios、androidのそれぞれで採用されているプロトコル（通信規格）が異なる**ため、同じテレビでも「映るもの」と「映らないもの」が存在します。 この記事では、主要な4つのosにおける標準機能を使ったミラーリング手順から、初心者が陥りやすいトラブルの解決策までを徹底的に解説します。この記事を読めば、あなたのデバイスで最適な視聴環境を構築するための知識がすべて手に入ります。 ## 4os比較早見表 | os | 主なプロトコル | 対応機器の例 | 特徴 | | :--- | :--- | :--- | :--- | | **windows 11** | miracast / google cast | miracast対応tv、chromecast | 汎用性が高く、ビジネス・ゲーム共に強い。 | | **macos** | airplay | apple tv、airplay対応テレビ | apple製品間でのシームレスな連携が強み。 | | **ios** | airplay | apple tv、airpla">
   <img src="images/2026-11-23_art15_screen_mirroring_casting.png" alt="画面ミラーリング・テレビ投影の実例と映らない・音ズレ対処｜Windows・macOS・iOS・Android" loading="lazy">
   <div class="card-body">
     <div><span class="badge">分類15: エンターテインメント・趣味</span></div>
@@ -266,7 +387,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2
     <div class="card-meta">#15 ・ 2026-11-23</div>
   </div>
 </a>
-<a class="card" href="articles/art14-bluetooth-multi-device-switch.html">
+<a class="card" href="articles/art14-bluetooth-multi-device-switch.html" data-cat="14" data-search="bluetooth機器のマルチペアリング設定と繋がらない時の解決法｜windows・macos・ios・android ハードウェア・周辺機器・iot連携 bluetoothキーボード・マウス・イヤホンを複数os間で切り替えて使う設定と接続不良対処 bluetooth 繋がらない キーボード 複数台 切り替え ペアリング 解除 # bluetooth機器のマルチペアリング設定と繋がらない時の解決法｜windows・macos・ios・android 「仕事で使うpc（windows）と、プライベートで使うスマホやタブレット（ios/android）を、同じbluetoothキーボードやマウスで使い回したい」と思ったことはありませんか？ しかし、いざ複数のデバイスを登録しようとすると、「なぜか片方のosでは認識されない」「接続が切れてしまう」「切り替え方がわからない」といったトラブルに直面することが少なくありません。 本記事では、windows、macos、ios、androidの4つの主要osにおいて、bluetooth機器のマルチペアリング設定手順と、よくある接続トラブルの解決策を徹底解説します。この記事を読めば、複数のデバイスをスムーズに行き来する快適なマルチos環境の構築ポイントがすべて分かります。 ## 4os比較早見表 | 機能・項目 | windows 11 | macos | ios (iphone/ipad) | android | | :--- | :--- | :--- | :--- | :--- | | **基本操作** | 設定 &gt; bluetooth | システム設定 &gt; bluetooth | 設定 &gt; bluetooth | 設定 &gt; bluetooth | | **マルチペアリング** | デバイス依存（手動切替） | デバイス依存（手動切換） | 独立した登録が必要 | デバイス依存（手動切換） | | **os間自動連携** | 非対応（標準機能のみ） |">
   <img src="images/2026-11-23_art14_bluetooth_multi_device_switch.png" alt="Bluetooth機器のマルチペアリング設定と繋がらない時の解決法｜Windows・macOS・iOS・Android" loading="lazy">
   <div class="card-body">
     <div><span class="badge">分類14: ハードウェア・周辺機器・IoT連携</span></div>
@@ -274,7 +395,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2
     <div class="card-meta">#14 ・ 2026-11-23</div>
   </div>
 </a>
-<a class="card" href="articles/art13-external-ssd-photo-backup.html">
+<a class="card" href="articles/art13-external-ssd-photo-backup.html" data-cat="13" data-search="外付けssdを4osで共用するバックアップ手順と認識しない時の対処｜windows・macos・ios・android ファイル管理・バックアップ・データ復旧 外付けssd・usbメモリをpcとスマホで共用して写真やデータをバックアップする方法 外付けssd 認識しない スマホ 外付けssd バックアップ exfat フォーマット # 外付けssdを4osで共用するバックアップ手順と認識しない時の対処｜windows・macos・ios・android 「外付けssdを1台用意して、windows pcでもmacでも、さらにはiphoneやandroidスマホでも使い回したい」と考えていませんか？ しかし、いざ接続してみると「macでは読み込めるのにwindowsでは書き込めない」「スマホに繋いだら認識されない」といったトラブルに直面し、挫折してしまう方も少なくありません。これはosごとに推奨される「ファイルシステム（フォーマット）」が異なることが原因です。 この記事では、**windows、macos、ios、androidの4つのosすべてで快適に共用するための最適解「exfat」を軸とした運用術**と、各osでの具体的なバックアップ手順、そして「認識しない時」のトラブルシューティングを徹底解説します。 ## 4os比較早見表 | os | 推奨フォーマット | 特徴・注意点 | バックアップ機能 | | :--- | :--- | :--- | :--- | | **windows 11** | exfat | 標準はntfsだが、exfatならmac/スマホとも互換。 | システムイメージ作成（pro以上） | | **macos** | exfat | 標準はapfs/hfs+。exfatではtime machine不可。 | time machine | | **ios (iphone)** | exfat | usb-cモデルは直接接続可。ファイルアプリで操作。 | icloud">
   <img src="images/2026-11-23_art13_external_ssd_photo_backup.png" alt="外付けSSDを4OSで共用するバックアップ手順と認識しない時の対処｜Windows・macOS・iOS・Android" loading="lazy">
   <div class="card-body">
     <div><span class="badge">分類13: ファイル管理・バックアップ・データ復旧</span></div>
@@ -282,7 +403,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2
     <div class="card-meta">#13 ・ 2026-11-23</div>
   </div>
 </a>
-<a class="card" href="articles/art12-passkey-password-security.html">
+<a class="card" href="articles/art12-passkey-password-security.html" data-cat="12" data-search="パスキー・パスワード管理＆2段階認証の安全な同期実例｜windows・macos・ios・android セキュリティ・プライバシー対策 パスキー（passkey）・パスワード管理と2段階認証を安全に同期・移行する方法 パスキー 使い方 パスワード 同期 2段階認証 引き継ぎ # パスキー・パスワード管理＆2段階認証の安全な同期実例｜windows・macos・ios・android 「パスワードを忘れてログインできない」「機種変更のたびに、すべてのサービスのパスキーや2段階認証の設定をやり直すのが面倒……」そんな悩みをお持ちではありませんか？ 近年のセキュリティ技術の進化により、従来の「複雑なパスワードを覚える」という手法から、指紋や顔認証で安全にログインする**「パスキー（passkey）」**への移行が急速に進んでいます。しかし、windows、mac、iphone、androidといった異なるos間では、パスキーの同期ルールや仕様が微妙に異なります。 この記事では、主要4osにおけるパスキー・パスワード管理の標準的な挙動を徹底比較し、機種変更時やデバイスを跨ぐ際に「詰まらない」ための実践的な設定手順を解説します。 --- ## 4os比較早見表 | 機能・項目 | windows 11 | macos / ios | android | | :--- | :--- | :--- | :--- | | **主要な認証基盤** | windows hello | icloud キーチェーン | google アカウント | | **パスキーの同期範囲** | 基本はローカル（pc単体） | appleデバイス間（自動同期） | googleアカウント経由（android間） | | **推奨ブラウザ** | microsoft edge | safari / chrome | chrome | | **クロスプラットフォーム連携**">
   <img src="images/2026-11-23_art12_passkey_password_security.png" alt="パスキー・パスワード管理＆2段階認証の安全な同期実例｜Windows・macOS・iOS・Android" loading="lazy">
   <div class="card-body">
     <div><span class="badge">分類12: セキュリティ・プライバシー対策</span></div>
@@ -290,7 +411,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2
     <div class="card-meta">#12 ・ 2026-11-23</div>
   </div>
 </a>
-<a class="card" href="articles/art11-lan-smb-file-sharing.html">
+<a class="card" href="articles/art11-lan-smb-file-sharing.html" data-cat="11" data-search="自宅lanの共有フォルダ・nas（smb）接続とエラー解決の実例｜windows・macos・ios・android ネットワーク・サーバー・インフラ構築 自宅wi-fi内の共有フォルダ・nas（smb）に接続してファイルをやり取りする方法 smb 接続 方法 nas 繋がらない ファイル共有 windows mac スマホ # 自宅lanの共有フォルダ・nas（smb）接続とエラー解決の実例｜windows・macos・ios・android 「自宅にnasを導入したけれど、スマホやpcからうまく繋がらない」「機種ごとに接続方法が違って混乱する」といった悩みをお持ちではありませんか？ 自宅のデータを一元管理するnas（network attached storage）は非常に便利ですが、osごとに操作手順や認証の仕組みが異なるため、初期設定でつまずくケースは非常に多いです。この記事では、主要な4つのos（windows, macos, ios, android）におけるsmb接続の手順と、初心者が陥りやすいエラーへの対処法を徹底解説します。 この記事を読めば、どのデバイスからでもスムーズに自宅の共有フォルダへアクセスできるようになります。 ## 4os比較早見表 | os | 標準アプリ / 操作場所 | 接続用プロトコル | 特徴・注意点 | | :--- | :--- | :--- | :--- | | **windows 11** | ファイルエクスプローラー | smb (v2/v3) | 最も標準的な操作。ネットワークドライブとして固定可能。 | | **macos** | finder (command+k) | smb (v2/v3) | キーチェーンによるパスワード管理が強力。 | | **ios** | 「ファイル」アプリ | smb (v2/v3) | icloudとは独立した「手動接続」のストレージとして動作。 | | **android** | files by">
   <img src="images/2026-11-23_art11_lan_smb_file_sharing.png" alt="自宅LANの共有フォルダ・NAS（SMB）接続とエラー解決の実例｜Windows・macOS・iOS・Android" loading="lazy">
   <div class="card-body">
     <div><span class="badge">分類11: ネットワーク・サーバー・インフラ構築</span></div>
@@ -298,7 +419,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2
     <div class="card-meta">#11 ・ 2026-11-23</div>
   </div>
 </a>
-<a class="card" href="articles/art10-storage-cleanup-disk-usage.html">
+<a class="card" href="articles/art10-storage-cleanup-disk-usage.html" data-cat="10" data-search="ストレージ容量不足の原因特定と安全な空き容量確保の実例｜windows・macos・ios・android システム管理・os設定・メンテナンス ストレージ容量圧迫の原因を可視化して不要キャッシュを安全に整理する方法 ストレージ 容量不足 システムデータ 減らす 空き容量 増やす # ストレージ容量不足の原因特定と安全な空き容量確保の実例｜windows・macos・ios・android 「スマホの容量がいっぱいで写真が撮れない」「pcの動作が重くなり、ストレージの警告が出る」といった悩みは、あらゆるデバイスユーザーにとって共通の課題です。しかし、安易にファイルを削除すると重要なデータまで消去してしまうリスクがあり、どこから手をつければいいか迷ってしまう方も多いでしょう。 この記事では、主要な4つのos（windows, macos, ios, android）において、**「何が容量を圧迫しているのか」を正確に可視化し、安全に空き容量を確保するための実践的な手順**を解説します。標準機能だけでできること、制限があること、そしてトラブル時の対処法まで網羅しています。 ## 4os比較早見表 | os | 主な管理画面 | 特徴的な整理機能 | 推奨されるアプローチ | | :--- | :--- | :--- | :--- | | **windows 11** | 設定 &gt; システム &gt; ストレージ | ストレージセンサー | 一時ファイルや更新履歴の自動クリーンアップ | | **macos** | システム設定 &gt; ジェネラル &gt; ストレージ | ストレージの最適化 | icloud連携による古いデータのクラウド移行 | | **ios** | 設定 &gt; 一般 &gt; iphoneのストレージ | 写真の最適化 / メッセージ管理 | クラウド同期を前提としたデバイス内容量削減 | | **android** | 設定 &gt; ストレージ / デバ">
   <img src="images/2026-11-23_art10_storage_cleanup_disk_usage.png" alt="ストレージ容量不足の原因特定と安全な空き容量確保の実例｜Windows・macOS・iOS・Android" loading="lazy">
   <div class="card-body">
     <div><span class="badge">分類10: システム管理・OS設定・メンテナンス</span></div>
@@ -306,7 +427,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2
     <div class="card-meta">#10 ・ 2026-11-23</div>
   </div>
 </a>
-<a class="card" href="articles/art09-csv-encoding-mojibake-fix.html">
+<a class="card" href="articles/art09-csv-encoding-mojibake-fix.html" data-cat="9" data-search="csv文字化け（utf-8/shift_jis）の確実な直し方と実例｜windows・macos・ios・android データ分析・科学計算・ai活用 csvデータの文字化け（utf-8 / shift_jis）を直してexcelやスプレッドシートで開く方法 csv 文字化け 直し方 excel csv 開く googleスプレッドシート csv # csv文字化け（utf-8/shift_jis）の確実な直し方と実例｜windows・macos・ios・android 「せっかく用意したcsvファイルを開いたのに、日本語が『？？？』や謎の記号に化けてしまった……」 データ分析や事務作業において、この現象は誰もが一度は遭遇する非常にストレスの溜まる問題です。原因は単純で、**ファイルの保存形式（エンコード）と、アプリが読み込む際の想定形式が一致していないこと**にあります。 この記事では、windows、macos、そしてモバイル環境（ios/android）のすべてにおいて、標準機能や公式推奨の手順を使い、csvの文字化けを確実に解決する方法を解説します。単なる「おまじない」ではなく、技術的な背景に基づいた正しい対処法をマスターしましょう。 ## 4os比較早見表 | os | 推奨される解決アプローチ | 主要なツール・機能 | 特徴 | | :--- | :--- | :--- | :--- | | **windows** | エンコード強制書き出し / データ取得 | powershell / excel「データの取得」 | 高い操作性。powershellで正確に変換可能。 | | **macos** | インポート時のエンコード指定 | numbers / ターミナル（iconv） | numbersのインポート機能が最も確実。 | | **ios** | クラウド経由の再インポート | google スプレッドシート | 標準アプリでは限界があるため、google系を推奨。 | | **andro">
   <img src="images/2026-11-23_art09_csv_encoding_mojibake_fix.png" alt="CSV文字化け（UTF-8/Shift_JIS）の確実な直し方と実例｜Windows・macOS・iOS・Android" loading="lazy">
   <div class="card-body">
     <div><span class="badge">分類09: データ分析・科学計算・AI活用</span></div>
@@ -314,7 +435,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2
     <div class="card-meta">#09 ・ 2026-11-23</div>
   </div>
 </a>
-<a class="card" href="articles/art08-blog-website-mobile-preview.html">
+<a class="card" href="articles/art08-blog-website-mobile-preview.html" data-cat="8" data-search="webサイトの表示確認・スーパーリロード＆キャッシュ削除の実例｜windows・macos・ios・android web制作・ブログ・デジタルマーケティング ブログ・webサイトの表示崩れやスマホ表示を複数端末でチェック＆キャッシュクリアする方法 キャッシュ 削除 方法 サイト 更新 反映されない スマホ 表示 確認 # webサイトの表示確認・スーパーリロード＆キャッシュ削除の実例｜windows・macos・ios・android 「webサイトのデザインを更新したはずなのに、自分のブラウザだけ古い表示のまま変わらない……」 「スマホで確認したときだけ、レイアウトが崩れて見えるのはなぜ？」 web制作やブログ運営において、このような「キャッシュ」に起因するトラブルは誰もが一度は遭遇する悩みです。サーバー側では最新のデータに更新されていても、ブラウザ側が「以前読み込んだデータ」を記憶（キャッシュ）しているために発生します。 この記事では、webサイトの正確な表示を確認するための**「スーパーリロード」の手順**と、**4つの主要os（windows, macos, ios, android）におけるキャッシュ削除の具体的な操作方法**を徹底解説します。これを知ることで、制作現場での確認作業がスムーズになり、修正漏れを防ぐことができます。 ## 4os比較早見表 | os / デバイス | 推奨ブラウザ | モバイル表示確認機能 | キャッシュクリアの主な手段 | | :--- | :--- | :--- | :--- | | **windows** | edge / chrome | デベロッパーツール（デバイスモード） | `ctrl+shift+delete` / 設定メニュー | | **macos** | safari / chrome | レスポンシブデザインモード | 開発メニュー / 設定メニュー | | **ios (iphone/ipad)** | safari">
   <img src="images/2026-11-23_art08_blog_website_mobile_preview.png" alt="Webサイトの表示確認・スーパーリロード＆キャッシュ削除の実例｜Windows・macOS・iOS・Android" loading="lazy">
   <div class="card-body">
     <div><span class="badge">分類08: Web制作・ブログ・デジタルマーケティング</span></div>
@@ -322,7 +443,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2
     <div class="card-meta">#08 ・ 2026-11-23</div>
   </div>
 </a>
-<a class="card" href="articles/art07-github-code-browser-mobile.html">
+<a class="card" href="articles/art07-github-code-browser-mobile.html" data-cat="7" data-search="初心者向けgithub・コード閲覧とブラウザ開発環境の実例｜windows・macos・ios・android プログラミング・ソフトウェア開発 githubのコード確認・簡単な編集・ブラウザ開発環境（codespaces等）を使う方法 github 初心者 使い方 スマホ コード 編集 vs code web # 初心者向けgithub・コード閲覧とブラウザ開発環境の実例｜windows・macos・ios・android 「プログラミングを始めたいけれど、まずはgithubのコードをちょっとだけ確認したい」「外出先からスマホでコードの修正をしたいけれど、どうすればいいのかわからない」といった悩みをお持ちではありませんか？ エンジニアの世界では、ソースコードの管理に**github**は欠かせないツールです。しかし、いざ触ってみようとすると「環境構築が難しそう」「自分のpcにソフトを入れるのが怖い」と感じる初心者の方も多いでしょう。 この記事では、そんな方のために、**特別な環境構築をせずにブラウザやアプリだけでgithubのコードを閲覧・編集する方法**を、windows、macos、ios、androidの4つのosごとに徹底解説します。この記事を読めば、どのデバイスからでもスムーズにgithubを使いこなすための第一歩を踏み出せるようになります。 ## 4os比較早見表 | 機能 | windows 11 | macos | ios (iphone/ipad) | android | | :--- | :--- | :--- | :--- | :--- | | **主な閲覧方法** | ブラウザ / github desktop | ブラウザ / github desktop | github mobileアプリ | github mobileアプリ | | **ブラウザ開発** | github.dev (chrome/edge) | github.dev (saf">
   <img src="images/2026-11-23_art07_github_code_browser_mobile.png" alt="初心者向けGitHub・コード閲覧とブラウザ開発環境の実例｜Windows・macOS・iOS・Android" loading="lazy">
   <div class="card-body">
     <div><span class="badge">分類07: プログラミング・ソフトウェア開発</span></div>
@@ -330,7 +451,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2
     <div class="card-meta">#07 ・ 2026-11-23</div>
   </div>
 </a>
-<a class="card" href="articles/art06-3d-ar-model-viewer.html">
+<a class="card" href="articles/art06-3d-ar-model-viewer.html" data-cat="6" data-search="3dデータ（stl/obj/ar）の閲覧・確認の実例ガイド｜windows・macos・ios・android 3d・cad・ものづくり 3dモデルデータ（stl・obj・usdz/glb）を閲覧・ar表示して確認する方法 3dデータ 開けない stl ビューアー 無料 ar 3d表示 # 3dデータ（stl/obj/ar）の閲覧・確認の実例ガイド｜windows・macos・ios・android 「3dプリンターで出力する前に、実際のサイズ感や形状を正しく確認したい」「webサイトに載せる3dモデルがスマホでどう見えるか試したい」といった悩みは、ものづくりやクリエイティブな活動において非常に重要です。 しかし、stl、obj、usdz、glbといった3dデータ形式は、os（オペレーティングシステム）によって対応状況や操作方法が大きく異なります。この記事では、windows、macos、ios、androidの4つの主要環境において、3dデータを正確に視覚化し、ar（拡張現実）表示を確認するための実践的な手順を徹底解説します。 ## 4os比較早見表 | os | 推奨ファイル形式 | 標準でのプレビュー | ar対応 | 主要な閲覧手段 | | :--- | :--- | :--- | :--- | :--- | | **windows 11** | stl, obj, glb | 非対応（アプリ導入が必要） | 非対応（外部アプリ推奨） | microsoft store「3d viewer」 | | **macos** | stl, obj, glb, usdz | 対応（quick look） | 対応（mチップ搭載機のみ） | quick look / ar quick look | | **ios** | usdz (ar用), stl/obj | 限定的（usdzのみ標準） | 対応（iphone x以降） | ファイルアプリ / 3d">
   <img src="images/2026-11-23_art06_3d_ar_model_viewer.png" alt="3Dデータ（STL/OBJ/AR）の閲覧・確認の実例ガイド｜Windows・macOS・iOS・Android" loading="lazy">
   <div class="card-body">
     <div><span class="badge">分類06: 3D・CAD・ものづくり</span></div>
@@ -338,7 +459,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2
     <div class="card-meta">#06 ・ 2026-11-23</div>
   </div>
 </a>
-<a class="card" href="articles/art05-video-compression-mp4.html">
+<a class="card" href="articles/art05-video-compression-mp4.html" data-cat="5" data-search="動画の圧縮・トリミング・mp4共有の実例と再生エラー対処｜windows・macos・ios・android 動画・音声・音楽制作 大容量の動画ファイルを画質を保ったまま軽量化・トリミング・mp4変換する方法 動画 圧縮 無料 動画 送れない サイズ mp4 再生できない # 動画の圧縮・トリミング・mp4共有の実例と再生エラー対処｜windows・macos・ios・android 「撮影した動画が大きすぎてメールやsnsで送れない」「不要な部分だけをカットして、スマホでも見られる形式（mp4）に変換したい」といった悩みは、動画制作や日常のコミュニケーションにおいて非常に多く見られます。 しかし、いざ操作しようとすると「どのソフトを使えばいいのか？」「画質を落とさずに容量を減らせるのか？」と迷ってしまう方も少なくありません。 この記事では、**追加の有料ソフトを一切使わず、各os（windows, macos, ios, android）の標準機能のみを使って**、動画のトリミング・圧縮・mp4保存を行う具体的な手順を徹底解説します。また、よく遭遇する再生エラーへの対処法も網羅しているため、初心者の方でも安心して実践いただけます。 --- ## 4os比較早見表 各osにおける「標準機能での動画編集・変換」の概要を比較しました。 | os | 推奨ツール | 主な操作内容 | 特徴・制限事項 | | :--- | :--- | :--- | :--- | | **windows 11** | clipchamp | トリミング、mp4書き出し | 直感的なui。ビットレートの数値指定は不可。 | | **macos** | quicktime player | トリミング、形式変換 | 高速で安定。高度な圧縮設定はimovieが必要。 | | **ios** | 写真アプリ | トリミング、共有 | 編集は容易だが、詳細なファイル">
   <img src="images/2026-11-23_art05_video_compression_mp4.png" alt="動画の圧縮・トリミング・MP4共有の実例と再生エラー対処｜Windows・macOS・iOS・Android" loading="lazy">
   <div class="card-body">
     <div><span class="badge">分類05: 動画・音声・音楽制作</span></div>
@@ -346,7 +467,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2
     <div class="card-meta">#05 ・ 2026-11-23</div>
   </div>
 </a>
-<a class="card" href="articles/art04-batch-image-resize-webp.html">
+<a class="card" href="articles/art04-batch-image-resize-webp.html" data-cat="4" data-search="画像の一括リサイズ＆heic/webp変換の実例ガイド｜windows・macos・ios・android 画像・イラスト・デザイン制作 画像の一括リサイズ・フォーマット変換（heic/png→jpeg/webp）を行う方法 画像 一括リサイズ heic 変換 webp 変換 方法 # 画像の一括リサイズ＆heic/webp変換の実例ガイド｜windows・macos・ios・android 「ブログやsnsに載せる大量の写真をまとめて横幅1200pxに縮小したい」「iphoneで撮ったheic形式を、どこでも開けるjpegや軽量なwebpへ一括変換したい」——。 こうした画像処理は、osごとに「標準機能でできる範囲」と「公式ユーティリティを使うべきライン」がはっきり分かれます。この記事では、**windows 11・macos・ios（iphone / ipad）・android** の4環境における初心者でも迷わない確実な手順を比較解説します。 --- ## 4os比較早見表 | os | おすすめの標準／公式手段 | heic読込 | 一括リサイズ | webp変換 | 特徴 | | :--- | :--- | :---: | :---: | :---: | :--- | | **windows 11** | microsoft powertoys (image resizer) | 要「heif 画像拡張機能」 | ◎（右クリック一括） | △（`cwebp`等併用） | powertoys導入でエクスプローラーから最速処理 | | **macos** | finder「クイックアクション」/ プレビュー | ◎（標準対応） | ◎（gui一括） | △（`cwebp`併用推奨） | finder右クリックの「イメージを変換」が非常に手軽 | | **ios (iphone/ipad)** | 標準「ショートカット」アプリ | ◎（標準対">
   <img src="images/2026-11-23_art04_batch_image_resize_webp.png" alt="画像の一括リサイズ＆HEIC/WebP変換の実例ガイド｜Windows・macOS・iOS・Android" loading="lazy">
   <div class="card-body">
     <div><span class="badge">分類04: 画像・イラスト・デザイン制作</span></div>
@@ -354,7 +475,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2
     <div class="card-meta">#04 ・ 2026-11-23</div>
   </div>
 </a>
-<a class="card" href="articles/art03-screenshot-screen-recording.html">
+<a class="card" href="articles/art03-screenshot-screen-recording.html" data-cat="3" data-search="スクリーンショット・画面録画の最短手順と保存先トラブル対処｜windows・macos・ios・android 情報収集・リサーチ・web利用 画面全体のスクリーンショット・webページ縦長保存・画面録画の方法 スクリーンショット 方法 画面録画 標準機能 保存先 見つからない # スクリーンショット・画面録画の最短手順と保存先トラブル対処｜windows・macos・ios・android 「急に画面を撮りたいのにショートカットを忘れてしまった」「録画した動画がどこに保存されたか分からない」「webページ全体を縦長に丸ごと保存したい」——。 pcとスマホを行き来していると、スクリーンショットや画面録画の操作方法・保存先の違いで迷いがちです。この記事では、**windows 11・macos・ios（iphone / ipad）・android** の4環境において、追加アプリ不要の**標準機能だけで完結する正確な手順**と、よくあるトラブルの解決法を比較します。 ## 4os比較早見表 | 機能 | windows 11 | macos | ios (iphone / ipad) | android | | :--- | :--- | :--- | :--- | :--- | | **スクショ（撮影）** | `win + shift + s` | `shift + cmd + 3 / 4 / 5` | サイド＋音量上ボタン同時押し | 電源＋音量下ボタン同時押し | | **画面録画（標準）** | snipping tool / `win + g` | `shift + cmd + 5` / quicktime | コントロールセンター「画面収録」 | クイック設定「スクリーンレコード」 | | **web縦長保存** | edge「webキャプチャ」/ 印刷pdf | safari「pdfとして書き出す」 | **safariスクショ">
   <img src="images/2026-11-23_art03_screenshot_screen_recording.png" alt="スクリーンショット・画面録画の最短手順と保存先トラブル対処｜Windows・macOS・iOS・Android" loading="lazy">
   <div class="card-body">
     <div><span class="badge">分類03: 情報収集・リサーチ・Web利用</span></div>
@@ -362,7 +483,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2
     <div class="card-meta">#03 ・ 2026-11-23</div>
   </div>
 </a>
-<a class="card" href="articles/art02-cross-os-cloud-sync-conflict.html">
+<a class="card" href="articles/art02-cross-os-cloud-sync-conflict.html" data-cat="2" data-search="クラウドストレージ同期と共有トラブル解決の実例｜windows・macos・ios・android コミュニケーション・情報共有 クラウドストレージで複数端末のファイルを同期・共有する実例と競合トラブル対策 クラウド同期 競合 ファイル共有 4os onedrive google drive # クラウドストレージ同期と共有トラブル解決の実例｜windows・macos・ios・android 「windowsで編集した資料をiphoneやandroidで開いたら古い版だった」「複数端末で同時に保存したら競合コピー（ファイル名にpc名が付いた別ファイル）が増えてしまった」「共有リンクを送ったのに相手が開けない」——。 pcとスマホをまたいでデータを扱う場合、**同期の仕組みとバージョン復元・共有権限の公式手順**を押さえておくことがトラブル防止の近道です。この記事では **windows 11・macos・ios・android** の4osそれぞれの実践手順と切り分けポイントを整理します。 ## 4os比較早見表 | 特徴 | windows 11 | macos | ios (iphone / ipad) | android | | :--- | :--- | :--- | :--- | :--- | | **主なクラウド手段** | onedrive / google drive | google drive / icloud drive | icloud drive / 公式アプリ | google ドライブ / onedrive | | **操作インターフェース** | エクスプローラー | finder | 「ファイル」アプリ＋公式アプリ | google ドライブ／filesアプリ | | **上書き時の復元** | onedrive「バージョン履歴」 | google drive「版を管理」 | クラウドweb版または公式アプリ | goog">
   <img src="images/2026-11-23_art02_cross_os_cloud_sync_conflict.png" alt="クラウドストレージ同期と共有トラブル解決の実例｜Windows・macOS・iOS・Android" loading="lazy">
   <div class="card-body">
     <div><span class="badge">分類02: コミュニケーション・情報共有</span></div>
@@ -370,7 +491,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2
     <div class="card-meta">#02 ・ 2026-11-23</div>
   </div>
 </a>
-<a class="card" href="articles/art01-pdf-merge-split-compress.html">
+<a class="card" href="articles/art01-pdf-merge-split-compress.html" data-cat="1" data-search="pdfの結合・分割・圧縮を無料で行う実例ガイド｜windows・macos・ios・android 文書作成・オフィス業務・事務作業 pdfの結合・分割・圧縮を無料＆標準機能で行う方法 pdf 結合 無料 pdf 圧縮 windows macos ios android 比較 # pdfの結合・分割・圧縮を無料で行う実例ガイド｜windows・macos・ios・android 「複数のpdfを1つにまとめたい」「長い資料から必要なページだけ抜き出したい」「メール添付のためにファイルサイズを軽くしたい」——。こうした場面で、有料ソフトを契約せずとも、**os標準機能や公式アプリ**だけで対応できる範囲はかなり広いです。 ただし、**「標準機能だけでできること・できないこと」にはosごとに明確な差**があります。この記事では、初心者でも迷わない **windows 11・macos・ios（iphone / ipad）・android** の4環境における正確な手順と、公式仕様に基づく制限事項・トラブル対処法を徹底比較します。 ## 4os比較早見表 | os | 主な操作手段 | 結合 | 分割（ページ抽出） | 圧縮（軽量化） | 特徴・注意点 | | :--- | :--- | :---: | :---: | :---: | :--- | | **windows 11** | edge / microsoft print to pdf | ×（標準のみは不可） | ◎（ページ指定印刷） | ×（標準では非対応） | 分割のみ標準可。結合・圧縮はローカル無料ツール併用が安全 | | **macos** | プレビュー（preview） | ◎（サムネイルd&amp;d） | ◎（ページ削除／d&amp;d） | ◎（quartzフィルタ） | **3操作すべてos標準アプリだけで完結** | | **ios (iphone/ipad)** | 「ファイル」">
   <img src="images/2026-11-23_art01_pdf_merge_split_compress.png" alt="PDFの結合・分割・圧縮を無料で行う実例ガイド｜Windows・macOS・iOS・Android" loading="lazy">
   <div class="card-body">
     <div><span class="badge">分類01: 文書作成・オフィス業務・事務作業</span></div>
@@ -379,7 +500,91 @@ footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2
   </div>
 </a>
 </div>
+    <div id="empty-state" class="empty-state" hidden>
+      <p>条件に一致する記事が見つかりませんでした。キーワードやジャンルを変更してお試しください。</p>
+    </div>
   </main>
   <footer>Powered by Local Ollama &amp; Draw Things (FLUX.2) ・ Hosted on GitHub Pages</footer>
+  <script>
+    (() => {
+      const form = document.getElementById('filter-form');
+      const searchInput = document.getElementById('search-input');
+      const categorySelect = document.getElementById('category-select');
+      const resetBtn = document.getElementById('reset-filter');
+      const statusEl = document.getElementById('results-status');
+      const emptyEl = document.getElementById('empty-state');
+      const cards = Array.from(document.querySelectorAll('#article-grid .card'));
+      const total = cards.length;
+      const updatedLabel = '2026-11-23 16:10 JST';
+
+      function applyFilter(syncUrl) {
+        const rawQuery = (searchInput.value || '').trim().toLowerCase();
+        const terms = rawQuery ? rawQuery.split(/\s+/).filter(Boolean) : [];
+        const selectedCat = (categorySelect.value || '').trim();
+        let shown = 0;
+
+        for (const card of cards) {
+          const cardCat = card.dataset.cat || '';
+          const haystack = card.dataset.search || '';
+          const catMatch = !selectedCat || cardCat === selectedCat;
+          const textMatch = terms.length === 0 || terms.every((t) => haystack.includes(t));
+          const visible = catMatch && textMatch;
+          card.hidden = !visible;
+          if (visible) shown += 1;
+        }
+
+        if (emptyEl) {
+          emptyEl.hidden = shown > 0 || total === 0;
+        }
+        if (statusEl) {
+          if (!rawQuery && !selectedCat) {
+            statusEl.textContent = `全 ${total} 件の記事を表示中（最終更新: ${updatedLabel}）`;
+          } else {
+            statusEl.textContent = `全 ${total} 件中 ${shown} 件が一致しました`;
+          }
+        }
+        if (syncUrl && window.history && window.history.replaceState) {
+          const params = new URLSearchParams();
+          if (searchInput.value.trim()) params.set('q', searchInput.value.trim());
+          if (selectedCat) params.set('cat', selectedCat);
+          const qs = params.toString();
+          const nextUrl = qs ? `${window.location.pathname}?${qs}` : window.location.pathname;
+          window.history.replaceState(null, '', nextUrl);
+        }
+      }
+
+      // Restore filter state from URL query parameters (?q=...&cat=...)
+      const initParams = new URLSearchParams(window.location.search);
+      if (initParams.get('q')) searchInput.value = initParams.get('q');
+      if (initParams.get('cat')) categorySelect.value = initParams.get('cat');
+      applyFilter(false);
+
+      // IME-safe Enter handling for Japanese input (including Safari keyCode 229 fallback)
+      searchInput.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+          event.preventDefault();
+          if (event.isComposing || event.keyCode === 229) {
+            return;
+          }
+          form.requestSubmit();
+        }
+      });
+
+      searchInput.addEventListener('input', () => applyFilter(false));
+      categorySelect.addEventListener('change', () => applyFilter(true));
+
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        applyFilter(true);
+      });
+
+      resetBtn.addEventListener('click', () => {
+        searchInput.value = '';
+        categorySelect.value = '';
+        applyFilter(true);
+        searchInput.focus();
+      });
+    })();
+  </script>
 </body>
 </html>

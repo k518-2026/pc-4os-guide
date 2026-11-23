@@ -129,7 +129,93 @@ article.post blockquote {
   border-radius: 0 8px 8px 0;
 }
 .back-link { display: inline-block; margin-bottom: 1rem; color: var(--accent); text-decoration: none; font-weight: 600; }
+.filter-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.15rem 1.25rem;
+  margin-bottom: 1.5rem;
+}
+.filter-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) auto;
+  gap: 0.9rem;
+  align-items: end;
+}
+.filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.filter-field label {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.filter-field input[type="search"],
+.filter-field select {
+  font: inherit;
+  font-size: max(1rem, 1em);
+  min-height: 48px;
+  padding: 0.55rem 0.85rem;
+  border: 1.5px solid #767676;
+  border-radius: 8px;
+  background: #fff;
+  color: var(--text);
+  width: 100%;
+}
+.filter-field input[type="search"]:focus-visible,
+.filter-field select:focus-visible,
+.filter-actions button:focus-visible {
+  outline: 3px solid #0284c7;
+  outline-offset: 2px;
+}
+.filter-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+.filter-actions button {
+  font: inherit;
+  font-size: max(1rem, 0.95em);
+  font-weight: 600;
+  min-height: 48px;
+  padding: 0 1.05rem;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+}
+.btn-primary {
+  background: #0369a1;
+  color: #fff;
+}
+.btn-primary:hover { background: #075985; }
+.btn-secondary {
+  background: #f1f5f9;
+  color: var(--text);
+  border-color: #94a3b8;
+}
+.btn-secondary:hover { background: #e2e8f0; }
+.results-status {
+  color: var(--muted);
+  font-size: 0.92rem;
+  margin: 0 0 1.1rem;
+}
+.empty-state {
+  background: var(--surface);
+  border: 1px dashed #94a3b8;
+  border-radius: 12px;
+  padding: 2rem 1.25rem;
+  text-align: center;
+  color: var(--muted);
+}
+.card[hidden],
+.empty-state[hidden] { display: none; }
 footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2rem 1rem; }
+@media (max-width: 720px) {
+  .filter-form { grid-template-columns: 1fr; }
+  .filter-actions { width: 100%; }
+  .filter-actions button { flex: 1; }
+}
 @media (max-width: 640px) {
   article.post { padding: 1.2rem; }
 }
@@ -164,6 +250,7 @@ def build_github_pages(
     built_files: List[Path] = []
     cards_html: List[str] = []
     readme_rows: List[str] = []
+    cat_counts: Dict[int, int] = {}
 
     for entry in reversed(stocked):
         item = entry["item"]
@@ -173,11 +260,18 @@ def build_github_pages(
         raw_md = md_path.read_text(encoding="utf-8", errors="ignore")
         clean_md = _strip_meta_comment(raw_md)
         title = _extract_title(clean_md, item.get("title", item["id"]))
-        cat_num = item.get("cat_num", 0)
+        cat_num = int(item.get("cat_num", 0))
         cat_name = item.get("category", "")
+        cat_counts[cat_num] = cat_counts.get(cat_num, 0) + 1
         art_num = int(item.get("article_num", 0))
         date_match = re.match(r"^(\d{4}-\d{2}-\d{2})_", md_path.name)
         pub_date = date_match.group(1) if date_match else datetime.now(JST).strftime("%Y-%m-%d")
+
+        # Build compact searchable text (title + category + keywords + topic + lead excerpt)
+        keywords_str = " ".join(item.get("keywords", []))
+        excerpt_plain = re.sub(r"[#*_`>|\\[\\]()]", " ", clean_md[:700])
+        excerpt_plain = re.sub(r"\s+", " ", excerpt_plain).strip()
+        search_blob = f"{title} {cat_name} {item.get('task_topic', '')} {keywords_str} {excerpt_plain}".lower()
 
         img_rel_from_article = ""
         img_rel_from_index = ""
@@ -234,7 +328,7 @@ def build_github_pages(
             else ""
         )
         cards_html.append(
-            f"""<a class="card" href="articles/{html.escape(item['id'])}.html">
+            f"""<a class="card" href="articles/{html.escape(item['id'])}.html" data-cat="{cat_num}" data-search="{html.escape(search_blob)}">
   {thumb_html}
   <div class="card-body">
     <div><span class="badge">分類{cat_num:02d}: {html.escape(cat_name)}</span></div>
@@ -249,8 +343,18 @@ def build_github_pages(
             f"| #{art_num:02d} | 分類{cat_num:02d}: {cat_name} | [{title}](content/{md_path.name}) | {img_mark} | {pub_date} |"
         )
 
+    category_options = [f'<option value="">すべてのジャンル（{len(stocked)}件）</option>']
+    for cat in sorted(catalog_mgr.categories, key=lambda c: int(c.get("cat_num", 0))):
+        cnum = int(cat.get("cat_num", 0))
+        cname = cat.get("name", f"分類{cnum:02d}")
+        cnt = cat_counts.get(cnum, 0)
+        category_options.append(
+            f'<option value="{cnum}">分類{cnum:02d}：{html.escape(cname)}（{cnt}件）</option>'
+        )
+    options_html = "\n          ".join(category_options)
+
     cards_section = (
-        '<div class="grid">\n' + "\n".join(cards_html) + "\n</div>"
+        '<div class="grid" id="article-grid">\n' + "\n".join(cards_html) + "\n</div>"
         if cards_html
         else "<p>まだ記事が生成されていません。<code>python -m src.main -n 1</code> を実行して最初の記事を作成してください。</p>"
     )
@@ -272,10 +376,112 @@ def build_github_pages(
     </div>
   </header>
   <main>
-    <p style="color:#475569;margin-bottom:1.5rem;">公開記事数: <strong>{len(stocked)}</strong> 本（最終更新: {updated_str}）</p>
+    <search class="filter-panel">
+      <form id="filter-form" class="filter-form" method="GET" action="">
+        <div class="filter-field">
+          <label for="search-input">キーワード検索</label>
+          <input type="search" id="search-input" name="q" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false" enterkeyhint="search" placeholder="例：PDF、Wi-Fi、バックアップ、iPhone、文字化け...">
+        </div>
+        <div class="filter-field">
+          <label for="category-select">ジャンル（17分類）</label>
+          <select id="category-select" name="cat">
+          {options_html}
+          </select>
+        </div>
+        <div class="filter-actions">
+          <button type="submit" class="btn-primary">絞り込む</button>
+          <button type="button" id="reset-filter" class="btn-secondary">クリア</button>
+        </div>
+      </form>
+    </search>
+    <p id="results-status" class="results-status" role="status" aria-live="polite">全 <strong>{len(stocked)}</strong> 件の記事を表示中（最終更新: {updated_str}）</p>
     {cards_section}
+    <div id="empty-state" class="empty-state" hidden>
+      <p>条件に一致する記事が見つかりませんでした。キーワードやジャンルを変更してお試しください。</p>
+    </div>
   </main>
   <footer>Powered by Local Ollama &amp; Draw Things (FLUX.2) ・ Hosted on GitHub Pages</footer>
+  <script>
+    (() => {{
+      const form = document.getElementById('filter-form');
+      const searchInput = document.getElementById('search-input');
+      const categorySelect = document.getElementById('category-select');
+      const resetBtn = document.getElementById('reset-filter');
+      const statusEl = document.getElementById('results-status');
+      const emptyEl = document.getElementById('empty-state');
+      const cards = Array.from(document.querySelectorAll('#article-grid .card'));
+      const total = cards.length;
+      const updatedLabel = {updated_str!r};
+
+      function applyFilter(syncUrl) {{
+        const rawQuery = (searchInput.value || '').trim().toLowerCase();
+        const terms = rawQuery ? rawQuery.split(/\\s+/).filter(Boolean) : [];
+        const selectedCat = (categorySelect.value || '').trim();
+        let shown = 0;
+
+        for (const card of cards) {{
+          const cardCat = card.dataset.cat || '';
+          const haystack = card.dataset.search || '';
+          const catMatch = !selectedCat || cardCat === selectedCat;
+          const textMatch = terms.length === 0 || terms.every((t) => haystack.includes(t));
+          const visible = catMatch && textMatch;
+          card.hidden = !visible;
+          if (visible) shown += 1;
+        }}
+
+        if (emptyEl) {{
+          emptyEl.hidden = shown > 0 || total === 0;
+        }}
+        if (statusEl) {{
+          if (!rawQuery && !selectedCat) {{
+            statusEl.textContent = `全 ${{total}} 件の記事を表示中（最終更新: ${{updatedLabel}}）`;
+          }} else {{
+            statusEl.textContent = `全 ${{total}} 件中 ${{shown}} 件が一致しました`;
+          }}
+        }}
+        if (syncUrl && window.history && window.history.replaceState) {{
+          const params = new URLSearchParams();
+          if (searchInput.value.trim()) params.set('q', searchInput.value.trim());
+          if (selectedCat) params.set('cat', selectedCat);
+          const qs = params.toString();
+          const nextUrl = qs ? `${{window.location.pathname}}?${{qs}}` : window.location.pathname;
+          window.history.replaceState(null, '', nextUrl);
+        }}
+      }}
+
+      // Restore filter state from URL query parameters (?q=...&cat=...)
+      const initParams = new URLSearchParams(window.location.search);
+      if (initParams.get('q')) searchInput.value = initParams.get('q');
+      if (initParams.get('cat')) categorySelect.value = initParams.get('cat');
+      applyFilter(false);
+
+      // IME-safe Enter handling for Japanese input (including Safari keyCode 229 fallback)
+      searchInput.addEventListener('keydown', (event) => {{
+        if (event.key === 'Enter') {{
+          event.preventDefault();
+          if (event.isComposing || event.keyCode === 229) {{
+            return;
+          }}
+          form.requestSubmit();
+        }}
+      }});
+
+      searchInput.addEventListener('input', () => applyFilter(false));
+      categorySelect.addEventListener('change', () => applyFilter(true));
+
+      form.addEventListener('submit', (event) => {{
+        event.preventDefault();
+        applyFilter(true);
+      }});
+
+      resetBtn.addEventListener('click', () => {{
+        searchInput.value = '';
+        categorySelect.value = '';
+        applyFilter(true);
+        searchInput.focus();
+      }});
+    }})();
+  </script>
 </body>
 </html>
 """
