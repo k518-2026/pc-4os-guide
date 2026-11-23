@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>プログラミング不要で毎日を時短！標準自動化ツール活用の実例｜Windows・macOS・iOS・Android | PC 4OS実例ガイド</title>
+  <style>
+:root {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --muted: #475569;
+  --accent: #0284c7;
+  --accent-soft: #e0f2fe;
+  --border: #e2e8f0;
+  --code-bg: #0f172a;
+  --code-text: #e2e8f0;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Noto Sans JP", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+}
+header.site-header {
+  background: linear-gradient(135deg, #0f172a 0%, #0369a1 100%);
+  color: #fff;
+  padding: 2.2rem 1.25rem;
+}
+header.site-header .inner { max-width: 980px; margin: 0 auto; }
+header.site-header h1 { margin: 0 0 0.4rem; font-size: 1.75rem; }
+header.site-header p { margin: 0; opacity: 0.9; font-size: 0.96rem; }
+main { max-width: 980px; margin: 2rem auto; padding: 0 1.25rem 3rem; }
+.badge {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: var(--accent-soft);
+  color: #0369a1;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1.25rem;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08); }
+.card img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; display: block; background: #e2e8f0; }
+.card-body { padding: 1rem 1.1rem 1.2rem; flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+.card-title { font-size: 1.02rem; font-weight: 700; margin: 0; line-height: 1.45; }
+.card-meta { font-size: 0.82rem; color: var(--muted); margin-top: auto; }
+article.post {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 2rem;
+}
+article.post img.eyecatch {
+  width: 100%;
+  max-height: 460px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+}
+article.post h1 { font-size: 1.65rem; line-height: 1.35; margin-top: 0; }
+article.post h2 {
+  font-size: 1.3rem;
+  margin-top: 2.1rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 2px solid var(--accent-soft);
+}
+article.post h3 { font-size: 1.08rem; margin-top: 1.4rem; }
+article.post table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.2rem 0;
+  font-size: 0.92rem;
+  display: block;
+  overflow-x: auto;
+}
+article.post th, article.post td {
+  border: 1px solid var(--border);
+  padding: 0.6rem 0.8rem;
+  text-align: left;
+}
+article.post th { background: #f1f5f9; font-weight: 700; }
+article.post pre {
+  background: var(--code-bg);
+  color: var(--code-text);
+  padding: 1rem 1.15rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+article.post code {
+  background: #f1f5f9;
+  padding: 0.15rem 0.38rem;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+article.post pre code { background: transparent; padding: 0; color: inherit; }
+article.post blockquote {
+  margin: 1.2rem 0;
+  padding: 0.8rem 1.1rem;
+  border-left: 4px solid var(--accent);
+  background: #f0f9ff;
+  border-radius: 0 8px 8px 0;
+}
+.back-link { display: inline-block; margin-bottom: 1rem; color: var(--accent); text-decoration: none; font-weight: 600; }
+.filter-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.15rem 1.25rem;
+  margin-bottom: 1.5rem;
+}
+.filter-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) auto;
+  gap: 0.9rem;
+  align-items: end;
+}
+.filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.filter-field label {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.filter-field input[type="search"],
+.filter-field select {
+  font: inherit;
+  font-size: max(1rem, 1em);
+  min-height: 48px;
+  padding: 0.55rem 0.85rem;
+  border: 1.5px solid #767676;
+  border-radius: 8px;
+  background: #fff;
+  color: var(--text);
+  width: 100%;
+}
+.filter-field input[type="search"]:focus-visible,
+.filter-field select:focus-visible,
+.filter-actions button:focus-visible {
+  outline: 3px solid #0284c7;
+  outline-offset: 2px;
+}
+.filter-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+.filter-actions button {
+  font: inherit;
+  font-size: max(1rem, 0.95em);
+  font-weight: 600;
+  min-height: 48px;
+  padding: 0 1.05rem;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+}
+.btn-primary {
+  background: #0369a1;
+  color: #fff;
+}
+.btn-primary:hover { background: #075985; }
+.btn-secondary {
+  background: #f1f5f9;
+  color: var(--text);
+  border-color: #94a3b8;
+}
+.btn-secondary:hover { background: #e2e8f0; }
+.results-status {
+  color: var(--muted);
+  font-size: 0.92rem;
+  margin: 0 0 1.1rem;
+}
+.empty-state {
+  background: var(--surface);
+  border: 1px dashed #94a3b8;
+  border-radius: 12px;
+  padding: 2rem 1.25rem;
+  text-align: center;
+  color: var(--muted);
+}
+.card[hidden],
+.empty-state[hidden] { display: none; }
+footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2rem 1rem; }
+@media (max-width: 720px) {
+  .filter-form { grid-template-columns: 1fr; }
+  .filter-actions { width: 100%; }
+  .filter-actions button { flex: 1; }
+}
+@media (max-width: 640px) {
+  article.post { padding: 1.2rem; }
+}
+</style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="inner">
+      <h1>PC 4OS実例ガイド</h1>
+      <p>Windows・macOS・iOS・Android の実践比較＆トラブル解決アーカイブ</p>
+    </div>
+  </header>
+  <main>
+    <a class="back-link" href="../index.html">← 記事一覧へ戻る</a>
+    <article class="post">
+      <p><span class="badge">#41｜分類07: プログラミング・ソフトウェア開発</span> <small style="color:#64748b;margin-left:0.5rem;">2026-11-23</small></p>
+      <img class="eyecatch" src="../images/2026-11-23_art41_shortcuts_automator_routine.png" alt="プログラミング不要で毎日を時短！標準自動化ツール活用の実例｜Windows・macOS・iOS・Android">
+      <h1>プログラミング不要で毎日を時短！標準自動化ツール活用の実例｜Windows・macOS・iOS・Android</h1>
+<p>「毎日同じようなファイル整理や、決まったWebサイトへのアクセスに時間を取られている……」<br />
+「自動化してみたいけれど、Pythonなどのプログラミング言語を習得するのはハードルが高い」</p>
+<p>そんな悩みを持つ方にこそ知ってほしいのが、各OSに標準搭載されている<strong>「ノーコード自動化ツール」</strong>です。</p>
+<p>この記事では、特別なスキルがなくても今日から使えるWindows、macOS、iOS、Androidそれぞれの標準機能を活用した自動化術を徹底解説します。プログラミングの知識は不要ですが、「トリガー（きっかけ）」と「アクション（動作）」という概念さえ理解すれば、あなたの日常は劇的に効率化されます。</p>
+<hr />
+<h2>4OS比較早見表</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">OS</th>
+<th style="text-align: left;">主要な自動化ツール</th>
+<th style="text-align: left;">特徴・得意分野</th>
+<th style="text-align: left;">向いている用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Windows</strong></td>
+<td style="text-align: left;">Power Automate Desktop</td>
+<td style="text-align: left;">GUI操作やファイル操作の高度な自動化</td>
+<td style="text-align: left;">定型業務、Excel連携、Webブラウザ操作</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>macOS</strong></td>
+<td style="text-align: left;">ショートカット / Automator</td>
+<td style="text-align: left;">Appleエコシステムとのシームレスな連携</td>
+<td style="text-align: left;">ファイル整理、システム操作、iPhone連携</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>iOS</strong></td>
+<td style="text-align: left;">ショートカット (Shortcuts)</td>
+<td style="text-align: left;">優れたウィジェット・通知連携</td>
+<td style="text-align: left;">位置情報連動、リマインダー、Web閲覧</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Android</strong></td>
+<td style="text-align: left;">オートメーション / Googleアシスタント</td>
+<td style="text-align: left;">アプリの起動や通知への自動反応</td>
+<td style="text-align: left;">特定アプリの自動化、ルーチン実行</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>1. Windows 11 での実例手順</h2>
+<p>Windowsでは、Microsoft公式の「Power Automate Desktop」が強力な武器となります。マウス操作やキーボード入力をシミュレートする「RPA（Robotic Process Automation）」の概念を、ノーコードで実現できます。</p>
+<h3>公式仕様に基づく実例手順</h3>
+<p><strong>ツール:</strong> Microsoft Power Automate Desktop（Win11 Pro/Enterprise/Educationに標準搭載、Homeはストアアプリから入手可能）</p>
+<ul>
+<li><strong>実例 A: メール着信時にフォルダ整理</strong><ol>
+<li>「フロー」を新規作成し、「メールが受信されたら」というトリガーを設定します。</li>
+<li>アクションとして「ファイルとフォルダーを移動・コピー」を追加します。</li>
+<li>特定の条件（例：添付ファイルがある場合）に合致するファイルを、自動的に指定したフォルダへ移動させる設定を行います。</li>
+</ol>
+</li>
+<li><strong>実例 B: GitHub の Web エディタ (github.dev) にアクセスしてリポジトリ確認</strong><ol>
+<li>「Web ブラウザを開く」アクションを追加します。</li>
+<li>URL欄に <code>https://github.dev/...</code>（対象のリポジトリURL）を入力します。</li>
+<li>フローを実行すると、ブラウザが自動で立ち上がり、GitHubのWebエディタへ遷移します。</li>
+</ol>
+</li>
+</ul>
+<h3>標準機能の制限事項・注意点</h3>
+<ul>
+<li><strong>ライセンス:</strong> Homeエディションではストアアプリとしてのインストールが必要な場合があります。</li>
+<li><strong>ブラウザ連携:</strong> デフォルト設定では既定のブラウザのみ対象となるため、Edge以外のブラウザを使用する場合はアクション内で詳細指定が必要です。</li>
+<li><strong>github.devの制限:</strong> github.devはクラウド上のリポジトリに限定されるため、ローカルファイルシステムへの直接アクセス権限はありません。</li>
+</ul>
+<h3>よくあるトラブルと解決法 (Windows)</h3>
+<ol>
+<li><strong>「フローの保存場所」が見つからない</strong><ul>
+<li><strong>原因:</strong> デフォルトは <code>%USERPROFILE%\Documents\Power Automate</code> です。ユーザーフォルダが変更されている場合は、Win+Rキーで上記パスを直接開いて確認してください。</li>
+</ul>
+</li>
+<li><strong>Outlook 連携エラー「認証失敗」</strong><ul>
+<li><strong>解決:</strong> 「設定」&gt;「フローの管理」から該当フローを削除し、新しいフローを作成して再度OAuthトークンを取得し直してください。キャッシュされたトークンの破損が原因であることが多いです。</li>
+</ul>
+</li>
+<li><strong>「Web ブラウザを開く」で既定ブラウザが開かない</strong><ul>
+<li><strong>解決:</strong> Windows 11の「設定」&gt;「アプリ」&gt;「既定のアプリ」から、Power Automateが使用すべきブラウザを再登録してください。</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h2>2. macOS での実例手順</h2>
+<p>macOSでは「ショートカット」アプリを中心に、AutomatorやAppleScriptを組み合わせることで高度な自動化が可能になります。</p>
+<h3>公式仕様に基づく実例手順</h3>
+<p><strong>ツール:</strong> ショートカット (Shortcuts)、Automator、ターミナル（標準機能）</p>
+<ul>
+<li><strong>実例 A: スクリーンショットの自動整理</strong><ol>
+<li>「ショートカット」アプリを開き、「新しいショートカット」を作成します。</li>
+<li>アクションとして「画像を選択」「フォルダに移動」「ファイル名を変更（日付付き）」を順番に追加します。</li>
+<li>これにより、撮影した画像をワンタップで整理するフローが完成します。</li>
+</ol>
+</li>
+<li><strong>実例 B: GitHub の Web エディタ (github.dev) にアクセス</strong><ol>
+<li>ショートカット内で「URL を開く」アクションを使用します。</li>
+<li><code>https://github.dev/...</code> のURLを入力し、Safariで自動起動させるフローを作成します。</li>
+</ol>
+</li>
+</ul>
+<h3>標準機能の制限事項・注意点</h3>
+<ul>
+<li><strong>ファイルシステムアクセス:</strong> 「ユーザーフォルダ」への書き込みは得意ですが、「共有フォルダ」やネットワークドライブへの保存には権限エラーが出ることがあります（SIPの影響）。</li>
+<li><strong>ターミナル連携:</strong> 複雑なコマンドライン処理を行う場合は「Automator」の「AppleScript を実行する」アクションを併用する必要があります。</li>
+<li><strong>iOS/Android との違い:</strong> macOS版はiCloudで同期可能ですが、OSのバージョン差によりiPadOSからMacへ移行した際に互換性が崩れることがあるため注意が必要です。</li>
+</ul>
+<h3>よくあるトラブルと解決法 (macOS)</h3>
+<ol>
+<li><strong>「ショートカット」アプリが反応しない</strong><ul>
+<li><strong>解決:</strong> 「システム設定」&gt;「プライバシーとセキュリティ」で、ショートカットへのアクセス許可を再確認してください。</li>
+</ul>
+</li>
+<li><strong>「URL を開く」アクションがブラウザ起動しない</strong><ul>
+<li><strong>解決:</strong> 設定された「既定の Web ブラウザ」を確認してください。Safariが無効化されている場合はChrome等へ切り替える必要があります。</li>
+</ul>
+</li>
+<li><strong>画像ファイル名の文字コードエラー（日本語扱い不可）</strong><ul>
+<li><strong>解決:</strong> ファイル名に全角記号を含むと失敗することがあります。「テキストを置換」アクションを追加し、半角英数字に変換してから移動させる手順を挟むのが安全です。</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h2>3. iOS (iPhone / iPad) での実例手順</h2>
+<p>iOSでは「ショートカット」アプリが中心となります。モバイル環境では、位置情報や特定の時間と連動した自動化が非常に強力です。</p>
+<h3>公式仕様に基づく実例手順</h3>
+<p><strong>ツール:</strong> ショートカット アプリ（標準搭載）</p>
+<ul>
+<li><strong>実例 A: アプリ起動時の自動設定（Wi-Fi/Bluetooth）</strong><ol>
+<li>「ショートカット」&gt;「+」で新規作成。「場所を検出」「アプリを開く」というアクションを組み立てます。</li>
+<li>特定の場所に到着した際に、特定のアプリを立ち上げ、通知をオンにするフローを作成します。</li>
+</ol>
+</li>
+<li><strong>実例 B: GitHub の Web エディタ (github.dev) を開いてコード確認</strong><ol>
+<li>ショートカット内で「URL を開く」アクションを使用し、<code>https://github.dev/...</code> と入力します。</li>
+<li>Safariで開き、リポジトリの状況を素早く確認します。</li>
+</ol>
+</li>
+</ul>
+<h3>標準機能の制限事項・注意点</h3>
+<ul>
+<li><strong>ファイル保存:</strong> 生成したデータは「共有」メニューやiCloudドライブと連携しない限り永続的に保存できません。「メモアプリ」への書き込みも可能ですが、編集履歴は別扱いとなります。</li>
+<li><strong>GitHub の Web エディタ制限:</strong> iOS版ショートカットからは直接ローカルファイルシステムにアクセスすることは不可能です。あくまで「閲覧・コメント」の用途に限られます。</li>
+</ul>
+<h3>よくあるトラブルと解決法 (iOS)</h3>
+<ol>
+<li><strong>「URL を開く」でアプリ起動しない（Safari など）</strong><ul>
+<li><strong>解決:</strong> 標準では既定ブラウザのみ対象です。サードパーティ製ブラウザから動作しない場合は、純正のSafariを使用するようにフローを調整してください。</li>
+</ul>
+</li>
+<li><strong>「場所」トリガーで誤作動</strong><ul>
+<li><strong>解決:</strong> Wi-Fiの接続状態が不安定だと判定ミスを起こすことがあります。設定アプリでWi-Fiの正確な位置情報を確認してください。</li>
+</ul>
+</li>
+<li><strong>「共有」メニューからの保存失敗</strong><ul>
+<li><strong>解決:</strong> 「設定」&gt;「iCloud」&gt;「iCloud ドライブ」をオンにし、ショートカットとの同期権限を確認してください。</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h2>4. Android での実例手順</h2>
+<p>AndroidではGoogleアシスタントとの連携や、特定の動作に対する自動化（オートメーション）が中心となります。※機種により搭載アプリが異なる場合があります。</p>
+<h3>公式仕様に基づく実例手順</h3>
+<p><strong>ツール:</strong> アクションと自動化（または Google アシスタント連携機能）</p>
+<ul>
+<li><strong>実例 A: 特定の場所での通知・アプリ起動</strong><ol>
+<li>「アクションと自動化」の設定を開き、トリガーを「場所」に設定します。</li>
+<li>指定したエリアに入った際に、特定のアプリを自動で起動したり、リマインダーを鳴らしたりするフローを作成します。</li>
+</ol>
+</li>
+<li><strong>実例 B: GitHub の Web エディタ (github.dev) を開いてコード確認</strong><ol>
+<li>Googleアシスタントのルーチン機能を使用するか、ショートカット的なアクションを設定します。</li>
+<li>「GitHubを開く」というコマンドに対し、<code>https://github.dev/...</code> へのURLをブラウザで開くように設定します。</li>
+</ol>
+</li>
+</ul>
+<h3>標準機能の制限事項・注意点</h3>
+<ul>
+<li><strong>機種差:</strong> Androidはメーカーごとにカスタマイズが強く、標準搭載されている自動化アプリの名称やUIが異なる場合があります。</li>
+<li><strong>バックグラウンド動作:</strong> バッテリー最適化機能により、バックグラウンドでの自動実行が停止されることがあります。設定で「バッテリー最適化をオフ」にする必要があります。</li>
+</ul>
+<h3>よくあるトラブルと解決法 (Android)</h3>
+<ol>
+<li><strong>自動化が実行されない（通知が来ない）</strong><ul>
+<li><strong>解決:</strong> 「設定」&gt;「アプリ」から該当の自動化アプリを選択し、「バッテリー制限なし」または「バックグラウンドデータ許可」をオンにしてください。</li>
+</ul>
+</li>
+<li><strong>GoogleアシスタントがURLを認識しない</strong><ul>
+<li><strong>解決:</strong> アシスタントの設定から、特定のWebサイトへのアクセス権限を許可するか、ルーチン機能で正確なURLを指定してください。</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h2>よくあるトラブルと解決チェックリスト</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">トラブル内容</th>
+<th style="text-align: left;">原因の可能性</th>
+<th style="text-align: left;">対処法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>フローが途中で止まる</strong></td>
+<td style="text-align: left;">権限不足（ファイルアクセス等）</td>
+<td style="text-align: left;">OSの設定から「プライバシー」や「ファイル共有」の許可を再確認する。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Webブラウザが開かない</strong></td>
+<td style="text-align: left;">既定ブラウザの設定ミス</td>
+<td style="text-align: left;">システム設定から、使用したいブラウザ（Edge/Safari等）を既定に再設定する。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>認証エラーが出る</strong></td>
+<td style="text-align: left;">トークンの期限切れ・破損</td>
+<td style="text-align: left;">フローを一度削除し、最初から作り直して再度ログイン（OAuth認証）を行う。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>自動化が反応しない</strong></td>
+<td style="text-align: left;">バッテリー最適化の影響</td>
+<td style="text-align: left;">OSの「省電力モード」や「アプリのバックグラウンド制限」をオフにする。</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>まとめ：快適なマルチOS環境を作るポイント</h2>
+<p>今回紹介した標準ツールを活用することで、プログラミングスキルがなくても日常のルーチン作業を大幅に削減できます。しかし、自動化で生まれた「余白の時間」を最大限に活かすためには、ハードウェアと周辺環境の整備も重要です。</p>
+<p>効率的なマルチOS環境を構築するなら、以下の要素を組み合わせるのがおすすめです。</p>
+<ul>
+<li><strong>メカニカルキーボード:</strong> 自動化で削減した作業時間を、より正確で心地よいタイピング体験へ。打鍵感の良さは集中力を高め、連打による疲労を軽減します。</li>
+<li><strong>ウルトラワイドモニター:</strong> WindowsやmacOSでのマルチタスク効率を最大化します。左側にPower Automateの実行ログ、右側にGitHubのWebエディタを表示するような環境は、生産性を劇的に向上させます。</li>
+<li><strong>技術書・VPS・クラウド:</strong> 自動化で浮いた時間を使って新しいスキルを学ぶなら、良質な技術書や、いつでもアクセスできるVPS・クラウド環境を用意しましょう。</li>
+</ul>
+<p>「自動化」は手段であり、目的は「よりクリエイティブな活動に集中すること」です。まずは今日から、一つだけ小さなルーチンを標準ツールで自動化することから始めてみてください。</p>
+<hr />
+<h2>参考文献・公式ドキュメント（一次情報ソース）</h2>
+<p>本記事の手順・仕様は以下の各OSおよびツールの公式ドキュメントに基づいています。OSアップデートによりメニュー名称や挙動が変わる場合があるため、最新仕様の確認にもご活用ください。</p>
+<ul>
+<li><strong>[Windows / macOS]</strong> <a href="https://docs.github.com/ja/codespaces/the-githubdev-web-based-editor">GitHubからの Web 用 VS Code の使用 (github.dev) - GitHubドキュメント</a></li>
+<li><strong>[共通]</strong> <a href="https://docs.github.com/ja/repositories/working-with-files/managing-files/editing-files">GitHub上でファイルを編集する - GitHubドキュメント</a></li>
+<li><strong>[iOS / Android]</strong> <a href="https://docs.github.com/ja/get-started/using-github/github-mobile">GitHub Mobile 公式ガイド - GitHubドキュメント</a></li>
+</ul>
+    </article>
+  </main>
+  <footer>Generated with Local Ollama (qwen3.5 / gemma4) &amp; Draw Things (FLUX.2 klein 4B)</footer>
+</body>
+</html>
