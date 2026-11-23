@@ -526,5 +526,135 @@
       "手書き スケッチ 共有",
       "フリーボード ホワイトボード"
     ]
+  },
+  {
+    "id": "art41-shortcuts-automator-routine",
+    "article_num": 41,
+    "cat_num": 7,
+    "category": "プログラミング・ソフトウェア開発",
+    "task_topic": "毎日の定型作業をプログラミング不要で自動化する標準ツール（Power Automate・ショートカット・ルーチン）の実例",
+    "title": "プログラミング不要で毎日を時短！標準自動化ツール活用の実例｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "作業 自動化 初心者",
+      "ショートカット 自動化",
+      "ルーチン 設定 Android"
+    ]
+  },
+  {
+    "id": "art42-browser-profile-work-private",
+    "article_num": 42,
+    "cat_num": 8,
+    "category": "Web制作・ブログ・デジタルマーケティング",
+    "task_topic": "仕事用とプライベート用を分けるブラウザのプロファイル管理と拡張機能トラブルの切り分け手順",
+    "title": "仕事と私用を分けるブラウザ「プロファイル」管理と拡張機能トラブル対策｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "Chrome プロファイル 切り替え",
+      "Safari プロファイル",
+      "拡張機能 重い 対処"
+    ]
+  },
+  {
+    "id": "art43-spreadsheet-graph-chart-mobile",
+    "article_num": 43,
+    "cat_num": 9,
+    "category": "データ分析・科学計算・AI活用",
+    "task_topic": "Excel・Googleスプレッドシート・Numbersで表から見やすいグラフを作成しスマホで共有・修正する方法",
+    "title": "表計算ソフトでグラフ作成＆スマホでの確認・修正実例｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "スプレッドシート グラフ 作り方",
+      "Excel スマホ 編集",
+      "Numbers グラフ"
+    ]
+  },
+  {
+    "id": "art44-battery-health-power-saving",
+    "article_num": 44,
+    "cat_num": 10,
+    "category": "システム管理・OS設定・メンテナンス",
+    "task_topic": "PC・スマホのバッテリー劣化を防ぐ充電上限設定と電池を異常消費するアプリの見つけ方",
+    "title": "バッテリーの減りが早い原因特定と劣化を防ぐ充電設定の実例｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "バッテリー 減りが早い",
+      "充電 上限 80%",
+      "電池 消費 アプリ 確認"
+    ]
+  },
+  {
+    "id": "art45-tethering-hotspot-connection-fix",
+    "article_num": 45,
+    "cat_num": 11,
+    "category": "ネットワーク・サーバー・インフラ構築",
+    "task_topic": "スマホのテザリング（インターネット共有）でPCを繋ぐ手順と繋がらない・切れる時の解決法",
+    "title": "スマホのテザリング（インターネット共有）接続手順と繋がらない時の解決実例｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "テザリング 繋がらない",
+      "インターネット共有 iPhone",
+      "USBテザリング 方法"
+    ]
+  },
+  {
+    "id": "art46-public-wifi-vpn-privacy-check",
+    "article_num": 46,
+    "cat_num": 12,
+    "category": "セキュリティ・プライバシー対策",
+    "task_topic": "カフェやホテルのフリーWi-Fiを安全に使う標準設定とログイン画面が出ない時の対処法",
+    "title": "フリーWi-Fiを安全に使うプライバシー設定とログイン画面が出ない時の対処｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "フリーWi-Fi 安全 設定",
+      "Wi-Fi ログイン画面 出ない",
+      "プライベートWi-Fiアドレス"
+    ]
+  },
+  {
+    "id": "art47-deleted-file-trash-recovery",
+    "article_num": 47,
+    "cat_num": 13,
+    "category": "ファイル管理・バックアップ・データ復旧",
+    "task_topic": "誤って削除した写真や書類をごみ箱・最近削除した項目・クラウド履歴から復元する手順",
+    "title": "誤削除した写真・書類をごみ箱やクラウド履歴から復元する緊急ガイド｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "削除 ファイル 復元",
+      "最近削除した項目 復元",
+      "ごみ箱 空にした 対処"
+    ]
+  },
+  {
+    "id": "art48-wireless-printer-airprint-setup",
+    "article_num": 48,
+    "cat_num": 14,
+    "category": "ハードウェア・周辺機器・IoT連携",
+    "task_topic": "自宅Wi-FiプリンターへPC・スマホからワイヤレス印刷する設定と「オフライン」エラーの直し方",
+    "title": "Wi-Fiプリンターへのワイヤレス印刷設定と「オフライン」エラー解決実例｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "プリンター オフライン 直し方",
+      "AirPrint 印刷 できない",
+      "スマホ 印刷 設定"
+    ]
+  },
+  {
+    "id": "art49-ebook-manga-library-sync",
+    "article_num": 49,
+    "cat_num": 15,
+    "category": "エンターテインメント・趣味",
+    "task_topic": "電子書籍・自炊PDFの読書位置同期と端末ストレージを圧迫しない管理テクニック",
+    "title": "電子書籍・PDF読書の全端末同期とストレージ節約の管理実例｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "電子書籍 同期 できない",
+      "Kindle 書籍 端末容量",
+      "PDF 読書 アプリ"
+    ]
+  },
+  {
+    "id": "art50-focus-mode-notification-control",
+    "article_num": 50,
+    "cat_num": 16,
+    "category": "学習・教育・自己啓発",
+    "task_topic": "勉強や仕事に集中するための「集中モード／おやすみモード」通知制御と解除忘れ防止のコツ",
+    "title": "勉強・仕事に集中する「集中モード／通知制御」設定と着信逃し防止の実例｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "集中モード 使い方",
+      "通知 オフ 設定",
+      "おやすみモード 解除"
+    ]
   }
 ]
