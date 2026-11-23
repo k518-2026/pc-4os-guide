@@ -29,10 +29,11 @@ python -m src.main -n 1 --push
 python -m src.main -n 1 --category 11
 ```
 
-## 書き溜め済み記事一覧（全 35 本 / 最終更新: 2026-11-23 16:38 JST）
+## 書き溜め済み記事一覧（全 36 本 / 最終更新: 2026-11-23 16:43 JST）
 
 | No. | 17分類カテゴリ | 記事タイトル（Markdown） | 挿絵 | 生成日 |
 | :---: | :--- | :--- | :---: | :---: |
+| #36 | 分類02: コミュニケーション・情報共有 | [Web会議（Zoom/Teams/Meet）でマイク・カメラが使えない時の解決実例｜Windows・macOS・iOS・Android](content/2026-11-23_art36_web_meeting_mic_camera_trouble.md) | あり | 2026-11-23 |
 | #35 | 分類01: 文書作成・オフィス業務・事務作業 | [写真・スクショから文字をコピー（OCR文字認識）する標準機能の実例｜Windows・macOS・iOS・Android](content/2026-11-23_art35_text_ocr_image_to_text.md) | あり | 2026-11-23 |
 | #34 | 分類17: 生活・行政手続き・家計・資産管理 | [カレンダー予定の家族共有・全端末同期と通知が来ない時の対処実例｜Windows・macOS・iOS・Android](content/2026-11-23_art34_household_budget_calendar_sync.md) | あり | 2026-11-23 |
 | #33 | 分類16: 学習・教育・自己啓発 | [Web翻訳・カメラ翻訳・音声翻訳の使い分けとオフライン翻訳の実例｜Windows・macOS・iOS・Android](content/2026-11-23_art33_language_translation_ocr_camera.md) | あり | 2026-11-23 |
