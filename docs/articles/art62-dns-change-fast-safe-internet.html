@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>サイトが開けない・遅い時のDNS設定（1.1.1.1 / 8.8.8.8）変更実例｜Windows・macOS・iOS・Android | PC 4OS実例ガイド</title>
+  <style>
+:root {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --muted: #475569;
+  --accent: #0284c7;
+  --accent-soft: #e0f2fe;
+  --border: #e2e8f0;
+  --code-bg: #0f172a;
+  --code-text: #e2e8f0;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Noto Sans JP", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+}
+header.site-header {
+  background: linear-gradient(135deg, #0f172a 0%, #0369a1 100%);
+  color: #fff;
+  padding: 2.2rem 1.25rem;
+}
+header.site-header .inner { max-width: 980px; margin: 0 auto; }
+header.site-header h1 { margin: 0 0 0.4rem; font-size: 1.75rem; }
+header.site-header p { margin: 0; opacity: 0.9; font-size: 0.96rem; }
+main { max-width: 980px; margin: 2rem auto; padding: 0 1.25rem 3rem; }
+.badge {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: var(--accent-soft);
+  color: #0369a1;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1.25rem;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08); }
+.card img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; display: block; background: #e2e8f0; }
+.card-body { padding: 1rem 1.1rem 1.2rem; flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+.card-title { font-size: 1.02rem; font-weight: 700; margin: 0; line-height: 1.45; }
+.card-meta { font-size: 0.82rem; color: var(--muted); margin-top: auto; }
+article.post {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 2rem;
+}
+article.post img.eyecatch {
+  width: 100%;
+  max-height: 460px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+}
+article.post h1 { font-size: 1.65rem; line-height: 1.35; margin-top: 0; }
+article.post h2 {
+  font-size: 1.3rem;
+  margin-top: 2.1rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 2px solid var(--accent-soft);
+}
+article.post h3 { font-size: 1.08rem; margin-top: 1.4rem; }
+article.post table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.2rem 0;
+  font-size: 0.92rem;
+  display: block;
+  overflow-x: auto;
+}
+article.post th, article.post td {
+  border: 1px solid var(--border);
+  padding: 0.6rem 0.8rem;
+  text-align: left;
+}
+article.post th { background: #f1f5f9; font-weight: 700; }
+article.post pre {
+  background: var(--code-bg);
+  color: var(--code-text);
+  padding: 1rem 1.15rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+article.post code {
+  background: #f1f5f9;
+  padding: 0.15rem 0.38rem;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+article.post pre code { background: transparent; padding: 0; color: inherit; }
+article.post blockquote {
+  margin: 1.2rem 0;
+  padding: 0.8rem 1.1rem;
+  border-left: 4px solid var(--accent);
+  background: #f0f9ff;
+  border-radius: 0 8px 8px 0;
+}
+.back-link { display: inline-block; margin-bottom: 1rem; color: var(--accent); text-decoration: none; font-weight: 600; }
+.filter-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.15rem 1.25rem;
+  margin-bottom: 1.5rem;
+}
+.filter-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) auto;
+  gap: 0.9rem;
+  align-items: end;
+}
+.filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.filter-field label {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.filter-field input[type="search"],
+.filter-field select {
+  font: inherit;
+  font-size: max(1rem, 1em);
+  min-height: 48px;
+  padding: 0.55rem 0.85rem;
+  border: 1.5px solid #767676;
+  border-radius: 8px;
+  background: #fff;
+  color: var(--text);
+  width: 100%;
+}
+.filter-field input[type="search"]:focus-visible,
+.filter-field select:focus-visible,
+.filter-actions button:focus-visible {
+  outline: 3px solid #0284c7;
+  outline-offset: 2px;
+}
+.filter-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+.filter-actions button {
+  font: inherit;
+  font-size: max(1rem, 0.95em);
+  font-weight: 600;
+  min-height: 48px;
+  padding: 0 1.05rem;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+}
+.btn-primary {
+  background: #0369a1;
+  color: #fff;
+}
+.btn-primary:hover { background: #075985; }
+.btn-secondary {
+  background: #f1f5f9;
+  color: var(--text);
+  border-color: #94a3b8;
+}
+.btn-secondary:hover { background: #e2e8f0; }
+.results-status {
+  color: var(--muted);
+  font-size: 0.92rem;
+  margin: 0 0 1.1rem;
+}
+.empty-state {
+  background: var(--surface);
+  border: 1px dashed #94a3b8;
+  border-radius: 12px;
+  padding: 2rem 1.25rem;
+  text-align: center;
+  color: var(--muted);
+}
+.card[hidden],
+.empty-state[hidden] { display: none; }
+footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2rem 1rem; }
+@media (max-width: 720px) {
+  .filter-form { grid-template-columns: 1fr; }
+  .filter-actions { width: 100%; }
+  .filter-actions button { flex: 1; }
+}
+@media (max-width: 640px) {
+  article.post { padding: 1.2rem; }
+}
+</style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="inner">
+      <h1>PC 4OS実例ガイド</h1>
+      <p>Windows・macOS・iOS・Android の実践比較＆トラブル解決アーカイブ</p>
+    </div>
+  </header>
+  <main>
+    <a class="back-link" href="../index.html">← 記事一覧へ戻る</a>
+    <article class="post">
+      <p><span class="badge">#62｜分類11: ネットワーク・サーバー・インフラ構築</span> <small style="color:#64748b;margin-left:0.5rem;">2026-11-24</small></p>
+      <img class="eyecatch" src="../images/2026-11-24_art62_dns_change_fast_safe_internet.png" alt="サイトが開けない・遅い時のDNS設定（1.1.1.1 / 8.8.8.8）変更実例｜Windows・macOS・iOS・Android">
+      <h1>サイトが開けない・遅い時のDNS設定（1.1.1.1 / 8.8.8.8）変更実例｜Windows・macOS・iOS・Android</h1>
+<p>「特定のWebサイトだけがどうしても開かない」「検索結果がいつもと違う気がする」「動画の読み込みが極端に遅い」……。そんなトラブルに直面した際、意外な落とし穴となっているのが<strong>DNS（Domain Name System）</strong>の設定です。</p>
+<p>インターネット上の住所（IPアドレス）を名前（URL）に変換する「電話帳」の役割を果たすDNSサーバーですが、プロバイダー（ISP）が提供する標準のDNSサーバーは、時として混雑や不具合でレスポンスが低下することがあります。</p>
+<p>この記事では、世界的に信頼性の高い公共DNSである<strong>Cloudflare（1.1.1.1）</strong>や<strong>Google（8.8.8.8）</strong>へ設定を変更し、ネットワークの安定性を向上させるための具体的な手順を、Windows、macOS、iOS、Androidの4つの主要OSごとに徹底解説します。</p>
+<hr />
+<h2>4OS比較早見表</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">OS</th>
+<th style="text-align: left;">設定場所の概要</th>
+<th style="text-align: left;">推奨される変更方法</th>
+<th style="text-align: left;">特徴・注意点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Windows 11</strong></td>
+<td style="text-align: left;">ネットワークとインターネット設定</td>
+<td style="text-align: left;">GUI（コントロールパネル経由）</td>
+<td style="text-align: left;">IPv4/IPv6の両方に対応。コマンドラインも可。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>macOS</strong></td>
+<td style="text-align: left;">システム設定 ＞ ネットワーク</td>
+<td style="text-align: left;">GUI（詳細ボタン内）</td>
+<td style="text-align: left;">シンプルなGUI操作で変更可能。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>iOS</strong></td>
+<td style="text-align: left;">設定 ＞ Wi-Fi</td>
+<td style="text-align: left;">個別Wi-Fiプロファイル</td>
+<td style="text-align: left;">その端末のみに適用される。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Android</strong></td>
+<td style="text-align: left;">設定 ＞ Wi-Fi</td>
+<td style="text-align: left;">静的IP設定 または プライベートDNS</td>
+<td style="text-align: left;">機種により「静的IP」への切り替えが必要な場合あり。</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>1. Windows 11 での実例手順</h2>
+<p>Windowsでは、ネットワークアダプタのプロパティから直接指定する方法が最も確実です。</p>
+<h3>公式仕様に基づく正確な実例手順</h3>
+<p><strong>【GUI メソッド（推奨）】</strong><br />
+1. <code>Windows キー + I</code> を押し、「設定」を開きます。<br />
+2. 「ネットワークとインターネット」を選択し、現在接続中の「Wi-Fi」または「イーサネット」をクリックします。<br />
+3. 画面上部の「プロパティ」ボタンを押します。<br />
+4. 「DNSサーバー割り当て」の横にある「編集」ボタンをクリックします。<br />
+5. 「自動 (DHCP)」から<strong>「手動」</strong>に変更し、<strong>IPv4</strong>をオンにします。<br />
+6. <strong>優先 DNS</strong>: <code>1.1.1.1</code> / <strong>代替 DNS</strong>: <code>8.8.8.8</code> を入力して保存します。</p>
+<p><strong>【コマンドラインメソッド（管理者権限）】</strong><br />
+※接続名（例: "Wi-Fi"）は環境に合わせて変更してください。</p>
+<pre><code class="language-cmd">netsh interface ip set dns &quot;Wi-Fi&quot; static 1.1.1.1
+netsh interface ip add dns &quot;Wi-Fi&quot; 8.8.8.8 index=2
+</code></pre>
+<h3>標準機能の制限事項・非対応項目</h3>
+<ul>
+<li><strong>IPv6 の同時設定</strong>: GUIでは可能ですが、<code>netsh</code>コマンドで両方を一括で設定する簡易なワンライナーは存在しません。</li>
+<li><strong>動的 IP 環境での永続化</strong>: ルーターのDHCPサーバーが強力にDNSを上書きする場合、PC側の設定変更だけでは効果が持続しないことがあります。</li>
+</ul>
+<h3>よくあるトラブルと解決法（Windows）</h3>
+<ol>
+<li><strong>「DNS サーバーアドレス」を入力しても反映されない</strong><ul>
+<li><strong>原因</strong>: IPv4プロトコルが選択されていないか、DHCP経由の取得が強制されている。</li>
+<li><strong>解決</strong>: 「使用可能な DNS サーバーアドレスの指定」にチェックが入っているか確認し、再起動してください。</li>
+</ul>
+</li>
+<li><strong>「ipconfig /flushdns」としても直らない</strong><ul>
+<li><strong>原因</strong>: OSのキャッシュではなく、ルーター側のDHCPスコープが古いDNSを配信している。</li>
+<li><strong>解決</strong>: ルーターの設定画面から「DHCPサーバー」→「DNSアドレス設定」で <code>1.1.1.1</code> に変更するのが最も根本的な解決策です。</li>
+</ul>
+</li>
+<li><strong>「特定サイトは開けるが、検索結果だけが違う」</strong><ul>
+<li><strong>原因</strong>: DNSポイズニングやキャッシュの不一致。</li>
+<li><strong>解決</strong>: 一度「自動」に戻して <code>ipconfig /flushdns</code> を実行し、ブラウザを再起動してください。</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h2>2. macOS での実例手順</h2>
+<p>macOSは直感的なGUIで設定が可能ですが、ルーターとの兼ね合いに注意が必要です。</p>
+<h3>公式仕様に基づく正確な実例手順</h3>
+<p><strong>【GUI メソッド（推奨）】</strong><br />
+1. Appleマーク ＞ 「システム設定」＞「ネットワーク」を開きます。<br />
+2. 使用中の「Wi-Fi」または「Ethernet」を選択し、「詳細...」ボタンを押します。<br />
+3. 左側のメニューから「DNS」タブを選択します。<br />
+4. 「DNSサーバー」欄の「＋」ボタンを押し、<code>1.1.1.1</code> と <code>8.8.8.8</code> を追加します。<br />
+5. 「適用」をクリックします。</p>
+<p><strong>【コマンドラインメソッド】</strong></p>
+<pre><code class="language-bash">sudo networksetup -setdnsservers &quot;Wi-Fi&quot; 8.8.8.8 1.1.1.1
+</code></pre>
+<h3>標準機能の制限事項・非対応項目</h3>
+<ul>
+<li><strong>IPv6 の優先順位制御</strong>: GUIで同時に設定できても、OSがどちらを優先するかは手動指定できません。</li>
+<li><strong>Secure DNS (DoH) との違い</strong>: 本手順は「DNSレゾルバー」の変更です。Safari等の「プライバシーとセキュリティ」にある「Secure DNS」とは別機能であることに注意してください。</li>
+</ul>
+<h3>よくあるトラブルと解決法（macOS）</h3>
+<ol>
+<li><strong>「詳細...」ボタンがグレーアウトしている</strong><ul>
+<li><strong>原因</strong>: ネットワークアダプタが無効、またはシステム拡張権限不足。</li>
+<li><strong>解決</strong>: 「ネットワーク」画面で該当接続を一度オフにしてから再度オンにし、設定を試みてください。</li>
+</ul>
+</li>
+<li><strong>「DNS サーバーフィールド」に入力しても保存されない</strong><ul>
+<li><strong>原因</strong>: サードパーティ製ファイアウォール（Little Snitch等）の干渉。</li>
+<li><strong>解決</strong>: セキュリティソフトを一時停止し、再度設定してください。改善しない場合はネットワーク接続を一度削除して再作成します。</li>
+</ul>
+</li>
+<li><strong>「Wi-Fi を切替ると DNS が元に戻る」</strong><ul>
+<li><strong>原因</strong>: ルーターのDHCPサーバーが常にISPのアドレスを配信しているため。</li>
+<li><strong>解決</strong>: ルーター側の「DHCP」設定からDNSを固定値に変更するか、PC側で「自動」ではなく「手動」を維持する必要があります。</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h2>3. iOS（iPhone / iPad）での実例手順</h2>
+<p>iOSではWi-Fiネットワークごとに個別の設定を行う形になります。</p>
+<h3>公式仕様に基づく正確な実例手順</h3>
+<p><strong>【GUI メソッド（推奨）】</strong><br />
+1. 「設定」アプリ ＞「Wi-Fi」を開きます。<br />
+2. 接続中のネットワーク名の右側にある「i」マークをタップします。<br />
+3. 「DNS」を選択し、「自動」から「手動」に変更します。<br />
+4. リストにある既存のアドレスを削除（または編集）し、<code>1.1.1.1</code> を追加します。</p>
+<h3>標準機能の制限事項・非対応項目</h3>
+<ul>
+<li><strong>ルーター全体への適用不可</strong>: iPhoneの設定変更は、その端末のみが対象です。家庭内の他の機器には影響しません。</li>
+<li><strong>IPv6 の同時指定</strong>: iOSのDNS設定画面では基本的にIPv4アドレスしか入力できません。</li>
+</ul>
+<h3>よくあるトラブルと解決法（iOS）</h3>
+<ol>
+<li><strong>「DNS」メニューが表示されない</strong><ul>
+<li><strong>原因</strong>: Wi-Fiに接続されていない、または特定のVPN/プロキシ環境下にある。</li>
+<li><strong>解決</strong>: 一度Wi-Fiをオフにし、再接続してから「i」マークを確認してください。</li>
+</ul>
+</li>
+<li><strong>「DNS サーバーを追加」しても入力できない</strong><ul>
+<li><strong>原因</strong>: iOSのUI不具合やロック状態。</li>
+<li><strong>解決</strong>: iPhoneを再起動し、再度設定を行ってください。</li>
+</ul>
+</li>
+<li><strong>「サイトは開けるが検索結果が違う」</strong><ul>
+<li><strong>原因</strong>: Safariのキャッシュやアプリ内ブラウザの影響。</li>
+<li><strong>解決</strong>: Safariの「共有」ボタンから「コンテンツを消去」を実行してください。</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h2>4. Android での実例手順</h2>
+<p>Androidは機種（Pixel, Galaxy等）によりUIが異なりますが、基本構造は共通しています。</p>
+<h3>公式仕様に基づく正確な実例手順</h3>
+<p><strong>【GUI メソッド（推奨）】</strong><br />
+1. 「設定」アプリ ＞「ネットワークとインターネット」＞「Wi-Fi」を開きます。<br />
+2. 接続中のネットワーク名の横の歯車アイコンをタップします。<br />
+3. 「IP設定」または「DNS」項目を選択し、「静的（Static）」に変更します。<br />
+4. DNSサーバー欄に <code>1.1.1.1</code> を入力します。</p>
+<h3>標準機能の制限事項・非対応項目</h3>
+<ul>
+<li><strong>IPv6 の同時指定</strong>: 多くの機種では、DNSフィールドにはIPv4のみ入力可能です。</li>
+<li><strong>「静的 IP」と「動的 IP」の混在不可</strong>: 「静的IP」を選択するとサブネットマスクやゲートウェイも入力が必要になります。これらを正しく設定できない場合は、標準機能のみでは「DNS変更のみ」に留めるのが難しい場合があります。</li>
+</ul>
+<h3>よくあるトラブルと解決法（Android）</h3>
+<ol>
+<li><strong>「静的 IP」を選択すると他の項目も入力が必要になるが、保存できない</strong><ul>
+<li><strong>原因</strong>: サブネットマスクやゲートウェイを正しく入力していない。</li>
+<li><strong>解決</strong>: 家庭用ルーター環境ではこれらを省略してDNSだけ変えることが難しいため、ルーター側の設定でDNSを変更するのが最もスムーズです。</li>
+</ul>
+</li>
+<li><strong>「プライベートDNS」機能との競合</strong><ul>
+<li><strong>原因</strong>: Androidの「プライベートDNS（DoT）」が有効になっていると、Wi-Fi個別のDNS設定が無視されることがあります。</li>
+<li><strong>解決</strong>: 「設定」＞「ネットワークとインターネット」＞「プライベートDNS」をオフにするか、そこで直接 <code>1.1.1.1</code> を指定してください。</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h2>よくあるトラブルと解決チェックリスト</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">トラブル現象</th>
+<th style="text-align: left;">原因の可能性</th>
+<th style="text-align: left;">対処法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>設定変更後、反映されない</strong></td>
+<td style="text-align: left;">OSやブラウザに古いキャッシュが残っている</td>
+<td style="text-align: left;"><code>ipconfig /flushdns</code> (Win) やブラウザのキャッシュクリアを実行。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>特定のサイトだけ開かない</strong></td>
+<td style="text-align: left;">DNSサーバー側の障害、またはISPの制限</td>
+<td style="text-align: left;">別の公共DNS（8.8.8.8など）へ切り替えて確認。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>設定が勝手に「自動」に戻る</strong></td>
+<td style="text-align: left;">ルーターのDHCPサーバーが上書きしている</td>
+<td style="text-align: left;">PC/スマホ側ではなく、ルーター自体のDNS設定を変更する。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>速度が変わらない</strong></td>
+<td style="text-align: left;">DNS以外の要因（回線混雑・Wi-Fi干渉）</td>
+<td style="text-align: left;">Wi-Fi 6対応ルーターやLANケーブルの規格を確認する。</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>まとめ：快適なマルチOS環境を作るポイント</h2>
+<p>DNSの設定変更は、Webブラウジングの「第一歩」をスムーズにするための非常に有効な手段です。しかし、これだけで全てのネットワークトラブルが解決するわけではありません。</p>
+<p>より快適で安定したマルチOS環境（Windows, Mac, iPhone, Android）を構築するためには、以下のインフラ整備も併せて検討することをお勧めします。</p>
+<ul>
+<li><strong>Wi-Fi 6/6E/7ルーター</strong>: DNSの応答速度だけでなく、デバイスの同時接続数や通信の安定性を劇的に向上させます。</li>
+<li><strong>家庭用NAS</strong>: ネットワーク内のファイル共有（SMB）を高速化し、OS間のデータ連携をスムーズにします。</li>
+<li><strong>LANケーブル &amp; スイッチングハブ</strong>: PCやゲーム機など、安定性が求められるデバイスには有線接続が必須です。Cat6A以上の規格のケーブルと、ギガビット対応のスイッチングハブを導入することで、DNS設定の恩恵を最大限に引き出せます。</li>
+</ul>
+<p>まずは今回紹介した「1.1.1.1 / 8.8.8.8」への変更から始めて、ストレスのないインターネット環境を手に入れましょう。</p>
+<hr />
+<h2>参考文献・公式ドキュメント（一次情報ソース）</h2>
+<p>本記事の手順・仕様は以下の各OSおよびツールの公式ドキュメントに基づいています。OSアップデートによりメニュー名称や挙動が変わる場合があるため、最新仕様の確認にもご活用ください。</p>
+<ul>
+<li><strong>[Windows]</strong> <a href="https://support.microsoft.com/ja-jp/windows/windows-%E3%81%A7%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF%E3%82%92%E4%BB%8B%E3%81%97%E3%81%9F%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E5%85%B1%E6%9C%89-b58704b2-f53a-4b82-7bc1-80f9994725bf">Windows でネットワークを介したファイル共有（SMB） - Microsoft サポート</a></li>
+<li><strong>[macOS]</strong> <a href="https://support.apple.com/ja-jp/guide/mac-help/mchlp1140/mac">Macを共有コンピュータおよびサーバへ接続する（SMB） - Apple サポート (日本)</a></li>
+<li><strong>[iOS]</strong> <a href="https://support.apple.com/ja-jp/guide/iphone/iph8d8f0f1a0/ios">iPhoneユーザガイド（「ファイル」アプリからサーバへ接続） - Apple サポート (日本)</a></li>
+<li><strong>[Android]</strong> <a href="https://support.google.com/android/?hl=ja">Android ヘルプ - Google サポート</a></li>
+</ul>
+    </article>
+  </main>
+  <footer>Generated with Local Ollama (qwen3.5 / gemma4) &amp; Draw Things (FLUX.2 klein 4B)</footer>
+</body>
+</html>
