@@ -29,10 +29,11 @@ python -m src.main -n 1 --push
 python -m src.main -n 1 --category 11
 ```
 
-## 書き溜め済み記事一覧（全 60 本 / 最終更新: 2026-11-24 13:37 JST）
+## 書き溜め済み記事一覧（全 61 本 / 最終更新: 2026-11-24 13:59 JST）
 
 | No. | 17分類カテゴリ | 記事タイトル（Markdown） | 挿絵 | 生成日 |
 | :---: | :--- | :--- | :---: | :---: |
+| #61 | 分類10: システム管理・OS設定・メンテナンス | [PC・スマホの動作が重い・起動が遅い時のスタートアップ整理＆軽量化実例｜Windows・macOS・iOS・Android](content/2026-11-24_art61_startup_apps_slow_boot_fix.md) | あり | 2026-11-24 |
 | #60 | 分類09: データ分析・科学計算・AI活用 | [PDFの表や紙の明細をExcel・スプレッドシートへ取り込んで集計する実例｜Windows・macOS・iOS・Android](content/2026-11-24_art60_pdf_table_to_spreadsheet_extract.md) | あり | 2026-11-24 |
 | #59 | 分類08: Web制作・ブログ・デジタルマーケティング | [SNSシェア時にブログのアイキャッチ（OGP）が出ない・更新されない時の解決実例｜Windows・macOS・iOS・Android](content/2026-11-24_art59_blog_ogp_thumbnail_cache_fix.md) | あり | 2026-11-24 |
 | #58 | 分類07: プログラミング・ソフトウェア開発 | [2つの文章・原稿の違いを一瞬で見抜く「差分比較（Diff）」の実例｜Windows・macOS・iOS・Android](content/2026-11-24_art58_text_diff_compare_changes.md) | あり | 2026-11-24 |
