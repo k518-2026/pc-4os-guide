@@ -786,5 +786,135 @@
       "画像 表 スプレッドシート",
       "写真からデータ 取り込み"
     ]
+  },
+  {
+    "id": "art61-startup-apps-slow-boot-fix",
+    "article_num": 61,
+    "cat_num": 10,
+    "category": "システム管理・OS設定・メンテナンス",
+    "task_topic": "PCやスマホの起動・動作が重くなった時のスタートアップ整理・バックグラウンドアプリ見直し手順",
+    "title": "PC・スマホの動作が重い・起動が遅い時のスタートアップ整理＆軽量化実例｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "PC 動作 重い 改善",
+      "スタートアップ 無効化",
+      "スマホ 動作 軽くする"
+    ]
+  },
+  {
+    "id": "art62-dns-change-fast-safe-internet",
+    "article_num": 62,
+    "cat_num": 11,
+    "category": "ネットワーク・サーバー・インフラ構築",
+    "task_topic": "Webサイトの表示が遅い・一部サイトが開けない時のDNS設定（1.1.1.1 / 8.8.8.8）変更と戻し方",
+    "title": "サイトが開けない・遅い時のDNS設定（1.1.1.1 / 8.8.8.8）変更実例｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "DNS 変更 方法",
+      "1.1.1.1 8.8.8.8 設定",
+      "特定サイト 開けない 原因"
+    ]
+  },
+  {
+    "id": "art63-phishing-spam-mail-sms-block",
+    "article_num": 63,
+    "cat_num": 12,
+    "category": "セキュリティ・プライバシー対策",
+    "task_topic": "偽サイト・フィッシングメール・迷惑SMSを見抜いて標準機能でブロック・報告する安全対策手順",
+    "title": "フィッシング詐欺・迷惑メール／SMSを見抜いてブロックする標準セキュリティ実例｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "迷惑SMS ブロック",
+      "フィッシングメール 見分け方",
+      "詐欺サイト 対策"
+    ]
+  },
+  {
+    "id": "art64-device-migration-new-pc-phone",
+    "article_num": 64,
+    "cat_num": 13,
+    "category": "ファイル管理・バックアップ・データ復旧",
+    "task_topic": "新しいPC・スマホへ買い替えた時の公式データ移行ツールと失敗しない事前チェック手順",
+    "title": "新しいPC・スマホ買い替え時の公式データ移行＆失敗しない事前チェック実例｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "スマホ データ移行 方法",
+      "PC 買い替え 引っ越し",
+      "LINE 2段階認証 引き継ぎ"
+    ]
+  },
+  {
+    "id": "art65-usb-c-cable-hub-not-charging",
+    "article_num": 65,
+    "cat_num": 14,
+    "category": "ハードウェア・周辺機器・IoT連携",
+    "task_topic": "USB-Cケーブルやハブで充電が遅い・データ転送や画面出力ができない原因（規格差）と解決法",
+    "title": "USB-Cケーブル・ハブで充電や画面出力ができない原因と正しい選び方実例｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "USB-C 充電 遅い",
+      "USB-C 映像出力 できない",
+      "PD ケーブル 違い"
+    ]
+  },
+  {
+    "id": "art66-photo-slideshow-album-family",
+    "article_num": 66,
+    "cat_num": 15,
+    "category": "エンターテインメント・趣味",
+    "task_topic": "旅行やイベントの写真を家族・友人と画質を落とさず共有アルバム・スライドショーにする方法",
+    "title": "旅行写真を画質劣化なしで家族共有！共有アルバム＆スライドショー活用実例｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "写真 共有 アルバム",
+      "Googleフォト 共有",
+      "iCloud 共有アルバム 違い"
+    ]
+  },
+  {
+    "id": "art67-text-to-speech-read-aloud",
+    "article_num": 67,
+    "cat_num": 16,
+    "category": "学習・教育・自己啓発",
+    "task_topic": "長いWeb記事やPDF・電子書籍を耳で聴くためのOS標準「画面読み上げ（音声読み上げ）」活用法",
+    "title": "長文記事やPDFを耳で聴く！OS標準「読み上げ機能」の活用実例｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "画面 読み上げ 機能",
+      "Web記事 音声読み上げ",
+      "Edge 音声読み上げ iPhone"
+    ]
+  },
+  {
+    "id": "art68-emergency-medical-id-disaster",
+    "article_num": 68,
+    "cat_num": 17,
+    "category": "生活・行政手続き・家計・資産管理",
+    "task_topic": "災害・緊急時に備える緊急SOS・メディカルID設定とオフライン地図／ハザードマップ保存手順",
+    "title": "もしもの災害・緊急時に備える「緊急SOS・メディカルID・オフライン地図」設定実例｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "メディカルID 設定",
+      "緊急SOS 使い方",
+      "オフライン地図 保存 Googleマップ"
+    ]
+  },
+  {
+    "id": "art69-japanese-ime-dictionary-register",
+    "article_num": 69,
+    "cat_num": 1,
+    "category": "文書作成・オフィス業務・事務作業",
+    "task_topic": "よく使う住所・メールアドレス・定型文を2〜3文字で一発変換する「ユーザー辞書登録」と同期手順",
+    "title": "住所・定型文を一発変換！OS標準「ユーザー辞書登録」と時短活用の実例｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "ユーザー辞書 登録 方法",
+      "単語登録 iPhone Android",
+      "変換 時短 テクニック"
+    ]
+  },
+  {
+    "id": "art70-email-attachment-size-limit-fix",
+    "article_num": 70,
+    "cat_num": 2,
+    "category": "コミュニケーション・情報共有",
+    "task_topic": "メールに大容量ファイルが添付できない時のクラウド共有リンク送付と送信取り消し（誤送信防止）実例",
+    "title": "メールに大容量ファイルが送れない時の共有リンク活用＆誤送信防止の実例｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "メール 添付 容量オーバー",
+      "大容量ファイル 送り方 無料",
+      "メール 送信取り消し 設定"
+    ]
   }
 ]
