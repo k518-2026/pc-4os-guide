@@ -29,10 +29,11 @@ python -m src.main -n 1 --push
 python -m src.main -n 1 --category 11
 ```
 
-## 書き溜め済み記事一覧（全 69 本 / 最終更新: 2026-11-24 14:35 JST）
+## 書き溜め済み記事一覧（全 70 本 / 最終更新: 2026-11-24 14:40 JST）
 
 | No. | 17分類カテゴリ | 記事タイトル（Markdown） | 挿絵 | 生成日 |
 | :---: | :--- | :--- | :---: | :---: |
+| #70 | 分類02: コミュニケーション・情報共有 | [メールに大容量ファイルが送れない時の共有リンク活用＆誤送信防止の実例｜Windows・macOS・iOS・Android](content/2026-11-24_art70_email_attachment_size_limit_fix.md) | あり | 2026-11-24 |
 | #69 | 分類01: 文書作成・オフィス業務・事務作業 | [住所・定型文を一発変換！OS標準「ユーザー辞書登録」と時短活用の実例｜Windows・macOS・iOS・Android](content/2026-11-24_art69_japanese_ime_dictionary_register.md) | あり | 2026-11-24 |
 | #68 | 分類17: 生活・行政手続き・家計・資産管理 | [もしもの災害・緊急時に備える「緊急SOS・メディカルID・オフライン地図」設定実例｜Windows・macOS・iOS・Android](content/2026-11-24_art68_emergency_medical_id_disaster.md) | あり | 2026-11-24 |
 | #67 | 分類16: 学習・教育・自己啓発 | [長文記事やPDFを耳で聴く！OS標準「読み上げ機能」の活用実例｜Windows・macOS・iOS・Android](content/2026-11-24_art67_text_to_speech_read_aloud.md) | あり | 2026-11-24 |

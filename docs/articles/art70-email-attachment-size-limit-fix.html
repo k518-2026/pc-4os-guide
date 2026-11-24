@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>メールに大容量ファイルが送れない時の共有リンク活用＆誤送信防止の実例｜Windows・macOS・iOS・Android | PC 4OS実例ガイド</title>
+  <style>
+:root {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --muted: #475569;
+  --accent: #0284c7;
+  --accent-soft: #e0f2fe;
+  --border: #e2e8f0;
+  --code-bg: #0f172a;
+  --code-text: #e2e8f0;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Noto Sans JP", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+}
+header.site-header {
+  background: linear-gradient(135deg, #0f172a 0%, #0369a1 100%);
+  color: #fff;
+  padding: 2.2rem 1.25rem;
+}
+header.site-header .inner { max-width: 980px; margin: 0 auto; }
+header.site-header h1 { margin: 0 0 0.4rem; font-size: 1.75rem; }
+header.site-header p { margin: 0; opacity: 0.9; font-size: 0.96rem; }
+main { max-width: 980px; margin: 2rem auto; padding: 0 1.25rem 3rem; }
+.badge {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: var(--accent-soft);
+  color: #0369a1;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1.25rem;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08); }
+.card img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; display: block; background: #e2e8f0; }
+.card-body { padding: 1rem 1.1rem 1.2rem; flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+.card-title { font-size: 1.02rem; font-weight: 700; margin: 0; line-height: 1.45; }
+.card-meta { font-size: 0.82rem; color: var(--muted); margin-top: auto; }
+article.post {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 2rem;
+}
+article.post img.eyecatch {
+  width: 100%;
+  max-height: 460px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+}
+article.post h1 { font-size: 1.65rem; line-height: 1.35; margin-top: 0; }
+article.post h2 {
+  font-size: 1.3rem;
+  margin-top: 2.1rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 2px solid var(--accent-soft);
+}
+article.post h3 { font-size: 1.08rem; margin-top: 1.4rem; }
+article.post table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.2rem 0;
+  font-size: 0.92rem;
+  display: block;
+  overflow-x: auto;
+}
+article.post th, article.post td {
+  border: 1px solid var(--border);
+  padding: 0.6rem 0.8rem;
+  text-align: left;
+}
+article.post th { background: #f1f5f9; font-weight: 700; }
+article.post pre {
+  background: var(--code-bg);
+  color: var(--code-text);
+  padding: 1rem 1.15rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+article.post code {
+  background: #f1f5f9;
+  padding: 0.15rem 0.38rem;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+article.post pre code { background: transparent; padding: 0; color: inherit; }
+article.post blockquote {
+  margin: 1.2rem 0;
+  padding: 0.8rem 1.1rem;
+  border-left: 4px solid var(--accent);
+  background: #f0f9ff;
+  border-radius: 0 8px 8px 0;
+}
+.back-link { display: inline-block; margin-bottom: 1rem; color: var(--accent); text-decoration: none; font-weight: 600; }
+.filter-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.15rem 1.25rem;
+  margin-bottom: 1.5rem;
+}
+.filter-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) auto;
+  gap: 0.9rem;
+  align-items: end;
+}
+.filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.filter-field label {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.filter-field input[type="search"],
+.filter-field select {
+  font: inherit;
+  font-size: max(1rem, 1em);
+  min-height: 48px;
+  padding: 0.55rem 0.85rem;
+  border: 1.5px solid #767676;
+  border-radius: 8px;
+  background: #fff;
+  color: var(--text);
+  width: 100%;
+}
+.filter-field input[type="search"]:focus-visible,
+.filter-field select:focus-visible,
+.filter-actions button:focus-visible {
+  outline: 3px solid #0284c7;
+  outline-offset: 2px;
+}
+.filter-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+.filter-actions button {
+  font: inherit;
+  font-size: max(1rem, 0.95em);
+  font-weight: 600;
+  min-height: 48px;
+  padding: 0 1.05rem;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+}
+.btn-primary {
+  background: #0369a1;
+  color: #fff;
+}
+.btn-primary:hover { background: #075985; }
+.btn-secondary {
+  background: #f1f5f9;
+  color: var(--text);
+  border-color: #94a3b8;
+}
+.btn-secondary:hover { background: #e2e8f0; }
+.results-status {
+  color: var(--muted);
+  font-size: 0.92rem;
+  margin: 0 0 1.1rem;
+}
+.empty-state {
+  background: var(--surface);
+  border: 1px dashed #94a3b8;
+  border-radius: 12px;
+  padding: 2rem 1.25rem;
+  text-align: center;
+  color: var(--muted);
+}
+.card[hidden],
+.empty-state[hidden] { display: none; }
+footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2rem 1rem; }
+@media (max-width: 720px) {
+  .filter-form { grid-template-columns: 1fr; }
+  .filter-actions { width: 100%; }
+  .filter-actions button { flex: 1; }
+}
+@media (max-width: 640px) {
+  article.post { padding: 1.2rem; }
+}
+</style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="inner">
+      <h1>PC 4OS実例ガイド</h1>
+      <p>Windows・macOS・iOS・Android の実践比較＆トラブル解決アーカイブ</p>
+    </div>
+  </header>
+  <main>
+    <a class="back-link" href="../index.html">← 記事一覧へ戻る</a>
+    <article class="post">
+      <p><span class="badge">#70｜分類02: コミュニケーション・情報共有</span> <small style="color:#64748b;margin-left:0.5rem;">2026-11-24</small></p>
+      <img class="eyecatch" src="../images/2026-11-24_art70_email_attachment_size_limit_fix.png" alt="メールに大容量ファイルが送れない時の共有リンク活用＆誤送信防止の実例｜Windows・macOS・iOS・Android">
+      <h1>メールに大容量ファイルが送れない時の共有リンク活用＆誤送信防止の実例｜Windows・macOS・iOS・Android</h1>
+<p>「大切な資料をメールで送ろうとしたら、ファイルサイズが大きすぎてエラーが出てしまった……」<br />
+そんな経験はありませんか？ 多くのメールサービスでは、添付ファイルの容量制限（一般的に25MB〜）があるため、高画質な動画や重いPDF、大量の画像を含むフォルダを送るには工夫が必要です。</p>
+<p>この記事では、Windows、macOS、iOS、Androidの4つの主要OSにおいて、<strong>「クラウドストレージの共有リンク」を活用してスマートに大容量ファイルを送る手順</strong>と、<strong>万が一の誤送信を防ぐための対策</strong>を徹底解説します。これを知っておくだけで、仕事やプライベートでの情報共有が劇的にスムーズになります。</p>
+<h2>4OS比較早見表</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">OS</th>
+<th style="text-align: left;">推奨クラウドストレージ</th>
+<th style="text-align: left;">主要な操作アプリ</th>
+<th style="text-align: left;">特徴・注意点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Windows</strong></td>
+<td style="text-align: left;">OneDrive</td>
+<td style="text-align: left;">エクスプローラー</td>
+<td style="text-align: left;">標準統合が強力。右クリックから直接共有可能。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>macOS</strong></td>
+<td style="text-align: left;">Google ドライブ</td>
+<td style="text-align: left;">Finder / ブラウザ</td>
+<td style="text-align: left;">iCloudとの使い分けに注意。ブラウザ操作が確実。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>iOS</strong></td>
+<td style="text-align: left;">Google ドライブ / iCloud</td>
+<td style="text-align: left;">「ファイル」アプリ</td>
+<td style="text-align: left;">直接添付は不可。必ずクラウドリンクへ誘導。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Android</strong></td>
+<td style="text-align: left;">Google ドライブ</td>
+<td style="text-align: left;">「Google ドライブ」アプリ</td>
+<td style="text-align: left;">機種を問わずGoogleエコシステムで統一。</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>1. Windows 11 での実例手順</h2>
+<p>Windows環境では、OS標準のOneDriveを活用するのが最もスムーズな方法です。</p>
+<h3>公式手順：大容量ファイルを OneDrive で共有リンク化</h3>
+<p><strong>【前提】</strong> Windows 11 標準の「エクスプローラー」、または Microsoft Edge / Chrome を使用。</p>
+<ul>
+<li><strong>ステップ A（保存場所確認）</strong>: エクスプローラーを開き、「この PC」&gt;「OneDrive」フォルダを確認します。※同期されていないローカルファイルは共有できないため、必ずOneDriveフォルダ内にファイルを移動させてください。</li>
+<li><strong>ステップ B（アップロード・共有設定）</strong>: <ol>
+<li>ファイルを OneDrive フォルダへドラッグ＆ドロップしてアップロードします。</li>
+<li>アップロード完了後、ファイルを右クリックし「共有」を選択。</li>
+<li>「リンクの編集」から「特定の人は誰でもアクセス可能にする」「有効期限なし」等に設定（※組織ポリシーにより制限される場合があります）。</li>
+</ol>
+</li>
+<li><strong>ステップ C（メール送信）</strong>: 生成された共有 URL をコピーし、Outlook や Thunderbird の本文に貼り付けて送信します。</li>
+</ul>
+<h3>標準機能の制限事項・注意点</h3>
+<ul>
+<li><strong>ローカルファイルとの混同</strong>: 「この PC」内のフォルダにあるファイルを直接添付しようとすると容量エラーになります。「OneDrive フォルダ内」に配置していることを徹底しましょう。</li>
+<li><strong>組織ポリシーの影響</strong>: Microsoft 365（法人版）を利用している場合、管理者が「有効期限」や「パスワード必須」を強制していることがあります。</li>
+</ul>
+<h3>よくあるトラブルと解決法</h3>
+<ul>
+<li><strong>トラブル①：ファイルサイズ超過エラー</strong><ul>
+<li><strong>原因</strong>: OneDriveの無料プラン等の容量制限に抵触。</li>
+<li><strong>解決</strong>: ファイルを圧縮するか、Google ドライブ等へ一時的に移動させて共有します。</li>
+</ul>
+</li>
+<li><strong>トラブル②：共有リンクで「アクセスできません」と表示される</strong><ul>
+<li><strong>原因</strong>: リンクの有効期限切れやセキュリティ設定の変更。</li>
+<li><strong>解決</strong>: OneDrive上でファイルの再アップロードを行い、新しい共有リンクを発行してください。</li>
+</ul>
+</li>
+<li><strong>トラブル③：誤送信後の取り消しができない</strong><ul>
+<li><strong>原因</strong>: Outlookの「未送メール削除」はサーバー転送後に無効になるため。</li>
+<li><strong>解決</strong>: クラウド上の「バージョン管理」を活用します。OneDrive上のファイルを正しい状態に上書き・復元することで、相手への影響を最小限に抑えます。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2>2. macOS での実例手順</h2>
+<p>MacではFinderとGoogleドライブの連携、またはブラウザ操作を組み合わせるのが確実です。</p>
+<h3>公式手順：Mac で Google ドライブ経由で大容量ファイルを送る</h3>
+<p><strong>【前提】</strong> Finder、システム設定。</p>
+<ul>
+<li><strong>ステップ A（アップロード）</strong>: Finderのサイドバーから「Google ドライブ」を選択し、ファイルをドラッグ＆ドロップしてアップロードします。（またはブラウザ版Googleドライブを使用）。</li>
+<li><strong>ステップ B（共有リンク発行）</strong>: ファイルを右クリックし「詳細情報表示」からコピーするか、「共有」ボタンからURLを取得します。※同期が不安定な場合はブラウザ操作を推奨。</li>
+<li><strong>ステップ C（メール送信）</strong>: 「Mail.app」や「メッセージ」アプリにURLを貼り付けて送信します。</li>
+</ul>
+<h3>標準機能の制限事項・注意点</h3>
+<ul>
+<li><strong>「ファイル」アプリでの共有不可</strong>: macOS標準の「ファイル」アプリ内だけで完結させることは難しく、Google ドライブ等の外部クラウド連携が必須です。</li>
+<li><strong>未送メッセージ削除の条件</strong>: 「システム設定 &gt; メール &gt; 送信確認」がオンになっていないと機能しません。※Outlook for Mac使用時は独自仕様に注意。</li>
+</ul>
+<h3>よくあるトラブルと解決法</h3>
+<ul>
+<li><strong>トラブル①：Finder で Google ドライブが表示されない</strong><ul>
+<li><strong>原因</strong>: アプリの認証切れや、システム設定でのチェック漏れ。</li>
+<li><strong>解決</strong>: ブラウザ版Googleドライブを使用するか、デスクトップアプリを再ログインさせます。</li>
+</ul>
+</li>
+<li><strong>トラブル②：共有リンクの有効期限切れ</strong><ul>
+<li><strong>原因</strong>: 組織ポリシー等によるデフォルトの期限設定。</li>
+<li><strong>解決</strong>: リンクを再発行し、「新しいURLをご参照ください」と追記して再送します。</li>
+</ul>
+</li>
+<li><strong>トラブル③：誤送信後の即時キャンセル失敗</strong><ul>
+<li><strong>原因</strong>: 数秒〜数分でサーバーへ転送されるため、標準機能では取り消せない。</li>
+<li><strong>解決</strong>: Google ドライブの「操作履歴」を確認し、誤って共有したリンクを破棄して新しいバージョンを作成・送信します。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2>3. iOS（iPhone / iPad）での実例手順</h2>
+<p>モバイル端末では、メールアプリから直接送るのではなく、「クラウドへの誘導」を基本戦略とします。</p>
+<h3>公式手順：「ファイル」アプリから大容量ファイルをクラウドへ</h3>
+<p><strong>【前提】</strong> 「メール」「設定」「ファイル」アプリ。</p>
+<ul>
+<li><strong>ステップ A（アップロード準備）</strong>: アプリ一覧から「Google ドライブ」または「iCloud Drive」を起動し、ファイルを配置します。</li>
+<li><strong>ステップ B（共有リンク取得）</strong>: ファイルを選択し「共有」ボタンをタップ。URLをコピーします。（※iCloudの場合は、容量オーバー時にicloud.com経由のリンク発行が必要な場合があります）。</li>
+<li><strong>ステップ C（送信）</strong>: メールアプリを開き、コピーしたURLを本文に貼り付けます。</li>
+</ul>
+<h3>標準機能の制限事項・注意点</h3>
+<ul>
+<li><strong>「共有して…で送る」の容量制限</strong>: iPhoneのメールアプリ内で直接「共有してiCloudで送る」といった簡易的な大容量添付は非対応です。必ずクラウドリンクへの誘導が必要です。</li>
+<li><strong>iCloud Drive と Google ドライブの違い</strong>: 両方利用可能なため、フォルダ構造を混同しないよう注意してください。</li>
+</ul>
+<h3>よくあるトラブルと解決法</h3>
+<ul>
+<li><strong>トラブル①：メール添付時に「容量オーバー」と表示される</strong><ul>
+<li><strong>原因</strong>: iCloudストレージの空き容量不足、またはファイルサイズ過大。</li>
+<li><strong>解決</strong>: 「設定 &gt; [名前] &gt; iCloud」で容量を確認し、不要なデータを削除するかGoogleドライブへ移管します。</li>
+</ul>
+</li>
+<li><strong>トラブル②：共有リンクが開けない（403 Forbidden）</strong><ul>
+<li><strong>原因</strong>: アクセス制限の設定ミスやSafariのキャッシュ問題。</li>
+<li><strong>解決</strong>: ファイルを再アップロードし、新しいURLを発行して再送します。</li>
+</ul>
+</li>
+<li><strong>トラブル③：誤って送ってしまったメールの取り消し</strong><ul>
+<li><strong>原因</strong>: iOSには「未送メッセージ削除」機能が存在しないため。</li>
+<li><strong>解決</strong>: クラウド側の復元機能を頼るしかありません。リンクを無効化する操作を最優先で行います。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2>4. Android での実例手順</h2>
+<p>Androidは機種（Pixel, Galaxy等）を問わず、Googleドライブを中心とした操作で統一するのが最も効率的です。</p>
+<h3>公式手順：機種横断的な Google ドライブ活用と履歴確認</h3>
+<p><strong>【前提】</strong> 「メール」「ファイル」アプリ。</p>
+<ul>
+<li><strong>ステップ A（アップロード）</strong>: 「Google ドライブ」アプリを開き、ギャラリーやストレージからファイルをアップロードします。※機種により「My Files」等の名称がある場合がありますが、操作は同様です。</li>
+<li><strong>ステップ B（共有リンク発行）</strong>: ファイルを長押しし、「共有」またはメニューからURLをコピーします。</li>
+<li><strong>ステップ C（送信）</strong>: メールアプリでURLを貼り付けて送信します。</li>
+</ul>
+<h3>標準機能の制限事項・注意点</h3>
+<ul>
+<li><strong>「ファイル」アプリと Google ドライブの違い</strong>: システムフォルダ内のファイルを直接メール添付すると容量オーバーになりやすいため、必ずGoogleドライブを介した共有リンクを使用するのが鉄則です。</li>
+<li><strong>機種ごとの名称差</strong>: Samsung Galaxyでは「My Files」、Pixel等では「ファイル」と名称が異なりますが、いずれもGoogleドライブへの連携は必須前提となります。</li>
+</ul>
+<h3>よくあるトラブルと解決法</h3>
+<ul>
+<li><strong>トラブル①：アップロード中に通信エラーになる</strong><ul>
+<li><strong>原因</strong>: Wi-Fiの不安定さやデータ通話制限による中断。</li>
+<li><strong>解決</strong>: Wi-Fiに接続し、Googleドライブアプリの「オフラインで使用可能」設定などを確認しながら再試行します。</li>
+</ul>
+</li>
+<li><strong>トラブル②：共有リンクが「権限なし」と表示される</strong><ul>
+<li><strong>原因</strong>: 共有範囲を「制限付き」にしたまま送信した。</li>
+<li><strong>解決</strong>: ドライブアプリで共有設定を「リンクを知っている全員」に変更し、URLを再コピーします。</li>
+</ul>
+</li>
+<li><strong>トラブル③：誤送信後の取り消しができない</strong><ul>
+<li><strong>原因</strong>: Android標準のメールアプリではサーバー転送後の取り消し不可。</li>
+<li><strong>解決</strong>: Google ドライブのバージョン管理機能を使い、誤ったリンク先の内容を上書きまたは削除します。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2>よくあるトラブルと解決チェックリスト</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">トラブル事象</th>
+<th style="text-align: left;">原因の可能性</th>
+<th style="text-align: left;">解決策・チェック項目</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>ファイルサイズ超過エラー</strong></td>
+<td style="text-align: left;">メールサーバーの制限（25MB〜）</td>
+<td style="text-align: left;">クラウドストレージへアップロードし、共有URLを送信しているか確認。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>リンクで「アクセス拒否」</strong></td>
+<td style="text-align: left;">権限設定が「制限付き」になっている</td>
+<td style="text-align: left;">共有設定を「リンクを知っている全員」に変更して再発行。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>アップロードが途中で止まる</strong></td>
+<td style="text-align: left;">通信環境の不安定（特にモバイル通信）</td>
+<td style="text-align: left;">Wi-Fi環境に切り替えるか、ファイルサイズを分割する。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>誤送信後の取り消し不可</strong></td>
+<td style="text-align: left;">サーバーへ既に転送済み</td>
+<td style="text-align: left;">クラウド側の「バージョン管理」や「リンク無効化」で事後対応を行う。</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>まとめ：快適なマルチOS環境を作るポイント</h2>
+<p>大容量ファイルの共有において最も重要なのは、<strong>「メールに直接添付するのではなく、クラウドをハブにする」</strong>という基本戦略です。WindowsならOneDrive、それ以外ならGoogleドライブといった、各OSとの親和性の高いツールを選ぶことで、操作の迷いを減らすことができます。</p>
+<p>また、より快適でプロフェッショナルなコミュニケーション環境を構築するためには、以下の周辺機器・ツールの導入も検討の価値があります。</p>
+<ul>
+<li><strong>クラウドストレージ</strong>: 常に最新のファイルを同期し、どこからでもリンクを発行できる基盤として必須です。</li>
+<li><strong>高音質マイク・ヘッドセット</strong>: ファイル共有だけでなく、オンライン会議での意思疎通をスムーズにします。</li>
+<li><strong>Webカメラ</strong>: 視覚的な情報共有は、テキストやファイルだけでは伝わらないニュアンスを補完します。</li>
+</ul>
+<p>これらのツールを組み合わせることで、OSの壁を越えたストレスフリーな情報共有環境が完成します。まずは今日から、重いファイルは「リンク」で送る習慣を取り入れてみましょう。</p>
+<hr />
+<h2>参考文献・公式ドキュメント（一次情報ソース）</h2>
+<p>本記事の手順・仕様は以下の各OSおよびツールの公式ドキュメントに基づいています。OSアップデートによりメニュー名称や挙動が変わる場合があるため、最新仕様の確認にもご活用ください。</p>
+<ul>
+<li><strong>[Windows]</strong> <a href="https://support.microsoft.com/ja-jp/office/onedrive-%E3%81%AB%E4%BF%9D%E5%AD%98%E3%81%95%E3%82%8C%E3%81%A6%E3%81%84%E3%82%8B%E4%BB%A5%E5%89%8D%E3%81%AE%E3%83%90%E3%83%BC%E3%82%B8%E3%83%A7%E3%83%B3%E3%81%AE%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%92%E5%BE%A9%E5%85%83%E3%81%99%E3%82%8B-159cad6d-d76e-4981-88ef-de6e96c93893">OneDrive に保存されている以前のバージョンのファイルを復元する - Microsoft サポート</a></li>
+<li><strong>[Windows]</strong> <a href="https://support.microsoft.com/ja-jp/office/onedrive-%E3%81%AE%E5%90%8C%E6%9C%9F%E3%81%AE%E5%95%8F%E9%A1%8C%E3%82%92%E8%A7%A3%E6%B1%BA%E3%81%99%E3%82%8B-0899b115-05f7-45ec-95b2-e4cc8c4670b2">OneDrive の同期の問題を解決する - Microsoft サポート</a></li>
+<li><strong>[macOS / 共通]</strong> <a href="https://support.google.com/drive/answer/10838124?hl=ja">パソコン版 Google ドライブを使用する - Google ドライブ ヘルプ</a></li>
+<li><strong>[iOS]</strong> <a href="https://support.apple.com/ja-jp/guide/iphone/iphc61044c11/ios">iPhoneの「ファイル」でファイルやフォルダを変更する - Apple サポート (日本)</a></li>
+<li><strong>[Android]</strong> <a href="https://support.google.com/drive/answer/2424368?hl=ja">Google ドライブにファイルやフォルダをアップロードする - Google ドライブ ヘルプ</a></li>
+<li><strong>[Android / 共通]</strong> <a href="https://support.google.com/drive/answer/2409045?hl=ja">操作履歴とファイル バージョンを確認する - Google ドライブ ヘルプ</a></li>
+</ul>
+    </article>
+  </main>
+  <footer>Generated with Local Ollama (qwen3.5 / gemma4) &amp; Draw Things (FLUX.2 klein 4B)</footer>
+</body>
+</html>
