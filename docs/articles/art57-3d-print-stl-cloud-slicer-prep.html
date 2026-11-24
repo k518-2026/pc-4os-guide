@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3Dプリンター用モデル（STL）の入手・サイズ確認・データ共有の初心者実例｜Windows・macOS・iOS・Android | PC 4OS実例ガイド</title>
+  <style>
+:root {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --muted: #475569;
+  --accent: #0284c7;
+  --accent-soft: #e0f2fe;
+  --border: #e2e8f0;
+  --code-bg: #0f172a;
+  --code-text: #e2e8f0;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Noto Sans JP", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+}
+header.site-header {
+  background: linear-gradient(135deg, #0f172a 0%, #0369a1 100%);
+  color: #fff;
+  padding: 2.2rem 1.25rem;
+}
+header.site-header .inner { max-width: 980px; margin: 0 auto; }
+header.site-header h1 { margin: 0 0 0.4rem; font-size: 1.75rem; }
+header.site-header p { margin: 0; opacity: 0.9; font-size: 0.96rem; }
+main { max-width: 980px; margin: 2rem auto; padding: 0 1.25rem 3rem; }
+.badge {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: var(--accent-soft);
+  color: #0369a1;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1.25rem;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08); }
+.card img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; display: block; background: #e2e8f0; }
+.card-body { padding: 1rem 1.1rem 1.2rem; flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+.card-title { font-size: 1.02rem; font-weight: 700; margin: 0; line-height: 1.45; }
+.card-meta { font-size: 0.82rem; color: var(--muted); margin-top: auto; }
+article.post {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 2rem;
+}
+article.post img.eyecatch {
+  width: 100%;
+  max-height: 460px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+}
+article.post h1 { font-size: 1.65rem; line-height: 1.35; margin-top: 0; }
+article.post h2 {
+  font-size: 1.3rem;
+  margin-top: 2.1rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 2px solid var(--accent-soft);
+}
+article.post h3 { font-size: 1.08rem; margin-top: 1.4rem; }
+article.post table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.2rem 0;
+  font-size: 0.92rem;
+  display: block;
+  overflow-x: auto;
+}
+article.post th, article.post td {
+  border: 1px solid var(--border);
+  padding: 0.6rem 0.8rem;
+  text-align: left;
+}
+article.post th { background: #f1f5f9; font-weight: 700; }
+article.post pre {
+  background: var(--code-bg);
+  color: var(--code-text);
+  padding: 1rem 1.15rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+article.post code {
+  background: #f1f5f9;
+  padding: 0.15rem 0.38rem;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+article.post pre code { background: transparent; padding: 0; color: inherit; }
+article.post blockquote {
+  margin: 1.2rem 0;
+  padding: 0.8rem 1.1rem;
+  border-left: 4px solid var(--accent);
+  background: #f0f9ff;
+  border-radius: 0 8px 8px 0;
+}
+.back-link { display: inline-block; margin-bottom: 1rem; color: var(--accent); text-decoration: none; font-weight: 600; }
+.filter-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.15rem 1.25rem;
+  margin-bottom: 1.5rem;
+}
+.filter-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) auto;
+  gap: 0.9rem;
+  align-items: end;
+}
+.filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.filter-field label {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.filter-field input[type="search"],
+.filter-field select {
+  font: inherit;
+  font-size: max(1rem, 1em);
+  min-height: 48px;
+  padding: 0.55rem 0.85rem;
+  border: 1.5px solid #767676;
+  border-radius: 8px;
+  background: #fff;
+  color: var(--text);
+  width: 100%;
+}
+.filter-field input[type="search"]:focus-visible,
+.filter-field select:focus-visible,
+.filter-actions button:focus-visible {
+  outline: 3px solid #0284c7;
+  outline-offset: 2px;
+}
+.filter-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+.filter-actions button {
+  font: inherit;
+  font-size: max(1rem, 0.95em);
+  font-weight: 600;
+  min-height: 48px;
+  padding: 0 1.05rem;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+}
+.btn-primary {
+  background: #0369a1;
+  color: #fff;
+}
+.btn-primary:hover { background: #075985; }
+.btn-secondary {
+  background: #f1f5f9;
+  color: var(--text);
+  border-color: #94a3b8;
+}
+.btn-secondary:hover { background: #e2e8f0; }
+.results-status {
+  color: var(--muted);
+  font-size: 0.92rem;
+  margin: 0 0 1.1rem;
+}
+.empty-state {
+  background: var(--surface);
+  border: 1px dashed #94a3b8;
+  border-radius: 12px;
+  padding: 2rem 1.25rem;
+  text-align: center;
+  color: var(--muted);
+}
+.card[hidden],
+.empty-state[hidden] { display: none; }
+footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2rem 1rem; }
+@media (max-width: 720px) {
+  .filter-form { grid-template-columns: 1fr; }
+  .filter-actions { width: 100%; }
+  .filter-actions button { flex: 1; }
+}
+@media (max-width: 640px) {
+  article.post { padding: 1.2rem; }
+}
+</style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="inner">
+      <h1>PC 4OS実例ガイド</h1>
+      <p>Windows・macOS・iOS・Android の実践比較＆トラブル解決アーカイブ</p>
+    </div>
+  </header>
+  <main>
+    <a class="back-link" href="../index.html">← 記事一覧へ戻る</a>
+    <article class="post">
+      <p><span class="badge">#57｜分類06: 3D・CAD・ものづくり</span> <small style="color:#64748b;margin-left:0.5rem;">2026-11-24</small></p>
+      <img class="eyecatch" src="../images/2026-11-24_art57_3d_print_stl_cloud_slicer_prep.png" alt="3Dプリンター用モデル（STL）の入手・サイズ確認・データ共有の初心者実例｜Windows・macOS・iOS・Android">
+      <h1>3Dプリンター用モデル（STL）の入手・サイズ確認・データ共有の初心者実例｜Windows・macOS・iOS・Android</h1>
+<p>「3Dプリンターで作りたいものを見つけたけれど、自分の手元にあるスペースに収まるサイズなのか、どうやって確認すればいいの？」<br />
+「ダウンロードしたファイルが正しく開けるか不安……」</p>
+<p>3Dプリントの世界へ一歩踏み出したばかりの初心者の方にとって、データの「閲覧」と「寸法確認」は最初の大きな壁です。特にSTLファイルは特殊なメッシュデータであるため、一般的な画像や動画と同じ感覚で扱えないことがあります。</p>
+<p>この記事では、主要な4つのOS（Windows, macOS, iOS, Android）を使い分けながら、<strong>「3Dモデルの入手からサイズ確認、共有まで」の具体的な手順</strong>を徹底解説します。これさえ読めば、どのデバイスでも迷わずに3Dデータの準備ができるようになります。</p>
+<hr />
+<h2>4OS比較早見表</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">機能</th>
+<th style="text-align: left;">Windows 11</th>
+<th style="text-align: left;">macOS</th>
+<th style="text-align: left;">iOS (iPhone/iPad)</th>
+<th style="text-align: left;">Android</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>標準ビューア</strong></td>
+<td style="text-align: left;">Microsoft 3D Viewer</td>
+<td style="text-align: left;">Quick Look (簡易)</td>
+<td style="text-align: left;">ファイルアプリ (限定)</td>
+<td style="text-align: left;">Scene Viewer / ブラウザ</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>寸法計測</strong></td>
+<td style="text-align: left;">標準機能で可能</td>
+<td style="text-align: left;">サードパーティ推奨</td>
+<td style="text-align: left;">アプリ導入を推奨</td>
+<td style="text-align: left;">アプリ導入を推奨</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>AR表示</strong></td>
+<td style="text-align: left;">専用アプリが必要</td>
+<td style="text-align: left;">USDZ形式のみ対応</td>
+<td style="text-align: left;">USDZ形式のみ対応</td>
+<td style="text-align: left;">AR Core連携アプリ</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>主な用途</strong></td>
+<td style="text-align: left;">精密な設計・計測</td>
+<td style="text-align: left;">クイック確認・共有</td>
+<td style="text-align: left;">モバイルでの簡易確認</td>
+<td style="text-align: left;">モバイルでの簡易確認</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>1. Windows 11 での実例手順</h2>
+<p>Windowsは3Dプリンター制作のメイン環境として最も多機能な操作が可能です。</p>
+<h3>実例手順</h3>
+<ul>
+<li><strong>ステップ A：ダウンロード</strong><ul>
+<li>ブラウザ（Edge等）で「Thingiverse」や「Printables」にアクセスし、STLファイルをZIP形式で保存します。</li>
+<li>保存後、ファイルを右クリックして「すべて展開」を選択し、中身の.stlファイルを取り出します。</li>
+</ul>
+</li>
+<li><strong>ステップ B：サイズ確認</strong><ul>
+<li>Windows標準アプリの<strong>「Microsoft 3D Viewer」</strong>を起動します。</li>
+<li>「+」ボタンからフォルダを選択し、STLファイルを読み込みます。</li>
+<li>モデルが表示されたら、画面右上の<strong>「測定ツール（メジャー）」アイコン</strong>をクリック。模型上の2点をドラッグすることで、正確な距離を計測できます。</li>
+</ul>
+</li>
+<li><strong>ステップ C：共有</strong><ul>
+<li>ブラウザでモデルページを開き、URLをコピーしてチャットやメールで共有します。</li>
+</ul>
+</li>
+</ul>
+<h3>標準機能の制限事項・非対応項目</h3>
+<ul>
+<li><strong>WebARの非対応</strong>: Windows標準機能では、iOS/Androidのようなブラウザ経由の即時なWebAR表示はサポートされていません。AR表示を行いたい場合は「Adobe Aero」などの専用アプリが必要です。</li>
+<li><strong>描画遅延</strong>: GPUが低スペックな場合、数百万ポリゴンを超える複雑なSTLファイルは表示に時間がかかることがあります。</li>
+</ul>
+<h3>よくあるトラブルと解決法</h3>
+<ol>
+<li><strong>「ファイルが開けません」というエラー</strong></li>
+<li><strong>原因</strong>: ZIPアーカイブのまま開こうとしている、または拡張子が書き換わっている。</li>
+<li><strong>解決策</strong>: 右クリックで「すべて展開」を行い、中身の.stlファイルを直接3D Viewerにドラッグ＆ドロップしてください。</li>
+<li><strong>「測定ツールが反応しない」</strong></li>
+<li><strong>原因</strong>: モデルの原点（座標軸）が極端にずれているか、ファイルが破損している。</li>
+<li><strong>解決策</strong>: 3D Viewerの表示設定でグリッドを表示し、モデルを回転させて計測箇所を確認してください。改善しない場合は別のビューアソフトへの移行を検討します。</li>
+<li><strong>「解像度が低すぎて寸法が合わない」</strong></li>
+<li><strong>原因</strong>: STLファイル自体の三角面数が不足している。</li>
+<li><strong>解決策</strong>: 元の設計データ（STEP等）を入手するか、スライサーソフトで再エクスポートする必要があります。</li>
+</ol>
+<hr />
+<h2>2. macOS での実例手順</h2>
+<p>Macユーザーは「Quick Look」による素早い確認と、高精度なサードパーティアプリの使い分けが鍵となります。</p>
+<h3>実例手順</h3>
+<ul>
+<li><strong>ステップ A：ダウンロード</strong><ul>
+<li>SafariやChromeでモデルサイトへアクセスし、ZIPファイルを保存。Finderでダブルクリックして解凍します。</li>
+</ul>
+</li>
+<li><strong>ステップ B：サイズ確認</strong><ul>
+<li><strong>Quick Lookでの簡易表示</strong>: STLファイルを選択し、スペースキーを押すとプレビューが表示されます（※ただし標準では計測機能は含まれません）。</li>
+<li><strong>推奨実例</strong>: 精密な計測にはApp Storeから入手可能な<strong>「Microsoft 3D Viewer」のMac版</strong>、または公式配布の<strong>「MeshLab」</strong>を使用します。MeshLabを起動し、「File → Import File」でSTLを読み込めば、ツールバーから詳細な測定が可能です。</li>
+</ul>
+</li>
+<li><strong>ステップ C：共有</strong><ul>
+<li>AirDropやiMessageを使用して、STLファイルを直接送信します。</li>
+</ul>
+</li>
+</ul>
+<h3>標準機能の制限事項・非対応項目</h3>
+<ul>
+<li><strong>Quick Lookでの計測不可</strong>: Appleの仕様上、スペースキーで開くプレビューには距離測定ツールは組み込まれていません。</li>
+<li><strong>AR変換の自動化なし</strong>: macOS標準機能だけでSTLをUSDZ（AR用）に変換する機能はありません。専用コンバータアプリが必要です。</li>
+</ul>
+<h3>よくあるトラブルと解決法</h3>
+<ol>
+<li><strong>「ファイルが破損している」と表示される</strong></li>
+<li><strong>原因</strong>: 通信エラーやZIPの不完全な解凍。</li>
+<li><strong>解決策</strong>: Finderでファイルのサイズを確認し、再ダウンロードしてください。</li>
+<li><strong>「モデルが回転しない・操作できない」</strong></li>
+<li><strong>原因</strong>: ビューアソフトのバージョンが古い、または互換性の問題。</li>
+<li><strong>解決策</strong>: App Storeから最新版のアプリをインストールし直してください。</li>
+<li><strong>「メモリ不足でクラッシュする」</strong></li>
+<li><strong>原因</strong>: 数百MBを超える巨大なSTLファイルを開いた場合。</li>
+<li><strong>解決策</strong>: MeshLab等の軽量ビューアを使用するか、スライサーソフト側でモデルを分割して表示させてください。</li>
+</ol>
+<hr />
+<h2>3. iOS（iPhone / iPad）での実例手順</h2>
+<p>モバイル端末では「持ち運びやすさ」を活かした確認や、ARを活用した空間把握が強みです。</p>
+<h3>実例手順</h3>
+<ul>
+<li><strong>ステップ A：ダウンロード</strong><ul>
+<li>Safariでモデルサイトへアクセスし、ZIPファイルを「ファイル」アプリに保存して解凍します。</li>
+</ul>
+</li>
+<li><strong>ステップ B：サイズ確認（AR と計測）</strong><ul>
+<li><strong>専用アプリの活用</strong>: App Storeから<strong>「Microsoft 3D Viewer for iOS」</strong>または<strong>「Sketchfab Viewer」</strong>をインストールして使用することを強く推奨します。これらでSTLを読み込めば、画面上のグリッドで寸法を確認できます。</li>
+<li><strong>ARクイックルックの活用</strong>: モデルがUSDZ形式であれば、「ファイル」アプリから直接タップしてAR表示が可能ですが、STLの場合はWebサイト上の「STL to GLB/USDZ」コンバータを経由する必要があります。</li>
+</ul>
+</li>
+<li><strong>ステップ C：共有</strong><ul>
+<li>AirDropやWhatsApp等へ画像リンクやファイルを送信します。</li>
+</ul>
+</li>
+</ul>
+<h3>標準機能の制限事項・非対応項目</h3>
+<ul>
+<li><strong>ARクイックルックはUSDZのみ</strong>: iOS標準のAR表示は「USDZ」形式に限定されており、STLを直接読み込むことはできません。</li>
+<li><strong>ブラウザ内での計測機能なし</strong>: Safari等でSTLを開いても、即座な測定ツールは表示されません。アプリ起動が必須です。</li>
+</ul>
+<h3>よくあるトラブルと解決法</h3>
+<ol>
+<li><strong>「ファイルを開く」が失敗する</strong></li>
+<li><strong>原因</strong>: ZIPアーカイブのまま開こうとしている。</li>
+<li><strong>解決策</strong>: 「ファイル」アプリで解凍し、拡張子が.stlのファイルをビューアアプリに共有してください。</li>
+<li><strong>AR表示時に「環境認識エラー」</strong></li>
+<li><strong>原因</strong>: LiDARスキャナー非搭載機（Proモデル以外）での使用や、照明不足。</li>
+<li><strong>解決策</strong>: ARをオフにして通常のビューアモードへ切り替えるか、iPad Pro等のLiDAR搭載機での確認を推奨します。</li>
+<li><strong>「モデルが表示されない」エラー</strong></li>
+<li><strong>原因</strong>: ファイルサイズがアプリの制限を超えている。</li>
+<li><strong>解決策</strong>: 軽量なビューアアプリに切り替えるか、PCで解凍してから転送してください。</li>
+</ol>
+<hr />
+<h2>4. Android での実例手順</h2>
+<p>AndroidではGoogleのAR技術を活用しつつ、ファイルマネージャーでの管理をスムーズに行います。</p>
+<h3>実例手順</h3>
+<ul>
+<li><strong>ステップ A：ダウンロード</strong><ul>
+<li>ChromeやFirefoxでモデルサイトからZIPを保存。ファイルマネージャーアプリで解凍します。</li>
+</ul>
+</li>
+<li><strong>ステップ B：サイズ確認</strong><ul>
+<li><strong>Google Scene Viewerの活用</strong>: Google Playストアより公式の3Dビューア（またはメーカー固有のAR連携アプリ）をインストールし、STLを読み込んで計測ツールを利用します。</li>
+<li><strong>ブラウザ内表示</strong>: ChromeでSTLを開くとプレビューが表示されることがありますが、詳細な寸法測定は非対応です。正確な確認には専用アプリが必要です。</li>
+</ul>
+</li>
+<li><strong>ステップ C：共有</strong><ul>
+<li>Google DriveやWhatsApp経由でのファイル転送・リンク共有を行います。</li>
+</ul>
+</li>
+</ul>
+<h3>標準機能の制限事項・非対応項目</h3>
+<ul>
+<li><strong>「Scene Viewer」の機種依存</strong>: AndroidのAR機能はGoogle Pixelで最も安定しますが、Galaxyなど他メーカーではメーカー固有アプリとの連携が必要になる場合があります。</li>
+<li><strong>ブラウザ単体での計測不可</strong>: ChromeやEdge等のブラウザ標準機能として距離を測定するツールは備わっていません。</li>
+</ul>
+<hr />
+<h2>よくあるトラブルと解決法</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">エラー・事象</th>
+<th style="text-align: left;">原因</th>
+<th style="text-align: left;">解決策</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>ファイルが開けない</strong></td>
+<td style="text-align: left;">ZIPのまま開いている、または拡張子の不一致</td>
+<td style="text-align: left;">ファイルを「すべて展開」し、.stlファイルを直接アプリへ読み込む。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>測定ツールが動かない</strong></td>
+<td style="text-align: left;">モデルの原点がずれている、またはファイル破損</td>
+<td style="text-align: left;">3D Viewerのグリッド表示をオンにし、モデルを回転させて再確認する。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>表示がカクつく・遅い</strong></td>
+<td style="text-align: left;">GPUスペック不足、またはポリゴン数が多すぎる</td>
+<td style="text-align: left;">低解像度モデルを使用するか、高スペックPC（GPU搭載）で開く。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>ARが表示されない</strong></td>
+<td style="text-align: left;">形式がSTLのまま、または照明不足</td>
+<td style="text-align: left;">USDZ形式に変換する、または明るい場所へ移動して再試行する。</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>まとめ：快適なマルチOS環境を作るポイント</h2>
+<p>3Dプリンターでのものづくりをスムーズに進めるためには、デバイスごとの特性を理解することが近道です。</p>
+<ul>
+<li><strong>Windows</strong>は「精密な計測と設計」の拠点として使い、標準の3D Viewerでしっかり寸法を確認しましょう。</li>
+<li><strong>macOS</strong>は「クイックな確認と共有」に優れており、MeshLabなどのツールを組み合わせることで高度な作業もこなせます。</li>
+<li><strong>iOS/Android</strong>は「現場でのサイズ感の確認（AR）」や「持ち運び用ビューア」として活用するのがベストです。</li>
+</ul>
+<p>さらに快適な制作環境を目指すなら、以下の周辺機器やツールの導入も検討してみてください。<br />
+- <strong>3Dマウス</strong>: 複雑なモデルを直感的に回転・拡大縮小でき、Windows/Macでの設計効率が劇的に向上します。<br />
+- <strong>高スペックPC・GPU</strong>: 数百万ポリゴンの巨大なSTLファイルでもストレスなく描画でき、スライサーソフトの動作も高速化します。<br />
+- <strong>3Dプリンター</strong>: 最終的なアウトプットとして、自分の手で形にする喜びを最大化しましょう。</p>
+<p>それぞれのOSの強みを活かした「マルチデバイス活用」を取り入れて、よりスムーズなものづくり体験を手に入れましょう！</p>
+<hr />
+<h2>参考文献・公式ドキュメント（一次情報ソース）</h2>
+<p>本記事の手順・仕様は以下の各OSおよびツールの公式ドキュメントに基づいています。OSアップデートによりメニュー名称や挙動が変わる場合があるため、最新仕様の確認にもご活用ください。</p>
+<ul>
+<li><strong>[Windows]</strong> <a href="https://support.microsoft.com/ja-jp/windows">Windows のヘルプとラーニング - Microsoft サポート</a></li>
+<li><strong>[macOS]</strong> <a href="https://support.apple.com/ja-jp/guide/mac-help/mh14119/mac">Macのクイックルックでファイルを表示する/編集する - Apple サポート (日本)</a></li>
+<li><strong>[iOS]</strong> <a href="https://developer.apple.com/jp/augmented-reality/quick-look/">ARクイックルック（USDZ 3Dモデル表示） - Apple Developer</a></li>
+<li><strong>[Android]</strong> <a href="https://developers.google.com/ar/develop/scene-viewer">Scene Viewer（Androidでの3D/ARモデル表示） - Google Developers</a></li>
+</ul>
+    </article>
+  </main>
+  <footer>Generated with Local Ollama (qwen3.5 / gemma4) &amp; Draw Things (FLUX.2 klein 4B)</footer>
+</body>
+</html>
