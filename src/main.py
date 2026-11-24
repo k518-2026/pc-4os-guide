@@ -102,11 +102,12 @@ def main() -> None:
     parser.add_argument("--build-pages", action="store_true", help="Rebuild docs/ (GitHub Pages) and README.md")
     parser.add_argument("--push", action="store_true", help="Git commit & push after generation/build")
     parser.add_argument("--status-report", action="store_true", help="Show current stock & rotation status")
-    parser.add_argument("--post-hatena", action="store_true", help="Send the next unposted article to Hatena Blog via email (1/day guard)")
-    parser.add_argument("--post-blogger", action="store_true", help="Send the next unposted article to Google Blogger via email (1/day guard)")
+    parser.add_argument("--post-hatena", action="store_true", help="Send the next unposted article to Hatena Blog via email")
+    parser.add_argument("--post-blogger", action="store_true", help="Send the next unposted article to Google Blogger via email")
+    parser.add_argument("--min-interval-hours", type=float, default=0.0, help="Minimum hours required since last post (e.g. 16 for every-16-hours cadence)")
     parser.add_argument("--dry-run", action="store_true", help="Simulate email posting without sending or updating history")
     parser.add_argument("--preview-html", action="store_true", help="Save rendered email HTML to preview_<platform>.html")
-    parser.add_argument("--force", action="store_true", help="Force regeneration or override 1-article-per-day guard")
+    parser.add_argument("--force", action="store_true", help="Force regeneration or override posting interval guard")
     parser.add_argument("-v", "--verbose", action="store_true", help="Enable debug logging")
 
     args = parser.parse_args()
@@ -122,13 +123,22 @@ def main() -> None:
         preview_name = "preview_blogger.html" if platform == "blogger" else "preview_hatena.html"
 
         blog_history = HatenaHistoryManager(history_path=hist_file)
-        if not args.dry_run and not args.force and blog_history.has_posted_today():
-            today_str = datetime.now(JST).strftime("%Y-%m-%d")
-            logger.warning(
-                f"[1日1回安全ガード] 本日 ({today_str} JST) はすでに{platform_jp}へ投稿済みのためスキップします。"
-                "（強制送信する場合は --force を指定してください）"
-            )
-            return
+        if not args.dry_run and not args.force:
+            if args.min_interval_hours > 0:
+                allowed, elapsed = blog_history.can_post_with_interval(args.min_interval_hours)
+                if not allowed:
+                    logger.info(
+                        f"[{args.min_interval_hours:g}時間間隔ガード] {platform_jp} の前回投稿から "
+                        f"{elapsed:.1f}時間しか経過していないため今回はスキップします。"
+                    )
+                    return
+            elif blog_history.has_posted_today():
+                today_str = datetime.now(JST).strftime("%Y-%m-%d")
+                logger.warning(
+                    f"[1日1回安全ガード] 本日 ({today_str} JST) はすでに{platform_jp}へ投稿済みのためスキップします。"
+                    "（強制送信する場合は --force を指定してください）"
+                )
+                return
 
         post = select_next_article_for_hatena(
             catalog_mgr=catalog_mgr,

@@ -153,6 +153,15 @@ class TestPC4OSGuide(unittest.TestCase):
             self.assertTrue(hist_mgr.has_posted_today())
             self.assertIn("art01-pdf-merge-split-compress", hist_mgr.posted_ids())
 
+            # Verify 16-hour rolling interval guard
+            from datetime import datetime, timedelta, timezone
+            jst = timezone(timedelta(hours=9))
+            base_time = datetime.fromisoformat(hist_mgr.records[-1]["posted_at"])
+            allowed_10h, _ = hist_mgr.can_post_with_interval(16.0, now=base_time + timedelta(hours=10))
+            allowed_16h, _ = hist_mgr.can_post_with_interval(16.0, now=base_time + timedelta(hours=16))
+            self.assertFalse(allowed_10h)
+            self.assertTrue(allowed_16h)
+
 
 if __name__ == "__main__":
     unittest.main()

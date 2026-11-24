@@ -66,6 +66,42 @@ class HatenaHistoryManager:
         today_str = (now or datetime.now(JST)).strftime("%Y-%m-%d")
         return any(str(r.get("posted_at", ""))[:10] == today_str for r in self.records)
 
+    def hours_since_last_post(self, now: Optional[datetime] = None) -> Optional[float]:
+        """Returns elapsed hours since the most recent recorded post, or None if no posts exist."""
+        current = now or datetime.now(JST)
+        latest_dt: Optional[datetime] = None
+        for r in self.records:
+            raw_ts = str(r.get("posted_at", "")).strip()
+            if not raw_ts:
+                continue
+            try:
+                dt = datetime.fromisoformat(raw_ts)
+                if dt.tzinfo is None:
+                    dt = dt.replace(tzinfo=JST)
+                if latest_dt is None or dt > latest_dt:
+                    latest_dt = dt
+            except ValueError:
+                continue
+        if latest_dt is None:
+            return None
+        return (current - latest_dt).total_seconds() / 3600.0
+
+    def can_post_with_interval(
+        self,
+        min_interval_hours: float,
+        grace_hours: float = 0.5,
+        now: Optional[datetime] = None,
+    ) -> Tuple[bool, Optional[float]]:
+        """
+        Checks whether at least (min_interval_hours - grace_hours) have passed since the last post.
+        Grace margin absorbs GitHub Actions cron scheduling jitter (typically 5-20 minutes).
+        """
+        elapsed = self.hours_since_last_post(now=now)
+        if elapsed is None:
+            return True, None
+        threshold = max(0.0, float(min_interval_hours) - grace_hours)
+        return elapsed >= threshold, elapsed
+
     def record_post(self, post: HatenaFormattedPost, now: Optional[datetime] = None) -> None:
         ts = (now or datetime.now(JST)).isoformat()
         self.records.append(

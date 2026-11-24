@@ -503,8 +503,8 @@ def build_github_pages(
 * **一次情報ソース検証**: Microsoft / Apple / Google 公式ドキュメントURLのHTTP実在チェック付き
 * **記事ストック**: `content/YYYY-MM-DD_artXX_slug.md` + `.png`
 * **Web公開（GitHub Pages）**: `docs/index.html` および `docs/articles/*.html`
-* **はてなブログ1日1回自動メール投稿**: `.github/workflows/publish_hatena.yml`（毎朝 07:17 JST に未投稿1記事＋JPEGアイキャッチを送信、`data/posted_hatena.json` に記録）
-* **Google Blogger 1日1回自動メール投稿**: `.github/workflows/publish_blogger.yml`（毎朝 07:37 JST に未投稿1記事＋JPEGアイキャッチを送信、`data/posted_blogger.json` に記録）
+* **はてなブログ自動メール投稿（16時間ごと）**: `.github/workflows/publish_hatena.yml`（4時間おきに起動し前回投稿から16時間経過していれば未投稿1記事＋JPEGアイキャッチを送信、`data/posted_hatena.json` に記録）
+* **Google Blogger 自動メール投稿（16時間ごと）**: `.github/workflows/publish_blogger.yml`（4時間おきに起動し前回投稿から16時間経過していれば未投稿1記事＋JPEGアイキャッチを送信、`data/posted_blogger.json` に記録）
 
 ## 使い方
 
