@@ -29,10 +29,11 @@ python -m src.main -n 1 --push
 python -m src.main -n 1 --category 11
 ```
 
-## 書き溜め済み記事一覧（全 67 本 / 最終更新: 2026-11-24 14:26 JST）
+## 書き溜め済み記事一覧（全 68 本 / 最終更新: 2026-11-24 14:31 JST）
 
 | No. | 17分類カテゴリ | 記事タイトル（Markdown） | 挿絵 | 生成日 |
 | :---: | :--- | :--- | :---: | :---: |
+| #68 | 分類17: 生活・行政手続き・家計・資産管理 | [もしもの災害・緊急時に備える「緊急SOS・メディカルID・オフライン地図」設定実例｜Windows・macOS・iOS・Android](content/2026-11-24_art68_emergency_medical_id_disaster.md) | あり | 2026-11-24 |
 | #67 | 分類16: 学習・教育・自己啓発 | [長文記事やPDFを耳で聴く！OS標準「読み上げ機能」の活用実例｜Windows・macOS・iOS・Android](content/2026-11-24_art67_text_to_speech_read_aloud.md) | あり | 2026-11-24 |
 | #66 | 分類15: エンターテインメント・趣味 | [旅行写真を画質劣化なしで家族共有！共有アルバム＆スライドショー活用実例｜Windows・macOS・iOS・Android](content/2026-11-24_art66_photo_slideshow_album_family.md) | あり | 2026-11-24 |
 | #65 | 分類14: ハードウェア・周辺機器・IoT連携 | [USB-Cケーブル・ハブで充電や画面出力ができない原因と正しい選び方実例｜Windows・macOS・iOS・Android](content/2026-11-24_art65_usb_c_cable_hub_not_charging.md) | あり | 2026-11-24 |
