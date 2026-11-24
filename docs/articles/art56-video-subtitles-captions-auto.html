@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>動画の自動字幕（ライブキャプション）表示＆字幕作成の実例｜Windows・macOS・iOS・Android | PC 4OS実例ガイド</title>
+  <style>
+:root {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --muted: #475569;
+  --accent: #0284c7;
+  --accent-soft: #e0f2fe;
+  --border: #e2e8f0;
+  --code-bg: #0f172a;
+  --code-text: #e2e8f0;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Noto Sans JP", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+}
+header.site-header {
+  background: linear-gradient(135deg, #0f172a 0%, #0369a1 100%);
+  color: #fff;
+  padding: 2.2rem 1.25rem;
+}
+header.site-header .inner { max-width: 980px; margin: 0 auto; }
+header.site-header h1 { margin: 0 0 0.4rem; font-size: 1.75rem; }
+header.site-header p { margin: 0; opacity: 0.9; font-size: 0.96rem; }
+main { max-width: 980px; margin: 2rem auto; padding: 0 1.25rem 3rem; }
+.badge {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: var(--accent-soft);
+  color: #0369a1;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1.25rem;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08); }
+.card img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; display: block; background: #e2e8f0; }
+.card-body { padding: 1rem 1.1rem 1.2rem; flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+.card-title { font-size: 1.02rem; font-weight: 700; margin: 0; line-height: 1.45; }
+.card-meta { font-size: 0.82rem; color: var(--muted); margin-top: auto; }
+article.post {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 2rem;
+}
+article.post img.eyecatch {
+  width: 100%;
+  max-height: 460px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+}
+article.post h1 { font-size: 1.65rem; line-height: 1.35; margin-top: 0; }
+article.post h2 {
+  font-size: 1.3rem;
+  margin-top: 2.1rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 2px solid var(--accent-soft);
+}
+article.post h3 { font-size: 1.08rem; margin-top: 1.4rem; }
+article.post table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.2rem 0;
+  font-size: 0.92rem;
+  display: block;
+  overflow-x: auto;
+}
+article.post th, article.post td {
+  border: 1px solid var(--border);
+  padding: 0.6rem 0.8rem;
+  text-align: left;
+}
+article.post th { background: #f1f5f9; font-weight: 700; }
+article.post pre {
+  background: var(--code-bg);
+  color: var(--code-text);
+  padding: 1rem 1.15rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+article.post code {
+  background: #f1f5f9;
+  padding: 0.15rem 0.38rem;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+article.post pre code { background: transparent; padding: 0; color: inherit; }
+article.post blockquote {
+  margin: 1.2rem 0;
+  padding: 0.8rem 1.1rem;
+  border-left: 4px solid var(--accent);
+  background: #f0f9ff;
+  border-radius: 0 8px 8px 0;
+}
+.back-link { display: inline-block; margin-bottom: 1rem; color: var(--accent); text-decoration: none; font-weight: 600; }
+.filter-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.15rem 1.25rem;
+  margin-bottom: 1.5rem;
+}
+.filter-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) auto;
+  gap: 0.9rem;
+  align-items: end;
+}
+.filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.filter-field label {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.filter-field input[type="search"],
+.filter-field select {
+  font: inherit;
+  font-size: max(1rem, 1em);
+  min-height: 48px;
+  padding: 0.55rem 0.85rem;
+  border: 1.5px solid #767676;
+  border-radius: 8px;
+  background: #fff;
+  color: var(--text);
+  width: 100%;
+}
+.filter-field input[type="search"]:focus-visible,
+.filter-field select:focus-visible,
+.filter-actions button:focus-visible {
+  outline: 3px solid #0284c7;
+  outline-offset: 2px;
+}
+.filter-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+.filter-actions button {
+  font: inherit;
+  font-size: max(1rem, 0.95em);
+  font-weight: 600;
+  min-height: 48px;
+  padding: 0 1.05rem;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+}
+.btn-primary {
+  background: #0369a1;
+  color: #fff;
+}
+.btn-primary:hover { background: #075985; }
+.btn-secondary {
+  background: #f1f5f9;
+  color: var(--text);
+  border-color: #94a3b8;
+}
+.btn-secondary:hover { background: #e2e8f0; }
+.results-status {
+  color: var(--muted);
+  font-size: 0.92rem;
+  margin: 0 0 1.1rem;
+}
+.empty-state {
+  background: var(--surface);
+  border: 1px dashed #94a3b8;
+  border-radius: 12px;
+  padding: 2rem 1.25rem;
+  text-align: center;
+  color: var(--muted);
+}
+.card[hidden],
+.empty-state[hidden] { display: none; }
+footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2rem 1rem; }
+@media (max-width: 720px) {
+  .filter-form { grid-template-columns: 1fr; }
+  .filter-actions { width: 100%; }
+  .filter-actions button { flex: 1; }
+}
+@media (max-width: 640px) {
+  article.post { padding: 1.2rem; }
+}
+</style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="inner">
+      <h1>PC 4OS実例ガイド</h1>
+      <p>Windows・macOS・iOS・Android の実践比較＆トラブル解決アーカイブ</p>
+    </div>
+  </header>
+  <main>
+    <a class="back-link" href="../index.html">← 記事一覧へ戻る</a>
+    <article class="post">
+      <p><span class="badge">#56｜分類05: 動画・音声・音楽制作</span> <small style="color:#64748b;margin-left:0.5rem;">2026-11-24</small></p>
+      <img class="eyecatch" src="../images/2026-11-24_art56_video_subtitles_captions_auto.png" alt="動画の自動字幕（ライブキャプション）表示＆字幕作成の実例｜Windows・macOS・iOS・Android">
+      <h1>動画の自動字幕（ライブキャプション）表示＆字幕作成の実例｜Windows・macOS・iOS・Android</h1>
+<p>「動画に字幕をつけたいけれど、どのデバイスでどう操作すればいいのか分からない」「自動で文字起こしをしてくれる機能は標準で備わっているの？」</p>
+<p>動画制作やSNSへの投稿において、字幕は視聴維持率を左右する非常に重要な要素です。しかし、OSによって「標準でできること」と「外部ツールが必要なこと」には大きな差があります。</p>
+<p>この記事では、Windows、macOS、iOS、Androidの4つの主要OSにおいて、<strong>「追加費用なし（または標準アプリのみ）」</strong>でどこまで自動字幕の生成・埋め込みができるのかを徹底比較します。結論から言うと、現在の標準機能だけで完結できるのは特定の環境に限られています。それぞれの操作手順と、現実的な解決策を詳しく解説します。</p>
+<h2>4OS比較早見表</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">OS</th>
+<th style="text-align: left;">標準アプリでの自動字幕生成</th>
+<th style="text-align: left;">実用的な編集手段</th>
+<th style="text-align: left;">特徴・制限事項</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Windows 11</strong></td>
+<td style="text-align: left;"><strong>対応（Clipchamp）</strong></td>
+<td style="text-align: left;">Microsoft Clipchamp</td>
+<td style="text-align: left;">標準搭載のビデオエディタで自動キャプション生成が可能。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>macOS</strong></td>
+<td style="text-align: left;">非対応</td>
+<td style="text-align: left;">iMovie / QuickTime</td>
+<td style="text-align: left;">標準アプリでの「音声認識→字幕化」は非対応。外部連携が必要。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>iOS</strong></td>
+<td style="text-align: left;">非対応</td>
+<td style="text-align: left;">写真アプリ（手動のみ）</td>
+<td style="text-align: left;">自動生成機能なし。テキストの重ね合わせは手動操作が基本。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Android</strong></td>
+<td style="text-align: left;">非対応</td>
+<td style="text-align: left;">Google フォト</td>
+<td style="text-align: left;">編集機能はあるが、自動字幕生成ボタンは標準では存在しない。</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>1. Windows 11 での実例手順</h2>
+<p>Windows 11環境は、4OSの中で最も「標準機能だけで完結する」環境です。Microsoftが提供するビデオエディタ「Clipchamp」を活用します。</p>
+<h3>標準機能手順（公式アプリ：Microsoft Clipchamp）</h3>
+<ol>
+<li><strong>アプリの起動</strong>: 「スタート」メニューから「Clipchamp」を検索して起動します。</li>
+<li><strong>プロジェクトの作成</strong>: <strong>「新規作成」</strong> → <strong>「ビデオの編集」</strong>を選択し、PCに保存されている動画ファイルをドラッグ＆ドロップで読み込みます。</li>
+<li><strong>字幕機能の選択</strong>: 左サイドバーのメニューから<strong>「テキスト」</strong>をクリックします。</li>
+<li><strong>自動キャプションの生成</strong>: 「字幕を追加」または<strong>「自動でキャプションを作成」</strong>を選択します。</li>
+<li><strong>言語設定と生成</strong>: 音声認識言語（日本語など）を設定し、「生成」ボタンを押します。AIが音声を解析し、自動でテキストを生成します。</li>
+<li><strong>微調整</strong>: 下部のタイムラインに字幕クリップが追加されるので、誤字の修正やフォント・位置の調整を行います。</li>
+<li><strong>書き出し</strong>: <strong>「エクスポート」</strong>ボタンから、希望の解像度（1080pなど）を選択して保存します。</li>
+</ol>
+<h3>標準機能の制限事項</h3>
+<ul>
+<li><strong>リアルタイム表示不可</strong>: 動画再生中に動的にテロップが出るのはYouTube等のプラットフォーム側の仕様であり、Clipchamp単体では「動画ファイル自体に字幕を焼き付ける」処理になります。</li>
+<li><strong>出力形式限定</strong>: MP4, MOV, GIFのみ対応しており、WebMなどの特殊なフォーマットは非対応です。</li>
+<li><strong>ロゴの有無</strong>: 無料版ではエクスポート時にロゴが入る場合があり、完全な無印化には上位プランや別途加工が必要です。</li>
+</ul>
+<h3>よくあるトラブルと解決法</h3>
+<ol>
+<li><strong>「字幕生成中」でフリーズする</strong></li>
+<li><strong>原因</strong>: 音声認識エンジンとの通信エラーやメモリ不足。</li>
+<li><strong>対策</strong>: アプリを再起動し、プロジェクトを一度保存してから「新規作成」で読み込み直してください。改善しない場合はPCを再起動します。</li>
+<li><strong>「日本語字幕が生成されない」</strong></li>
+<li><strong>原因</strong>: 言語設定の不備。</li>
+<li><strong>対策</strong>: 「テキスト」→「自動でキャプションを作成」画面で、リストから正確に「Japanese (Japan)」を選択し直してください。</li>
+<li><strong>字幕位置が崩れる（重なる）</strong></li>
+<li><strong>原因</strong>: 音声認識結果のタイミングのズレ。</li>
+<li><strong>対策</strong>: タイムライン上の各字幕クリップを個別にクリックし、「開始時間」「終了時間」を手動で数フレーム単位で微調整します。</li>
+</ol>
+<hr />
+<h2>2. macOS での実例手順</h2>
+<p>macOSの場合、標準アプリである「QuickTime Player」や「iMovie」だけでは、ワンクリックでの自動字幕生成は現時点では困難です。</p>
+<h3>公式仕様に基づく実例手順</h3>
+<ul>
+<li><strong>事実確認</strong>: macOSの標準アプリ「QuickTime Player」には音声認識による<strong>自動字幕生成機能は存在しません</strong>。また、iMovieも最新バージョンにおいて「音声から自動でテキストを生成して埋め込む」ボタンは備わっていません。</li>
+<li><strong>実用的な解決策（公式範囲内）</strong>: 以下のいずれかの方法をとる必要があります。<ol>
+<li><strong>QuickTime Playerでの前処理</strong>: トリミングや不要なシーンのカットのみを行い、書き出します。</li>
+<li><strong>ブラウザ経由のClipchamp利用</strong>: macOS標準アプリに拘泥せず、ブラウザでMicrosoft Clipchampを開き、字幕処理を行うのが最もスムーズです。</li>
+</ol>
+</li>
+</ul>
+<h3>標準機能の制限事項</h3>
+<ul>
+<li><strong>自動字幕非対応</strong>: Apple Intelligenceの本格導入まで、標準OSだけで「音声→テキスト化」を完結させることはできません。</li>
+<li><strong>リアルタイムテロップ不可</strong>: 動画再生中に動的にテロップを表示する標準機能はありません。</li>
+</ul>
+<h3>よくあるトラブルと解決法</h3>
+<ol>
+<li><strong>「QuickTimeで字幕を入れたいがメニューがない」</strong></li>
+<li><strong>対策</strong>: QuickTimeはプレイヤーであり編集ソフトではないため、字幕機能自体が存在しないことを認識し、iMovieやブラウザ版Clipchampへ移行してください。</li>
+<li><strong>「書き出し時に音声波形が歪む」</strong></li>
+<li><strong>対策</strong>: 「ファイル」→「エクスポート」で高品質なコーデック（H.264）を選択し直すか、ハードウェアアクセラレーションの設定を確認してください。</li>
+<li><strong>「iMovieで字幕ツールが見つからない」</strong></li>
+<li><strong>対策</strong>: iMovieには「タイトル」機能がありますが、自動生成はありません。「手動入力」を行うか、外部のサードパーティ製アプリ（Veed.ioなど）を検討する必要があります。</li>
+</ol>
+<hr />
+<h2>3. iOS（iPhone / iPad）での実例手順</h2>
+<p>モバイル端末では、動画編集機能は備わっていますが、AIによる自動字幕生成は標準の「写真」アプリでは提供されていません。</p>
+<h3>標準機能手順（公式アプリ：「写真」）</h3>
+<ol>
+<li><strong>動画の選択</strong>: 「写真」アプリを開き、編集したい動画を選択して<strong>「編集」</strong>をタップします。</li>
+<li><strong>制限事項の確認</strong>: iOSの標準「写真」アプリには<strong>音声認識による自動字幕生成機能は存在しません</strong>。</li>
+<li><strong>代替手段</strong>: </li>
+<li>動画をAirDropやiCloud DriveでPCへ送り、Windows/Mac環境でClipchamp等を使用して処理する。</li>
+<li>または、iOS標準の「メモ帳」で文章を書き、スクリーンショットを撮って動画上に重ねるというアナログな手法をとります。</li>
+</ol>
+<h3>標準機能の制限事項</h3>
+<ul>
+<li><strong>自動字幕非対応</strong>: 「写真」アプリはトリミングやフィルタ適用がメインであり、テキスト生成・埋め込み機能は備わっていません。</li>
+<li><strong>ライブキャプション表示不可</strong>: 設定の「字幕表示」はSiriの音声認識結果などを指すものであり、動画編集におけるテロップとは別物です。</li>
+</ul>
+<h3>よくあるトラブルと解決法</h3>
+<ol>
+<li><strong>「写真アプリ内でテキストツールがない」</strong></li>
+<li><strong>対策</strong>: 「エフェクト」や「トリミング」ボタンしか存在しません。手動で「メモ帳」に文章を書いて画像化し、動画上に配置する工程が必要です。</li>
+<li><strong>「共有メニューからどこにも送れない」</strong></li>
+<li><strong>対策</strong>: 直接編集アプリへ渡すボタンはありません。「iCloud Drive」を選択してPC側へ同期させるのが正攻法です。</li>
+<li><strong>「動画の画質が悪化する」</strong></li>
+<li><strong>対策</strong>: 「写真」アプリでの保存は圧縮がかかることがあります。「共有」→「原画像として保存」を選択するか、iCloud Drive経由でPC編集を行うことで高品質を維持できます。</li>
+</ol>
+<hr />
+<h2>4. Android での実例手順</h2>
+<p>Android端末も同様に、Googleフォトなどの標準アプリでは自動字幕生成のボタンは用意されていません。</p>
+<h3>標準機能手順（公式アプリ：Google フォト）</h3>
+<ol>
+<li><strong>動画の選択</strong>: 「Google フォト」を開き、対象の動画をタップして右上の<strong>「エディット（編集）」</strong>を選択します。</li>
+<li><strong>基本編集</strong>: トリミングやフィルタ適用はスムーズに行えます。</li>
+<li><strong>字幕機能について</strong>: Google フォトには音声認識による自動字幕生成ボタンや、テキスト入力ツールも標準では存在しません（Pixel等の特定機種でのAI連携は一部に限定されます）。</li>
+</ol>
+<h3>標準機能の制限事項</h3>
+<ul>
+<li><strong>完全な自動字幕不可</strong>: 機種を問わず、Google フォトアプリ内だけで「音声→テキスト化」という工程を完遂することはできません。</li>
+<li><strong>ライブキャプション表示不可</strong>: YouTubeのような即時テロップも標準機能では提供されません。</li>
+</ul>
+<h3>よくあるトラブルと解決法</h3>
+<ol>
+<li><strong>「エディット画面で字幕ボタンがない」</strong></li>
+<li><strong>対策</strong>: 「カット」「フィルタ」は使えますが、「テキスト」メニューはありません。「Google フォト」から動画を共有し、PC版Clipchamp等へ移動して処理してください。</li>
+<li><strong>「動画が読み込めないエラーが出る」</strong></li>
+<li><strong>対策</strong>: 容量制限やフォーマットの問題です。「写真とビデオをバックアップに追加」するか、SDカードからの直接編集を試みてください。</li>
+<li><strong>「音声認識結果の精度が悪い（機種依存）」</strong></li>
+<li><strong>対策</strong>: Android標準機能では字幕作成が不可能なため、YouTubeアプリの投稿時編集機能やPC版Clipchampを使用するのが最も確実です。</li>
+</ol>
+<hr />
+<h2>まとめ：快適なマルチOS環境を作るポイント</h2>
+<p>今回の比較で明らかになった通り、現時点で「OS標準の無料機能だけで自動字幕を生成・埋め込み」ができるのは<strong>Windows 11（Clipchamp）のみ</strong>です。macOS、iOS、Androidユーザーは、PCへのデータ転送や外部ツールの活用が現実的な解決策となります。</p>
+<p>快適な動画制作環境を構築するためには、以下の周辺機器やツールの導入も検討すると、作業効率とクオリティが劇的に向上します。</p>
+<ul>
+<li><strong>USBマイク / オーディオインターフェース</strong>: 音声認識の精度は「入力音のクリアさ」に依存します。ノイズを抑えたクリアな音声を取り込むことで、Clipchamp等のAIによる誤字を最小限に抑えられます。</li>
+<li><strong>高速外付けSSD</strong>: 高画質な動画ファイルは容量が大きいため、編集時のプレビューや書き出しをスムーズにするために必須のアイテムです。</li>
+<li><strong>動画編集ソフト（PC版）</strong>: 標準機能で限界を感じた場合は、より高度な自動字幕生成機能を備えた専用ソフトへ移行することで、一貫したワークフローを構築できます。</li>
+</ul>
+<p>OSごとの特性を理解し、最適なツールを組み合わせることで、ストレスのない字幕制作環境を実現しましょう。</p>
+<hr />
+<h2>参考文献・公式ドキュメント（一次情報ソース）</h2>
+<p>本記事の手順・仕様は以下の各OSおよびツールの公式ドキュメントに基づいています。OSアップデートによりメニュー名称や挙動が変わる場合があるため、最新仕様の確認にもご活用ください。</p>
+<ul>
+<li><strong>[Windows]</strong> <a href="https://support.microsoft.com/ja-jp/windows">Windows のヘルプとラーニング（Clipchamp / フォト動画編集） - Microsoft サポート</a></li>
+<li><strong>[macOS]</strong> <a href="https://support.apple.com/ja-jp/guide/quicktime-player/qtp76b9321b3/mac">Mac用QuickTime Playerユーザガイド（トリミング・書き出し） - Apple サポート (日本)</a></li>
+<li><strong>[iOS]</strong> <a href="https://support.apple.com/ja-jp/guide/iphone/iph1d13452f2/ios">iPhoneユーザガイド（写真アプリでのビデオ編集・トリミング） - Apple サポート (日本)</a></li>
+<li><strong>[Android]</strong> <a href="https://support.google.com/photos/answer/6128850?hl=ja">写真や動画を編集する - Google フォト ヘルプ</a></li>
+</ul>
+    </article>
+  </main>
+  <footer>Generated with Local Ollama (qwen3.5 / gemma4) &amp; Draw Things (FLUX.2 klein 4B)</footer>
+</body>
+</html>
