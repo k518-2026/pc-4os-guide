@@ -29,10 +29,11 @@ python -m src.main -n 1 --push
 python -m src.main -n 1 --category 11
 ```
 
-## 書き溜め済み記事一覧（全 62 本 / 最終更新: 2026-11-24 14:04 JST）
+## 書き溜め済み記事一覧（全 63 本 / 最終更新: 2026-11-24 14:07 JST）
 
 | No. | 17分類カテゴリ | 記事タイトル（Markdown） | 挿絵 | 生成日 |
 | :---: | :--- | :--- | :---: | :---: |
+| #63 | 分類12: セキュリティ・プライバシー対策 | [フィッシング詐欺・迷惑メール／SMSを見抜いてブロックする標準セキュリティ実例｜Windows・macOS・iOS・Android](content/2026-11-24_art63_phishing_spam_mail_sms_block.md) | あり | 2026-11-24 |
 | #62 | 分類11: ネットワーク・サーバー・インフラ構築 | [サイトが開けない・遅い時のDNS設定（1.1.1.1 / 8.8.8.8）変更実例｜Windows・macOS・iOS・Android](content/2026-11-24_art62_dns_change_fast_safe_internet.md) | あり | 2026-11-24 |
 | #61 | 分類10: システム管理・OS設定・メンテナンス | [PC・スマホの動作が重い・起動が遅い時のスタートアップ整理＆軽量化実例｜Windows・macOS・iOS・Android](content/2026-11-24_art61_startup_apps_slow_boot_fix.md) | あり | 2026-11-24 |
 | #60 | 分類09: データ分析・科学計算・AI活用 | [PDFの表や紙の明細をExcel・スプレッドシートへ取り込んで集計する実例｜Windows・macOS・iOS・Android](content/2026-11-24_art60_pdf_table_to_spreadsheet_extract.md) | あり | 2026-11-24 |

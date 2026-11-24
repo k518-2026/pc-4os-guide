@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>フィッシング詐欺・迷惑メール／SMSを見抜いてブロックする標準セキュリティ実例｜Windows・macOS・iOS・Android | PC 4OS実例ガイド</title>
+  <style>
+:root {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --muted: #475569;
+  --accent: #0284c7;
+  --accent-soft: #e0f2fe;
+  --border: #e2e8f0;
+  --code-bg: #0f172a;
+  --code-text: #e2e8f0;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Noto Sans JP", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+}
+header.site-header {
+  background: linear-gradient(135deg, #0f172a 0%, #0369a1 100%);
+  color: #fff;
+  padding: 2.2rem 1.25rem;
+}
+header.site-header .inner { max-width: 980px; margin: 0 auto; }
+header.site-header h1 { margin: 0 0 0.4rem; font-size: 1.75rem; }
+header.site-header p { margin: 0; opacity: 0.9; font-size: 0.96rem; }
+main { max-width: 980px; margin: 2rem auto; padding: 0 1.25rem 3rem; }
+.badge {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: var(--accent-soft);
+  color: #0369a1;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1.25rem;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08); }
+.card img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; display: block; background: #e2e8f0; }
+.card-body { padding: 1rem 1.1rem 1.2rem; flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+.card-title { font-size: 1.02rem; font-weight: 700; margin: 0; line-height: 1.45; }
+.card-meta { font-size: 0.82rem; color: var(--muted); margin-top: auto; }
+article.post {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 2rem;
+}
+article.post img.eyecatch {
+  width: 100%;
+  max-height: 460px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+}
+article.post h1 { font-size: 1.65rem; line-height: 1.35; margin-top: 0; }
+article.post h2 {
+  font-size: 1.3rem;
+  margin-top: 2.1rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 2px solid var(--accent-soft);
+}
+article.post h3 { font-size: 1.08rem; margin-top: 1.4rem; }
+article.post table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.2rem 0;
+  font-size: 0.92rem;
+  display: block;
+  overflow-x: auto;
+}
+article.post th, article.post td {
+  border: 1px solid var(--border);
+  padding: 0.6rem 0.8rem;
+  text-align: left;
+}
+article.post th { background: #f1f5f9; font-weight: 700; }
+article.post pre {
+  background: var(--code-bg);
+  color: var(--code-text);
+  padding: 1rem 1.15rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+article.post code {
+  background: #f1f5f9;
+  padding: 0.15rem 0.38rem;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+article.post pre code { background: transparent; padding: 0; color: inherit; }
+article.post blockquote {
+  margin: 1.2rem 0;
+  padding: 0.8rem 1.1rem;
+  border-left: 4px solid var(--accent);
+  background: #f0f9ff;
+  border-radius: 0 8px 8px 0;
+}
+.back-link { display: inline-block; margin-bottom: 1rem; color: var(--accent); text-decoration: none; font-weight: 600; }
+.filter-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.15rem 1.25rem;
+  margin-bottom: 1.5rem;
+}
+.filter-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) auto;
+  gap: 0.9rem;
+  align-items: end;
+}
+.filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.filter-field label {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.filter-field input[type="search"],
+.filter-field select {
+  font: inherit;
+  font-size: max(1rem, 1em);
+  min-height: 48px;
+  padding: 0.55rem 0.85rem;
+  border: 1.5px solid #767676;
+  border-radius: 8px;
+  background: #fff;
+  color: var(--text);
+  width: 100%;
+}
+.filter-field input[type="search"]:focus-visible,
+.filter-field select:focus-visible,
+.filter-actions button:focus-visible {
+  outline: 3px solid #0284c7;
+  outline-offset: 2px;
+}
+.filter-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+.filter-actions button {
+  font: inherit;
+  font-size: max(1rem, 0.95em);
+  font-weight: 600;
+  min-height: 48px;
+  padding: 0 1.05rem;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+}
+.btn-primary {
+  background: #0369a1;
+  color: #fff;
+}
+.btn-primary:hover { background: #075985; }
+.btn-secondary {
+  background: #f1f5f9;
+  color: var(--text);
+  border-color: #94a3b8;
+}
+.btn-secondary:hover { background: #e2e8f0; }
+.results-status {
+  color: var(--muted);
+  font-size: 0.92rem;
+  margin: 0 0 1.1rem;
+}
+.empty-state {
+  background: var(--surface);
+  border: 1px dashed #94a3b8;
+  border-radius: 12px;
+  padding: 2rem 1.25rem;
+  text-align: center;
+  color: var(--muted);
+}
+.card[hidden],
+.empty-state[hidden] { display: none; }
+footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2rem 1rem; }
+@media (max-width: 720px) {
+  .filter-form { grid-template-columns: 1fr; }
+  .filter-actions { width: 100%; }
+  .filter-actions button { flex: 1; }
+}
+@media (max-width: 640px) {
+  article.post { padding: 1.2rem; }
+}
+</style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="inner">
+      <h1>PC 4OS実例ガイド</h1>
+      <p>Windows・macOS・iOS・Android の実践比較＆トラブル解決アーカイブ</p>
+    </div>
+  </header>
+  <main>
+    <a class="back-link" href="../index.html">← 記事一覧へ戻る</a>
+    <article class="post">
+      <p><span class="badge">#63｜分類12: セキュリティ・プライバシー対策</span> <small style="color:#64748b;margin-left:0.5rem;">2026-11-24</small></p>
+      <img class="eyecatch" src="../images/2026-11-24_art63_phishing_spam_mail_sms_block.png" alt="フィッシング詐欺・迷惑メール／SMSを見抜いてブロックする標準セキュリティ実例｜Windows・macOS・iOS・Android">
+      <h1>フィッシング詐欺・迷惑メール／SMSを見抜いてブロックする標準セキュリティ実例｜Windows・macOS・iOS・Android</h1>
+<p>「最近、身に覚えのないSMSで『荷物の配送状況を確認してください』とURL付きで届く」「急ぎの支払いを求める不審なメールが届いた」といった経験はありませんか？</p>
+<p>これらはすべて<strong>フィッシング詐欺</strong>や<strong>スミッシング（SMSを使った詐欺）</strong>と呼ばれる手口です。巧妙な手口は日々進化しており、OS標準の機能だけでは防ぎきれないケースも増えています。</p>
+<p>この記事では、Windows、macOS、iOS、Androidの4つの主要OSにおいて、標準機能でどこまで対策ができるのか、具体的な操作手順を交えて徹底解説します。あわせて、標準機能の限界を補うための「次の一手」についても紹介します。</p>
+<h2>4OS比較早見表</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">機能</th>
+<th style="text-align: left;">Windows 11</th>
+<th style="text-align: left;">macOS</th>
+<th style="text-align: left;">iOS (iPhone/iPad)</th>
+<th style="text-align: left;">Android</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>メールフィルタ</strong></td>
+<td style="text-align: left;">Outlook / Edge保護</td>
+<td style="text-align: left;">Mailアプリ / Safari</td>
+<td style="text-align: left;">Mailアプリ</td>
+<td style="text-align: left;">Gmail / Chrome</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>SMSブロック</strong></td>
+<td style="text-align: left;">非対応（スマホ側で設定）</td>
+<td style="text-align: left;">「不明な差出人」フィルタ</td>
+<td style="text-align: left;">「不明な差出人」フィルタ</td>
+<td style="text-align: left;">Googleメッセージ等(機種依存)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>詐欺サイト阻止</strong></td>
+<td style="text-align: left;">SmartScreen</td>
+<td style="text-align: left;">Safari標準機能</td>
+<td style="text-align: left;">Safari標準機能</td>
+<td style="text-align: left;">Chrome標準機能</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>パスキー対応</strong></td>
+<td style="text-align: left;">対応 (Windows Hello)</td>
+<td style="text-align: left;">対応 (Touch ID/Face ID)</td>
+<td style="text-align: left;">対応 (Face ID/Touch ID)</td>
+<td style="text-align: left;">対応 (指紋/顔認証)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>【共通】詐欺を見抜くための3つの基本原則</h2>
+<p>OSを問わず、まずは「怪しい」と判断するための共通ルールを押さえておくことが重要です。</p>
+<ol>
+<li><strong>URLの不自然さ</strong>: <br />
+    公式サイト（例：amazon.co.jp）に見せかけて、実際には「amaz0n-support.net」など、一文字だけ違ったり、全く無関係なドメインになっていないか確認します。</li>
+<li><strong>送信元アドレスの不整合</strong>: <br />
+    企業を名乗っているにもかかわらず、メールアドレスが個人のGmailや、支離滅裂な英数字の羅列になっていないかチェックします。</li>
+<li><strong>緊急性を煽る文言</strong>: <br />
+    「アカウントが凍結されます」「本日中に支払わなければ法的措置をとります」といった、冷静な判断を奪うための言葉が含まれていれば、まず疑ってください。</li>
+</ol>
+<h3>必須設定：パスキー (Passkey) と MFAの強化</h3>
+<p>フィッシング詐欺の最大の目的は「IDとパスワードを盗むこと」です。これを防ぐ最強の対策が<strong>パスキー（FIDO2）</strong>です。<br />
+*   <strong>パスキー</strong>: 生体認証やデバイスのロック解除を利用してログインする仕組みです。フィッシングサイトであっても、正しいドメイン以外では認証情報が送信されないため、入力ミスによる被害を防げます。<br />
+*   <strong>二段階認証 (MFA)</strong>: SMSでのコード受信は「SIMスワップ」などのリスクがあるため、可能な限り<strong>「認証アプリ（Google Authenticator等）」</strong>または<strong>「パスキー」</strong>を優先する構成へ移行しましょう。</p>
+<hr />
+<h2>1. Windows 11 での実例手順</h2>
+<p>Windows環境では、Microsoft Defenderによる包括的な保護が標準で備わっています。</p>
+<h3>メールのフィルタリングとブラウザ保護</h3>
+<ul>
+<li><strong>Outlookアプリ</strong>: 設定から「迷惑メールフィルター」を有効にします。特定のキーワードや送信元を含むメールを自動的に「迷惑メールフォルダ」へ振り分けます。</li>
+<li><strong>Microsoft Edge</strong>: 標準でフィッシング保護が組み込まれています。悪意のあるサイトにアクセスしようとすると、警告画面が表示されブロックされます。</li>
+</ul>
+<h3>Windows セキュリティアプリの活用</h3>
+<p>「設定 &gt; 更新とセキュリティ（またはプライバシーとセキュリティ） &gt; Windows セキュリティ」を開き、「アプリとブラウザーの保護」が<strong>有効</strong>になっているか確認してください。これにより、マルウェアを含むサイトへのアクセスを制限します。</p>
+<h3>SMS 迷惑防止について</h3>
+<p>Windows OS単体ではSMSの受信・ブロック機能は備わっていません（キャリア依存）。SMS対策はスマートフォン側の設定に依存するため、後述するiOS/Androidの設定を参照してください。</p>
+<hr />
+<h2>2. macOS / iOS での実例手順</h2>
+<p>Apple製品はプライバシー保護と詐欺防止に非常に強い標準機能を備えています。</p>
+<h3>Safariでの詐欺サイトブロック</h3>
+<ol>
+<li><strong>Safariを開く</strong> &gt; メニューの「設定」をクリック。</li>
+<li>「プライバシーとセキュリティ」タブを選択。</li>
+<li><strong>「詐欺サイトのブロックを有効にする」</strong>にチェックが入っているか確認します。</li>
+</ol>
+<h3>Mailアプリのルール作成</h3>
+<p>送信元アドレスが不自然なものを自動で振り分けるには、Mailアプリの「設定 &gt; 規則」から、特定のドメインやキーワードを含むメールを「ゴミ箱」または「迷惑メールフォルダ」へ移動させるルールを作成できます。</p>
+<h3>iOSでのSMSフィルタリング（重要）</h3>
+<ol>
+<li><strong>「設定」アプリ</strong>を開く。</li>
+<li><strong>「メッセージ」</strong>を選択。</li>
+<li><strong>「不明な差出人からのフィルタリング」</strong>をオンにします。</li>
+<li>これにより、連絡先に登録されていない相手からのSMSは別タブに隔離され、通知が抑制されます。</li>
+</ol>
+<hr />
+<h2>3. Android での実例手順</h2>
+<p>Androidは機種（Pixel, Galaxy等）によって細部が異なりますが、Google標準の機能を中心に解説します。</p>
+<h3>Chromeでの詐欺サイトブロック</h3>
+<ol>
+<li><strong>Chromeアプリ</strong>を開く。</li>
+<li>右上の「︙」メニューから「設定」へ進む。</li>
+<li>「プライバシーとセキュリティ」 &gt; 「サイトの設定」を選択。</li>
+<li>「コンテンツ」内の<strong>「詐欺サイトをブロックする」</strong>をオンにします。</li>
+</ol>
+<h3>GoogleメッセージによるSMSフィルタリング（Pixel等）</h3>
+<ol>
+<li><strong>「メッセージ (Google)」アプリ</strong>を開く。</li>
+<li>右上のプロフィールアイコンから「メッセージの設定」へ進む。</li>
+<li><strong>「スパム保護」</strong>をオンにします。これにより、GoogleのAIが自動的に迷惑SMSを検知し、ブロックします。</li>
+</ol>
+<p>※Samsung Galaxy等の他社製端末では、「設定 &gt; 連絡先管理（またはメーカー固有のセキュリティアプリ）」から独自のスパムフィルターを設定する必要があります。</p>
+<hr />
+<h2>よくあるトラブルと解決チェックリスト</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">トラブル内容</th>
+<th style="text-align: left;">原因と対処法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>「スパムフォルダ」に自動移動しない</strong></td>
+<td style="text-align: left;">Outlook等の設定で「迷惑メールフィルターを有効にする」がオフになっていないか確認してください。また、ブラウザのプライバシー設定により警告が表示されない場合もあります。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>SmartScreenの警告が出ない</strong></td>
+<td style="text-align: left;">「Windows セキュリティ &gt; アプリとブラウザー保護」の設定を確認し、Microsoft Defender SmartScreenが「有効」になっているか再確認してください。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>SMSコードが届かない（MFA）</strong></td>
+<td style="text-align: left;">Windows Hello Phone等が未対応の場合、SMS認証は不安定です。Google Authenticatorなどの「認証アプリ」への切り替えを強く推奨します。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>詐欺サイトのブロックが表示されない</strong></td>
+<td style="text-align: left;">Safari等のキャッシュが原因の場合があります。キャッシュクリアを試すか、コンテンツブロッカー（拡張機能）との競合を確認してください。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>SMSブロックで重要通知が来ない</strong></td>
+<td style="text-align: left;">「フィルターされた送信元」を完全に遮断すると、配送業者などの通知も届かないことがあります。キャリアの番号を「例外リスト」に追加してください。</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>まとめ：快適なマルチOS環境を作るポイント</h2>
+<p>標準機能だけでも多くの脅威を防ぐことができますが、より強固なセキュリティを実現するためには「多層防御」の考え方が重要です。</p>
+<p><strong>1. パスワード管理ツールの導入</strong><br />
+LastPassやBitwardenなどのマネージャーを導入しましょう。これらはフィッシングサイトを自動で検知し、「正しいサイト以外ではパスワードを自動入力しない」という強力な防壁になります。</p>
+<p><strong>2. セキュリティキー（YubiKey等）の活用</strong><br />
+最も高度な防御策は、物理的なセキュリティキー（FIDO2対応）です。GoogleやMicrosoftアカウントに登録することで、たとえIDとパスワードが盗まれても、物理キーを持っていない限りログインを許さない仕組みを作れます。</p>
+<p><strong>3. VPNとセキュリティソフトの併用</strong><br />
+公共Wi-Fiを利用する際はVPNで通信を暗号化し、Windows/macOSでは信頼できるセキュリティソフト（ウイルスバスターやESET等）を導入することで、標準機能の隙間を埋めることができます。</p>
+<p>これらのツールを組み合わせることで、どのデバイスを使っていても「安心」という快適なデジタル環境を構築しましょう。</p>
+<hr />
+<h2>参考文献・公式ドキュメント（一次情報ソース）</h2>
+<p>本記事の手順・仕様は以下の各OSおよびツールの公式ドキュメントに基づいています。OSアップデートによりメニュー名称や挙動が変わる場合があるため、最新仕様の確認にもご活用ください。</p>
+<ul>
+<li><strong>[Windows]</strong> <a href="https://support.microsoft.com/ja-jp/windows/windows-%E3%81%AE%E3%83%91%E3%82%B9%E3%82%AD%E3%83%BC-301c8944-5ea2-452b-9886-97e4d2ef4422">Windows のパスキー（Passkey）公式ガイド - Microsoft サポート</a></li>
+<li><strong>[macOS / iOS]</strong> <a href="https://support.apple.com/ja-jp/102195">パスキーのセキュリティについて - Apple サポート (日本)</a></li>
+<li><strong>[Android / 共通]</strong> <a href="https://support.google.com/accounts/answer/13548313?hl=ja">パスワードの代わりにパスキーでログインする - Google アカウント ヘルプ</a></li>
+<li><strong>[共通]</strong> <a href="https://support.google.com/accounts/answer/185839?hl=ja">2 段階認証プロセスを有効にする - Google アカウント ヘルプ</a></li>
+</ul>
+    </article>
+  </main>
+  <footer>Generated with Local Ollama (qwen3.5 / gemma4) &amp; Draw Things (FLUX.2 klein 4B)</footer>
+</body>
+</html>
