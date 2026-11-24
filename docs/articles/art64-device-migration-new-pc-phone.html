@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>新しいPC・スマホ買い替え時の公式データ移行＆失敗しない事前チェック実例｜Windows・macOS・iOS・Android | PC 4OS実例ガイド</title>
+  <style>
+:root {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --muted: #475569;
+  --accent: #0284c7;
+  --accent-soft: #e0f2fe;
+  --border: #e2e8f0;
+  --code-bg: #0f172a;
+  --code-text: #e2e8f0;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Noto Sans JP", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+}
+header.site-header {
+  background: linear-gradient(135deg, #0f172a 0%, #0369a1 100%);
+  color: #fff;
+  padding: 2.2rem 1.25rem;
+}
+header.site-header .inner { max-width: 980px; margin: 0 auto; }
+header.site-header h1 { margin: 0 0 0.4rem; font-size: 1.75rem; }
+header.site-header p { margin: 0; opacity: 0.9; font-size: 0.96rem; }
+main { max-width: 980px; margin: 2rem auto; padding: 0 1.25rem 3rem; }
+.badge {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: var(--accent-soft);
+  color: #0369a1;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1.25rem;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08); }
+.card img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; display: block; background: #e2e8f0; }
+.card-body { padding: 1rem 1.1rem 1.2rem; flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+.card-title { font-size: 1.02rem; font-weight: 700; margin: 0; line-height: 1.45; }
+.card-meta { font-size: 0.82rem; color: var(--muted); margin-top: auto; }
+article.post {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 2rem;
+}
+article.post img.eyecatch {
+  width: 100%;
+  max-height: 460px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+}
+article.post h1 { font-size: 1.65rem; line-height: 1.35; margin-top: 0; }
+article.post h2 {
+  font-size: 1.3rem;
+  margin-top: 2.1rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 2px solid var(--accent-soft);
+}
+article.post h3 { font-size: 1.08rem; margin-top: 1.4rem; }
+article.post table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.2rem 0;
+  font-size: 0.92rem;
+  display: block;
+  overflow-x: auto;
+}
+article.post th, article.post td {
+  border: 1px solid var(--border);
+  padding: 0.6rem 0.8rem;
+  text-align: left;
+}
+article.post th { background: #f1f5f9; font-weight: 700; }
+article.post pre {
+  background: var(--code-bg);
+  color: var(--code-text);
+  padding: 1rem 1.15rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+article.post code {
+  background: #f1f5f9;
+  padding: 0.15rem 0.38rem;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+article.post pre code { background: transparent; padding: 0; color: inherit; }
+article.post blockquote {
+  margin: 1.2rem 0;
+  padding: 0.8rem 1.1rem;
+  border-left: 4px solid var(--accent);
+  background: #f0f9ff;
+  border-radius: 0 8px 8px 0;
+}
+.back-link { display: inline-block; margin-bottom: 1rem; color: var(--accent); text-decoration: none; font-weight: 600; }
+.filter-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.15rem 1.25rem;
+  margin-bottom: 1.5rem;
+}
+.filter-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) auto;
+  gap: 0.9rem;
+  align-items: end;
+}
+.filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.filter-field label {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.filter-field input[type="search"],
+.filter-field select {
+  font: inherit;
+  font-size: max(1rem, 1em);
+  min-height: 48px;
+  padding: 0.55rem 0.85rem;
+  border: 1.5px solid #767676;
+  border-radius: 8px;
+  background: #fff;
+  color: var(--text);
+  width: 100%;
+}
+.filter-field input[type="search"]:focus-visible,
+.filter-field select:focus-visible,
+.filter-actions button:focus-visible {
+  outline: 3px solid #0284c7;
+  outline-offset: 2px;
+}
+.filter-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+.filter-actions button {
+  font: inherit;
+  font-size: max(1rem, 0.95em);
+  font-weight: 600;
+  min-height: 48px;
+  padding: 0 1.05rem;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+}
+.btn-primary {
+  background: #0369a1;
+  color: #fff;
+}
+.btn-primary:hover { background: #075985; }
+.btn-secondary {
+  background: #f1f5f9;
+  color: var(--text);
+  border-color: #94a3b8;
+}
+.btn-secondary:hover { background: #e2e8f0; }
+.results-status {
+  color: var(--muted);
+  font-size: 0.92rem;
+  margin: 0 0 1.1rem;
+}
+.empty-state {
+  background: var(--surface);
+  border: 1px dashed #94a3b8;
+  border-radius: 12px;
+  padding: 2rem 1.25rem;
+  text-align: center;
+  color: var(--muted);
+}
+.card[hidden],
+.empty-state[hidden] { display: none; }
+footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2rem 1rem; }
+@media (max-width: 720px) {
+  .filter-form { grid-template-columns: 1fr; }
+  .filter-actions { width: 100%; }
+  .filter-actions button { flex: 1; }
+}
+@media (max-width: 640px) {
+  article.post { padding: 1.2rem; }
+}
+</style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="inner">
+      <h1>PC 4OS実例ガイド</h1>
+      <p>Windows・macOS・iOS・Android の実践比較＆トラブル解決アーカイブ</p>
+    </div>
+  </header>
+  <main>
+    <a class="back-link" href="../index.html">← 記事一覧へ戻る</a>
+    <article class="post">
+      <p><span class="badge">#64｜分類13: ファイル管理・バックアップ・データ復旧</span> <small style="color:#64748b;margin-left:0.5rem;">2026-11-24</small></p>
+      <img class="eyecatch" src="../images/2026-11-24_art64_device_migration_new_pc_phone.png" alt="新しいPC・スマホ買い替え時の公式データ移行＆失敗しない事前チェック実例｜Windows・macOS・iOS・Android">
+      <h1>新しいPC・スマホ買い替え時の公式データ移行＆失敗しない事前チェック実例｜Windows・macOS・iOS・Android</h1>
+<p>「新しいパソコンやスマートフォンに買い替えるけれど、これまでのデータや設定はどうやって移せばいいの？」「移行中にデータが消えてしまったらどうしよう……」と不安を感じていませんか？</p>
+<p>デバイスの買い替えは、単に新しいハードウェアを手に入れるだけでなく、これまで積み上げてきた大切な思い出や仕事の資産を安全に移設する重要な工程です。しかし、OS（オペレーティングシステム）によって公式の移行ツールや手順が全く異なるため、正しく理解していないとデータの消失や、移行後の「あれがない！」というトラブルに直面することになります。</p>
+<p>この記事では、Windows、macOS、iOS、Androidの主要4OSにおける<strong>「公式なデータ移行手順」</strong>を徹底解説します。失敗を防ぐための事前チェックリストも網羅しているため、スムーズな新生活のスタートを切るためのガイドとしてご活用ください。</p>
+<h2>4OS比較早見表</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">OS</th>
+<th style="text-align: left;">主なバックアップ/移行ツール</th>
+<th style="text-align: left;">推奨される主な移行手法</th>
+<th style="text-align: left;">特徴・注意点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Windows</strong></td>
+<td style="text-align: left;">ファイル履歴 / システム画像</td>
+<td style="text-align: left;">OneDrive同期 / 外付けHDDへの手動コピー</td>
+<td style="text-align: left;">アプリ設定の完全移行は標準機能では制限あり</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>macOS</strong></td>
+<td style="text-align: left;">Time Machine / iCloud+</td>
+<td style="text-align: left;">移行アシスタント (Migration Assistant)</td>
+<td style="text-align: left;">Apple製品間でのシームレスな移行が可能</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>iOS</strong></td>
+<td style="text-align: left;">Quick Start / iCloud</td>
+<td style="text-align: left;">iPhone同士の無線転送 / QRコード</td>
+<td style="text-align: left;">Androidからの移行はQRコード経由が基本</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Android</strong></td>
+<td style="text-align: left;">Google One / Googleアカウント</td>
+<td style="text-align: left;">Googleアカウント同期 / デバイス移行</td>
+<td style="text-align: left;">Googleアカウントを軸としたクラウド同期が主流</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>1. Windows 11 での実例手順</h2>
+<p>Windows環境では、OS全体の「完全なクローン」よりも、ユーザーデータとクラウド同期を組み合わせた移行が現在の主流です。</p>
+<h3>公式仕様に基づく実例手順</h3>
+<p><strong>方法 A: ファイル履歴とシステム画像によるバックアップ（外付けHDD経由）</strong><br />
+より堅牢な移行を行いたい場合は、公式のバックアップ機能を利用します。<br />
+1. <strong>旧PCでの操作</strong>: 「コントロールパネル」から「ファイル履歴」を設定し、外付けHDDへ定期的なバックアップを実行します。また、システム全体の状態を保存したい場合は「システム画像作成ツール」を使用し、外付けドライブにイメージを保存します。<br />
+2. <strong>新PCでの操作</strong>: 新しいPCでWindowsをセットアップした後、「設定 &gt; アカウント &gt; あなたの情報を保存する」でMicrosoft Accountによる同期を有効にします。その後、旧PCからバックアップしたデータ（ドキュメントや写真など）を手動でコピーするか、システムイメージを復元します。</p>
+<p><strong>方法 B: クラウド同期によるアプリ・設定の引き継ぎ</strong><br />
+1. <strong>OneDriveの活用</strong>: 「設定 &gt; システム &gt; ストレージ」に関連するフォルダ（デスクトップ、ドキュメント等）をOneDriveと同期させます。新PCでサインインするだけでファイルが自動的に現れます。<br />
+2. <strong>ブラウザ同期</strong>: Microsoft EdgeやGoogle Chromeの「同期機能」をオンにしておけば、ブックマークやパスワードは即座に引き継げます。</p>
+<h3>標準機能の制限事項</h3>
+<ul>
+<li><strong>他OSへの移行</strong>: WindowsからMacへデータを移行する公式ツールは存在しません（Apple Migration AssistantはmacOS専用）。Win→Macへの移行は外付けHDDを介した手動コピー、またはクラウドストレージ経由のみとなります。</li>
+<li><strong>アプリ設定</strong>: サードパーティ製ソフトのレジストリ情報や複雑なショートカットキー設定などは、標準機能では完全には復元できません。これらは各アプリ内で再設定が必要です。</li>
+</ul>
+<h3>よくあるトラブルと解決法 3 選</h3>
+<ol>
+<li><strong>トラブル</strong>: 「システム画像作成ツール」で「イメージを作成できませんでした」とエラーが出る。</li>
+<li><strong>原因・対策</strong>: 外付けHDDのフォーマット形式（NTFS vs exFAT）が不適切、または容量不足。管理 &gt; デバイスマネージャーでドライブ認識を確認し、適切なフォーマットのSSDを用意するか、OneDrive等のクラウドバックアップへ切り替えてください。</li>
+<li><strong>トラブル</strong>: 新PCでアプリをインストールしたが、旧PCの設定（保存場所など）が反映されない。</li>
+<li><strong>原因・対策</strong>: アプリごとの「ユーザーデータフォルダ」の移動は非推奨です。公式には対応していないため、「ドキュメント」等の標準フォルダのみ同期し、それ以外は手動で再配置する必要があります。</li>
+<li><strong>トラブル</strong>: Microsoft Accountでログインしたが、OneDriveのファイルが同期されない。</li>
+<li><strong>原因・対策</strong>: 「設定 &gt; アカウント &gt; サインインのオプション」からパスワードや2段階認証を正しく確認してください。ブラウザ版のOneDriveを開き、手動で同期ボタンを押すことで解決する場合があります。</li>
+</ol>
+<hr />
+<h2>2. macOS での実例手順</h2>
+<p>MacはAppleのエコシステム内であれば、非常に高度な自動移行が可能です。</p>
+<h3>公式仕様に基づく実例手順</h3>
+<p><strong>方法 A: Time Machine でバックアップ・復元</strong><br />
+1. <strong>旧Macでの操作</strong>: 外付けHDDを接続し、「システム設定 &gt; 一般 &gt; Time Machine」から「今すぐバックアップ」を実行します。<br />
+2. <strong>新Macでの操作</strong>: OSインストール直後のセットアップ画面で「移行アシスタント（Migration Assistant）」を起動。「Time Machine バックアップから復元」を選択すると、ユーザーアカウントやアプリケーションが自動コピーされます。</p>
+<p><strong>方法 B: iCloud+ を活用した手動引き継ぎ</strong><br />
+1. <strong>同期の確認</strong>: 「設定 &gt; Apple ID &gt; iCloud」で、写真、メモ、iCloud Driveの同期をオンにします。新Macでサインインするだけで、これら主要データは自動的に同期されます。</p>
+<h3>標準機能の制限事項</h3>
+<ul>
+<li><strong>他OSへの移行</strong>: Windows PCからMacへTime Machineで移行することは不可能です。Win→Macは外付けHDDでの手動コピーが基本です。</li>
+<li><strong>Androidからの移行</strong>: iPhoneへの「Quick Start」は可能ですが、Android側で特定の公式アプリをインストールするのではなく、iPhoneの初期設定画面でQRコードを読み取るのが唯一の標準方法です。</li>
+</ul>
+<h3>よくあるトラブルと解決法 3 選</h3>
+<ol>
+<li><strong>トラブル</strong>: 「移行アシスタント」で「Time Machine バックアップが見つかりません」と表示される。</li>
+<li><strong>原因・対策</strong>: 外付けHDDが新Macで認識されていないか、バックアップが未完了です。「システム情報 &gt; USB」でドライブ確認後、再度バックアップを待機させてください。</li>
+<li><strong>トラブル</strong>: 写真アプリのデータが多すぎて移行に時間がかかる（またはタイムアウト）。</li>
+<li><strong>原因・対策</strong>: iCloudフォトの容量不足、またはローカル保存分が多すぎる場合に起こります。外付けHDDを介したTime Machineでの「システム全体」バックアップを行うのが最も確実です。</li>
+<li><strong>トラブル</strong>: 新Macにログインしたが、「Face ID」や「Touch ID」の設定が失敗する。</li>
+<li><strong>原因・対策</strong>: 生体認証データはセキュリティ上、端末間で引き継げません。「システム設定 &gt; タッチ ID と Face ID」から新機種の指紋を再登録する必要があります。</li>
+</ol>
+<hr />
+<h2>3. iOS（iPhone / iPad）での実例手順</h2>
+<p>iPhoneへの移行は、Appleが提供する「Quick Start」という非常に強力なツールを利用します。</p>
+<h3>公式仕様に基づく実例手順</h3>
+<p><strong>方法 A: Quick Start で iPhone から iPhone へ</strong><br />
+1. <strong>操作</strong>: 新しいiPhoneを起動し、旧iPhoneの横に置きます。「新しいiPhoneにデータを移す」を選択。<br />
+2. <strong>転送</strong>: QRコードを読み取り、Wi-Fi経由で無線転送するか、「iCloudから復元」を選択してバックアップから読み込みます。</p>
+<p><strong>方法 B: Android から iOS (iPhone) へ</strong><br />
+1. <strong>操作</strong>: iPhoneの初期化画面でAndroidスマホを接続します。<br />
+2. <strong>転送</strong>: 「このiPhoneはAndroidからデータを移すか？」を選択し、Android側のQRコードを読み取ります（GoogleアカウントとWi-Fiで同期）。</p>
+<h3>標準機能の制限事項</h3>
+<ul>
+<li><strong>LINEのトーク履歴</strong>: iOS/Android共通の「公式ツールでの自動移行」はありません。LINEアプリ内でのバックアップ・復元操作、またはPC版アプリを経由した操作が必要です。</li>
+<li><strong>ファイルアクセス</strong>: 「iCloud Drive」はWindowsからアクセス可能ですが、Windows Explorer上でiPhone内のファイルを直接編集できる機能は標準では限定的です。</li>
+</ul>
+<h3>よくあるトラブルと解決法 3 選</h3>
+<ol>
+<li><strong>トラブル</strong>: Quick StartでAndroidからiOSへ移行する際、転送途中で止まる。</li>
+<li><strong>原因・対策</strong>: Wi-Fiの不安定さやGoogleアカウントの同期未完了が原因です。「設定 &gt; Apple ID, iCloud, メディアと購入」から容量を確認し、必要なら追加してください。LINE等のアプリはPC版でバックアップを取ってから移行するのが安全です。</li>
+<li><strong>トラブル</strong>: LINEの「2段階認証引き継ぎ」がうまくいかない。</li>
+<li><strong>原因・対策</strong>: 旧端末を消去する前に必ずPCブラウザ版でログアウト確認を行い、パスワード変更とSMS/Authenticatorでの再登録を正しく行ってください。</li>
+<li><strong>トラブル</strong>: 写真アプリのデータが「iCloudフォト」ではなくローカル保存されており、移行に時間がかかる。</li>
+<li><strong>原因・対策</strong>: 「設定 &gt; [自分の名前] &gt; iCloud &gt; 写真」で同期設定を確認してください。「このiPhoneに写真をダウンロードして保持する」をオフにしてからQuick Startを実行すると高速化できます（※データ損失リスクに注意）。</li>
+</ol>
+<hr />
+<h2>4. Android での実例手順</h2>
+<p>AndroidはGoogleアカウントを中心としたクラウドベースの移行が非常にスムーズです。</p>
+<h3>公式仕様に基づく実例手順</h3>
+<p><strong>方法 A: Google アカウント同期による自動引き継ぎ</strong><br />
+1. <strong>操作</strong>: 新しいAndroidスマホで初期化画面からQRコードを読み取るか、セットアップウィザードに従います。<br />
+2. <strong>同期</strong>: Googleアカウントにログインすると、連絡先、カレンダー、Googleフォト、Chromeのブックマークなどが自動的に同期されます。</p>
+<h3>標準機能の制限事項</h3>
+<ul>
+<li><strong>アプリ内データ</strong>: ゲームの進行状況や特定のSNS（LINE等）のトーク履歴は、Googleアカウントのバックアップだけでは引き継げないことが多く、各アプリ内での個別のバックアップ操作が必要です。</li>
+</ul>
+<hr />
+<h2>よくあるトラブルと解決法 チェックリスト</h2>
+<p>移行作業中に「あれ？」と思ったら、以下のチェックリストを確認してください。</p>
+<ul>
+<li>[ ] <strong>【ネットワーク】Wi-Fi環境は安定しているか？</strong><ul>
+<li>転送エラーの多くは通信の瞬断です。可能であれば5GHz帯の安定したWi-Fi、または高速な有線LAN環境で行ってください。</li>
+</ul>
+</li>
+<li>[ ] <strong>【ストレージ】移行先の容量は十分か？</strong><ul>
+<li>特に写真や動画が多い場合、新デバイスの空き容量が不足していると途中で停止します。不要なキャッシュを削除してから開始しましょう。</li>
+</ul>
+</li>
+<li>[ ] <strong>【アカウント】2段階認証の設定は済んでいるか？</strong><ul>
+<li>移行完了後、アプリにログインできない原因の多くは「旧端末での承認」が必要なためです。事前にPCブラウザ版でログイン確認を済ませておきましょう。</li>
+</ul>
+</li>
+<li>[ ] <strong>【LINE】トーク履歴のバックアップは取ったか？</strong><ul>
+<li>LINEはOS標準の移行機能では完全には移りません。必ずアプリ内の「トークのバックアップ」を実行してから新端末へ移行してください。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2>まとめ：快適なマルチOS環境を作るポイント</h2>
+<p>デバイスの買い替えを成功させる鍵は、<strong>「公式ツールの正しい理解」と「二重のバックアップ」</strong>にあります。標準機能だけで完結させようとせず、以下の準備を整えることでリスクを最小限に抑えられます。</p>
+<ol>
+<li><strong>外付けHDD/SSDの活用</strong>: <br />
+    OSのシステムイメージや大量の写真データは、クラウドだけでなく物理的な外付けドライブにも保存しましょう。特にWindowsやMacの「システム全体」のバックアップには必須です。</li>
+<li><strong>クラウドバックアップの併用</strong>: <br />
+    OneDrive, iCloud, Google Oneなどのクラウドサービスを常時活用することで、デバイス紛失や故障時でもデータを取り戻せる安心感が得られます。</li>
+<li><strong>データ復旧ソフト・ツールの検討</strong>: <br />
+    万が一の操作ミスによるデータ消失に備え、信頼できるデータ復旧ソフトをあらかじめ把握しておくこともプロの視点です。</li>
+</ol>
+<p>新しいデバイスへの移行は、単なる「移動」ではなく「データの整理」のチャンスでもあります。今回のガイドを参考に、安全でスムーズな移行を実現してください。</p>
+<hr />
+<h2>参考文献・公式ドキュメント（一次情報ソース）</h2>
+<p>本記事の手順・仕様は以下の各OSおよびツールの公式ドキュメントに基づいています。OSアップデートによりメニュー名称や挙動が変わる場合があるため、最新仕様の確認にもご活用ください。</p>
+<ul>
+<li><strong>[Windows]</strong> <a href="https://support.microsoft.com/ja-jp/windows/windows-%E3%81%A7-pc-%E3%82%92%E3%83%90%E3%83%83%E3%82%AF%E3%82%A2%E3%83%83%E3%83%97%E3%81%8A%E3%82%88%E3%81%B3%E5%BE%A9%E5%85%83%E3%81%99%E3%82%8B-352091d2-bb9d-3ea3-ed18-52ef2b88cbef">Windows で PC をバックアップおよび復元する - Microsoft サポート</a></li>
+<li><strong>[macOS]</strong> <a href="https://support.apple.com/ja-jp/104984">Time MachineでMacをバックアップする - Apple サポート (日本)</a></li>
+<li><strong>[iOS]</strong> <a href="https://support.apple.com/ja-jp/guide/iphone/iph95baac91f/ios">iPhoneに外部ストレージデバイスを接続する - Apple サポート (日本)</a></li>
+<li><strong>[Android]</strong> <a href="https://support.google.com/android/answer/9064445?hl=ja">パソコンと Android デバイス間でファイルを転送する - Android ヘルプ</a></li>
+</ul>
+    </article>
+  </main>
+  <footer>Generated with Local Ollama (qwen3.5 / gemma4) &amp; Draw Things (FLUX.2 klein 4B)</footer>
+</body>
+</html>
