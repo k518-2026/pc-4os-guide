@@ -29,10 +29,11 @@ python -m src.main -n 1 --push
 python -m src.main -n 1 --category 11
 ```
 
-## 書き溜め済み記事一覧（全 52 本 / 最終更新: 2026-11-24 10:01 JST）
+## 書き溜め済み記事一覧（全 53 本 / 最終更新: 2026-11-24 10:06 JST）
 
 | No. | 17分類カテゴリ | 記事タイトル（Markdown） | 挿絵 | 生成日 |
 | :---: | :--- | :--- | :---: | :---: |
+| #53 | 分類02: コミュニケーション・情報共有 | [クリップボード履歴とPC・スマホ間のコピペ連携を極める実例｜Windows・macOS・iOS・Android](content/2026-11-24_art53_clipboard_history_cross_device.md) | あり | 2026-11-24 |
 | #52 | 分類01: 文書作成・オフィス業務・事務作業 | [キーボード不要！標準「音声入力」で文書・メールを高速作成する実例｜Windows・macOS・iOS・Android](content/2026-11-24_art52_voice_typing_dictation_docs.md) | あり | 2026-11-24 |
 | #51 | 分類17: 生活・行政手続き・家計・資産管理 | [マイナポータル・オンライン行政手続きの読み取りエラー対策と活用実例｜Windows・macOS・iOS・Android](content/2026-11-24_art51_mynumber_digital_id_setup.md) | あり | 2026-11-24 |
 | #50 | 分類16: 学習・教育・自己啓発 | [勉強・仕事に集中する「集中モード／通知制御」設定と着信逃し防止の実例｜Windows・macOS・iOS・Android](content/2026-11-23_art50_focus_mode_notification_control.md) | あり | 2026-11-23 |
