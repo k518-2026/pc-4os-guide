@@ -656,5 +656,70 @@
       "通知 オフ 設定",
       "おやすみモード 解除"
     ]
+  },
+  {
+    "id": "art51-mynumber-digital-id-setup",
+    "article_num": 51,
+    "cat_num": 17,
+    "category": "生活・行政手続き・家計・資産管理",
+    "task_topic": "マイナポータル・e-Tax等のオンライン行政手続きでカード読み取り・ログインできない時の対処法",
+    "title": "マイナポータル・オンライン行政手続きの読み取りエラー対策と活用実例｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "マイナンバーカード 読み取れない",
+      "マイナポータル ログイン できない",
+      "e-Tax スマホ PC"
+    ]
+  },
+  {
+    "id": "art52-voice-typing-dictation-docs",
+    "article_num": 52,
+    "cat_num": 1,
+    "category": "文書作成・オフィス業務・事務作業",
+    "task_topic": "標準の音声入力（ディクテーション）で文書やメールを高速作成する手順と変換精度アップのコツ",
+    "title": "キーボード不要！標準「音声入力」で文書・メールを高速作成する実例｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "音声入力 ショートカット",
+      "音声入力 できない",
+      "ディクテーション 使い方"
+    ]
+  },
+  {
+    "id": "art53-clipboard-history-cross-device",
+    "article_num": 53,
+    "cat_num": 2,
+    "category": "コミュニケーション・情報共有",
+    "task_topic": "クリップボード履歴の活用とPC・スマホ間でコピー＆ペーストを連携する方法",
+    "title": "クリップボード履歴とPC・スマホ間のコピペ連携を極める実例｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "クリップボード 履歴 Windows",
+      "ユニバーサルクリップボード",
+      "スマホ PC コピペ 共有"
+    ]
+  },
+  {
+    "id": "art54-browser-autofill-privacy-manage",
+    "article_num": 54,
+    "cat_num": 3,
+    "category": "情報収集・リサーチ・Web利用",
+    "task_topic": "ブラウザの住所・パスワード・クレカ自動入力（オートフィル）の安全な管理・同期・個別削除手順",
+    "title": "ブラウザの自動入力（住所・クレカ・ID）を安全に管理・削除する実例｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "自動入力 削除 Chrome",
+      "オートフィル 設定",
+      "ブラウザ 自動入力 危険"
+    ]
+  },
+  {
+    "id": "art55-photo-mosaic-exif-privacy",
+    "article_num": 55,
+    "cat_num": 4,
+    "category": "画像・イラスト・デザイン制作",
+    "task_topic": "SNS投稿前に写真の顔・ナンバープレートをぼかし／モザイク加工し位置情報（Exif）を消す実例",
+    "title": "SNS投稿前の写真ぼかし・モザイク加工と位置情報（Exif）削除の実例｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "写真 位置情報 削除",
+      "画像 モザイク 無料",
+      "Exif 確認 消し方"
+    ]
   }
 ]
