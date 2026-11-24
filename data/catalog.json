@@ -721,5 +721,70 @@
       "画像 モザイク 無料",
       "Exif 確認 消し方"
     ]
+  },
+  {
+    "id": "art56-video-subtitles-captions-auto",
+    "article_num": 56,
+    "cat_num": 5,
+    "category": "動画・音声・音楽制作",
+    "task_topic": "動画の自動字幕（ライブキャプション）表示とショート動画への字幕入れを標準機能＆無料ツールで行う方法",
+    "title": "動画の自動字幕（ライブキャプション）表示＆字幕作成の実例｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "ライブキャプション 使い方",
+      "動画 字幕 自動 無料",
+      "音声 リアルタイム 字幕"
+    ]
+  },
+  {
+    "id": "art57-3d-print-stl-cloud-slicer-prep",
+    "article_num": 57,
+    "cat_num": 6,
+    "category": "3D・CAD・ものづくり",
+    "task_topic": "3Dプリンターやものづくり向けSTLモデルをブラウザやスマホで探してサイズ確認・共有する初心者フロー",
+    "title": "3Dプリンター用モデル（STL）の入手・サイズ確認・データ共有の初心者実例｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "STL ファイル 確認",
+      "3Dプリンター データ 入手",
+      "3Dモデル スマホ 確認"
+    ]
+  },
+  {
+    "id": "art58-text-diff-compare-changes",
+    "article_num": 58,
+    "cat_num": 7,
+    "category": "プログラミング・ソフトウェア開発",
+    "task_topic": "2つの文章・原稿・コードの変更箇所を一瞬で見比べる差分比較（Diff）の初心者向け実例",
+    "title": "2つの文章・原稿の違いを一瞬で見抜く「差分比較（Diff）」の実例｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "文章 比較 差分",
+      "Word 変更履歴 比較",
+      "テキスト 差分 無料"
+    ]
+  },
+  {
+    "id": "art59-blog-ogp-thumbnail-cache-fix",
+    "article_num": 59,
+    "cat_num": 8,
+    "category": "Web制作・ブログ・デジタルマーケティング",
+    "task_topic": "ブログ記事をSNS（X・LINE・Facebook）でシェアした時にアイキャッチ画像が出ない・古いままの時の解決手順",
+    "title": "SNSシェア時にブログのアイキャッチ（OGP）が出ない・更新されない時の解決実例｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "OGP 画像 出ない",
+      "LINE URL プレビュー 古い",
+      "ブログ アイキャッチ 反映されない"
+    ]
+  },
+  {
+    "id": "art60-pdf-table-to-spreadsheet-extract",
+    "article_num": 60,
+    "cat_num": 9,
+    "category": "データ分析・科学計算・AI活用",
+    "task_topic": "PDFの表や紙の明細をカメラ・標準機能でExcelやGoogleスプレッドシートに取り込んで集計する方法",
+    "title": "PDFの表や紙の明細をExcel・スプレッドシートへ取り込んで集計する実例｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "PDF 表 Excel 変換",
+      "画像 表 スプレッドシート",
+      "写真からデータ 取り込み"
+    ]
   }
 ]
