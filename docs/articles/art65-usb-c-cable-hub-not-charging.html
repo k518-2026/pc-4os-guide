@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>USB-Cケーブル・ハブで充電や画面出力ができない原因と正しい選び方実例｜Windows・macOS・iOS・Android | PC 4OS実例ガイド</title>
+  <style>
+:root {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --muted: #475569;
+  --accent: #0284c7;
+  --accent-soft: #e0f2fe;
+  --border: #e2e8f0;
+  --code-bg: #0f172a;
+  --code-text: #e2e8f0;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Noto Sans JP", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+}
+header.site-header {
+  background: linear-gradient(135deg, #0f172a 0%, #0369a1 100%);
+  color: #fff;
+  padding: 2.2rem 1.25rem;
+}
+header.site-header .inner { max-width: 980px; margin: 0 auto; }
+header.site-header h1 { margin: 0 0 0.4rem; font-size: 1.75rem; }
+header.site-header p { margin: 0; opacity: 0.9; font-size: 0.96rem; }
+main { max-width: 980px; margin: 2rem auto; padding: 0 1.25rem 3rem; }
+.badge {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: var(--accent-soft);
+  color: #0369a1;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1.25rem;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08); }
+.card img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; display: block; background: #e2e8f0; }
+.card-body { padding: 1rem 1.1rem 1.2rem; flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+.card-title { font-size: 1.02rem; font-weight: 700; margin: 0; line-height: 1.45; }
+.card-meta { font-size: 0.82rem; color: var(--muted); margin-top: auto; }
+article.post {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 2rem;
+}
+article.post img.eyecatch {
+  width: 100%;
+  max-height: 460px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+}
+article.post h1 { font-size: 1.65rem; line-height: 1.35; margin-top: 0; }
+article.post h2 {
+  font-size: 1.3rem;
+  margin-top: 2.1rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 2px solid var(--accent-soft);
+}
+article.post h3 { font-size: 1.08rem; margin-top: 1.4rem; }
+article.post table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.2rem 0;
+  font-size: 0.92rem;
+  display: block;
+  overflow-x: auto;
+}
+article.post th, article.post td {
+  border: 1px solid var(--border);
+  padding: 0.6rem 0.8rem;
+  text-align: left;
+}
+article.post th { background: #f1f5f9; font-weight: 700; }
+article.post pre {
+  background: var(--code-bg);
+  color: var(--code-text);
+  padding: 1rem 1.15rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+article.post code {
+  background: #f1f5f9;
+  padding: 0.15rem 0.38rem;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+article.post pre code { background: transparent; padding: 0; color: inherit; }
+article.post blockquote {
+  margin: 1.2rem 0;
+  padding: 0.8rem 1.1rem;
+  border-left: 4px solid var(--accent);
+  background: #f0f9ff;
+  border-radius: 0 8px 8px 0;
+}
+.back-link { display: inline-block; margin-bottom: 1rem; color: var(--accent); text-decoration: none; font-weight: 600; }
+.filter-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.15rem 1.25rem;
+  margin-bottom: 1.5rem;
+}
+.filter-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) auto;
+  gap: 0.9rem;
+  align-items: end;
+}
+.filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.filter-field label {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.filter-field input[type="search"],
+.filter-field select {
+  font: inherit;
+  font-size: max(1rem, 1em);
+  min-height: 48px;
+  padding: 0.55rem 0.85rem;
+  border: 1.5px solid #767676;
+  border-radius: 8px;
+  background: #fff;
+  color: var(--text);
+  width: 100%;
+}
+.filter-field input[type="search"]:focus-visible,
+.filter-field select:focus-visible,
+.filter-actions button:focus-visible {
+  outline: 3px solid #0284c7;
+  outline-offset: 2px;
+}
+.filter-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+.filter-actions button {
+  font: inherit;
+  font-size: max(1rem, 0.95em);
+  font-weight: 600;
+  min-height: 48px;
+  padding: 0 1.05rem;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+}
+.btn-primary {
+  background: #0369a1;
+  color: #fff;
+}
+.btn-primary:hover { background: #075985; }
+.btn-secondary {
+  background: #f1f5f9;
+  color: var(--text);
+  border-color: #94a3b8;
+}
+.btn-secondary:hover { background: #e2e8f0; }
+.results-status {
+  color: var(--muted);
+  font-size: 0.92rem;
+  margin: 0 0 1.1rem;
+}
+.empty-state {
+  background: var(--surface);
+  border: 1px dashed #94a3b8;
+  border-radius: 12px;
+  padding: 2rem 1.25rem;
+  text-align: center;
+  color: var(--muted);
+}
+.card[hidden],
+.empty-state[hidden] { display: none; }
+footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2rem 1rem; }
+@media (max-width: 720px) {
+  .filter-form { grid-template-columns: 1fr; }
+  .filter-actions { width: 100%; }
+  .filter-actions button { flex: 1; }
+}
+@media (max-width: 640px) {
+  article.post { padding: 1.2rem; }
+}
+</style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="inner">
+      <h1>PC 4OS実例ガイド</h1>
+      <p>Windows・macOS・iOS・Android の実践比較＆トラブル解決アーカイブ</p>
+    </div>
+  </header>
+  <main>
+    <a class="back-link" href="../index.html">← 記事一覧へ戻る</a>
+    <article class="post">
+      <p><span class="badge">#65｜分類14: ハードウェア・周辺機器・IoT連携</span> <small style="color:#64748b;margin-left:0.5rem;">2026-11-24</small></p>
+      <img class="eyecatch" src="../images/2026-11-24_art65_usb_c_cable_hub_not_charging.png" alt="USB-Cケーブル・ハブで充電や画面出力ができない原因と正しい選び方実例｜Windows・macOS・iOS・Android">
+      <h1>USB-Cケーブル・ハブで充電や画面出力ができない原因と正しい選び方実例｜Windows・macOS・iOS・Android</h1>
+<p>「新しいUSB-Cハブを買ったのに、モニターに何も映らない」「スマホをPCに繋いでも充電が異常に遅い」といったトラブルに直面していませんか？</p>
+<p>実は、<strong>すべてのUSB-Cケーブルやハブが同じ性能を持っているわけではありません。</strong> USB-Cはあくまで「コネクタの形状」の規格であり、中身の通信規格（Power Delivery、Thunderbolt、DisplayPort Alt Modeなど）によって、できることとできないことが明確に分かれています。</p>
+<p>この記事では、Windows、macOS、iOS、Androidの各OSにおける実例を交えながら、なぜ動かないのかという原因の特定から、正しい周辺機器の選び方までを徹底解説します。</p>
+<h2>4OS比較早見表</h2>
+<p>まずは、主要な4つのOSにおけるUSB-C接続の基本特性を整理しましょう。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">OS / デバイス</th>
+<th style="text-align: left;">主な通信規格</th>
+<th style="text-align: left;">充電（PD）対応</th>
+<th style="text-align: left;">映像出力（Alt Mode）</th>
+<th style="text-align: left;">特徴・注意点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Windows 11</strong></td>
+<td style="text-align: left;">USB-C / Thunderbolt</td>
+<td style="text-align: left;">対応（PC依存）</td>
+<td style="text-align: left;">対応（ポート依存）</td>
+<td style="text-align: left;">ハブの電源供給不足やドライバの問題が発生しやすい</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>macOS</strong></td>
+<td style="text-align: left;">Thunderbolt 3/4</td>
+<td style="text-align: left;">対応（純正推奨）</td>
+<td style="text-align: left;">対応（Thunderbolt必須）</td>
+<td style="text-align: left;">高帯域幅を求めるならThunderbolt規格が必須</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>iOS (iPhone)</strong></td>
+<td style="text-align: left;">Lightning / USB-C</td>
+<td style="text-align: left;">対応（MFi推奨）</td>
+<td style="text-align: left;">基本非対応※</td>
+<td style="text-align: left;">外付けモニター出力はiPad Pro等に限定される</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Android</strong></td>
+<td style="text-align: left;">USB-C (OTG)</td>
+<td style="text-align: left;">対応（機種依存）</td>
+<td style="text-align: left;">機種により対応</td>
+<td style="text-align: left;">メーカー独自のOTG設定が必要な場合がある</td>
+</tr>
+</tbody>
+</table>
+<p>※iPhoneの標準機能では、USB-Cケーブル経由での外部モニターへのミラーリングは現時点で非対応です。</p>
+<hr />
+<h2>1. Windows 11 での実例手順</h2>
+<p>Windows環境では、ハブやドッキングステーションを接続した際に「デバイスが認識されない」「映像が出ない」というトラブルが比較的多く発生します。</p>
+<h3>トラブルシューティングの手順</h3>
+<ol>
+<li><strong>デバイスの認識確認</strong>: 「設定」&gt;「システム」&gt;「デバイス（または周辺機器）」を開き、接続したハブやUSB機器がリストに表示されているか確認します。</li>
+<li><strong>デバイスマネージャーでの修復</strong>: <ul>
+<li><code>Win + X</code> キーを押し「デバイスマネージャー」を選択。</li>
+<li>「ユニバーサル シリアル バス コントローラー」を展開し、黄色い感嘆符（！）がついている項目や「不明なUSBデバイス」がないか確認します。</li>
+<li>該当する項目を右クリックし「デバイスのアンインストール」を実行した後、PCを再起動して自動再認識を待ちます。</li>
+</ul>
+</li>
+</ol>
+<h3>標準機能の制限と注意点</h3>
+<ul>
+<li><strong>電源管理による切断</strong>: 廉価なハブを使用している場合、Windowsの「電源管理設定」によってスリープ時にポートの給電が遮断されることがあります。</li>
+<li><strong>規格の混同</strong>: Thunderboltポートと通常のUSB-C PDポートを混同すると、映像出力や高速データ転送が機能しない場合があります。</li>
+</ul>
+<h3>よくあるトラブルと解決法</h3>
+<ul>
+<li><strong>「充電が遅い・バッテリー残量が減る」場合</strong>: <br />
+    原因の多くはケーブルが「PD（Power Delivery）対応」ではないことです。スマホ用などの低電圧ケーブルではPCへの給電能力が不足します。必ず<strong>PC用の高出力PD対応ケーブル</strong>を使用してください。</li>
+<li><strong>「画面出力できない (No Signal)」場合</strong>: <br />
+    ハブ側のHDMI/DPポートが「DisplayPort Alt Mode」に対応していない可能性があります。物理的な規格確認を優先し、非対応の場合は適切なアダプターの選定が必要です。</li>
+<li><strong>「USBデバイス認識しない・断続的になる」場合</strong>: <br />
+    ハブ自体の過熱や、接続機器の総消費電力がハブの供給能力を超えている（電源不足）可能性があります。ACアダプタを直接ハブに接続できるモデルへの変更を検討してください。</li>
+</ul>
+<hr />
+<h2>2. macOS での実例手順</h2>
+<p>Macユーザーにとって最も重要なのは「Thunderbolt」と「USB-C PD」の違いを正しく理解することです。</p>
+<h3>確認・診断の手順</h3>
+<ol>
+<li><strong>システム情報の確認</strong>: 「システム設定」&gt;「一般」&gt;「情報」から、または「このMacについて」から「システムレポート」を開きます。</li>
+<li><strong>USBセクションのチェック</strong>: 左メニューの「USB」を選択し、接続されたハブやドッキングステーションのモデル名、バージョン、最大電流を確認します。ここでThunderboltのロゴや規格が表示されているかを確認してください。</li>
+</ol>
+<h3>標準機能の制限と注意点</h3>
+<ul>
+<li><strong>映像出力の制約</strong>: macOSでは、高帯域幅を必要とする映像出力において、Thunderbolt 3/4ポート以外では正常に動作しないケースが多いです。</li>
+<li><strong>MDMプロファイルの影響</strong>: 企業支給のMacの場合、管理プロファイルによって特定の周辺機器やハブの使用が制限されている場合があります。</li>
+</ul>
+<h3>よくあるトラブルと解決法</h3>
+<ul>
+<li><strong>「MacBook Pro/Air の充電が極端に遅い」場合</strong>: <br />
+    Apple純正または高品質なPD対応ケーブルを使用しているか確認してください。非公式の安価なケーブルは、急速充電プロトコルを正しくハンドシェイクできず、低速充電に制限されることがあります。</li>
+<li><strong>「外部モニターがつながらない」場合</strong>: <br />
+    ハブがThunderboltポートに接続されているか、またはハブ自体がMacに対応した映像出力規格を持っているかを確認します。「システム情報」でデバイスの詳細を調べるのが近道です。</li>
+<li><strong>「データ転送速度が遅い (USB 2.0)」場合</strong>: <br />
+    ハブがThunderboltではなく標準のUSB-C PDポートとして動作している可能性があります。高速転送が必要な場合は、Thunderbolt対応のドッキングステーションへの切り替えを推奨します。</li>
+</ul>
+<hr />
+<h2>3. iOS（iPhone / iPad）での実例手順</h2>
+<p>iOSデバイスでは、コネクタ形状が変わったことで混乱が生じやすくなっています。</p>
+<h3>確認・診断の手順</h3>
+<ol>
+<li><strong>アクセサリ接続の確認</strong>: 「設定」&gt;「Bluetooth」から周辺機器が認識されているか確認します。</li>
+<li><strong>iPadの設定確認</strong>: iPad Pro（USB-Cモデル）の場合、「設定」&gt;「ディスプレイとサウンド」で外部出力の状態を確認します。</li>
+</ol>
+<h3>標準機能の制限と注意点</h3>
+<ul>
+<li><strong>iPhoneの画面出力</strong>: iOS 17を含む現行バージョンでも、iPhoneは基本的にUSB-Cケーブル経由での映像出力（ミラーリング）を標準サポートしていません。</li>
+<li><strong>Lightning変換アダプタ</strong>: LightningからUSB-Cへの変換アダプタを使用する場合、データ転送や映像出力は原則として非対応です。</li>
+</ul>
+<h3>よくあるトラブルと解決法</h3>
+<ul>
+<li><strong>「iPhone が充電されない・遅い」場合</strong>: <br />
+    PDプロトコル非対応ケーブルの可能性があります。特にLightningポートは低電圧設計のため、高ワット出力の安価なケーブルでは過熱防止のために認識を拒否することがあります。純正またはMFi認定品の使用を強く推奨します。</li>
+<li><strong>「iPad で外部モニターがつながらない」場合</strong>: <br />
+    お使いのモデルがUSB-Cポート搭載モデル（Pro等）か確認してください。非対応モデルではOSレベルで映像出力がサポートされていません。</li>
+<li><strong>「変換アダプタが認識しない」場合</strong>: <br />
+    Lightning→USB-C変換アダプタは「充電のみ」を目的としたものが多く、ファイル共有や映像出力には使えません。映像出力が必要な場合は、iPad Pro等のUSB-Cポート搭載機にHDMIアダプターを直接接続してください。</li>
+</ul>
+<hr />
+<h2>4. Android での実例手順</h2>
+<p>Androidはメーカーごとに仕様が大きく異なるため、機種ごとの設定確認が重要です。</p>
+<h3>確認・診断の手順</h3>
+<ol>
+<li><strong>充電速度の確認</strong>: 「設定」&gt;「デバイスケア（またはバッテリー）」から、現在の充電速度が表示されているか確認します。</li>
+<li><strong>USB接続モードの切り替え</strong>: PCに接続した際、通知欄に「USBの設定」が表示されるので、「ファイル転送」を選択しているか確認します。</li>
+</ol>
+<h3>標準機能の制限と注意点</h3>
+<ul>
+<li><strong>OTG（On-The-Go）設定</strong>: AndroidはデフォルトでOTG対応ですが、Samsungなど一部のメーカーでは「設定」からOTG機能を明示的にオンにする必要があります。</li>
+<li><strong>電流制限</strong>: 非公式なケーブルやハブを使用すると、安全のためにシステムが電流を制限し、表示される残量と実際の容量に乖離が生じることがあります。</li>
+</ul>
+<h3>よくあるトラブルと解決法</h3>
+<ul>
+<li><strong>「Android スマホを PC に接続してもファイル転送できない」場合</strong>: <br />
+    通知欄で「USBデバイスとして使用」の許可が出ているか確認してください。また、必要に応じて「開発者向けオプション」からUSBデバッグを有効にする、あるいはメーカー固有のOTG設定を確認します。</li>
+<li><strong>「充電速度が遅い・バッテリー残量が減る」場合</strong>: <br />
+    ハブを経由している場合、電圧降下が起きている可能性があります。古いPDプロトコル（PD 3.0以前）のケーブルでは、最新のAndroid端末の高速充電を正しく引き出せないことが多いため、最新規格のケーブルへの交換を推奨します。</li>
+<li><strong>「画面出力 (スクリーンキャスト) ができない」場合</strong>: <br />
+    Androidは機種によってUSB-Cからの映像出力（DisplayPort Alt Mode）に対応していないものが多いです。Googleの「Cast to TV」はWi-Fi経由のため、有線での転送が必要な場合は対応機種であるか確認が必要です。</li>
+</ul>
+<hr />
+<h2>よくあるトラブルと解決チェックリスト</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">症状</th>
+<th style="text-align: left;">チェック項目</th>
+<th style="text-align: left;">対処法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>充電が極端に遅い</strong></td>
+<td style="text-align: left;">ケーブルはPD（Power Delivery）対応か？</td>
+<td style="text-align: left;">PC/スマホの最大給電に対応した「PD対応」ケーブルへ交換。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>映像が出ない (No Signal)</strong></td>
+<td style="text-align: left;">ハブのポートはDP Alt Mode対応か？</td>
+<td style="text-align: left;">ハブの仕様書を確認し、非対応ならThunderboltドック等へ変更。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>デバイスが認識されない</strong></td>
+<td style="text-align: left;">ドライバにエラーが出ていないか？</td>
+<td style="text-align: left;">Windowsなら「デバイスマネージャー」で再インストールを実行。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>接続が頻繁に切れる</strong></td>
+<td style="text-align: left;">ハブや周辺機器の電源不足ではないか？</td>
+<td style="text-align: left;">ACアダプタを直接ハブに接続できるモデルを使用する。</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>まとめ：快適なマルチOS環境を作るポイント</h2>
+<p>USB-C環境でのトラブルを回避し、快適な作業空間を作るためのポイントは「規格の正解」を知ることです。</p>
+<ol>
+<li><strong>ドッキングステーション選び</strong>: 映像出力と高速データ転送の両立が必要なら、安価なUSB-Cハブではなく、<strong>Thunderbolt対応のドッキングステーション</strong>を選ぶのが最も確実な解決策です。</li>
+<li><strong>KVM切替器の活用</strong>: WindowsとmacOSを頻繁に行き来するなら、<strong>USB-C KVM切替器</strong>を導入することで、キーボード・マウス・モニターの入力をワンボタンで切り替えられ、デスク周りが劇的にスッキリします。</li>
+<li><strong>周辺機器のマルチペアリング</strong>: OSを跨いで使うなら、BluetoothとUSBレシーバーの両方に対応した<strong>マルチペアリング対応のキーボード・マウス</strong>を選ぶことで、接続のストレスを最小限に抑えられます。</li>
+</ol>
+<p>「動かない」と悩む前に、まずはケーブルとハブが自分のデバイスの要求する規格（PD, Thunderbolt, Alt Mode）を満たしているかを確認することから始めてみてください。</p>
+<hr />
+<h2>参考文献・公式ドキュメント（一次情報ソース）</h2>
+<p>本記事の手順・仕様は以下の各OSおよびツールの公式ドキュメントに基づいています。OSアップデートによりメニュー名称や挙動が変わる場合があるため、最新仕様の確認にもご活用ください。</p>
+<ul>
+<li><strong>[Windows]</strong> <a href="https://support.microsoft.com/ja-jp/windows/windows-%E3%81%A7-bluetooth-%E3%81%AE%E5%95%8F%E9%A1%8C%E3%82%92%E8%A7%A3%E6%B1%BA%E3%81%99%E3%82%8B-723e092f-03fa-858b-5c80-131ec3fba75c">Windows で Bluetooth の問題を解決する - Microsoft サポート</a></li>
+<li><strong>[macOS]</strong> <a href="https://support.apple.com/ja-jp/guide/mac-help/blth1004/mac">BluetoothデバイスをMacに接続する - Apple サポート (日本)</a></li>
+<li><strong>[iOS]</strong> <a href="https://support.apple.com/ja-jp/guide/iphone/iph3c50f191/ios">iPhoneをBluetoothアクセサリに接続する - Apple サポート (日本)</a></li>
+<li><strong>[Android]</strong> <a href="https://support.google.com/android/answer/9769184?hl=ja">Android での Bluetooth に関する問題を解決する - Android ヘルプ</a></li>
+</ul>
+    </article>
+  </main>
+  <footer>Generated with Local Ollama (qwen3.5 / gemma4) &amp; Draw Things (FLUX.2 klein 4B)</footer>
+</body>
+</html>
