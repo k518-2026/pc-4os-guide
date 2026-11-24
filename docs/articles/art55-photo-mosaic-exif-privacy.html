@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SNS投稿前の写真ぼかし・モザイク加工と位置情報（Exif）削除の実例｜Windows・macOS・iOS・Android | PC 4OS実例ガイド</title>
+  <style>
+:root {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --muted: #475569;
+  --accent: #0284c7;
+  --accent-soft: #e0f2fe;
+  --border: #e2e8f0;
+  --code-bg: #0f172a;
+  --code-text: #e2e8f0;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Noto Sans JP", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+}
+header.site-header {
+  background: linear-gradient(135deg, #0f172a 0%, #0369a1 100%);
+  color: #fff;
+  padding: 2.2rem 1.25rem;
+}
+header.site-header .inner { max-width: 980px; margin: 0 auto; }
+header.site-header h1 { margin: 0 0 0.4rem; font-size: 1.75rem; }
+header.site-header p { margin: 0; opacity: 0.9; font-size: 0.96rem; }
+main { max-width: 980px; margin: 2rem auto; padding: 0 1.25rem 3rem; }
+.badge {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: var(--accent-soft);
+  color: #0369a1;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1.25rem;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08); }
+.card img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; display: block; background: #e2e8f0; }
+.card-body { padding: 1rem 1.1rem 1.2rem; flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+.card-title { font-size: 1.02rem; font-weight: 700; margin: 0; line-height: 1.45; }
+.card-meta { font-size: 0.82rem; color: var(--muted); margin-top: auto; }
+article.post {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 2rem;
+}
+article.post img.eyecatch {
+  width: 100%;
+  max-height: 460px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+}
+article.post h1 { font-size: 1.65rem; line-height: 1.35; margin-top: 0; }
+article.post h2 {
+  font-size: 1.3rem;
+  margin-top: 2.1rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 2px solid var(--accent-soft);
+}
+article.post h3 { font-size: 1.08rem; margin-top: 1.4rem; }
+article.post table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.2rem 0;
+  font-size: 0.92rem;
+  display: block;
+  overflow-x: auto;
+}
+article.post th, article.post td {
+  border: 1px solid var(--border);
+  padding: 0.6rem 0.8rem;
+  text-align: left;
+}
+article.post th { background: #f1f5f9; font-weight: 700; }
+article.post pre {
+  background: var(--code-bg);
+  color: var(--code-text);
+  padding: 1rem 1.15rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+article.post code {
+  background: #f1f5f9;
+  padding: 0.15rem 0.38rem;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+article.post pre code { background: transparent; padding: 0; color: inherit; }
+article.post blockquote {
+  margin: 1.2rem 0;
+  padding: 0.8rem 1.1rem;
+  border-left: 4px solid var(--accent);
+  background: #f0f9ff;
+  border-radius: 0 8px 8px 0;
+}
+.back-link { display: inline-block; margin-bottom: 1rem; color: var(--accent); text-decoration: none; font-weight: 600; }
+.filter-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.15rem 1.25rem;
+  margin-bottom: 1.5rem;
+}
+.filter-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) auto;
+  gap: 0.9rem;
+  align-items: end;
+}
+.filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.filter-field label {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.filter-field input[type="search"],
+.filter-field select {
+  font: inherit;
+  font-size: max(1rem, 1em);
+  min-height: 48px;
+  padding: 0.55rem 0.85rem;
+  border: 1.5px solid #767676;
+  border-radius: 8px;
+  background: #fff;
+  color: var(--text);
+  width: 100%;
+}
+.filter-field input[type="search"]:focus-visible,
+.filter-field select:focus-visible,
+.filter-actions button:focus-visible {
+  outline: 3px solid #0284c7;
+  outline-offset: 2px;
+}
+.filter-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+.filter-actions button {
+  font: inherit;
+  font-size: max(1rem, 0.95em);
+  font-weight: 600;
+  min-height: 48px;
+  padding: 0 1.05rem;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+}
+.btn-primary {
+  background: #0369a1;
+  color: #fff;
+}
+.btn-primary:hover { background: #075985; }
+.btn-secondary {
+  background: #f1f5f9;
+  color: var(--text);
+  border-color: #94a3b8;
+}
+.btn-secondary:hover { background: #e2e8f0; }
+.results-status {
+  color: var(--muted);
+  font-size: 0.92rem;
+  margin: 0 0 1.1rem;
+}
+.empty-state {
+  background: var(--surface);
+  border: 1px dashed #94a3b8;
+  border-radius: 12px;
+  padding: 2rem 1.25rem;
+  text-align: center;
+  color: var(--muted);
+}
+.card[hidden],
+.empty-state[hidden] { display: none; }
+footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2rem 1rem; }
+@media (max-width: 720px) {
+  .filter-form { grid-template-columns: 1fr; }
+  .filter-actions { width: 100%; }
+  .filter-actions button { flex: 1; }
+}
+@media (max-width: 640px) {
+  article.post { padding: 1.2rem; }
+}
+</style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="inner">
+      <h1>PC 4OS実例ガイド</h1>
+      <p>Windows・macOS・iOS・Android の実践比較＆トラブル解決アーカイブ</p>
+    </div>
+  </header>
+  <main>
+    <a class="back-link" href="../index.html">← 記事一覧へ戻る</a>
+    <article class="post">
+      <p><span class="badge">#55｜分類04: 画像・イラスト・デザイン制作</span> <small style="color:#64748b;margin-left:0.5rem;">2026-11-24</small></p>
+      <img class="eyecatch" src="../images/2026-11-24_art55_photo_mosaic_exif_privacy.png" alt="SNS投稿前の写真ぼかし・モザイク加工と位置情報（Exif）削除の実例｜Windows・macOS・iOS・Android">
+      <h1>SNS投稿前の写真ぼかし・モザイク加工と位置情報（Exif）削除の実例｜Windows・macOS・iOS・Android</h1>
+<p>SNSやブログに写真をアップロードする際、プライバシーを守るために「顔や車のナンバープレートをぼかす」「撮影場所のGPS情報を消去する」といった工程は欠かせません。しかし、いざ作業を始めようとすると、「標準機能でどこまでできるのか？」「OSごとに操作が違うのはなぜ？」と戸惑ってしまう方も多いはずです。</p>
+<p>この記事では、Windows、macOS、iOS、Androidの4つの主要OSにおいて、<strong>「モザイク加工」と「Exif（位置情報）削除」をどのように行うべきか</strong>、実例を交えて徹底解説します。標準機能でできること・できないことを正直に明かしつつ、効率的に作業を進めるための代替案も網羅しました。</p>
+<h2>4OS比較早見表</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">機能</th>
+<th style="text-align: left;">Windows 11</th>
+<th style="text-align: left;">macOS</th>
+<th style="text-align: left;">iOS (iPhone/iPad)</th>
+<th style="text-align: left;">Android</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>手動モザイク</strong></td>
+<td style="text-align: left;">PowerToys等が必要（標準は非対応）</td>
+<td style="text-align: left;">「塗りつぶし」等の代替操作</td>
+<td style="text-align: left;">ショートカット等での連携推奨</td>
+<td style="text-align: left;">標準機能では非対応</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Exif削除</strong></td>
+<td style="text-align: left;">ツール併用が確実</td>
+<td style="text-align: left;">クイックアクションで一部対応</td>
+<td style="text-align: left;">ショートカット等で実行</td>
+<td style="text-align: left;">設定または外部アプリ推奨</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>得意なこと</strong></td>
+<td style="text-align: left;">大量の一括処理（PowerToys）</td>
+<td style="text-align: left;">直感的な操作とクイックアクション</td>
+<td style="text-align: left;">共有時の自動プライバシー保護</td>
+<td style="text-align: left;">Googleフォトによる顔認識ぼかし</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>1. Windows 11 での実例手順</h2>
+<p>Windows環境では、標準の「フォト」アプリだけでは高度なモザイク加工が難しいため、Microsoft公式の拡張ツールを活用するのが最も効率的です。</p>
+<h3>モザイク加工の手順</h3>
+<ol>
+<li><strong>PowerToysの導入</strong>: Microsoft Storeから「PowerToys」をインストールします。</li>
+<li><strong>Image Resizerの活用</strong>: PowerToysに含まれる「Image Resizer」を開きます。</li>
+<li><strong>モザイク効果の適用</strong>: 対象画像を選択し、右クリックメニューから「Resize image...」を選択。オプションから「Add mosaic effect（モザイク効果追加）」を選択して実行します。<ul>
+<li>※標準の「フォト」アプリには矩形選択による手動モザイク機能がないため、このツールが公式に近い推奨手段となります。</li>
+</ul>
+</li>
+</ol>
+<h3>Exif 削除の手順</h3>
+<ol>
+<li><strong>PowerToysでの制御</strong>: Image Resizerの設定からExifデータの無効化を試みます（バージョンにより挙動が異なる場合があります）。</li>
+<li><strong>確実な方法</strong>: 標準の「フォト」アプリで画像を開き、「名前を付けて保存」で別フォルダへコピー。その後、EXIF Eraser等のサードパーティ製ツールを使用して完全にメタデータを消去するのが最も安全です。</li>
+</ol>
+<p><strong>【標準機能の制限事項】</strong><br />
+*   標準「フォト」アプリには矩形選択による手動モザイク機能がありません。<br />
+*   PowerToysはバッチ処理に強い反面、Exifの完全削除設定はバージョン依存があるため注意が必要です。</p>
+<hr />
+<h2>2. macOS での実例手順</h2>
+<p>macOSでは「プレビュー.app」と「クイックアクション」を組み合わせることで、高度なソフトを入れずに素早く処理できます。</p>
+<h3>モザイク加工の手順</h3>
+<ol>
+<li><strong>塗りつぶしによる隠蔽</strong>: Finderで画像を選択し「プレビュー.app」で開きます。「表示」→「選択範囲を表示」またはツールバーの「矩形切り抜きツール（M）」で対象をドラッグ。メニューの「編集」→「塗りつぶす…」を選択し、色を黒やグレーに設定します。</li>
+<li><strong>代替手法</strong>: 厳密なピクセルモザイクが必要な場合は、「プレビュー」で選択範囲を拡大縮小して画質を粗くする手法もあります。</li>
+</ol>
+<h3>Exif 削除の手順</h3>
+<ol>
+<li><strong>クイックアクションの活用</strong>: Finderで画像を選択し、右クリック→「クイックアクション」→「イメージを変換…」を選択。</li>
+<li><strong>設定確認</strong>: 「形式：JPEG」を選択し、詳細オプションからExifデータの保持チェックを外します（OSバージョンにより項目が表示されない場合があります）。</li>
+</ol>
+<p><strong>【標準機能の制限事項】</strong><br />
+*   「プレビュー.app」単体では、画素数を固定して粗くする「ピクセルブロックモザイク」は非対応です。<br />
+*   Exif削除オプションはバージョンによって表示されないことがあるため、確実な処理にはサードパーティ製ツールやターミナルコマンドの併用を検討してください。</p>
+<hr />
+<h2>3. iOS（iPhone / iPad）での実例手順</h2>
+<p>iOSでは「写真」アプリの標準編集機能に制限があるため、「ショートカット」アプリを活用するのがプロの技です。</p>
+<h3>モザイク加工の手順</h3>
+<ol>
+<li><strong>塗りつぶし</strong>: 「写真」アプリで画像を編集し、対象部分を拡大して手動で塗りつぶします。</li>
+<li><strong>ショートカットの活用</strong>: 標準機能では厳密な矩形モザイクができないため、「ショートカット」アプリに「画像のピクセル化」アクションを追加したカスタムスクリプトを作成するか、サードパーティ製アプリと連携させます。</li>
+</ol>
+<h3>Exif 削除の手順</h3>
+<ol>
+<li><strong>ショートカットによる一括処理</strong>: 「写真」アプリで画像を選択し、「共有」ボタンから「ショートカット」を実行。「位置情報を削除する」というアクションを含む自作ショートカットを走らせ、新しいアルバムへ保存します。</li>
+<li><strong>設定の確認</strong>: 「設定」→「プライバシーとセキュリティ」→「位置情報サービス」から、各アプリのアクセス権を制限することも併用してください。</li>
+</ol>
+<p><strong>【標準機能の制限事項】</strong><br />
+*   標準の写真アプリには矩形選択による手動モザイク機能がありません。<br />
+*   Exif削除はショートカットを介すのが最も確実ですが、iOSバージョンにより動作が変わる場合があります。</p>
+<hr />
+<h2>4. Android での実例手順</h2>
+<p>Androidは機種によって「ギャラリー」アプリの仕様が大きく異なるため、Googleフォトを活用するのが共通の正解です。</p>
+<h3>モザイク加工の手順</h3>
+<ol>
+<li><strong>自動プライバシー保護</strong>: 「Google フォト」を開き、対象画像を選択。「編集」→「プライバシー設定（顔認識）」をオンにします。これにより、AIが自動で顔を検出しぼかします。</li>
+<li><strong>手動操作の代替</strong>: 手動での矩形モザイクは標準機能では非対応です。厳密な加工が必要な場合は、「Google スケッチ」アプリやサードパーティ製編集アプリを使用してください。</li>
+</ol>
+<h3>Exif 削除の手順</h3>
+<ol>
+<li><strong>位置情報の非表示</strong>: 「Google フォト」の「ライブラリ」または設定から、「写真の場所情報を非表示にする」オプションをオンにします。</li>
+<li><strong>ファイルマネージャー</strong>: Android標準のギャラリーアプリにはExif削除機能がないことが多いため、ファイル管理アプリでの操作や外部ツールを併用します。</li>
+</ol>
+<p><strong>【標準機能の制限事項】</strong><br />
+*   Google フォトおよびAndroid標準アプリには、「矩形選択による手動モザイク」は搭載されていません。</p>
+<hr />
+<h2>よくあるトラブルと解決チェックリスト</h2>
+<p>作業中に「あれ、うまくいかない？」と思ったら以下のチェックリストを確認してください。</p>
+<ul>
+<li><strong>問題1: モザイク処理後の画像が「画質劣化」している</strong><ul>
+<li><strong>原因</strong>: 標準機能のモザイクはピクセルを単純にブロック化するだけで、再圧縮時に画素数が減るため。</li>
+<li><strong>解決策</strong>: Windows/macOSではPowerToys Image Resizerで高品質保存を選択するか、Photoshop等の画像編集ソフトを使用してください。WebP形式への変換時にも画質設定の確認が必要です。</li>
+</ul>
+</li>
+<li><strong>問題2: Exif 削除後でも位置情報が表示される</strong><ul>
+<li><strong>原因</strong>: SNSアプリ自体がアップロード時に再取得しているか、ブラウザのキャッシュが残っている。または「元ファイル」をコピーせず編集したケース。</li>
+<li><strong>解決策</strong>: 必ず「別名で保存（新規書き出し）」を行い、新しいファイルとしてSNSにアップロードしてください。また、SNSアプリ側の「位置情報を記録しない」設定もオンにします。</li>
+</ul>
+</li>
+<li><strong>問題3: モザイク処理が意図せず全体に適用されてしまう</strong><ul>
+<li><strong>原因</strong>: バッチ加工ツールの選択範囲指定ミス（Windows PowerToysなど）。</li>
+<li><strong>解決策</strong>: PowerToys Image Resizerは一括処理に強いため、個別設定が難しい場合は1枚ずつ処理するか、サードパーティ製ソフトで範囲指定を行ってください。</li>
+</ul>
+</li>
+<li><strong>問題4: Android でモザイクツールが見つからない</strong><ul>
+<li><strong>原因</strong>: Google フォト標準機能には「顔認識による自動ぼかし」はあるが、手動の矩形モザイクは非対応。</li>
+<li><strong>解決策</strong>: Google フォトのプライバシー設定を利用するか、サードパーティ製アプリを導入してください。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2>まとめ：快適なマルチOS環境を作るポイント</h2>
+<p>SNS投稿前の画像加工は、一見地味な作業ですが「プライバシー保護」という重要な工程です。今回ご紹介した通り、各OSには標準機能での制限があり、特に<strong>「手動の矩形モザイク」や「完全なExif削除」については、公式ツール（PowerToys等）やショートカット、あるいはサードパーティ製アプリを組み合わせるのが現在の最適解</strong>です。</p>
+<p>より高度でストレスのないクリエイティブ環境を構築したい方には、以下の周辺機器・ツールの導入もおすすめです。</p>
+<ul>
+<li><strong>カラーマネジメントモニター</strong>: 編集時の正確な色再現を可能にし、SNSに上げた際の「色が違う」というトラブルを防ぎます。</li>
+<li><strong>ペンタブレット</strong>: マウスでは難しい細かいモザイクの範囲指定や、自然なぼかしの調整がスムーズになります。</li>
+<li><strong>外付けSSD</strong>: 大量の高画質画像を扱う際、PC本体のストレージを圧迫せず高速な読み書きを実現します。</li>
+<li><strong>画像編集ソフト（Photoshop等）</strong>: 標準機能の限界を感じたとき、これらがあれば「矩形モザイク」「高度なExif操作」のすべてが自由自在になります。</li>
+</ul>
+<p>自分のデバイスに合った最適なワークフローを見つけ、安全で高品質なコンテンツ発信を楽しんでください！</p>
+<hr />
+<h2>参考文献・公式ドキュメント（一次情報ソース）</h2>
+<p>本記事の手順・仕様は以下の各OSおよびツールの公式ドキュメントに基づいています。OSアップデートによりメニュー名称や挙動が変わる場合があるため、最新仕様の確認にもご活用ください。</p>
+<ul>
+<li><strong>[Windows]</strong> <a href="https://learn.microsoft.com/ja-jp/windows/powertoys/image-resizer">Image Resizer Windowsのユーティリティ - PowerToys | Microsoft Learn</a></li>
+<li><strong>[macOS]</strong> <a href="https://support.apple.com/ja-jp/guide/preview/prvw2015/mac">Macの「プレビュー」で画像を切り取る/サイズ変更する/回転する - Apple サポート (日本)</a></li>
+<li><strong>[macOS]</strong> <a href="https://support.apple.com/ja-jp/guide/mac-help/mchl97ff9142/mac">MacのFinderでクイックアクションを実行する（イメージを変換） - Apple サポート (日本)</a></li>
+<li><strong>[iOS]</strong> <a href="https://support.apple.com/ja-jp/116944">Apple製のデバイスでHEIF／HEVCメディアを扱う - Apple サポート (日本)</a></li>
+<li><strong>[iOS]</strong> <a href="https://support.apple.com/ja-jp/guide/shortcuts/welcome/ios">ショートカット ユーザガイド - Apple サポート (日本)</a></li>
+<li><strong>[Android]</strong> <a href="https://support.google.com/photos/answer/6128850?hl=ja">写真を編集する - Google フォト ヘルプ</a></li>
+<li><strong>[共通]</strong> <a href="https://developers.google.com/speed/webp/docs/cwebp">cwebp | WebP Official Documentation | Google for Developers</a></li>
+</ul>
+    </article>
+  </main>
+  <footer>Generated with Local Ollama (qwen3.5 / gemma4) &amp; Draw Things (FLUX.2 klein 4B)</footer>
+</body>
+</html>

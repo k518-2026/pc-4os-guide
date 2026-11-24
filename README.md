@@ -29,10 +29,11 @@ python -m src.main -n 1 --push
 python -m src.main -n 1 --category 11
 ```
 
-## 書き溜め済み記事一覧（全 54 本 / 最終更新: 2026-11-24 10:11 JST）
+## 書き溜め済み記事一覧（全 55 本 / 最終更新: 2026-11-24 10:15 JST）
 
 | No. | 17分類カテゴリ | 記事タイトル（Markdown） | 挿絵 | 生成日 |
 | :---: | :--- | :--- | :---: | :---: |
+| #55 | 分類04: 画像・イラスト・デザイン制作 | [SNS投稿前の写真ぼかし・モザイク加工と位置情報（Exif）削除の実例｜Windows・macOS・iOS・Android](content/2026-11-24_art55_photo_mosaic_exif_privacy.md) | あり | 2026-11-24 |
 | #54 | 分類03: 情報収集・リサーチ・Web利用 | [ブラウザの自動入力（住所・クレカ・ID）を安全に管理・削除する実例｜Windows・macOS・iOS・Android](content/2026-11-24_art54_browser_autofill_privacy_manage.md) | あり | 2026-11-24 |
 | #53 | 分類02: コミュニケーション・情報共有 | [クリップボード履歴とPC・スマホ間のコピペ連携を極める実例｜Windows・macOS・iOS・Android](content/2026-11-24_art53_clipboard_history_cross_device.md) | あり | 2026-11-24 |
 | #52 | 分類01: 文書作成・オフィス業務・事務作業 | [キーボード不要！標準「音声入力」で文書・メールを高速作成する実例｜Windows・macOS・iOS・Android](content/2026-11-24_art52_voice_typing_dictation_docs.md) | あり | 2026-11-24 |
