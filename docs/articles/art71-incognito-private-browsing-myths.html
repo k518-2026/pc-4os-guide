@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>シークレットモード・プライベートブラウズで隠せること・隠せないことの実例ガイド｜Windows・macOS・iOS・Android | PC 4OS実例ガイド</title>
+  <style>
+:root {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --muted: #475569;
+  --accent: #0284c7;
+  --accent-soft: #e0f2fe;
+  --border: #e2e8f0;
+  --code-bg: #0f172a;
+  --code-text: #e2e8f0;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Noto Sans JP", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+}
+header.site-header {
+  background: linear-gradient(135deg, #0f172a 0%, #0369a1 100%);
+  color: #fff;
+  padding: 2.2rem 1.25rem;
+}
+header.site-header .inner { max-width: 980px; margin: 0 auto; }
+header.site-header h1 { margin: 0 0 0.4rem; font-size: 1.75rem; }
+header.site-header p { margin: 0; opacity: 0.9; font-size: 0.96rem; }
+main { max-width: 980px; margin: 2rem auto; padding: 0 1.25rem 3rem; }
+.badge {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: var(--accent-soft);
+  color: #0369a1;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1.25rem;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08); }
+.card img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; display: block; background: #e2e8f0; }
+.card-body { padding: 1rem 1.1rem 1.2rem; flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+.card-title { font-size: 1.02rem; font-weight: 700; margin: 0; line-height: 1.45; }
+.card-meta { font-size: 0.82rem; color: var(--muted); margin-top: auto; }
+article.post {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 2rem;
+}
+article.post img.eyecatch {
+  width: 100%;
+  max-height: 460px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+}
+article.post h1 { font-size: 1.65rem; line-height: 1.35; margin-top: 0; }
+article.post h2 {
+  font-size: 1.3rem;
+  margin-top: 2.1rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 2px solid var(--accent-soft);
+}
+article.post h3 { font-size: 1.08rem; margin-top: 1.4rem; }
+article.post table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.2rem 0;
+  font-size: 0.92rem;
+  display: block;
+  overflow-x: auto;
+}
+article.post th, article.post td {
+  border: 1px solid var(--border);
+  padding: 0.6rem 0.8rem;
+  text-align: left;
+}
+article.post th { background: #f1f5f9; font-weight: 700; }
+article.post pre {
+  background: var(--code-bg);
+  color: var(--code-text);
+  padding: 1rem 1.15rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+article.post code {
+  background: #f1f5f9;
+  padding: 0.15rem 0.38rem;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+article.post pre code { background: transparent; padding: 0; color: inherit; }
+article.post blockquote {
+  margin: 1.2rem 0;
+  padding: 0.8rem 1.1rem;
+  border-left: 4px solid var(--accent);
+  background: #f0f9ff;
+  border-radius: 0 8px 8px 0;
+}
+.back-link { display: inline-block; margin-bottom: 1rem; color: var(--accent); text-decoration: none; font-weight: 600; }
+.filter-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.15rem 1.25rem;
+  margin-bottom: 1.5rem;
+}
+.filter-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) auto;
+  gap: 0.9rem;
+  align-items: end;
+}
+.filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.filter-field label {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.filter-field input[type="search"],
+.filter-field select {
+  font: inherit;
+  font-size: max(1rem, 1em);
+  min-height: 48px;
+  padding: 0.55rem 0.85rem;
+  border: 1.5px solid #767676;
+  border-radius: 8px;
+  background: #fff;
+  color: var(--text);
+  width: 100%;
+}
+.filter-field input[type="search"]:focus-visible,
+.filter-field select:focus-visible,
+.filter-actions button:focus-visible {
+  outline: 3px solid #0284c7;
+  outline-offset: 2px;
+}
+.filter-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+.filter-actions button {
+  font: inherit;
+  font-size: max(1rem, 0.95em);
+  font-weight: 600;
+  min-height: 48px;
+  padding: 0 1.05rem;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+}
+.btn-primary {
+  background: #0369a1;
+  color: #fff;
+}
+.btn-primary:hover { background: #075985; }
+.btn-secondary {
+  background: #f1f5f9;
+  color: var(--text);
+  border-color: #94a3b8;
+}
+.btn-secondary:hover { background: #e2e8f0; }
+.results-status {
+  color: var(--muted);
+  font-size: 0.92rem;
+  margin: 0 0 1.1rem;
+}
+.empty-state {
+  background: var(--surface);
+  border: 1px dashed #94a3b8;
+  border-radius: 12px;
+  padding: 2rem 1.25rem;
+  text-align: center;
+  color: var(--muted);
+}
+.card[hidden],
+.empty-state[hidden] { display: none; }
+footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2rem 1rem; }
+@media (max-width: 720px) {
+  .filter-form { grid-template-columns: 1fr; }
+  .filter-actions { width: 100%; }
+  .filter-actions button { flex: 1; }
+}
+@media (max-width: 640px) {
+  article.post { padding: 1.2rem; }
+}
+</style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="inner">
+      <h1>PC 4OS実例ガイド</h1>
+      <p>Windows・macOS・iOS・Android の実践比較＆トラブル解決アーカイブ</p>
+    </div>
+  </header>
+  <main>
+    <a class="back-link" href="../index.html">← 記事一覧へ戻る</a>
+    <article class="post">
+      <p><span class="badge">#71｜分類03: 情報収集・リサーチ・Web利用</span> <small style="color:#64748b;margin-left:0.5rem;">2026-11-26</small></p>
+      <img class="eyecatch" src="../images/2026-11-26_art71_incognito_private_browsing_myths.png" alt="シークレットモード・プライベートブラウズで隠せること・隠せないことの実例ガイド｜Windows・macOS・iOS・Android">
+      <h1>シークレットモード・プライベートブラウズで隠せること・隠せないことの実例ガイド｜Windows・macOS・iOS・Android</h1>
+<p>「誰にも見られたくないサイトをチェックしたい」「公共のPCで自分の履歴を残したくない」といった理由で、ブラウザのシークレットモードやプライベートブラウズ機能を利用する方は多いでしょう。しかし、<strong>「シークレットモードを使えば、すべての行動が完全に隠れる」というのは大きな誤解です。</strong></p>
+<p>この記事では、主要な4つのOS（Windows, macOS, iOS, Android）における各ブラウザの挙動を徹底比較し、<strong>「実際に消えるもの」と「実は残ってしまうもの」</strong>の境界線を明確にします。プライバシーを守るための正しい知識を身につけましょう。</p>
+<h2>4OS比較早見表</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">OS</th>
+<th style="text-align: left;">主要ブラウザ</th>
+<th style="text-align: left;">モード名称</th>
+<th style="text-align: left;">主な保護範囲</th>
+<th style="text-align: left;">残る可能性が高いもの</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Windows</strong></td>
+<td style="text-align: left;">Edge / Chrome</td>
+<td style="text-align: left;">シークレットモード / インコグニト</td>
+<td style="text-align: left;">閲覧履歴、Cookie、フォーム入力</td>
+<td style="text-align: left;">ダウンロードファイル、保存パスワード</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>macOS</strong></td>
+<td style="text-align: left;">Safari</td>
+<td style="text-align: left;">プライベートブラウズ</td>
+<td style="text-align: left;">閲覧履歴、Cookie、検索候補</td>
+<td style="text-align: left;">Finderの「最近使用済み」、DLファイル</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>iOS</strong></td>
+<td style="text-align: left;">Safari / Chrome</td>
+<td style="text-align: left;">プライベートモード</td>
+<td style="text-align: left;">閲覧履歴、Cookie、検索候補</td>
+<td style="text-align: left;">「ファイル」アプリ内の保存データ</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Android</strong></td>
+<td style="text-align: left;">Chrome / Firefox</td>
+<td style="text-align: left;">インコグニト ウィンドウ</td>
+<td style="text-align: left;">閲覧履歴、Cookie、フォーム入力</td>
+<td style="text-align: left;">ストレージ内のDLファイル、通知バナー</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>1. Windows 11 での実例手順</h2>
+<p>Windows環境では、標準ブラウザであるMicrosoft Edgeのほか、Google ChromeやFirefoxを併用するユーザーが多く、それぞれの挙動を把握しておく必要があります。</p>
+<h3>シークレットモードの起動方法（公式）</h3>
+<ul>
+<li><strong>Edge ブラウザ</strong>: メニューボタン「…」→ 「シークレット ウィンドウ」を選択、または <code>Ctrl + Shift + N</code> キーショートカット。</li>
+<li><strong>Chrome/Firefox など</strong>: 同じくメニューから「インコグニトウィンドウ」として起動可能（OS 標準とは独立したアプリ動作）。</li>
+</ul>
+<h3>シークレットモードで隠せない情報・制限事項</h3>
+<ul>
+<li><strong>ダウンロードされたファイル</strong>: <code>Ctrl + J</code> で表示されるダウンロード履歴には残るほか、保存先フォルダに物理的に存在します。ブラウザを閉じてもファイル自体は消えません。</li>
+<li><strong>パスワードの自動入力</strong>: ブラウザ設定（Edge: 「設定」→「プライバシーとセキュリティ」）で管理されている保存済みパスワードは、シークレットモードでも利用可能になる場合があるため注意が必要です。</li>
+<li><strong>キャッシュ画像</strong>: 一部のサイトではローカルストレージに一時ファイルを置いたままになり、画面を撮られた際の痕跡が残る可能性があります。</li>
+</ul>
+<h3>よくあるトラブルと解決法（Windows 標準機能・代替手段）</h3>
+<ol>
+<li><strong>「シークレットモード」を終了しても履歴が消えない場合</strong></li>
+<li><strong>原因</strong>: シークレットウィンドウ自体は閉じたが、メインブラウザの「閲覧履歴」タブで別のセッションが開かれているか、ダウンロードフォルダにファイルが残っている。</li>
+<li><strong>解決法</strong>: メインブラウザ（Edge/Chrome）を開き、「Ctrl + H」（履歴表示）→ 「すべてのデータ削除」を選択し、「キャッシュされた画像とファイル」「Cookie データサイトから削除」とチェックして「データをクリア」。</li>
+<li><strong>「ダウンロードしたファイルを消したいが、場所を忘れた場合」</strong></li>
+<li><strong>解決法</strong>: <code>Win + R</code> で <code>explorer.exe shell:downloads</code> と入力するか、エクスプローラーのアドレスバーに <code>%USERPROFILE%\Downloads</code> を貼り付け。Edge の「設定」→ 「プライバシーとセキュリティ」→ 「ダウンロード履歴」から削除も可能。</li>
+<li><strong>「スクリーンショットを撮られた痕跡（画面録画）を確認したい場合」</strong></li>
+<li><strong>解決法</strong>: Windows 標準アプリ「Snipping Tool」（または「画像ビューア」の最近使用済みファイルリスト）で確認。「設定」→ 「プライバシー＆セキュリティ」→ 「カメラとマイク」からスクリーンショット通知の確認も可能。</li>
+</ol>
+<hr />
+<h2>2. macOS での実例手順</h2>
+<p>macOSではSafariが標準ですが、ChromeやFirefoxをメインで使うユーザーも多いため、システムレベルの挙動（Finder等）との連動に注意が必要です。</p>
+<h3>プライベートブラウズの起動方法（公式）</h3>
+<ul>
+<li><strong>Safari</strong>: メニューバー「ファイル」→ 「プライベート ウィンドウ」。ショートカットは <code>Cmd + Shift + N</code>。</li>
+<li><strong>Chrome/Firefox</strong>: アプリ内のメニューから「インコグニトウィンドウ」として起動可能。</li>
+</ul>
+<h3>プライベートブラウズで隠せない情報・制限事項</h3>
+<ul>
+<li><strong>ダウンロードされたファイル</strong>: Finder の「ダウンロード」フォルダに保存されるため、ブラウザの履歴とは無関係に残存する。</li>
+<li><strong>キーボード入力の記録（IME など）</strong>: システムレベルでの入力履歴は Safari 限定ではなく OS に残る可能性があるが、プライベートウィンドウ内ではアプリ固有の設定で管理されることが多い。</li>
+<li><strong>「最近開いたファイル」リスト</strong>: Finder の「最近使用済み項目」にダウンロードした PDF や画像が表示される場合がある（Safari 内の動作とは別）。</li>
+</ul>
+<h3>よくあるトラブルと解決法（macOS 標準機能・代替手段）</h3>
+<ol>
+<li><strong>「プライベートウィンドウを閉じても Safari が起動しない/履歴が残る」</strong></li>
+<li><strong>原因</strong>: メインの Safari ウィンドウが複数開いており、そのうちの一つに常時接続セッションがある。</li>
+<li><strong>解決法</strong>: <code>Cmd + Q</code> で Safari を完全に終了し再起動するか、「最近使用済み項目」からプロセスを強制終了（「アクティビティモニタ」を使用）。ただし標準機能ではアプリの完全停止が必要。</li>
+<li><strong>「ダウンロードしたファイルを即座に消したい場合」</strong></li>
+<li><strong>解決法</strong>: Finder のサイドバーにある「ダウンロード」フォルダを開き、不要なファイルをドラッグ＆ドロップしてゴミ箱へ移動。「最近使用済み項目」からも削除可能（<code>Cmd + Shift + G</code> でカスタムパス入力も可）。</li>
+<li><strong>「スクリーンショットを撮られたことを確認したい場合」</strong></li>
+<li><strong>解決法</strong>: 「画像」というアプリを開き、左側のサイドバーにある「最近開いたファイル」を確認。また、「設定」（システム環境設定）→ 「プライバシー＆セキュリティ」→ 「カメラとマイク」で画面録画の通知許可状態をチェック可能（Apple サポート参照）。</li>
+</ol>
+<hr />
+<h2>3. iOS (iPhone / iPad) の実例手順</h2>
+<p>モバイル端末では、ブラウザの挙動よりも「ファイルアプリ」や「写真アプリ」への反映に注意が必要です。</p>
+<h3>プライベートブラウズの起動方法（公式）</h3>
+<ul>
+<li><strong>Safari</strong>: ボトムナビゲーションバー「タブ」→ 「+」ボタン横のアイコン（または設定画面から）で「プライベートモード」をオン。ショートカットは <code>Cmd + Shift + N</code> のようなキーボード操作はないため、タップ必須。</li>
+<li><strong>Chrome/Firefox/iOS 標準以外のブラウザ</strong>: アプリ内のメニューより起動可能。</li>
+</ul>
+<h3>プライベートブラウズで隠せない情報・制限事項</h3>
+<ul>
+<li><strong>ダウンロードされたファイル</strong>: 「ファイル」アプリまたは「iCloud Drive」「オンデバイスストレージ」に保存されるため、Safari の履歴とは無関係に残る。</li>
+<li><strong>「最近開いたページ」リスト</strong>: iOS システムレベルの「ホーム画面」や「スクリーンショットギャラリー」にはアクセスできないが、「写真」アプリ内のアルバムで撮影された画像は残る。</li>
+<li><strong>Face ID/Touch ID 認証情報</strong>: アプリごとに設定されるため、ブラウザ内での動作とは独立して管理されることが多い。</li>
+</ul>
+<h3>よくあるトラブルと解決法（iOS 標準機能・代替手段）</h3>
+<ol>
+<li><strong>「プライベートモードを終了しても Safari が再起動しない」</strong></li>
+<li><strong>原因</strong>: iOS のメモリ管理机制により、アプリがバックグラウンドで停止せず、プロセスが残っている場合がある。</li>
+<li><strong>解決法</strong>: 「タスクマネージャー」から該当ブラウザのプロセスを強制終了（「設定」→ 「一般」→ 「iPhone をリセット」ではなく、「マルチタッチ」操作ではないため、スワイプして消去）。ただし標準機能ではアプリの完全停止が必要。</li>
+<li><strong>「ダウンロードしたファイルを即座に消したい場合」</strong></li>
+<li><strong>解決法</strong>: 「ファイル」アプリを開き、該当フォルダ（iCloud Drive など）へ移動し、不要なファイルを削除。「最近使用済み項目」からも削除可能。</li>
+<li><strong>「スクリーンショットを撮られたことを確認したい場合」</strong></li>
+<li><strong>解決法</strong>: 「写真」アプリを開き、「アルバム」→「スクリーンショット」を確認。また、「設定」→ 「プライバシー＆セキュリティ」→ 「カメラとマイク」で画面録画の通知許可状態をチェック可能（Apple サポート参照）。</li>
+</ol>
+<hr />
+<h2>4. Android での実例手順</h2>
+<p>Androidはメーカーや機種によってUIが異なりますが、Chromeの挙動は概ね共通しています。</p>
+<h3>プライベートブラウズの起動方法（公式）</h3>
+<ul>
+<li><strong>Chrome</strong>: メニューボタン「⋮」（3 ドット）→ 「新しいインコグニト ウィンドウ」。機種により名称が異なる場合あり。</li>
+<li><strong>Firefox/Samsung Internet など</strong>: アプリ内のメニューより起動可能。</li>
+</ul>
+<h3>プライベートブラウズで隠せない情報・制限事項</h3>
+<ul>
+<li><strong>ダウンロードされたファイル</strong>: 「My Files」または「Google ドライブ」「端末ストレージ」に保存されるため、ブラウザの履歴とは無関係に残る。</li>
+<li><strong>「最近開いたアプリ」リスト</strong>: Android のホーム画面やタスクマネージャーに表示されることがあるが、プライベートモード特有の設定ではない（OS 標準機能による）。</li>
+<li><strong>通知バナー</strong>: ブラウザ内の動作を隠しても、サイトからの通知は表示される可能性があるため、「設定」→ 「通知」で管理が必要。</li>
+</ul>
+<h3>よくあるトラブルと解決法（Android 標準機能・代替手段）</h3>
+<ol>
+<li><strong>「インコグニト ウィンドウを終了しても Chrome が再起動しない」</strong></li>
+<li><strong>原因</strong>: Android のメモリ管理机制により、アプリがバックグラウンドで停止せず、プロセスが残っている場合がある。</li>
+<li><strong>解決法</strong>: 「タスクマネージャー」から該当ブラウザのプロセスを強制終了（機種による名称差に注意：「最近使用済み項目」「マルチタッチ」操作など）。ただし標準機能ではアプリの完全停止が必要。</li>
+<li><strong>「ダウンロードしたファイルを即座に消したい場合」</strong></li>
+<li><strong>解決法</strong>: 「My Files」または「ファイルマネージャ」アプリを開き、該当フォルダ（Download など）へ移動し、不要なファイルを削除。「最近使用済み項目」からも削除可能。</li>
+<li><strong>「スクリーンショットを撮られたことを確認したい場合」</strong></li>
+<li><strong>解決法</strong>: 「ギャラリー」や「写真」アプリを開き、「スクリーンショット」アルバムを確認。また、「設定」→ 「プライバシー＆セキュリティ」→ 「カメラとマイク」で画面録画の通知許可状態をチェック可能（Google サポート参照）。</li>
+</ol>
+<hr />
+<h2>よくあるトラブルと解決チェックリスト</h2>
+<p>シークレットモードを利用する際に陥りやすい落とし穴と、その対処法です。</p>
+<ul>
+<li><strong>Q. ブラウザを閉じても「ダウンロードしたファイル」が残っているのはなぜ？</strong></li>
+<li><strong>A.</strong> シークレットモードは「ブラウザ内の履歴（URLの記録）」を消去するものであり、ストレージへの書き込みを防ぐものではありません。ダウンロードした場合は必ず手動で削除が必要です。</li>
+<li><strong>Q. 会社や学校のネットワークではシークレットモードでも追跡される？</strong></li>
+<li><strong>A.</strong> はい。ブラウザの履歴は残りませんが、ネットワーク管理者側（ルーターやプロキシサーバー）には「どのIPアドレスからどのサイトへアクセスしたか」という通信ログが残ります。</li>
+<li><strong>Q. 画面を誰かに見られたり、録画されたりするのを防げる？</strong></li>
+<li><strong>A.</strong> 標準機能では防げません。物理的な覗き見やスクリーンショット撮影はOSの標準機能として動作するため、シークレットモードとは無関係です。</li>
+</ul>
+<hr />
+<h2>まとめ：快適なマルチOS環境を作るポイント</h2>
+<p>シークレットモードの本質的な役割は、<strong>「その端末を共有している他のユーザーに自分の閲覧履歴を見せないこと」</strong>であり、ネットワーク上の追跡や物理的な証拠保全までを完全に防ぐものではありません。</p>
+<p>より高度なプライバシー保護や快適なマルチOS環境を構築したい場合は、以下のツールや周辺機器の導入も検討してみましょう。</p>
+<ul>
+<li><strong>VPNサービス</strong>: ネットワークトラフィック自体を暗号化し、プロバイダや公共Wi-Fi管理者から通信内容を隠すために有効です（ブラウザ履歴消去とは別機能）。</li>
+<li><strong>トラックボールマウス</strong>: 長時間のリサーチ作業において、手首の負担を軽減しながら精密な操作を可能にします。マルチOS環境での生産性向上に寄与します。</li>
+<li><strong>ブルーライトカット眼鏡</strong>: 集中してWebリサーチを行う際、目の疲れを軽減し、長時間作業の快適性を高めます。</li>
+</ul>
+<p>プライバシーを守るための「正しい知識」と、それらを補完する「適切なツール選び」を組み合わせることで、より安全でストレスのないデジタルライフを実現しましょう。</p>
+<hr />
+<h2>参考文献・公式ドキュメント（一次情報ソース）</h2>
+<p>本記事の手順・仕様は以下の各OSおよびツールの公式ドキュメントに基づいています。OSアップデートによりメニュー名称や挙動が変わる場合があるため、最新仕様の確認にもご活用ください。</p>
+<ul>
+<li><strong>[Windows]</strong> <a href="https://support.microsoft.com/ja-jp/windows/snipping-tool-%E3%82%92%E4%BD%BF%E3%81%A3%E3%81%A6%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88%E3%82%92%E3%82%AD%E3%83%A3%E3%83%97%E3%83%81%E3%83%A3%E3%81%99%E3%82%8B-00246869-1843-655f-f220-97299b865f6b">Snipping Tool を使ってスクリーンショットをキャプチャする・画面録画する - Microsoft サポート</a></li>
+<li><strong>[macOS]</strong> <a href="https://support.apple.com/ja-jp/102646">Macでスクリーンショットを撮る - Apple サポート (日本)</a></li>
+<li><strong>[macOS]</strong> <a href="https://support.apple.com/ja-jp/102618">Macで画面を収録する方法 - Apple サポート (日本)</a></li>
+<li><strong>[iOS]</strong> <a href="https://support.apple.com/ja-jp/guide/iphone/iphc872c0115/ios">iPhoneでスクリーンショットを撮る（フルページ保存を含む） - Apple サポート (日本)</a></li>
+<li><strong>[iOS]</strong> <a href="https://support.apple.com/ja-jp/102653">iPhone、iPad、iPod touchで画面を録画する - Apple サポート (日本)</a></li>
+<li><strong>[Android]</strong> <a href="https://support.google.com/android/answer/9075928?hl=ja">Android デバイスで画面の画像（スクリーンショット）または動画を撮影する - Android ヘルプ</a></li>
+</ul>
+    </article>
+  </main>
+  <footer>Generated with Local Ollama (qwen3.5 / gemma4) &amp; Draw Things (FLUX.2 klein 4B)</footer>
+</body>
+</html>
