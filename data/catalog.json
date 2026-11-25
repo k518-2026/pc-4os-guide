@@ -916,5 +916,44 @@
       "大容量ファイル 送り方 無料",
       "メール 送信取り消し 設定"
     ]
+  },
+  {
+    "id": "art71-incognito-private-browsing-myths",
+    "article_num": 71,
+    "cat_num": 3,
+    "category": "情報収集・リサーチ・Web利用",
+    "task_topic": "シークレットモード・プライベートブラウズで消える履歴と隠せない情報の正しい理解と活用手順",
+    "title": "シークレットモード・プライベートブラウズで隠せること・隠せないことの実例ガイド｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "シークレットモード 履歴",
+      "プライベートブラウズ 違い",
+      "ブラウザ 履歴 残さない"
+    ]
+  },
+  {
+    "id": "art72-photo-color-lighting-auto-enhance",
+    "article_num": 72,
+    "cat_num": 4,
+    "category": "画像・イラスト・デザイン制作",
+    "task_topic": "暗すぎる写真や逆光・傾いた写真をOS標準アプリだけで自然に自動補正・元に戻す実例",
+    "title": "暗い写真・逆光写真をOS標準機能だけで自然に明るく補正する実例｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "写真 明るくする 無料",
+      "逆光 補正 標準機能",
+      "写真 傾き 修正"
+    ]
+  },
+  {
+    "id": "art73-audio-noise-reduction-voice-clear",
+    "article_num": 73,
+    "cat_num": 5,
+    "category": "動画・音声・音楽制作",
+    "task_topic": "通話・Web会議・録音で周囲の雑音を抑えるOS標準のノイズ抑制（声を分離等）設定と効かない時の対処",
+    "title": "通話や録音の雑音を抑える！OS標準ノイズ抑制（声を分離）設定の実例｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "マイク ノイズ抑制 設定",
+      "声を分離 iPhone Mac",
+      "通話 雑音 消す"
+    ]
   }
 ]
