@@ -29,10 +29,11 @@ python -m src.main -n 1 --push
 python -m src.main -n 1 --category 11
 ```
 
-## 書き溜め済み記事一覧（全 77 本 / 最終更新: 2026-11-26 13:48 JST）
+## 書き溜め済み記事一覧（全 78 本 / 最終更新: 2026-11-26 13:52 JST）
 
 | No. | 17分類カテゴリ | 記事タイトル（Markdown） | 挿絵 | 生成日 |
 | :---: | :--- | :--- | :---: | :---: |
+| #78 | 分類10: システム管理・OS設定・メンテナンス | [目の疲れを軽減する「ダークモード＆夜間モード」自動切替設定の実例｜Windows・macOS・iOS・Android](content/2026-11-26_art78_dark_mode_eye_care_night_shift.md) | あり | 2026-11-26 |
 | #77 | 分類09: データ分析・科学計算・AI活用 | [アンケート・出欠確認を無料フォームで作成＆自動グラフ集計する実例｜Windows・macOS・iOS・Android](content/2026-11-26_art77_google_forms_survey_aggregate.md) | あり | 2026-11-26 |
 | #76 | 分類08: Web制作・ブログ・デジタルマーケティング | [よく使うWebサイトをホーム画面へアプリ化（PWA）して1タップ起動する実例｜Windows・macOS・iOS・Android](content/2026-11-26_art76_pwa_website_home_screen_app.md) | あり | 2026-11-26 |
 | #75 | 分類07: プログラミング・ソフトウェア開発 | [文章や名簿の表記ゆれを一括修正！「検索と置換」時短テクニック実例｜Windows・macOS・iOS・Android](content/2026-11-26_art75_find_replace_bulk_text_cleanup.md) | あり | 2026-11-26 |
