@@ -29,10 +29,11 @@ python -m src.main -n 1 --push
 python -m src.main -n 1 --category 11
 ```
 
-## 書き溜め済み記事一覧（全 74 本 / 最終更新: 2026-11-26 13:34 JST）
+## 書き溜め済み記事一覧（全 75 本 / 最終更新: 2026-11-26 13:39 JST）
 
 | No. | 17分類カテゴリ | 記事タイトル（Markdown） | 挿絵 | 生成日 |
 | :---: | :--- | :--- | :---: | :---: |
+| #75 | 分類07: プログラミング・ソフトウェア開発 | [文章や名簿の表記ゆれを一括修正！「検索と置換」時短テクニック実例｜Windows・macOS・iOS・Android](content/2026-11-26_art75_find_replace_bulk_text_cleanup.md) | あり | 2026-11-26 |
 | #74 | 分類06: 3D・CAD・ものづくり | [家具・家電の購入前にARで部屋へ試し置き！サイズ確認とPC比較の実例｜Windows・macOS・iOS・Android](content/2026-11-26_art74_ar_furniture_placement_shopping.md) | あり | 2026-11-26 |
 | #73 | 分類05: 動画・音声・音楽制作 | [通話や録音の雑音を抑える！OS 標準ノイズ抑制（声を分離）設定の実例｜Windows・macOS・iOS・Android](content/2026-11-26_art73_audio_noise_reduction_voice_clear.md) | あり | 2026-11-26 |
 | #72 | 分類04: 画像・イラスト・デザイン制作 | [暗い写真・逆光写真をOS標準機能だけで自然に明るく補正する実例｜Windows・macOS・iOS・Android](content/2026-11-26_art72_photo_color_lighting_auto_enhance.md) | あり | 2026-11-26 |

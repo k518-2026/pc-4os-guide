@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>文章や名簿の表記ゆれを一括修正！「検索と置換」時短テクニック実例｜Windows・macOS・iOS・Android | PC 4OS実例ガイド</title>
+  <style>
+:root {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --muted: #475569;
+  --accent: #0284c7;
+  --accent-soft: #e0f2fe;
+  --border: #e2e8f0;
+  --code-bg: #0f172a;
+  --code-text: #e2e8f0;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Noto Sans JP", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+}
+header.site-header {
+  background: linear-gradient(135deg, #0f172a 0%, #0369a1 100%);
+  color: #fff;
+  padding: 2.2rem 1.25rem;
+}
+header.site-header .inner { max-width: 980px; margin: 0 auto; }
+header.site-header h1 { margin: 0 0 0.4rem; font-size: 1.75rem; }
+header.site-header p { margin: 0; opacity: 0.9; font-size: 0.96rem; }
+main { max-width: 980px; margin: 2rem auto; padding: 0 1.25rem 3rem; }
+.badge {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: var(--accent-soft);
+  color: #0369a1;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1.25rem;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08); }
+.card img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; display: block; background: #e2e8f0; }
+.card-body { padding: 1rem 1.1rem 1.2rem; flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+.card-title { font-size: 1.02rem; font-weight: 700; margin: 0; line-height: 1.45; }
+.card-meta { font-size: 0.82rem; color: var(--muted); margin-top: auto; }
+article.post {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 2rem;
+}
+article.post img.eyecatch {
+  width: 100%;
+  max-height: 460px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+}
+article.post h1 { font-size: 1.65rem; line-height: 1.35; margin-top: 0; }
+article.post h2 {
+  font-size: 1.3rem;
+  margin-top: 2.1rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 2px solid var(--accent-soft);
+}
+article.post h3 { font-size: 1.08rem; margin-top: 1.4rem; }
+article.post table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.2rem 0;
+  font-size: 0.92rem;
+  display: block;
+  overflow-x: auto;
+}
+article.post th, article.post td {
+  border: 1px solid var(--border);
+  padding: 0.6rem 0.8rem;
+  text-align: left;
+}
+article.post th { background: #f1f5f9; font-weight: 700; }
+article.post pre {
+  background: var(--code-bg);
+  color: var(--code-text);
+  padding: 1rem 1.15rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+article.post code {
+  background: #f1f5f9;
+  padding: 0.15rem 0.38rem;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+article.post pre code { background: transparent; padding: 0; color: inherit; }
+article.post blockquote {
+  margin: 1.2rem 0;
+  padding: 0.8rem 1.1rem;
+  border-left: 4px solid var(--accent);
+  background: #f0f9ff;
+  border-radius: 0 8px 8px 0;
+}
+.back-link { display: inline-block; margin-bottom: 1rem; color: var(--accent); text-decoration: none; font-weight: 600; }
+.filter-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.15rem 1.25rem;
+  margin-bottom: 1.5rem;
+}
+.filter-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) auto;
+  gap: 0.9rem;
+  align-items: end;
+}
+.filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.filter-field label {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.filter-field input[type="search"],
+.filter-field select {
+  font: inherit;
+  font-size: max(1rem, 1em);
+  min-height: 48px;
+  padding: 0.55rem 0.85rem;
+  border: 1.5px solid #767676;
+  border-radius: 8px;
+  background: #fff;
+  color: var(--text);
+  width: 100%;
+}
+.filter-field input[type="search"]:focus-visible,
+.filter-field select:focus-visible,
+.filter-actions button:focus-visible {
+  outline: 3px solid #0284c7;
+  outline-offset: 2px;
+}
+.filter-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+.filter-actions button {
+  font: inherit;
+  font-size: max(1rem, 0.95em);
+  font-weight: 600;
+  min-height: 48px;
+  padding: 0 1.05rem;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+}
+.btn-primary {
+  background: #0369a1;
+  color: #fff;
+}
+.btn-primary:hover { background: #075985; }
+.btn-secondary {
+  background: #f1f5f9;
+  color: var(--text);
+  border-color: #94a3b8;
+}
+.btn-secondary:hover { background: #e2e8f0; }
+.results-status {
+  color: var(--muted);
+  font-size: 0.92rem;
+  margin: 0 0 1.1rem;
+}
+.empty-state {
+  background: var(--surface);
+  border: 1px dashed #94a3b8;
+  border-radius: 12px;
+  padding: 2rem 1.25rem;
+  text-align: center;
+  color: var(--muted);
+}
+.card[hidden],
+.empty-state[hidden] { display: none; }
+footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2rem 1rem; }
+@media (max-width: 720px) {
+  .filter-form { grid-template-columns: 1fr; }
+  .filter-actions { width: 100%; }
+  .filter-actions button { flex: 1; }
+}
+@media (max-width: 640px) {
+  article.post { padding: 1.2rem; }
+}
+</style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="inner">
+      <h1>PC 4OS実例ガイド</h1>
+      <p>Windows・macOS・iOS・Android の実践比較＆トラブル解決アーカイブ</p>
+    </div>
+  </header>
+  <main>
+    <a class="back-link" href="../index.html">← 記事一覧へ戻る</a>
+    <article class="post">
+      <p><span class="badge">#75｜分類07: プログラミング・ソフトウェア開発</span> <small style="color:#64748b;margin-left:0.5rem;">2026-11-26</small></p>
+      <img class="eyecatch" src="../images/2026-11-26_art75_find_replace_bulk_text_cleanup.png" alt="文章や名簿の表記ゆれを一括修正！「検索と置換」時短テクニック実例｜Windows・macOS・iOS・Android">
+      <h1>文章や名簿の表記ゆれを一括修正！「検索と置換」時短テクニック実例｜Windows・macOS・iOS・Android</h1>
+<p>「顧客名簿の『株式会社』が、ある行は『（株）』になっていて統一感がない…」<br />
+「全角スペースと半角スペースが混在していて、検索でヒットしない…」<br />
+「大量のテキストデータの中に、特定の誤字（例：『発注』を『発送』に）が散見される…」</p>
+<p>こうした「表記ゆれ」の修正は、一つひとつ手動で直そうとすると膨大な時間がかかり、かつ人的ミスも起こりやすい作業です。しかし、OS標準の<strong>「検索と置換」機能</strong>を正しく使いこなせば、数千行のデータも一瞬でクリーンに整えることができます。</p>
+<p>この記事では、Windows、macOS、iOS、Androidの主要4OSにおいて、標準機能や推奨アプリを使いながら「表記ゆれを一括修正する」ための実践的な手順と、ハマりやすいトラブルの解決策を徹底解説します。</p>
+<h2>4OS比較早見表</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">OS</th>
+<th style="text-align: left;">推奨ツール</th>
+<th style="text-align: left;">置換ショートカット</th>
+<th style="text-align: left;">特徴・備考</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Windows 11</strong></td>
+<td style="text-align: left;">メモ帳 / Excel / VS Code</td>
+<td style="text-align: left;"><code>Ctrl + H</code></td>
+<td style="text-align: left;">高機能な置換ダイアログを搭載。正規表現も対応可。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>macOS</strong></td>
+<td style="text-align: left;">TextEdit / Pages</td>
+<td style="text-align: left;"><code>Cmd + H</code></td>
+<td style="text-align: left;">シンプルなUI。システム全体での一括操作は制限あり。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>iOS</strong></td>
+<td style="text-align: left;">Pages / 外部アプリ</td>
+<td style="text-align: left;">UIメニュー</td>
+<td style="text-align: left;">標準メモでは制限多。Pages等の文書作成アプリを推奨。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Android</strong></td>
+<td style="text-align: left;">Google ドライブ / エディタ</td>
+<td style="text-align: left;">UIメニュー</td>
+<td style="text-align: left;">ファイル管理アプリと連携。ブラウザ経由の編集も有効。</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>1. Windows 11 での実例手順</h2>
+<p>Windows環境では、最も直感的に「検索と置換」を実行できるのが標準のテキストエディタやOfficeソフトです。</p>
+<h3>① 公式仕様に基づく実手順</h3>
+<p><strong>【テキストファイル（.txt / .html）の場合】</strong><br />
+1. エクスプローラーで対象フォルダを開きます。<br />
+2. 対象ファイルをダブルクリックして「メモ帳」または「Visual Studio Code (GitHub.dev)」で開きます。<br />
+3. <strong><code>Ctrl + H</code></strong> キーを押すと、「検索と置換」ダイアログが表示されます。<br />
+4. 「検索文字列」に修正前の文字（例：<code>（株）</code>）、「置換文字列」に修正後の文字（例：<code>株式会社</code>）を入力します。<br />
+5. 右下の「すべて置換」をクリックして完了です。</p>
+<p><strong>【Excel ファイルの場合】</strong><br />
+1. Excelアプリを起動し、対象のシートを開きます。<br />
+2. <strong>[ホーム] タブ &gt; [編集] グループ &gt; [検索と選択] &gt; [置換]</strong> をクリックします。<br />
+3. 同様に「検索文字列」と「置換文字列」を入力し、「すべて置換」を実行します。</p>
+<h3>② 標準機能の制限事項・代替手段</h3>
+<ul>
+<li><strong>制限</strong>: 「ファイルエクスプローラー」自体には、フォルダ内の全ファイルを一括で走査して中身を置換するメニューは存在しません（Windows Searchは主にメタデータ検索用です）。<ul>
+<li><em>解決</em>: 大量ファイルの置換が必要な場合は、PowerShellの <code>Select-String</code> を活用するか、GitHub.dev 上にファイルをアップロードしてブラウザ上で一括編集を行うのが効率的です。</li>
+</ul>
+</li>
+<li><strong>制限</strong>: 標準の「メモ帳」ではバージョンにより正規表現（Regex）が使えない場合があります。<ul>
+<li><em>代替手段</em>: より高度な置換が必要な場合は、Visual Studio Code をインストールするか、GitHub Codespaces (<code>github.dev</code>) を利用してWebブラウザ上で拡張機能付きの環境を構築しましょう。</li>
+</ul>
+</li>
+</ul>
+<h3>③ よくあるトラブルと解決法</h3>
+<ol>
+<li><strong>エラー</strong>: 「置換中にファイルがロックされています」と表示される。</li>
+<li><em>原因</em>: ファイルが開かれたまま別のプロセスでアクセス中。</li>
+<li><em>解決</em>: タスクマネージャーから該当プロセスを終了するか、メモ帳を再起動して再度開きます。GitHub.dev ではブラウザタブの再読み込み（F5）でロック回避できる場合があります。</li>
+<li><strong>エラー</strong>: 置換後、文字化けが発生する。</li>
+<li><em>原因</em>: ファイルのエンコード形式がUTF-8でない状態で無理やり代入された場合など。</li>
+<li><em>解決</em>: 「保存」ではなく「上書き保存」を選択し、エディタの設定でエンコーディング（UTF-8 with BOMなど）を確認してください。</li>
+<li><strong>失敗</strong>: 「すべて置換」を押しても反応がない。</li>
+<li><em>原因</em>: 検索窓に「全角スペース」を入れたが、実際には「半角スペース」や「Tabキー」が含まれているケース。</li>
+<li><em>解決</em>: 検索窓の文字を削除し、実際の空白部分をコピー（Ctrl+C）して貼り付けるか、「空白」ボタンを押して再試行してください。</li>
+</ol>
+<hr />
+<h2>2. macOS での実例手順</h2>
+<p>macOSでは「TextEdit（テキストエディット）」や「Pages」を活用することで、スムーズな置換作業が可能です。</p>
+<h3>① 公式仕様に基づく実手順</h3>
+<p><strong>【TextEdit で .txt ファイルを編集する場合】</strong><br />
+1. 「ファイル」&gt;「開く」から対象の <code>.txt</code> や <code>.html</code> を選択します。※[表示] &gt; [文書の種類] から「純粋なテキスト」として扱うことを推奨します。<br />
+2. <strong><code>Cmd + H</code></strong> キーを押して、「検索と置換」ダイアログを開きます。<br />
+3. 「すべて一致させる」「大文字小文字区別しない」などのオプションを必要に応じて設定し、[置換] をクリックします。</p>
+<h3>② 標準機能の制限事項・代替手段</h3>
+<ul>
+<li><strong>制限</strong>: macOSの「メモ」アプリやシステム全体（Spotlight）では、「フォルダ内の全ファイルを一括で検索/置換する」というネイティブメニューは存在しません。<ul>
+<li><em>解決</em>: Finderを右クリックし、[ターミナルで開く] から <code>osascript</code> スクリプトを使用するか、GitHub Codespaces (<code>github.dev</code>) にアクセスしてWeb上で複数ファイルを管理・置換するのが最も確実です。</li>
+</ul>
+</li>
+</ul>
+<h3>③ よくあるトラブルと解決法</h3>
+<ol>
+<li><strong>エラー</strong>: 「検索文字列が見つかりません」と表示されるが実際には存在する場合がある。</li>
+<li><em>原因</em>: macOSでは「全角スペース」を特殊なコードポイントとして認識し、単純な入力では一致しないことがあります。</li>
+<li><em>解決</em>: 検索窓のテキストを選択し、「編集」&gt;「文字列を検索して削除」を試すか、正規表現モードを確認してください。GitHub.dev ではブラウザ表示上のゆれが原因の場合があり、F5で再読み込みすると解消されることがあります。</li>
+<li><strong>失敗</strong>: 置換後、ファイルのフォーマットが変わってしまう（例：改行コード CRLF から LF に変わる）。</li>
+<li><em>解決</em>: テキストエディタの設定で「Mac OS フォーマット」を維持するか、GitHub.dev でWebブラウザ上で編集・保存することでプラットフォーム固有の問題を回避できます。</li>
+<li><strong>エラー</strong>: 権限不足により置換できないと表示される（特にシステムフォルダ内）。</li>
+<li><em>解決</em>: ファイルの「共有と許可」設定を確認し、「読み取り/書き込み」が有効になっているか確認してください。GitHub.dev ではローカルファイルへの直接アクセス制限がないため、ブラウザ上で安全に編集可能です。</li>
+</ol>
+<hr />
+<h2>3. iOS（iPhone / iPad）での実例手順</h2>
+<p>モバイル端末ではデスクトップほど自由なショートカットは用意されていませんが、Pagesアプリを活用することで高度な置換が可能です。</p>
+<h3>① 公式仕様に基づく実手順</h3>
+<p><strong>【Pages で .txt ファイルを編集する場合】</strong><br />
+1. 「ファイル」アプリを開き、「iCloud Drive」から対象ファイルを Pages で開きます。<br />
+2. ツールバーまたはメニューから [ツール] &gt; [置換] を選択して実行します。</p>
+<h3>② 標準機能の制限事項・代替手段</h3>
+<ul>
+<li><strong>制限</strong>: iOSの標準「メモ」アプリには、フォルダ内一括検索や複雑な正規表現による置換機能は存在しません。「ファイル」アプリ自体も直接の編集機能を持たないため、Pagesやサードパーティ製テキストエディタが必要です。<ul>
+<li><em>解決</em>: iCloud DriveにアップロードされたファイルをGitHub Mobileで確認し、必要に応じてWebブラウザ経由で <code>github.dev</code> へアクセスして修正するのが最も強力な代替手段です。</li>
+</ul>
+</li>
+</ul>
+<h3>③ よくあるトラブルと解決法</h3>
+<ol>
+<li><strong>エラー</strong>: 「置換」ボタンがグレーアウトしている、または表示されない。</li>
+<li><em>原因</em>: アプリのバージョン違いや、ファイルが開かれたままの状態での操作制限。Pagesアプリでは「編集モード」に切り替えないと機能しない場合があります。</li>
+<li><em>解決</em>: [共有] &gt; 「コピーして貼り付け」でテキストを別のメモアプリへ移動させ、再度置換を試みるか、GitHub Mobile で確認しWebブラウザ上で修正します。</li>
+<li><strong>失敗</strong>: 全角半角の統一ができず、文字化けが発生する場合がある。</li>
+<li><em>原因</em>: iOSの標準フォントレンダリングとWebフォントの違いによる表示ゆれ。</li>
+<li><em>解決</em>: 「ファイル」&gt;「共有」でテキストをコピーし、「メモ」アプリに貼り付け、再度保存することでフォーマットを整えます。GitHub.dev ではブラウザ上の表示ゆれが解消されるため、Web上で確認してから再ダウンロードするのが安全です。</li>
+<li><strong>エラー</strong>: iCloud Drive の同期中に置換を試みると失敗する場合がある。</li>
+<li><em>解決</em>: 「設定」&gt;「[自分の名前]» &gt;「iCloud」でファイルの同期を一時停止し、編集完了後に再度有効にするか、GitHub Mobile で確認してWebブラウザ上で修正します。</li>
+</ol>
+<hr />
+<h2>4. Android での実例手順</h2>
+<p>AndroidではGoogleドライブとの連携や、サードパーティ製エディタの活用がスムーズです。</p>
+<h3>① 公式仕様に基づく実手順</h3>
+<p><strong>【Google ドライブ・テキストエディタを活用】</strong><br />
+1. Google ドライブアプリを開き、対象のテキストファイルを選択します。<br />
+2. ファイルを「Google ドキュメント」またはインストール済みのテキストエディタで開きます。<br />
+3. ツールバーの [検索と置換] アイコン（虫眼鏡マークなど）をタップし、置換内容を入力して実行します。</p>
+<h3>② 標準機能の制限事項・代替手段</h3>
+<ul>
+<li><strong>制限</strong>: Android標準の「ファイル管理」アプリでは高度な一括置換メニューが提供されないことが多いです。<ul>
+<li><em>解決</em>: 大規模な修正が必要な場合は、ブラウザで <code>github.dev</code> にアクセスし、Webインターフェースから編集を行うのが最も確実です。</li>
+</ul>
+</li>
+</ul>
+<h3>③ よくあるトラブルと解決法</h3>
+<ol>
+<li><strong>エラー</strong>: 置換ボタンが表示されない、または反応しない。</li>
+<li><em>原因</em>: アプリの権限不足や、プレビューモードで開いているケース。</li>
+<li><em>解決</em>: ファイルを「編集モード」で開き直すか、Google ドキュメントアプリに一度インポートして置換を実行してください。</li>
+<li><strong>失敗</strong>: 置換したはずの文字が反映されない（同期エラー）。</li>
+<li><em>原因</em>: Google ドライブのオンライン同期が完了する前にアプリを閉じた場合。</li>
+<li><em>解決</em>: 編集完了後、数秒待ってから「保存」または「終了」を行い、クラウド上のファイルが更新されたことを確認します。</li>
+</ol>
+<hr />
+<h2>よくあるトラブルと解決チェックリスト</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">エラー・事象</th>
+<th style="text-align: left;">原因の可能性</th>
+<th style="text-align: left;">対処法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>置換中にファイルがロックされている</strong></td>
+<td style="text-align: left;">他のアプリで開いている、またはバックグラウンドプロセスが掴んでいる。</td>
+<td style="text-align: left;">タスクマネージャー（Win）やアクティビティモニタ（Mac）でプロセスを終了させる。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>検索してもヒットしない（空白が含まれる場合）</strong></td>
+<td style="text-align: left;">全角スペースと半角スペースの混在、またはTabキーによるインデント。</td>
+<td style="text-align: left;">実際の空白部分をコピーして検索窓に貼り付けるか、正規表現を使用する。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>置換後に文字化けが発生する</strong></td>
+<td style="text-align: left;">ファイルのエンコード（UTF-8等）が不適切。</td>
+<td style="text-align: left;">保存時に「UTF-8」を選択し、上書き保存を行う。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>ボタンがグレーアウトしている</strong></td>
+<td style="text-align: left;">編集モードになっていない、または読み取り専用設定。</td>
+<td style="text-align: left;">アプリを編集モードに切り替えるか、ファイルの権限を確認する。</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>まとめ：快適なマルチOS環境を作るポイント</h2>
+<p>「検索と置換」は、単なる時短テクニックではなく、データの正確性を担保するための必須スキルです。しかし、標準機能だけでは限界を感じる場面も多いでしょう。そんな時こそ、周辺機器やツールの力を借りて作業環境を最適化することが重要です。</p>
+<p>例えば、<strong>メカニカルキーボード</strong>を導入することで、ショートカット操作の打鍵感が向上し、正確な入力が可能になります。また、<strong>ウルトラワイドモニター</strong>があれば、左側に「元の名簿」、右側に「修正後のエディタ」を表示させながら、視線移動を最小限に抑えて一括置換を確認できます。</p>
+<p>さらに、技術的な課題に直面した際は、<strong>技術書</strong>で正規表現の基礎を学んだり、<strong>VPSやクラウド環境（GitHub Codespaces等）</strong>を活用して、OSの制約を受けない自由な開発・編集環境を構築したりすることも検討しましょう。</p>
+<p>正しいツールと知識を組み合わせることで、面倒な「表記ゆれ修正」は一瞬で終わる、ストレスフリーな作業へと変わります。</p>
+<hr />
+<h2>参考文献・公式ドキュメント（一次情報ソース）</h2>
+<p>本記事の手順・仕様は以下の各OSおよびツールの公式ドキュメントに基づいています。OSアップデートによりメニュー名称や挙動が変わる場合があるため、最新仕様の確認にもご活用ください。</p>
+<ul>
+<li><strong>[Windows / macOS]</strong> <a href="https://docs.github.com/ja/codespaces/the-githubdev-web-based-editor">GitHubからの Web 用 VS Code の使用 (github.dev) - GitHubドキュメント</a></li>
+<li><strong>[共通]</strong> <a href="https://docs.github.com/ja/repositories/working-with-files/managing-files/editing-files">GitHub上でファイルを編集する - GitHubドキュメント</a></li>
+<li><strong>[iOS / Android]</strong> <a href="https://docs.github.com/ja/get-started/using-github/github-mobile">GitHub Mobile 公式ガイド - GitHubドキュメント</a></li>
+</ul>
+    </article>
+  </main>
+  <footer>Generated with Local Ollama (qwen3.5 / gemma4) &amp; Draw Things (FLUX.2 klein 4B)</footer>
+</body>
+</html>
