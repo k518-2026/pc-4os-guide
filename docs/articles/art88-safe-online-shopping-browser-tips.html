@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ネット通販の偽サイトを見抜く確認手順とブラウザ安全決済の設定実例｜Windows・macOS・iOS・Android | PC 4OS実例ガイド</title>
+  <style>
+:root {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --muted: #475569;
+  --accent: #0284c7;
+  --accent-soft: #e0f2fe;
+  --border: #e2e8f0;
+  --code-bg: #0f172a;
+  --code-text: #e2e8f0;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Noto Sans JP", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+}
+header.site-header {
+  background: linear-gradient(135deg, #0f172a 0%, #0369a1 100%);
+  color: #fff;
+  padding: 2.2rem 1.25rem;
+}
+header.site-header .inner { max-width: 980px; margin: 0 auto; }
+header.site-header h1 { margin: 0 0 0.4rem; font-size: 1.75rem; }
+header.site-header p { margin: 0; opacity: 0.9; font-size: 0.96rem; }
+main { max-width: 980px; margin: 2rem auto; padding: 0 1.25rem 3rem; }
+.badge {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: var(--accent-soft);
+  color: #0369a1;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1.25rem;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08); }
+.card img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; display: block; background: #e2e8f0; }
+.card-body { padding: 1rem 1.1rem 1.2rem; flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+.card-title { font-size: 1.02rem; font-weight: 700; margin: 0; line-height: 1.45; }
+.card-meta { font-size: 0.82rem; color: var(--muted); margin-top: auto; }
+article.post {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 2rem;
+}
+article.post img.eyecatch {
+  width: 100%;
+  max-height: 460px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+}
+article.post h1 { font-size: 1.65rem; line-height: 1.35; margin-top: 0; }
+article.post h2 {
+  font-size: 1.3rem;
+  margin-top: 2.1rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 2px solid var(--accent-soft);
+}
+article.post h3 { font-size: 1.08rem; margin-top: 1.4rem; }
+article.post table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.2rem 0;
+  font-size: 0.92rem;
+  display: block;
+  overflow-x: auto;
+}
+article.post th, article.post td {
+  border: 1px solid var(--border);
+  padding: 0.6rem 0.8rem;
+  text-align: left;
+}
+article.post th { background: #f1f5f9; font-weight: 700; }
+article.post pre {
+  background: var(--code-bg);
+  color: var(--code-text);
+  padding: 1rem 1.15rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+article.post code {
+  background: #f1f5f9;
+  padding: 0.15rem 0.38rem;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+article.post pre code { background: transparent; padding: 0; color: inherit; }
+article.post blockquote {
+  margin: 1.2rem 0;
+  padding: 0.8rem 1.1rem;
+  border-left: 4px solid var(--accent);
+  background: #f0f9ff;
+  border-radius: 0 8px 8px 0;
+}
+.back-link { display: inline-block; margin-bottom: 1rem; color: var(--accent); text-decoration: none; font-weight: 600; }
+.filter-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.15rem 1.25rem;
+  margin-bottom: 1.5rem;
+}
+.filter-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) auto;
+  gap: 0.9rem;
+  align-items: end;
+}
+.filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.filter-field label {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.filter-field input[type="search"],
+.filter-field select {
+  font: inherit;
+  font-size: max(1rem, 1em);
+  min-height: 48px;
+  padding: 0.55rem 0.85rem;
+  border: 1.5px solid #767676;
+  border-radius: 8px;
+  background: #fff;
+  color: var(--text);
+  width: 100%;
+}
+.filter-field input[type="search"]:focus-visible,
+.filter-field select:focus-visible,
+.filter-actions button:focus-visible {
+  outline: 3px solid #0284c7;
+  outline-offset: 2px;
+}
+.filter-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+.filter-actions button {
+  font: inherit;
+  font-size: max(1rem, 0.95em);
+  font-weight: 600;
+  min-height: 48px;
+  padding: 0 1.05rem;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+}
+.btn-primary {
+  background: #0369a1;
+  color: #fff;
+}
+.btn-primary:hover { background: #075985; }
+.btn-secondary {
+  background: #f1f5f9;
+  color: var(--text);
+  border-color: #94a3b8;
+}
+.btn-secondary:hover { background: #e2e8f0; }
+.results-status {
+  color: var(--muted);
+  font-size: 0.92rem;
+  margin: 0 0 1.1rem;
+}
+.empty-state {
+  background: var(--surface);
+  border: 1px dashed #94a3b8;
+  border-radius: 12px;
+  padding: 2rem 1.25rem;
+  text-align: center;
+  color: var(--muted);
+}
+.card[hidden],
+.empty-state[hidden] { display: none; }
+footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2rem 1rem; }
+@media (max-width: 720px) {
+  .filter-form { grid-template-columns: 1fr; }
+  .filter-actions { width: 100%; }
+  .filter-actions button { flex: 1; }
+}
+@media (max-width: 640px) {
+  article.post { padding: 1.2rem; }
+}
+</style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="inner">
+      <h1>PC 4OS実例ガイド</h1>
+      <p>Windows・macOS・iOS・Android の実践比較＆トラブル解決アーカイブ</p>
+    </div>
+  </header>
+  <main>
+    <a class="back-link" href="../index.html">← 記事一覧へ戻る</a>
+    <article class="post">
+      <p><span class="badge">#88｜分類03: 情報収集・リサーチ・Web利用</span> <small style="color:#64748b;margin-left:0.5rem;">2026-11-26</small></p>
+      <img class="eyecatch" src="../images/2026-11-26_art88_safe_online_shopping_browser_tips.png" alt="ネット通販の偽サイトを見抜く確認手順とブラウザ安全決済の設定実例｜Windows・macOS・iOS・Android">
+      <h1>ネット通販の偽サイトを見抜く確認手順とブラウザ安全決済の設定実例｜Windows・macOS・iOS・Android</h1>
+<p>「ネットで欲しい商品を探していたら、すごく安い広告が出てきた」「公式サイトとそっくりなサイトを見つけたけれど、本当に大丈夫かな？」</p>
+<p>ネットショッピングの普及に伴い、巧妙に偽装されたフィッシング詐欺サイトや偽通販サイトが増加しています。これらを見分けるためには、単に「URLが正しいか」をチェックするだけでなく、ブラウザが提供するセキュリティ機能（SSL/TLSプロトコル）を正しく理解し、活用することが不可欠です。</p>
+<p>この記事では、Windows、macOS、iOS、Androidの4つの主要OSにおいて、偽サイトを見抜くための具体的な確認手順と、証拠を残すためのスクリーンショット撮影方法を徹底解説します。</p>
+<h2>4OS比較早見表</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">OS</th>
+<th style="text-align: left;">推奨ブラウザ</th>
+<th style="text-align: left;">SSL確認の主な操作</th>
+<th style="text-align: left;">スクリーンショットの基本操作</th>
+<th style="text-align: left;">特徴・制限事項</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Windows</strong></td>
+<td style="text-align: left;">Microsoft Edge</td>
+<td style="text-align: left;">鍵アイコンから証明書詳細を確認</td>
+<td style="text-align: left;"><code>Win + Shift + S</code></td>
+<td style="text-align: left;">証明書の詳細な検証が可能。Snipping Toolで証拠保全。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>macOS</strong></td>
+<td style="text-align: left;">Safari</td>
+<td style="text-align: left;">鍵アイコンからサイト情報を確認</td>
+<td style="text-align: left;"><code>Cmd + Shift + 5</code></td>
+<td style="text-align: left;">直感的なUI。標準機能での自動ブロックが強力。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>iOS</strong></td>
+<td style="text-align: left;">Safari</td>
+<td style="text-align: left;">鍵アイコンの表示を確認</td>
+<td style="text-align: left;">サイドボタン + 音量アップ</td>
+<td style="text-align: left;">セキュリティ強化のため、詳細情報の閲覧に制限あり。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Android</strong></td>
+<td style="text-align: left;">Chrome</td>
+<td style="text-align: left;">鍵アイコンから安全性を確認</td>
+<td style="text-align: left;">サイドボタン + 音量ダウン</td>
+<td style="text-align: left;">UIが簡略化されており、技術的な検証は限定的。</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>1. Windows 11 での実例手順</h2>
+<p>Windows環境では、Microsoft Edgeを活用して詳細な証明書情報を確認することが可能です。</p>
+<h3>【実例手順】公式機能を用いた確認・記録方法</h3>
+<ul>
+<li><strong>SSL/HTTPS の視覚的チェック</strong>: アドレスバーの鍵アイコン（🔒）をクリックし、「このサイトの接続は安全です」と表示されているか確認します。<ul>
+<li><em>注意</em>: 警告が出ている場合は「詳細」ボタン→「証明書エラーの詳細を表示」で具体理由を確認してください。</li>
+</ul>
+</li>
+<li><strong>証明書の発行元確認</strong>: 「セキュリティ情報」タブから CA（認証局）が信頼できる機関であるか確認します（例：DigiCert, GlobalSign など）。個人名義の証明書や、身に覚えのない発行元は危険信号です。</li>
+<li><strong>スクリーンショットによる証拠保全 (Snipping Tool 使用)</strong>:<ul>
+<li><code>Win + Shift + S</code> キーを押し、アドレスバーと警告メッセージのみを選択してキャプチャします。</li>
+<li>「スナップイン」→「フォトエディタ（または Clipchamp）」で保存し、URL と日時を確認した記録を残しましょう。</li>
+</ul>
+</li>
+</ul>
+<h3>【標準機能の制限事項】</h3>
+<ul>
+<li><strong>自動ブロック機能</strong>: Windows 11 の Edge はフィッシングサイトへのアクセスを自動的に遮断しますが、すべての偽サイトを網羅しているわけではないため手動確認が必要です。</li>
+<li><strong>証明書詳細画面のカスタマイズ不可</strong>: ユーザー側で証明書の表示形式や警告の厳格さを標準設定から変更することはできません（ブラウザ拡張機能以外では不可能）。</li>
+</ul>
+<h3>【よくあるトラブルと解決法】3 選</h3>
+<ol>
+<li><strong>「このサイトは安全です」と出ているが怪しい場合</strong><ul>
+<li><em>原因</em>: 偽証明書を取得した業者が存在するため、CA の信頼性だけで安心できるわけではありません。</li>
+<li><em>対策</em>: 「セキュリティ情報」で発行元が公的認証局か確認し、URL を公式ページと一字一句比較してください。</li>
+</ul>
+</li>
+<li><strong>Snipping Tool で画面が切り取れない場合</strong><ul>
+<li><em>原因</em>: 一部のブラウザでは Web サイトのコンテンツ自体はキャプチャ可能ですが、外部ツールとの連携で失敗することがあります。</li>
+<li><em>対策</em>: 「Win + Shift + S」ではなく「Print Screen キー」を押してクリップボードに貼り付け、「フォトエディタ」から保存する代替手段を試してください。</li>
+</ul>
+</li>
+<li><strong>証明書エラーの詳細が日本語化されていない場合</strong><ul>
+<li><em>原因</em>: 英語圏の CA が発行した証明書の詳細は英語表記になることがあります。</li>
+<li><em>対策</em>: ブラウザ言語設定を「English (United States)」に変更して再読み込みし、エラーコード（例：ERR_CERT_AUTHORITY_INVALID）を確認してください。</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h2>2. macOS での実例手順</h2>
+<p>macOSではSafariの洗練されたUIを通じて、迅速に安全性を確認できます。</p>
+<h3>【実例手順】公式機能を用いた確認・記録方法</h3>
+<ul>
+<li><strong>SSL/HTTPS の視覚的チェック</strong>: アドレスバーの鍵アイコンをクリックし、「安全」または「警告」を表示するか確認します。<ul>
+<li><em>注意</em>: 「セキュリティとプライバシー」設定で「証明書を自動的に管理する」がオンになっているか確認してください（デフォルトはオン）。</li>
+</ul>
+</li>
+<li><strong>証明書の詳細表示</strong>: 鍵アイコン→「サイト情報」→「証明書」タブから有効期限や発行元を確認。「このサイトの接続を信頼できません」と出たら即座に離脱しましょう。</li>
+<li><strong>スクリーンショットによる証拠保全</strong>:<ul>
+<li>macOS Ventura/Sequoia: <code>Cmd + Shift + 5</code> で範囲選択し、「保存」→「フォトエディタ（または画像アプリ）」で保存します。</li>
+<li>macOS Monterey以前：<code>Cmd + Shift + 4</code> を押し、ドラッグして領域を指定後 Enter キーを押します。</li>
+</ul>
+</li>
+</ul>
+<h3>【標準機能の制限事項】</h3>
+<ul>
+<li><strong>自動ブロックの詳細表示</strong>: Safari はフィッシングサイトを自動的に遮断しますが、「なぜブロックされたか」の詳細な理由（どのドメインリストに該当したか）を表示しないことが多いです。</li>
+<li><strong>スクリーンショットの保存場所固定不可</strong>: 公式ショートカットでは「デスクトップ」等への直接指定ができないため、必ず一旦画像アプリを経由する必要があります。</li>
+</ul>
+<h3>【よくあるトラブルと解決法】3 選</h3>
+<ol>
+<li><strong>「サイト情報」メニューが反応しない場合</strong><ul>
+<li><em>原因</em>: ブラウザのキャッシュや拡張機能（AdBlock など）の影響で UI が固まっていることがあります。</li>
+<li><em>対策</em>: Safari メニュー→「表示」→「開発」としてデベロッパーツールを開き、コンソールエラーを確認するか、Safari を再起動してください。</li>
+</ul>
+</li>
+<li><strong>スクリーンショットが暗転している場合</strong><ul>
+<li><em>原因</em>: 偽サイトや警告画面の背景色が黒く設定されていると、保存した画像も真っ黒に見えることがあります。</li>
+<li><em>対策</em>: 「システム環境設定」→「ディスプレイ」で「ダークモード」をオフにし、再キャプチャしてください。</li>
+</ul>
+</li>
+<li><strong>証明書の有効期限が切れているのに警告が出ない場合</strong><ul>
+<li><em>原因</em>: システムの時刻・日付設定がズレていると、OS が証明書を正しく検証できないことがあります。</li>
+<li><em>対策</em>: 「システム環境設定」→「一般」で正しい日時を設定し、ブラウザを再起動してください。</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h2>3. iOS (iPhone / iPad) での実例手順</h2>
+<p>モバイル端末では、セキュリティ強化のため詳細情報の閲覧に一定の制限があります。</p>
+<h3>【実例手順】公式機能を用いた確認・記録方法</h3>
+<ul>
+<li><strong>SSL/HTTPS の視覚的チェック</strong>: アドレスバーの鍵アイコンが緑色で「安全」と表示されているか、または赤い警告マークが出ているか確認します。<ul>
+<li><em>注意</em>: iOS では Safari 標準では証明書の詳細（発行元など）を直接開く UI が非公式仕様のため、「設定」→「Safari」→「プライバシーとセキュリティ」から追跡防止の設定を確認する程度が限界です。</li>
+</ul>
+</li>
+<li><strong>スクリーンショットによる証拠保全</strong>:<ul>
+<li>iPhone (Face ID): <code>サイドボタン</code> + <code>音量アップ</code> を同時に押し、離す前に画面をタップして保存領域を選ぶ。</li>
+<li>iPad: 同様にサイドボタンと音量ボタンの組み合わせでキャプチャします。</li>
+</ul>
+</li>
+</ul>
+<h3>【標準機能の制限事項】</h3>
+<ul>
+<li><strong>証明書詳細の確認不可</strong>: iOS の Safari では、URL バーをクリックしても「サイト情報」のような詳細画面が開かず、「このサイトの接続は安全です」というメッセージのみが表示されます（Apple のセキュリティポリシーによる）。</li>
+<li><strong>スクリーンショットのフルページ保存</strong>: 偽サイトを記録する場合は通常範囲ですが、長い警告ログをキャプチャしたい場合、設定で「フルページ」をオンにしておく必要があります。</li>
+</ul>
+<h3>【よくあるトラブルと解決法】3 選</h3>
+<ol>
+<li><strong>「サイト情報」ボタンが灰色になっている場合</strong><ul>
+<li><em>原因</em>: iOS のバージョンアップに伴い、セキュリティ強化により詳細表示機能が制限されたことがあります。</li>
+<li><em>対策</em>: App Store で Safari を最新バージョンに更新してください。それでも不可なら、iPhone 標準の「メモ」アプリで手動入力するか、Mac と AirDrop で共有して確認する方法を推奨します。</li>
+</ul>
+</li>
+<li><strong>スクリーンショットが保存されない場合</strong><ul>
+<li><em>原因</em>: 「設定」→「コントロールセンター」などでショートカットキーが無効化されているか、画面録画モードと混同している可能性があります。</li>
+<li><em>対策</em>: 再度 <code>サイドボタン</code> + <code>音量アップ</code> を押し、画面がフラッシュしたら即座にタップして保存する手順を再確認してください。</li>
+</ul>
+</li>
+<li><strong>警告メッセージが消えてしまう場合</strong><ul>
+<li><em>原因</em>: サイトの自動リロード機能により、ページ遷移中に警告が表示されなくなることがあります。</li>
+<li><em>対策</em>: 一度「戻る」ボタンで前の画面に戻り、「共有」→「写真に保存」して画像として固定してください。</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h2>4. Android での実例手順</h2>
+<p>AndroidではChromeブラウザが標準となりますが、技術的な検証は簡略化されています。</p>
+<h3>【実例手順】公式機能を用いた確認・記録方法</h3>
+<ul>
+<li><strong>SSL/HTTPS の視覚的チェック</strong>: アドレスバーの鍵アイコン（🔒）をクリックし、「安全」または「警告」を表示するか確認します。<ul>
+<li><em>注意</em>: Android 版 Chrome では、証明書エラーが出た場合の詳細表示は限定的なことがあります。「詳細情報」ボタンから CA を見られることがありますが、すべての情報を開くのは難しい場合があります。</li>
+</ul>
+</li>
+<li><strong>スクリーンショットによる証拠保全</strong>:<ul>
+<li>Pixel / Galaxy など多くの機種: <code>サイドボタン</code> + <code>音量ダウン</code> を同時に押し、画面の領域を選択して保存します。</li>
+<li><em>注記</em>: 機種によりショートカットが異なる場合があるため、「設定」→「システム」→「スクリーンショットと動画撮影」で確認を推奨します。</li>
+</ul>
+</li>
+</ul>
+<h3>【標準機能の制限事項】</h3>
+<ul>
+<li><strong>証明書詳細のカスタマイズ不可</strong>: Android の Chrome は、証明書の発行元や有効期限を詳しく表示する UI が非常に簡略化されており、技術的な検証は困難な場合があります（ブラウザ拡張機能が使えないため）。</li>
+<li><strong>スクリーンショットの保存場所固定不可</strong>: 機種によっては「ギャラリー」アプリではなく、「Google フォト」に自動アップロードされる設定になっていることがあります。</li>
+</ul>
+<h3>【よくあるトラブルと解決法】3 選</h3>
+<ol>
+<li><strong>「詳細情報」ボタンが反応しない場合</strong><ul>
+<li><em>原因</em>: ブラウザキャッシュの破損や、OS のセキュリティアップデート未適用による不具合。</li>
+<li><em>対策</em>: Chrome メニュー→「設定」→「プライバシーと安全性」→「閲覧履歴データの削除」からキャッシュをクリアしてください。</li>
+</ul>
+</li>
+<li><strong>スクリーンショットが保存されない場合</strong><ul>
+<li><em>原因</em>: ストレージ容量の不足、または特定のアプリ（銀行系など）によるキャプチャ禁止設定。</li>
+<li><em>対策</em>: デバイスの空き容量を確認するか、Google 公式の「Google Lens」等を利用して画面上の情報を解析する代替手段を検討してください。</li>
+</ul>
+</li>
+<li><strong>URLが正しく表示されない場合</strong><ul>
+<li><em>原因</em>: 短縮URLサービスを経由している、またはブラウザの表示モード（デスクトップ表示など）の影響。</li>
+<li><em>対策</em>: ブラウザの設定から「モバイルサイト」を表示するように変更し、元のドメインを確認してください。</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h2>まとめ：快適なマルチOS環境を作るポイント</h2>
+<p>ネット通販における偽サイト対策は、「疑わしいと思ったらすぐに確認する」という習慣と、各デバイスの標準機能を使いこなす知識の組み合わせで解決します。</p>
+<p>安全なネットショッピングをより快適にするためには、以下の周辺機器やツールの導入も検討してみるのがおすすめです。</p>
+<ul>
+<li><strong>VPNサービス</strong>: 公共Wi-Fiなどでの通信を暗号化し、中間者攻撃による情報奪取を防ぎます。</li>
+<li><strong>トラックボールマウス</strong>: WindowsやmacOSで精密な操作を行う際、手首の負担を軽減しながら快適にブラウジングが可能です。</li>
+<li><strong>ブルーライトカット眼鏡</strong>: 長時間の調査やリサーチ作業において、目の疲れを抑えながら集中力を維持するのに役立ちます。</li>
+</ul>
+<p>正しい知識と適切なツールを組み合わせることで、安全でストレスのないネットショッピング環境を構築しましょう。</p>
+<hr />
+<h2>参考文献・公式ドキュメント（一次情報ソース）</h2>
+<p>本記事の手順・仕様は以下の各OSおよびツールの公式ドキュメントに基づいています。OSアップデートによりメニュー名称や挙動が変わる場合があるため、最新仕様の確認にもご活用ください。</p>
+<ul>
+<li><strong>[Windows]</strong> <a href="https://support.microsoft.com/ja-jp/windows/snipping-tool-%E3%82%92%E4%BD%BF%E3%81%A3%E3%81%A6%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88%E3%82%92%E3%82%AD%E3%83%A3%E3%83%97%E3%83%81%E3%83%A3%E3%81%99%E3%82%8B-00246869-1843-655f-f220-97299b865f6b">Snipping Tool を使ってスクリーンショットをキャプチャする・画面録画する - Microsoft サポート</a></li>
+<li><strong>[macOS]</strong> <a href="https://support.apple.com/ja-jp/102646">Macでスクリーンショットを撮る - Apple サポート (日本)</a></li>
+<li><strong>[macOS]</strong> <a href="https://support.apple.com/ja-jp/102618">Macで画面を収録する方法 - Apple サポート (日本)</a></li>
+<li><strong>[iOS]</strong> <a href="https://support.apple.com/ja-jp/guide/iphone/iphc872c0115/ios">iPhoneでスクリーンショットを撮る（フルページ保存を含む） - Apple サポート (日本)</a></li>
+<li><strong>[iOS]</strong> <a href="https://support.apple.com/ja-jp/102653">iPhone、iPad、iPod touchで画面を録画する - Apple サポート (日本)</a></li>
+<li><strong>[Android]</strong> <a href="https://support.google.com/android/answer/9075928?hl=ja">Android デバイスで画面の画像（スクリーンショット）または動画を撮影する - Android ヘルプ</a></li>
+</ul>
+    </article>
+  </main>
+  <footer>Generated with Local Ollama (qwen3.5 / gemma4) &amp; Draw Things (FLUX.2 klein 4B)</footer>
+</body>
+</html>
