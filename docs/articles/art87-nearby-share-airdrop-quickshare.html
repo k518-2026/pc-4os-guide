@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ケーブル不要で高速転送！AirDrop・クイック共有・近距離共有の使い分け実例｜Windows・macOS・iOS・Android | PC 4OS実例ガイド</title>
+  <style>
+:root {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --muted: #475569;
+  --accent: #0284c7;
+  --accent-soft: #e0f2fe;
+  --border: #e2e8f0;
+  --code-bg: #0f172a;
+  --code-text: #e2e8f0;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Noto Sans JP", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+}
+header.site-header {
+  background: linear-gradient(135deg, #0f172a 0%, #0369a1 100%);
+  color: #fff;
+  padding: 2.2rem 1.25rem;
+}
+header.site-header .inner { max-width: 980px; margin: 0 auto; }
+header.site-header h1 { margin: 0 0 0.4rem; font-size: 1.75rem; }
+header.site-header p { margin: 0; opacity: 0.9; font-size: 0.96rem; }
+main { max-width: 980px; margin: 2rem auto; padding: 0 1.25rem 3rem; }
+.badge {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: var(--accent-soft);
+  color: #0369a1;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1.25rem;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08); }
+.card img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; display: block; background: #e2e8f0; }
+.card-body { padding: 1rem 1.1rem 1.2rem; flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+.card-title { font-size: 1.02rem; font-weight: 700; margin: 0; line-height: 1.45; }
+.card-meta { font-size: 0.82rem; color: var(--muted); margin-top: auto; }
+article.post {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 2rem;
+}
+article.post img.eyecatch {
+  width: 100%;
+  max-height: 460px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+}
+article.post h1 { font-size: 1.65rem; line-height: 1.35; margin-top: 0; }
+article.post h2 {
+  font-size: 1.3rem;
+  margin-top: 2.1rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 2px solid var(--accent-soft);
+}
+article.post h3 { font-size: 1.08rem; margin-top: 1.4rem; }
+article.post table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.2rem 0;
+  font-size: 0.92rem;
+  display: block;
+  overflow-x: auto;
+}
+article.post th, article.post td {
+  border: 1px solid var(--border);
+  padding: 0.6rem 0.8rem;
+  text-align: left;
+}
+article.post th { background: #f1f5f9; font-weight: 700; }
+article.post pre {
+  background: var(--code-bg);
+  color: var(--code-text);
+  padding: 1rem 1.15rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+article.post code {
+  background: #f1f5f9;
+  padding: 0.15rem 0.38rem;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+article.post pre code { background: transparent; padding: 0; color: inherit; }
+article.post blockquote {
+  margin: 1.2rem 0;
+  padding: 0.8rem 1.1rem;
+  border-left: 4px solid var(--accent);
+  background: #f0f9ff;
+  border-radius: 0 8px 8px 0;
+}
+.back-link { display: inline-block; margin-bottom: 1rem; color: var(--accent); text-decoration: none; font-weight: 600; }
+.filter-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.15rem 1.25rem;
+  margin-bottom: 1.5rem;
+}
+.filter-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) auto;
+  gap: 0.9rem;
+  align-items: end;
+}
+.filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.filter-field label {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.filter-field input[type="search"],
+.filter-field select {
+  font: inherit;
+  font-size: max(1rem, 1em);
+  min-height: 48px;
+  padding: 0.55rem 0.85rem;
+  border: 1.5px solid #767676;
+  border-radius: 8px;
+  background: #fff;
+  color: var(--text);
+  width: 100%;
+}
+.filter-field input[type="search"]:focus-visible,
+.filter-field select:focus-visible,
+.filter-actions button:focus-visible {
+  outline: 3px solid #0284c7;
+  outline-offset: 2px;
+}
+.filter-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+.filter-actions button {
+  font: inherit;
+  font-size: max(1rem, 0.95em);
+  font-weight: 600;
+  min-height: 48px;
+  padding: 0 1.05rem;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+}
+.btn-primary {
+  background: #0369a1;
+  color: #fff;
+}
+.btn-primary:hover { background: #075985; }
+.btn-secondary {
+  background: #f1f5f9;
+  color: var(--text);
+  border-color: #94a3b8;
+}
+.btn-secondary:hover { background: #e2e8f0; }
+.results-status {
+  color: var(--muted);
+  font-size: 0.92rem;
+  margin: 0 0 1.1rem;
+}
+.empty-state {
+  background: var(--surface);
+  border: 1px dashed #94a3b8;
+  border-radius: 12px;
+  padding: 2rem 1.25rem;
+  text-align: center;
+  color: var(--muted);
+}
+.card[hidden],
+.empty-state[hidden] { display: none; }
+footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2rem 1rem; }
+@media (max-width: 720px) {
+  .filter-form { grid-template-columns: 1fr; }
+  .filter-actions { width: 100%; }
+  .filter-actions button { flex: 1; }
+}
+@media (max-width: 640px) {
+  article.post { padding: 1.2rem; }
+}
+</style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="inner">
+      <h1>PC 4OS実例ガイド</h1>
+      <p>Windows・macOS・iOS・Android の実践比較＆トラブル解決アーカイブ</p>
+    </div>
+  </header>
+  <main>
+    <a class="back-link" href="../index.html">← 記事一覧へ戻る</a>
+    <article class="post">
+      <p><span class="badge">#87｜分類02: コミュニケーション・情報共有</span> <small style="color:#64748b;margin-left:0.5rem;">2026-11-26</small></p>
+      <img class="eyecatch" src="../images/2026-11-26_art87_nearby_share_airdrop_quickshare.png" alt="ケーブル不要で高速転送！AirDrop・クイック共有・近距離共有の使い分け実例｜Windows・macOS・iOS・Android">
+      <h1>ケーブル不要で高速転送！AirDrop・クイック共有・近距離共有の使い分け実例｜Windows・macOS・iOS・Android</h1>
+<p>「スマホで撮った高画質な写真をPCに移したいけれど、ケーブルを繋ぐのが面倒」「大容量の動画を別のデバイスに送りたいけど、LINEやメールだと画質が落ちてしまう……」</p>
+<p>そんな悩みをお持ちではありませんか？ 近年、主要なOS（Windows, macOS, iOS, Android）には、BluetoothとWi-Fiを活用して「ケーブルなし・画質劣化なし」でファイルを転送する標準機能が備わっています。</p>
+<p>しかし、いざ使おうとすると<strong>「AirDropはなぜAndroidに届かないの？」「Windowsのクイック共有って何？」</strong>といった、OSごとの仕様の違いに戸惑うことも少なくありません。</p>
+<p>この記事では、4つの主要OSにおける近距離転送機能の違いを徹底比較し、それぞれの正しい操作手順と、混同しやすい注意点を初心者の方にも分かりやすく解説します。</p>
+<h2>4OS比較早見表</h2>
+<p>まずは、各OSで提供されている標準的な「近距離転送機能」の対応状況を整理しましょう。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">OS</th>
+<th style="text-align: left;">標準機能名</th>
+<th style="text-align: left;">対応範囲</th>
+<th style="text-align: left;">特徴・備考</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>macOS</strong></td>
+<td style="text-align: left;">AirDrop</td>
+<td style="text-align: left;">Apple製品のみ</td>
+<td style="text-align: left;">最も安定しており、高速かつ安全な暗号化転送が可能。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>iOS</strong></td>
+<td style="text-align: left;">AirDrop</td>
+<td style="text-align: left;">Apple製品のみ</td>
+<td style="text-align: left;">iPhone/iPad間で直感的に操作可能。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Windows 11</strong></td>
+<td style="text-align: left;">近距離共有 (Nearby Share)</td>
+<td style="text-align: left;">Windows同士 / Android</td>
+<td style="text-align: left;">BluetoothとWi-Fi Directを使用。※「クイック共有」はアプリ版あり。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Android</strong></td>
+<td style="text-align: left;">Nearby Share / Quick Share</td>
+<td style="text-align: left;">Android同士 / Windows</td>
+<td style="text-align: left;">Google標準機能。Samsung端末では「Quick Share」と表記されることも。</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>1. Windows 11 での実例手順</h2>
+<p>Windows 11では、システムに統合された「近距離共有（Nearby Share）」を使用します。</p>
+<p><strong>【注意点】</strong><br />
+よく混同される「クイック共有（Quick Share）」という名称がありますが、これはMicrosoft StoreからインストールするアプリやSamsung独自の呼称であり、<strong>Windowsの標準設定メニュー内にあるのは「近距離共有」です。</strong></p>
+<h3>設定方法</h3>
+<ol>
+<li>「設定」アプリを開く。</li>
+<li>左メニューの「システム」を選択し、「Bluetooth とデバイス接続」をクリック。</li>
+<li>「近距離共有」の項目を探し、スイッチを「オン」にする。</li>
+<li>検出範囲（「近くにあるすべてのデバイス」または「このデバイスとのペアリング済みのデバイスのみ」）を選択する。<br />
+   ※セキュリティのため、Windows Helloでのログイン設定が推奨されます。</li>
+</ol>
+<h3>転送手順</h3>
+<ol>
+<li>送信したいファイルを選択し、右クリック（またはコンテキストメニュー）を開く。</li>
+<li>「共有」アイコン（または「送信する」）をクリック。</li>
+<li>表示されたデバイス一覧から、転送先のPCやAndroid端末を選択して送信。</li>
+</ol>
+<hr />
+<h2>2. macOS での実例手順</h2>
+<p>Appleエコシステムにおいて最強の利便性を誇るのが「AirDrop」です。Wi-FiとBluetoothを同時に使用し、中間サーバーを介さないため非常に高速で安全です。</p>
+<h3>設定方法</h3>
+<ol>
+<li><strong>macOSの場合</strong>: 「システム設定」＞「一般」＞「AirDropとHandoff」を開き、AirDropをオンにする（「連絡先のみ」または「すべてのデバイス」を選択）。</li>
+<li><strong>iOSの場合</strong>: 「設定」＞「一般」＞「AirDrop」から設定を確認。</li>
+<li><strong>共通</strong>: 両方のデバイスでBluetoothとWi-FiがONになっていることを確認してください。</li>
+</ol>
+<h3>転送手順</h3>
+<ol>
+<li>送信したいファイルを選択し、共有ボタンをクリック。</li>
+<li>「AirDrop」を選択。</li>
+<li>近接している相手のデバイスアイコンが表示されるので、タップして送信。</li>
+</ol>
+<hr />
+<h2>3. iOS（iPhone / iPad）での実例手順</h2>
+<p>iOSでの操作は非常に直感的です。特に写真や動画の転送において、画質を維持したまま瞬時に送れるのが強みです。</p>
+<h3>設定方法</h3>
+<ol>
+<li>「コントロールセンター」を開き、AirDropアイコンがオンになっているか確認。</li>
+<li>相手のデバイスとの距離を近づけ、受信側の設定が「すべてのデバイス」または「連絡先のみ」になっていることを確認。</li>
+</ol>
+<h3>転送手順</h3>
+<ol>
+<li>写真アプリやファイルアプリで対象を選択。</li>
+<li>「共有ボタン（上矢印のアイコン）」をタップ。</li>
+<li>「AirDrop」をタップし、送信先のデバイスを選択。</li>
+</ol>
+<hr />
+<h2>4. Android での実例手順</h2>
+<p>AndroidではGoogleの「Nearby Share」が標準です。近年のアップデートにより、Samsung端末等との互換性を高めた「Quick Share」へ統合が進んでいますが、基本はGoogleのサービスとして動作します。</p>
+<h3>設定方法</h3>
+<ol>
+<li>「設定」＞「Google」＞「デバイスと共有」＞「クイック共有（またはNearby Share）」をオンにする。</li>
+<li><strong>注意</strong>: 機種によっては「ファイル」アプリ内から操作する必要があります。</li>
+<li>Bluetooth、Wi-Fi、および位置情報サービスがONになっていることを確認してください。</li>
+</ol>
+<h3>転送手順</h3>
+<ol>
+<li>「ファイル」アプリやギャラリーアプリでファイルを選択。</li>
+<li>「共有」ボタンをタップし、「クイック共有（またはNearby Share）」を選択。</li>
+<li>周囲のデバイスから送信先を探して選択。</li>
+</ol>
+<hr />
+<h2>Windows ↔ iOS / macOS の壁：代替手段について</h2>
+<p>ここで重要な注意点があります。<strong>「AirDrop」はWindowsやAndroidには標準機能として対応していません。</strong> また、Windowsの「近距離共有」もiOS/macOSとは直接通信できません。</p>
+<p>異種OS間でケーブルなし転送を行う場合は、以下の方法が最も確実です。</p>
+<ol>
+<li><strong>クラウドストレージを活用する（推奨）</strong></li>
+<li>OneDrive, Google Drive, iCloud Driveなどにアップロードし、リンクを共有または別端末で開く。これが最も画質劣化がなく、確実な方法です。</li>
+<li><strong>サードパーティ製アプリの利用</strong></li>
+<li>厳密には標準機能ではありませんが、特定のツールを導入することで相互転送が可能になる場合があります（セキュリティリスクに注意）。</li>
+</ol>
+<hr />
+<h2>よくあるトラブルと解決チェックリスト</h2>
+<p>操作中に「デバイスが見つからない」「転送が始まらない」といった問題が発生した際のチェックリストです。</p>
+<ul>
+<li>
+<p><strong>トラブル①：AirDropが表示されない・接続できない場合</strong></p>
+<ul>
+<li><strong>原因</strong>: Bluetooth/Wi-Fiの片方がオフ、または位置情報サービスの設定漏れ。</li>
+<li><strong>解決策</strong>: コントロールセンターで両方の通信をONにする。「設定」＞「プライバシーとセキュリティ」＞「位置情報サービス」でAirDrop関連が有効か確認してください。</li>
+</ul>
+</li>
+<li>
+<p><strong>トラブル②：Windowsの近距離共有が反応しない場合</strong></p>
+<ul>
+<li><strong>原因</strong>: Windows Helloログインが無効、またはネットワークプロファイルが「パブリック」になっている。</li>
+<li><strong>解決策</strong>: 「設定」＞「アカウント」＞「サインインオプション」でパスワード/PINログインを確認。「ネットワークとインターネット」の設定を「プライベート」に変更して試してください。</li>
+</ul>
+</li>
+<li>
+<p><strong>トラブル③：AndroidのNearby Shareが検索できない場合</strong></p>
+<ul>
+<li><strong>原因</strong>: データ節約モードがオン、または「すべてのユーザーを検出する」設定になっていない。</li>
+<li><strong>解決策</strong>: 「ファイル」アプリ等の共有メニューから、検出範囲を「すべてのユーザー」に広げてみてください。</li>
+</ul>
+</li>
+<li>
+<p><strong>トラブル④：ファイル転送中に接続が切断される場合</strong></p>
+<ul>
+<li><strong>原因</strong>: 物理的な距離、またはWi-Fi電波の干渉。</li>
+<li><strong>解決策</strong>: 両端末を1メートル以内に近づけてください。また、一度キャンセルし、両方のデバイスで機能を再起動（OFF→ON）するのが最も手っ取り早い解決策です。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2>まとめ：快適なマルチOS環境を作るポイント</h2>
+<p>今回の比較で分かった通り、各OSには優れた近距離転送機能がありますが、<strong>「同じメーカーの製品同士なら標準機能」「異なるメーカー間ならクラウドストレージ」</strong>という使い分けが最もスムーズな体験を生みます。</p>
+<p>より快適なクリエイティブ環境やビジネス環境を構築するためには、これらの転送手段と合わせて、以下の周辺機器・ツールを組み合わせるのがおすすめです。</p>
+<ul>
+<li><strong>高画質維持のためのクラウド</strong>: OneDriveやGoogle Driveを導入し、異種OS間でのバックアップと共有を自動化する。</li>
+<li><strong>快適な会議・制作環境</strong>: 転送した素材をスムーズに扱うために、<strong>高音質マイク</strong>や<strong>Webカメラ</strong>、<strong>ヘッドセット</strong>を揃えることで、デバイス間の連携だけでなく「アウトプットの質」も向上します。</li>
+</ul>
+<p>自分の手元にあるデバイスの特性を正しく理解し、最適なツールを組み合わせることで、ストレスフリーな情報共有環境を実現しましょう。</p>
+<hr />
+<h2>参考文献・公式ドキュメント（一次情報ソース）</h2>
+<p>本記事の手順・仕様は以下の各OSおよびツールの公式ドキュメントに基づいています。OSアップデートによりメニュー名称や挙動が変わる場合があるため、最新仕様の確認にもご活用ください。</p>
+<ul>
+<li><strong>[Windows]</strong> <a href="https://support.microsoft.com/ja-jp/office/onedrive-%E3%81%AB%E4%BF%9D%E5%AD%98%E3%81%95%E3%82%8C%E3%81%A6%E3%81%84%E3%82%8B%E4%BB%A5%E5%89%8D%E3%81%AE%E3%83%90%E3%83%BC%E3%82%B8%E3%83%A7%E3%83%B3%E3%81%AE%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%92%E5%BE%A9%E5%85%83%E3%81%99%E3%82%8B-159cad6d-d76e-4981-88ef-de6e96c93893">OneDrive に保存されている以前のバージョンのファイルを復元する - Microsoft サポート</a></li>
+<li><strong>[Windows]</strong> <a href="https://support.microsoft.com/ja-jp/office/onedrive-%E3%81%AE%E5%90%8C%E6%9C%9F%E3%81%AE%E5%95%8F%E9%A1%8C%E3%82%92%E8%A7%A3%E6%B1%BA%E3%81%99%E3%82%8B-0899b115-05f7-45ec-95b2-e4cc8c4670b2">OneDrive の同期の問題を解決する - Microsoft サポート</a></li>
+<li><strong>[macOS / 共通]</strong> <a href="https://support.google.com/drive/answer/10838124?hl=ja">パソコン版 Google ドライブを使用する - Google ドライブ ヘルプ</a></li>
+<li><strong>[iOS]</strong> <a href="https://support.apple.com/ja-jp/guide/iphone/iphc61044c11/ios">iPhoneの「ファイル」でファイルやフォルダを変更する - Apple サポート (日本)</a></li>
+<li><strong>[Android]</strong> <a href="https://support.google.com/drive/answer/2424368?hl=ja">Google ドライブにファイルやフォルダをアップロードする - Google ドライブ ヘルプ</a></li>
+<li><strong>[Android / 共通]</strong> <a href="https://support.google.com/drive/answer/2409045?hl=ja">操作履歴とファイル バージョンを確認する - Google ドライブ ヘルプ</a></li>
+</ul>
+    </article>
+  </main>
+  <footer>Generated with Local Ollama (qwen3.5 / gemma4) &amp; Draw Things (FLUX.2 klein 4B)</footer>
+</body>
+</html>
