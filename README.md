@@ -29,10 +29,11 @@ python -m src.main -n 1 --push
 python -m src.main -n 1 --category 11
 ```
 
-## 書き溜め済み記事一覧（全 85 本 / 最終更新: 2026-11-26 14:34 JST）
+## 書き溜め済み記事一覧（全 86 本 / 最終更新: 2026-11-26 14:38 JST）
 
 | No. | 17分類カテゴリ | 記事タイトル（Markdown） | 挿絵 | 生成日 |
 | :---: | :--- | :--- | :---: | :---: |
+| #86 | 分類01: 文書作成・オフィス業務・事務作業 | [PDF申込書・同意書に印刷なしでサイン＆文字入力（マークアップ）する実例｜Windows・macOS・iOS・Android](content/2026-11-26_art86_pdf_handwritten_signature_markup.md) | あり | 2026-11-26 |
 | #85 | 分類17: 生活・行政手続き・家計・資産管理 | [知らない間の月額課金を点検！サブスク一覧確認と安全な解約手順の実例｜Windows・macOS・iOS・Android](content/2026-11-26_art85_subscription_audit_cancel_guide.md) | あり | 2026-11-26 |
 | #84 | 分類16: 学習・教育・自己啓発 | [SNS・動画の見過ぎを防ぐ！スクリーンタイム＆アプリ時間制限の設定実例｜Windows・macOS・iOS・Android](content/2026-11-26_art84_screen_time_app_limit_focus.md) | あり | 2026-11-26 |
 | #83 | 分類15: エンターテインメント・趣味 | [ポッドキャスト＆オーディオブックの倍速再生・スリープタイマー活用実例｜Windows・macOS・iOS・Android](content/2026-11-26_art83_podcast_audiobook_sleep_timer.md) | あり | 2026-11-26 |
