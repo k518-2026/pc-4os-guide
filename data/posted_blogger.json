@@ -26,5 +26,12 @@
     "title": "画像の一括リサイズ＆HEIC/WebP変換の実例ガイド｜Windows・macOS・iOS・Android",
     "md_path": "content/2026-11-23_art04_batch_image_resize_webp.md",
     "posted_at": "2026-11-25T23:54:03.046332+09:00"
+  },
+  {
+    "article_id": "art05-video-compression-mp4",
+    "article_num": 5,
+    "title": "動画の圧縮・トリミング・MP4共有の実例と再生エラー対処｜Windows・macOS・iOS・Android",
+    "md_path": "content/2026-11-23_art05_video_compression_mp4.md",
+    "posted_at": "2026-11-26T23:23:23.041349+09:00"
   }
 ]
