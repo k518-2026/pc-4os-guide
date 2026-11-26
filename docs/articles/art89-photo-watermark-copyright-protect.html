@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ブログ・SNS写真に透かし（ウォーターマーク）を入れて無断転載を防ぐ実例｜Windows・macOS・iOS・Android | PC 4OS実例ガイド</title>
+  <style>
+:root {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --muted: #475569;
+  --accent: #0284c7;
+  --accent-soft: #e0f2fe;
+  --border: #e2e8f0;
+  --code-bg: #0f172a;
+  --code-text: #e2e8f0;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Noto Sans JP", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+}
+header.site-header {
+  background: linear-gradient(135deg, #0f172a 0%, #0369a1 100%);
+  color: #fff;
+  padding: 2.2rem 1.25rem;
+}
+header.site-header .inner { max-width: 980px; margin: 0 auto; }
+header.site-header h1 { margin: 0 0 0.4rem; font-size: 1.75rem; }
+header.site-header p { margin: 0; opacity: 0.9; font-size: 0.96rem; }
+main { max-width: 980px; margin: 2rem auto; padding: 0 1.25rem 3rem; }
+.badge {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: var(--accent-soft);
+  color: #0369a1;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1.25rem;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08); }
+.card img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; display: block; background: #e2e8f0; }
+.card-body { padding: 1rem 1.1rem 1.2rem; flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+.card-title { font-size: 1.02rem; font-weight: 700; margin: 0; line-height: 1.45; }
+.card-meta { font-size: 0.82rem; color: var(--muted); margin-top: auto; }
+article.post {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 2rem;
+}
+article.post img.eyecatch {
+  width: 100%;
+  max-height: 460px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+}
+article.post h1 { font-size: 1.65rem; line-height: 1.35; margin-top: 0; }
+article.post h2 {
+  font-size: 1.3rem;
+  margin-top: 2.1rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 2px solid var(--accent-soft);
+}
+article.post h3 { font-size: 1.08rem; margin-top: 1.4rem; }
+article.post table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.2rem 0;
+  font-size: 0.92rem;
+  display: block;
+  overflow-x: auto;
+}
+article.post th, article.post td {
+  border: 1px solid var(--border);
+  padding: 0.6rem 0.8rem;
+  text-align: left;
+}
+article.post th { background: #f1f5f9; font-weight: 700; }
+article.post pre {
+  background: var(--code-bg);
+  color: var(--code-text);
+  padding: 1rem 1.15rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+article.post code {
+  background: #f1f5f9;
+  padding: 0.15rem 0.38rem;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+article.post pre code { background: transparent; padding: 0; color: inherit; }
+article.post blockquote {
+  margin: 1.2rem 0;
+  padding: 0.8rem 1.1rem;
+  border-left: 4px solid var(--accent);
+  background: #f0f9ff;
+  border-radius: 0 8px 8px 0;
+}
+.back-link { display: inline-block; margin-bottom: 1rem; color: var(--accent); text-decoration: none; font-weight: 600; }
+.filter-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.15rem 1.25rem;
+  margin-bottom: 1.5rem;
+}
+.filter-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) auto;
+  gap: 0.9rem;
+  align-items: end;
+}
+.filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.filter-field label {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.filter-field input[type="search"],
+.filter-field select {
+  font: inherit;
+  font-size: max(1rem, 1em);
+  min-height: 48px;
+  padding: 0.55rem 0.85rem;
+  border: 1.5px solid #767676;
+  border-radius: 8px;
+  background: #fff;
+  color: var(--text);
+  width: 100%;
+}
+.filter-field input[type="search"]:focus-visible,
+.filter-field select:focus-visible,
+.filter-actions button:focus-visible {
+  outline: 3px solid #0284c7;
+  outline-offset: 2px;
+}
+.filter-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+.filter-actions button {
+  font: inherit;
+  font-size: max(1rem, 0.95em);
+  font-weight: 600;
+  min-height: 48px;
+  padding: 0 1.05rem;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+}
+.btn-primary {
+  background: #0369a1;
+  color: #fff;
+}
+.btn-primary:hover { background: #075985; }
+.btn-secondary {
+  background: #f1f5f9;
+  color: var(--text);
+  border-color: #94a3b8;
+}
+.btn-secondary:hover { background: #e2e8f0; }
+.results-status {
+  color: var(--muted);
+  font-size: 0.92rem;
+  margin: 0 0 1.1rem;
+}
+.empty-state {
+  background: var(--surface);
+  border: 1px dashed #94a3b8;
+  border-radius: 12px;
+  padding: 2rem 1.25rem;
+  text-align: center;
+  color: var(--muted);
+}
+.card[hidden],
+.empty-state[hidden] { display: none; }
+footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2rem 1rem; }
+@media (max-width: 720px) {
+  .filter-form { grid-template-columns: 1fr; }
+  .filter-actions { width: 100%; }
+  .filter-actions button { flex: 1; }
+}
+@media (max-width: 640px) {
+  article.post { padding: 1.2rem; }
+}
+</style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="inner">
+      <h1>PC 4OS実例ガイド</h1>
+      <p>Windows・macOS・iOS・Android の実践比較＆トラブル解決アーカイブ</p>
+    </div>
+  </header>
+  <main>
+    <a class="back-link" href="../index.html">← 記事一覧へ戻る</a>
+    <article class="post">
+      <p><span class="badge">#89｜分類04: 画像・イラスト・デザイン制作</span> <small style="color:#64748b;margin-left:0.5rem;">2026-11-26</small></p>
+      <img class="eyecatch" src="../images/2026-11-26_art89_photo_watermark_copyright_protect.png" alt="ブログ・SNS写真に透かし（ウォーターマーク）を入れて無断転載を防ぐ実例｜Windows・macOS・iOS・Android">
+      <h1>ブログ・SNS写真に透かし（ウォーターマーク）を入れて無断転載を防ぐ実例｜Windows・macOS・iOS・Android</h1>
+<p>せっかく撮影した素敵な写真や、時間をかけて制作したイラスト。ブログやSNSに投稿した際、意図しない「無断転載」や「勝手な二次利用」をされるのは非常に心苦しいものです。</p>
+<p>そこで重要になるのが<strong>「透かし（ウォーターマーク）」</strong>の挿入です。しかし、一枚ずつ編集ソフトを開いて文字を入れるのは非常に手間がかかります。</p>
+<p>この記事では、Windows、macOS、iOS、Androidの主要4OSにおいて、<strong>標準機能や公式ツールを最大限に活用して、効率的に透かしを入れるための実践的な手順</strong>を解説します。あわせて、Webサイトのパフォーマンスを落とさないための画像最適化についても触れていきます。</p>
+<h2>4OS比較早見表</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">OS</th>
+<th style="text-align: left;">推奨ツール・機能</th>
+<th style="text-align: left;">特徴</th>
+<th style="text-align: left;">向いている用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Windows 11</strong></td>
+<td style="text-align: left;">PowerToys (Image Resizer)</td>
+<td style="text-align: left;">大量の画像をバッチ処理するのに最適</td>
+<td style="text-align: left;">ブログ用画像の量産、一括リサイズ</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>macOS</strong></td>
+<td style="text-align: left;">Finder クイックアクション</td>
+<td style="text-align: left;">標準機能だけで素早くテキストを追加可能</td>
+<td style="text-align: left;">制作中の画像へのクイックな透かし入れ</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>iOS</strong></td>
+<td style="text-align: left;">写真アプリ / ショートカット</td>
+<td style="text-align: left;">モバイルで撮影後すぐに加工が可能</td>
+<td style="text-align: left;">SNS投稿用の即時編集</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Android</strong></td>
+<td style="text-align: left;">Google フォト / ギャラリー</td>
+<td style="text-align: left;">直感的なUIでテキストオーバーレイが可能</td>
+<td style="text-align: left;">外出先での簡易的な著作権保護</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>1. Windows 11 での実例手順</h2>
+<p>Windows環境では、Microsoft公式のシステムユーティリティである「PowerToys」を活用するのが最も効率的です。</p>
+<h3>手順：公式ユーティリティ「Image Resizer（パワーツイーズ）」による一括処理</h3>
+<ol>
+<li><strong>準備</strong>: Microsoft Storeから<strong>「PowerToys」</strong>をインストールし、設定で画像拡張子を選択します。</li>
+<li><strong>操作</strong>:<ul>
+<li>エクスプローラー上で、透かしを入れたい複数の画像を選択します。</li>
+<li>右クリックメニューから<strong>「Image Resizer（パワーツイーズ）」</strong>＞<strong>「追加のオプションを表示」</strong>をクリック。</li>
+<li><strong>「テキスト」</strong>タブを開き、「文字列」に透かし名を入力し、フォントサイズ・色を調整します。</li>
+<li>「位置」で座標を設定後、「適用」ボタンを押す（またはショートカットキー <code>Alt+Shift+W</code> を押して即座に処理）。</li>
+</ul>
+</li>
+</ol>
+<h3>標準機能・公式アプリでの制限事項</h3>
+<ul>
+<li><strong>自由なレイアウト不可</strong>: 「Image Resizer」では文字を自由に配置するのではなく、「座標指定（絶対位置）」のみ対応。画像の中央や四隅以外への複雑なデザインは困難です。</li>
+<li><strong>高品質編集非対応</strong>: 背景ぼかし、グラデーション透かしなど高度なエフェクトは標準機能で不可。</li>
+</ul>
+<h3>よくあるトラブルと解決法</h3>
+<ol>
+<li><strong>「適用」ボタンが反応しない・エラーが出る</strong><ul>
+<li><strong>原因</strong>: PowerToysの設定が反映されていないか、画像形式（例：HEICなど）に対応していない場合がある。</li>
+<li><strong>解決</strong>: 「追加のオプションを表示」から対応する拡張子を確認し、PowerToysを再起動させる。非対応フォーマットの場合は「写真アプリ」で一旦変換してから処理を行う。</li>
+</ul>
+</li>
+<li><strong>文字が画像に重なる部分だけ白く表示される</strong><ul>
+<li><strong>原因</strong>: 背景色が画像と一致しているため、透過ではなく塗りつぶされることがある（設定による）。</li>
+<li><strong>解決</strong>: 「Image Resizer」の設定画面から「テキストの背景を透明にする」オプションを確認し、必要に応じてフォント色を変えて再適用。</li>
+</ul>
+</li>
+<li><strong>処理中にファイルがロックされる</strong><ul>
+<li><strong>原因</strong>: 画像を開いたまま操作するとロックがかかるため。</li>
+<li><strong>解決</strong>: エクスプローラーで画像を選択した状態で「Image Resizer」を起動する前に、一度すべての画像表示を終了（プレビュー等）させるか、別のフォルダにコピーしてから処理を行う。</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h2>2. macOS での実例手順</h2>
+<p>macOSはFinderの「クイックアクション」を活用することで、アプリを立ち上げることなく素早く透かしを入れることができます。</p>
+<h3>手順：標準機能だけで行う簡易透かし入れ・変換</h3>
+<ol>
+<li><strong>準備</strong>: macOS ビルド番号が比較的新しいバージョン（Ventura/Sonoma など）を使用していることを確認。</li>
+<li><strong>操作</strong>:<ul>
+<li>Finderで編集したい画像を選択する。</li>
+<li>メニューバーの<strong>「ファイル」</strong>＞<strong>「クイックアクション（または右クリックメニュー）」</strong>から<strong>「画像にテキストを追加」</strong>を選ぶ。</li>
+<li>ダイアログで文字列・フォントサイズ・色を指定し、「適用」をクリック。</li>
+</ul>
+</li>
+</ol>
+<h3>代替手段：プレビューアプリ</h3>
+<p>クイックアクションが使えない場合や、より高度な編集が必要な場合は、Apple推奨の標準アプリ<strong>「プレビュー（Preview）」</strong>を使用します。ただし、標準機能のみという制約下では、WebP形式への変換と透かし入れを同時に行うには、別途画像編集ソフト（GIMPやPhotopeaなど）を介するのが現実的です。</p>
+<h3>標準機能・公式アプリでの制限事項</h3>
+<ul>
+<li><strong>OS バージョン依存</strong>: 「画像にテキストを追加」のクイックアクションは、macOS Ventura (13.x) より前のバージョンや特定のビルドで動作しないことがある。</li>
+<li><strong>編集機能の貧弱さ</strong>: 透かし文字だけなら可能だが、ロゴ画像などの配置や背景ぼかしは標準では不可能。</li>
+</ul>
+<h3>よくあるトラブルと解決法</h3>
+<ol>
+<li><strong>「画像にテキストを追加」メニューがグレーアウトしている</strong><ul>
+<li><strong>原因</strong>: macOSのバージョンが古く、または「クイックアクション」機能が未実装のビルドである場合がある。</li>
+<li><strong>解決</strong>: OSを最新にアップデートするか、「プレビューアプリ」で開き、メニューバーから直接テキスト追加機能を探す。それでも不可の場合はWebブラウザ上の画像編集サイトへの誘導を提案。</li>
+</ul>
+</li>
+<li><strong>文字が入った後に画質が悪くなる</strong><ul>
+<li><strong>原因</strong>: 自動的なリサイズ処理が行われている場合がある（クイックアクションの設定による）。</li>
+<li><strong>解決</strong>: 「エクスポート」オプションで「元の解像度を使用する」を選択し、透かし追加のみを行う設定を確認。</li>
+</ul>
+</li>
+<li><strong>文字が画像の端から外れて表示される</strong><ul>
+<li><strong>原因</strong>: 座標指定ではなく、相対的な位置付けになっている場合がある。</li>
+<li><strong>解決</strong>: クイックアクションの設定画面で「テキストを画像の中央に配置」などのオプションを選択し直すか、「プレビュー」アプリ内で手動でレイヤー操作を行う。</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h2>3. iOS（iPhone / iPad）での実例手順</h2>
+<p>iPhoneやiPadでは、写真アプリの編集機能を活用するのが最もスムーズです。</p>
+<h3>手順：写真アプリによる直接加工</h3>
+<ol>
+<li><strong>準備</strong>: 「設定」＞「写真」から保存形式を確認。HEIC/HEVC形式を扱う際の挙動に注意が必要な場合があります。</li>
+<li><strong>操作</strong>:<ul>
+<li><strong>「写真」アプリ</strong>で画像を開き、<strong>「編集」</strong>をタップ。</li>
+<li>ツールバーから<strong>「テキストを追加」</strong>（※iOSバージョンによる）を選択。</li>
+<li>文字を入力し、位置や色を調整して完了。</li>
+</ul>
+</li>
+</ol>
+<h3>代替手段：ショートカットアプリ</h3>
+<p>標準の「写真」アプリにボタンがない場合や自動化したい場合は、<strong>「ショートカット」アプリ</strong>を使用します。<br />
+*   アクションを追加：「画像を選択」。次にアクションとして<strong>「テキストを画像に追加」</strong>を探す（最新iOSでは標準機能に含まれていることが多い）。</p>
+<h3>標準機能・公式アプリでの制限事項</h3>
+<ul>
+<li><strong>機種依存と OS バージョン</strong>: 「写真」アプリ内の「テキスト追加」ボタンは、すべてのデバイスで常に存在するわけではないため注意。</li>
+<li><strong>HEIF 形式の問題</strong>: Appleデバイスで撮影されたHEICファイルは、そのまま加工すると一部の機能が正しく動作しないことがある。「設定」＞「写真」から保存形式を「オリジナル」として確認すること。</li>
+</ul>
+<h3>よくあるトラブルと解決法</h3>
+<ol>
+<li><strong>「編集」画面に「テキストを追加」ボタンがない</strong><ul>
+<li><strong>原因</strong>: iOSバージョンが古く、または対応していない機種である場合がある。</li>
+<li><strong>解決</strong>: 「設定」＞「写真」から保存形式を「オリジナル」に変更し、一度PCやクラウドにアップロードしてJPG/PNGに変換してから再度読み込むか、「ショートカット」アプリを使ってWebツール経由での加工を行う。</li>
+</ul>
+</li>
+<li><strong>文字が入力してもプレビューが表示されない</strong><ul>
+<li><strong>原因</strong>: 画像がロックされている状態や、編集モードへの切り替えに失敗している場合がある。</li>
+<li><strong>解決</strong>: 「共有」＞「コピーして貼り付け」で一旦別の場所に保存し、再度開いてから編集を試みる。</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h2>4. Android での実例手順</h2>
+<p>AndroidではGoogle公式の「Google フォト」アプリを活用するのが最も汎用性が高い方法です。</p>
+<h3>手順：Google フォトによるテキストオーバーレイ</h3>
+<ol>
+<li><strong>操作</strong>:<ul>
+<li><strong>「Google フォト」アプリ</strong>を開き、加工したい画像を選択。</li>
+<li>下部の<strong>「編集」</strong>をタップ。</li>
+<li><strong>「ツール」</strong>または<strong>「マークアップ」</strong>（機種により名称が異なる）を選択し、テキストを追加する。</li>
+</ul>
+</li>
+<li><strong>保存</strong>: 編集完了後、コピーを保存してSNSやブログにアップロードします。</li>
+</ol>
+<h3>標準機能・公式アプリでの制限事項</h3>
+<ul>
+<li><strong>メーカーによるUIの差異</strong>: Samsung、Pixel、Xperiaなど各メーカーの標準ギャラリーアプリによって「マークアップ」機能の有無や操作感が大きく異なります。</li>
+<li><strong>一括処理の制約</strong>: 基本的に1枚ずつの編集となるため、大量の画像にはPCでのバッチ処理を推奨します。</li>
+</ul>
+<h3>よくあるトラブルと解決法</h3>
+<ol>
+<li><strong>テキストのフォントが変更できない</strong><ul>
+<li><strong>原因</strong>: 標準アプリでは提供されているフォントに制限があるため。</li>
+<li><strong>解決</strong>: 自由なフォントが必要な場合は、Google公式の「Snapseed」などの無料編集アプリを併用するのが標準的な回避策です。</li>
+</ul>
+</li>
+<li><strong>保存した画像のファイルサイズが大きすぎる</strong><ul>
+<li><strong>原因</strong>: Androidのデフォルト設定で高画質保存になっているため。</li>
+<li><strong>解決</strong>: 投稿前にGoogleフォトの「リサイズ」機能、またはWebP変換ツールを使用して容量を最適化する。</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h2>よくあるトラブルと解決チェックリスト</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">トラブル現象</th>
+<th style="text-align: left;">原因の可能性</th>
+<th style="text-align: left;">対処法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>透かしを入れるたびに画質が劣化する</strong></td>
+<td style="text-align: left;">自動リサイズ機能がオンになっている</td>
+<td style="text-align: left;">「元の解像度を維持」する設定に変更、または高解像度で書き出しを行う。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>バッチ処理中にエラーが出て止まる</strong></td>
+<td style="text-align: left;">ファイル形式（HEIC等）の非対応</td>
+<td style="text-align: left;">画像を一度JPG/PNGに変換してから再試行する。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>透かし文字が背景に埋もれて見えない</strong></td>
+<td style="text-align: left;">背景色とフォント色が近すぎる</td>
+<td style="text-align: left;">フォントの色を変えるか、テキストに薄いドロップシャドウを追加する。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Webサイトの読み込みが遅くなる</strong></td>
+<td style="text-align: left;">画像のファイルサイズが大きすぎる</td>
+<td style="text-align: left;">透かしを入れた後、WebP形式への変換や圧縮処理を必ず行う。</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>まとめ：快適なマルチOS環境を作るポイント</h2>
+<p>著作権を守るための「透かし入れ」は、単に文字を入れるだけでなく、<strong>「いかに手間を減らしつつ、Webサイトのパフォーマンスを維持するか」</strong>のバランスが重要です。</p>
+<p>今回紹介した各OSの標準機能や公式ツールを活用することで、特別な有料ソフトを使わなくても十分な防衛策を講じることができます。しかし、より高度なデザイン制作や、大量の画像をプロフェッショナルな品質で管理したい場合は、以下の周辺機器・ツールの導入を検討するのも一つの手です。</p>
+<ul>
+<li><strong>カラーマネジメントモニター</strong>: 正確な色再現で透かしの視認性を調整。</li>
+<li><strong>ペンタブレット</strong>: イラスト制作時に自然な筆致でロゴやサインを書き込む。</li>
+<li><strong>外付けSSD</strong>: 高解像度の素材を高速に転送・管理し、作業のボトルネックを解消。</li>
+<li><strong>画像編集ソフト（Adobe Lightroom/Photoshopなど）</strong>: 標準機能では不可能な「高度な透過処理」や「一括アクション」を実現。</li>
+</ul>
+<p>自分の制作スタイルに合わせて、最適なツールとOSの機能を使い分け、安全で快適なクリエイティブ環境を構築していきましょう。</p>
+<hr />
+<h2>参考文献・公式ドキュメント（一次情報ソース）</h2>
+<p>本記事の手順・仕様は以下の各OSおよびツールの公式ドキュメントに基づいています。OSアップデートによりメニュー名称や挙動が変わる場合があるため、最新仕様の確認にもご活用ください。</p>
+<ul>
+<li><strong>[Windows]</strong> <a href="https://learn.microsoft.com/ja-jp/windows/powertoys/image-resizer">Image Resizer Windowsのユーティリティ - PowerToys | Microsoft Learn</a></li>
+<li><strong>[macOS]</strong> <a href="https://support.apple.com/ja-jp/guide/preview/prvw2015/mac">Macの「プレビュー」で画像を切り取る/サイズ変更する/回転する - Apple サポート (日本)</a></li>
+<li><strong>[macOS]</strong> <a href="https://support.apple.com/ja-jp/guide/mac-help/mchl97ff9142/mac">MacのFinderでクイックアクションを実行する（イメージを変換） - Apple サポート (日本)</a></li>
+<li><strong>[iOS]</strong> <a href="https://support.apple.com/ja-jp/116944">Apple製のデバイスでHEIF／HEVCメディアを扱う - Apple サポート (日本)</a></li>
+<li><strong>[iOS]</strong> <a href="https://support.apple.com/ja-jp/guide/shortcuts/welcome/ios">ショートカット ユーザガイド - Apple サポート (日本)</a></li>
+<li><strong>[Android]</strong> <a href="https://support.google.com/photos/answer/6128850?hl=ja">写真を編集する - Google フォト ヘルプ</a></li>
+<li><strong>[共通]</strong> <a href="https://developers.google.com/speed/webp/docs/cwebp">cwebp | WebP Official Documentation | Google for Developers</a></li>
+</ul>
+    </article>
+  </main>
+  <footer>Generated with Local Ollama (qwen3.5 / gemma4) &amp; Draw Things (FLUX.2 klein 4B)</footer>
+</body>
+</html>

@@ -29,10 +29,11 @@ python -m src.main -n 1 --push
 python -m src.main -n 1 --category 11
 ```
 
-## 書き溜め済み記事一覧（全 88 本 / 最終更新: 2026-11-26 14:47 JST）
+## 書き溜め済み記事一覧（全 89 本 / 最終更新: 2026-11-26 14:52 JST）
 
 | No. | 17分類カテゴリ | 記事タイトル（Markdown） | 挿絵 | 生成日 |
 | :---: | :--- | :--- | :---: | :---: |
+| #89 | 分類04: 画像・イラスト・デザイン制作 | [ブログ・SNS写真に透かし（ウォーターマーク）を入れて無断転載を防ぐ実例｜Windows・macOS・iOS・Android](content/2026-11-26_art89_photo_watermark_copyright_protect.md) | あり | 2026-11-26 |
 | #88 | 分類03: 情報収集・リサーチ・Web利用 | [ネット通販の偽サイトを見抜く確認手順とブラウザ安全決済の設定実例｜Windows・macOS・iOS・Android](content/2026-11-26_art88_safe_online_shopping_browser_tips.md) | あり | 2026-11-26 |
 | #87 | 分類02: コミュニケーション・情報共有 | [ケーブル不要で高速転送！AirDrop・クイック共有・近距離共有の使い分け実例｜Windows・macOS・iOS・Android](content/2026-11-26_art87_nearby_share_airdrop_quickshare.md) | あり | 2026-11-26 |
 | #86 | 分類01: 文書作成・オフィス業務・事務作業 | [PDF申込書・同意書に印刷なしでサイン＆文字入力（マークアップ）する実例｜Windows・macOS・iOS・Android](content/2026-11-26_art86_pdf_handwritten_signature_markup.md) | あり | 2026-11-26 |
