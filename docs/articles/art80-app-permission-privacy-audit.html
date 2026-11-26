@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>位置情報・カメラ・写真のアプリ権限を一斉点検！プライバシー保護の実例｜Windows・macOS・iOS・Android | PC 4OS実例ガイド</title>
+  <style>
+:root {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --muted: #475569;
+  --accent: #0284c7;
+  --accent-soft: #e0f2fe;
+  --border: #e2e8f0;
+  --code-bg: #0f172a;
+  --code-text: #e2e8f0;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Noto Sans JP", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+}
+header.site-header {
+  background: linear-gradient(135deg, #0f172a 0%, #0369a1 100%);
+  color: #fff;
+  padding: 2.2rem 1.25rem;
+}
+header.site-header .inner { max-width: 980px; margin: 0 auto; }
+header.site-header h1 { margin: 0 0 0.4rem; font-size: 1.75rem; }
+header.site-header p { margin: 0; opacity: 0.9; font-size: 0.96rem; }
+main { max-width: 980px; margin: 2rem auto; padding: 0 1.25rem 3rem; }
+.badge {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: var(--accent-soft);
+  color: #0369a1;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1.25rem;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08); }
+.card img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; display: block; background: #e2e8f0; }
+.card-body { padding: 1rem 1.1rem 1.2rem; flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+.card-title { font-size: 1.02rem; font-weight: 700; margin: 0; line-height: 1.45; }
+.card-meta { font-size: 0.82rem; color: var(--muted); margin-top: auto; }
+article.post {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 2rem;
+}
+article.post img.eyecatch {
+  width: 100%;
+  max-height: 460px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+}
+article.post h1 { font-size: 1.65rem; line-height: 1.35; margin-top: 0; }
+article.post h2 {
+  font-size: 1.3rem;
+  margin-top: 2.1rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 2px solid var(--accent-soft);
+}
+article.post h3 { font-size: 1.08rem; margin-top: 1.4rem; }
+article.post table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.2rem 0;
+  font-size: 0.92rem;
+  display: block;
+  overflow-x: auto;
+}
+article.post th, article.post td {
+  border: 1px solid var(--border);
+  padding: 0.6rem 0.8rem;
+  text-align: left;
+}
+article.post th { background: #f1f5f9; font-weight: 700; }
+article.post pre {
+  background: var(--code-bg);
+  color: var(--code-text);
+  padding: 1rem 1.15rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+article.post code {
+  background: #f1f5f9;
+  padding: 0.15rem 0.38rem;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+article.post pre code { background: transparent; padding: 0; color: inherit; }
+article.post blockquote {
+  margin: 1.2rem 0;
+  padding: 0.8rem 1.1rem;
+  border-left: 4px solid var(--accent);
+  background: #f0f9ff;
+  border-radius: 0 8px 8px 0;
+}
+.back-link { display: inline-block; margin-bottom: 1rem; color: var(--accent); text-decoration: none; font-weight: 600; }
+.filter-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.15rem 1.25rem;
+  margin-bottom: 1.5rem;
+}
+.filter-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) auto;
+  gap: 0.9rem;
+  align-items: end;
+}
+.filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.filter-field label {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.filter-field input[type="search"],
+.filter-field select {
+  font: inherit;
+  font-size: max(1rem, 1em);
+  min-height: 48px;
+  padding: 0.55rem 0.85rem;
+  border: 1.5px solid #767676;
+  border-radius: 8px;
+  background: #fff;
+  color: var(--text);
+  width: 100%;
+}
+.filter-field input[type="search"]:focus-visible,
+.filter-field select:focus-visible,
+.filter-actions button:focus-visible {
+  outline: 3px solid #0284c7;
+  outline-offset: 2px;
+}
+.filter-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+.filter-actions button {
+  font: inherit;
+  font-size: max(1rem, 0.95em);
+  font-weight: 600;
+  min-height: 48px;
+  padding: 0 1.05rem;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+}
+.btn-primary {
+  background: #0369a1;
+  color: #fff;
+}
+.btn-primary:hover { background: #075985; }
+.btn-secondary {
+  background: #f1f5f9;
+  color: var(--text);
+  border-color: #94a3b8;
+}
+.btn-secondary:hover { background: #e2e8f0; }
+.results-status {
+  color: var(--muted);
+  font-size: 0.92rem;
+  margin: 0 0 1.1rem;
+}
+.empty-state {
+  background: var(--surface);
+  border: 1px dashed #94a3b8;
+  border-radius: 12px;
+  padding: 2rem 1.25rem;
+  text-align: center;
+  color: var(--muted);
+}
+.card[hidden],
+.empty-state[hidden] { display: none; }
+footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2rem 1rem; }
+@media (max-width: 720px) {
+  .filter-form { grid-template-columns: 1fr; }
+  .filter-actions { width: 100%; }
+  .filter-actions button { flex: 1; }
+}
+@media (max-width: 640px) {
+  article.post { padding: 1.2rem; }
+}
+</style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="inner">
+      <h1>PC 4OS実例ガイド</h1>
+      <p>Windows・macOS・iOS・Android の実践比較＆トラブル解決アーカイブ</p>
+    </div>
+  </header>
+  <main>
+    <a class="back-link" href="../index.html">← 記事一覧へ戻る</a>
+    <article class="post">
+      <p><span class="badge">#80｜分類12: セキュリティ・プライバシー対策</span> <small style="color:#64748b;margin-left:0.5rem;">2026-11-26</small></p>
+      <img class="eyecatch" src="../images/2026-11-26_art80_app_permission_privacy_audit.png" alt="位置情報・カメラ・写真のアプリ権限を一斉点検！プライバシー保護の実例｜Windows・macOS・iOS・Android">
+      <h1>位置情報・カメラ・写真のアプリ権限を一斉点検！プライバシー保護の実例｜Windows・macOS・iOS・Android</h1>
+<p>「自分のスマホやPCのカメラが勝手に起動していないか？」「位置情報が知らないうちにどこまで共有されているのか不安……」</p>
+<p>そんな悩みを感じたことはありませんか？ 近年、AI機能の高度化やクラウド同期の普及により、アプリは「必要な時だけ」動くのではなく、「常時監視中」に近い状態で動作することが増えています。便利さと引き換えに、私たちのプライバシーが意図せず削られているリスクは常に存在します。</p>
+<p>この記事では、主要な4つのOS（Windows, macOS, iOS, Android）において、<strong>位置情報・カメラ・マイク・写真へのアクセス権限を最小化するための具体的な点検手順</strong>を解説します。これらを設定するだけで、データ漏洩のリスクを大幅に下げ、より安全なデジタルライフを実現できます。</p>
+<hr />
+<h2>4OS比較早見表</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">OS</th>
+<th style="text-align: left;">管理の主な場所</th>
+<th style="text-align: left;">特徴的な管理スタイル</th>
+<th style="text-align: left;">写真へのアクセス制限</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Windows 11</strong></td>
+<td style="text-align: left;">設定 &gt; プライバシーとセキュリティ</td>
+<td style="text-align: left;">アプリごとのトグルスイッチで一括管理</td>
+<td style="text-align: left;">ファイルシステム（ACL）と連動</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>macOS</strong></td>
+<td style="text-align: left;">システム設定 &gt; プライバシーとセキュリティ</td>
+<td style="text-align: left;">サンドボックス化されたアプリの権限管理</td>
+<td style="text-align: left;">iCloud連携や個別アプリ単位での制御</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>iOS</strong></td>
+<td style="text-align: left;">設定 &gt; 各アプリの詳細ページ</td>
+<td style="text-align: left;">「使用時のみ」など詳細な選択が可能</td>
+<td style="text-align: left;">特定フォルダのみ許可などの細分化は制限あり</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Android</strong></td>
+<td style="text-align: left;">設定 &gt; アプリ &gt; 許可</td>
+<td style="text-align: left;">メーカーごとにUIが異なるが基本は共通</td>
+<td style="text-align: left;">ファイルマネージャー権限として管理される傾向</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>1. Windows 11 での実例手順</h2>
+<p>Windows 11では、OS全体の設定から各アプリへのアクセスをコントロールできます。</p>
+<h3>【実例手順】設定画面からの権限一括管理</h3>
+<ol>
+<li><strong>「設定」</strong>アプリを開き、左メニューの<strong>「プライバシーおよびセキュリティ」</strong>を選択します。</li>
+<li>下にスクロールし、以下の項目を順番に確認します：</li>
+<li><strong>位置情報</strong></li>
+<li><strong>カメラ</strong></li>
+<li><strong>マイク</strong></li>
+<li><strong>写真（ファイル）</strong></li>
+<li>各項目を開くと、「すべてのアプリ」のオン/オフスイッチと、個別のアプリリストが表示されます。</li>
+<li><strong>不要なアプリのトグルスイッチを「オフ」にします。</strong></li>
+</ol>
+<p><strong>※重要事項：</strong> <br />
+Windows HelloやMicrosoft Authenticatorなどの認証ツールは標準機能とは異なる仕組みで動作します。パスワード管理については、Edgeの内蔵マネージャーや信頼できるブラウザ拡張機能の利用を推奨します。</p>
+<h3>標準機能の制限事項</h3>
+<ul>
+<li><strong>古いexeファイル</strong>: 一部のサードパーティ製アプリ（特にレガシーなソフト）が設定画面に反映されない場合があります。その際は「デバイスマネージャ」でのドライバー更新が必要です。</li>
+<li><strong>写真へのアクセス</strong>: Windowsフォルダの権限管理と連動しているため、標準機能では「特定のフォルダだけを許可する」といった細かい制御は困難です。代替案としてOneDriveの同期設定を見直すか、NTFSパスワード保護ツールの検討が必要です。</li>
+</ul>
+<h3>よくあるトラブルと解決法</h3>
+<ol>
+<li><strong>「位置情報が取得できません」と表示される場合</strong></li>
+<li><strong>原因</strong>: GPSモジュールの無効化、またはWindowsの「位置情報サービス」自体が停止している。</li>
+<li><strong>対策</strong>: 「設定」&gt;「システム」&gt;「オプション」でGPSモードを有効にし、「コントロールパネル」から「位置情報とセキュリティ」サービスの起動状態を確認してください。</li>
+<li><strong>「カメラのアクセス許可が取得できません」とエラーになる場合</strong></li>
+<li><strong>原因</strong>: プライバシー設定でのブロック、またはドライバーの不具合。</li>
+<li><strong>対策</strong>: 「プライバシーおよびセキュリティ」&gt;「カメラ」でスイッチをオンにし、「デバイスマネージャ」からビデオデバイスを選択して「ドライバーの更新」を実行してください。</li>
+<li><strong>「写真アプリを開くと常に権限を求めるが、保存先が変わる」</strong></li>
+<li><strong>原因</strong>: Windowsフォルダのアクセス制御リスト（ACL）とOneDriveの同期設定が競合している。</li>
+<li><strong>対策</strong>: エクスプローラーで対象フォルダのプロパティ &gt; 「セキュリティ」タブを確認し、適切な読み取り/書き込み権限を割り当てるか、一時的にOneDrive同期を停止してテストしてください。</li>
+</ol>
+<hr />
+<h2>2. macOS での実例手順</h2>
+<p>Macでは「システム設定」からアプリごとに厳格なアクセス制限を設けることができます。</p>
+<h3>【実例手順】システム設定からのアプリ別権限管理</h3>
+<ol>
+<li><strong>「システム設定」</strong>を開き、<strong>「プライバシーとセキュリティ」</strong>タブを選択します。</li>
+<li>「位置情報」「カメラ」「マイク」「写真（ファイル）」の順に移動します。</li>
+<li>リストから不要なアプリをオフにするか、削除します。</li>
+</ol>
+<p><strong>※重要事項：</strong> <br />
+Apple Silicon (M1/M2/M3) チップ搭載Macではサンドボックス化されたプロセスも監視対象となりますが、標準機能で個別プロセスの権限解除は非対応です。必要に応じてターミナルコマンド <code>sudo tccutil reset</code> によるリセットを検討してください。</p>
+<h3>標準機能の制限事項</h3>
+<ul>
+<li><strong>写真へのアクセス</strong>: 「ファイルとフォルダ」ではなく、アプリごとの個別の権限管理で行う必要があります。特定のサブフォルダだけを許可する機能は標準では非対応のため、ショートカットスクリプトやサードパーティ製ツールの利用が必要です。</li>
+<li><strong>パスキー移行</strong>: Apple IDとiCloudの同期が必要であり、Windowsのようにローカルアカウントから直接設定変更することが制限される場合があります。</li>
+</ul>
+<h3>よくあるトラブルと解決法</h3>
+<ol>
+<li><strong>「位置情報が取得できません」と表示され続ける場合</strong></li>
+<li><strong>原因</strong>: システム拡張機能（System Extension）の許可不足またはGPSサービスの停止。</li>
+<li><strong>対策</strong>: 「システム設定」&gt;「プライバシーとセキュリティ」でオンにし、再起動が必要な場合はApple公式ガイドに従いネットワーク接続を確認してください。</li>
+<li><strong>「カメラが反応しない」というエラーが出る場合</strong></li>
+<li><strong>原因</strong>: セキュリティ拡張機能の許可不足またはUSB-Cケーブルの問題（外部モニター経由時）。</li>
+<li><strong>対策</strong>: 「プライバシーとセキュリティ」で「カメラ」をオンにし、再起動が必要な場合はネットワーク接続を確認してください。</li>
+<li><strong>「写真アプリが開かない」「権限がない」と表示される場合</strong></li>
+<li><strong>原因</strong>: アプリのサンドボックス化による制限またはiCloudフォトライブラリの設定不一致。</li>
+<li><strong>対策</strong>: 「システム設定」&gt;「プライバシーとセキュリティ」で個別の管理を確認し、「iCloud」&gt;「フォト」の設定を再確認してください（解決しない場合は <code>sudo tccutil reset All</code> を試行）。</li>
+</ol>
+<hr />
+<h2>3. iOS (iPhone / iPad) での実例手順</h2>
+<p>iOSはアプリごとに非常に細かく権限を選択できるため、最も直感的に管理が可能です。</p>
+<h3>【実例手順】設定アプリからの権限一括管理</h3>
+<ol>
+<li><strong>「設定」</strong>アプリを開き、画面上部の検索バーで各アプリ名を検索するか、下部にあるアプリ一覧から該当するアプリをタップします。</li>
+<li>「位置情報」「カメラ」「マイク」「写真」の項目を確認します。</li>
+<li>権限を<strong>「拒否」</strong>または<strong>「使用時のみ許可」</strong>に変更します（基本は「拒否」が推奨）。</li>
+</ol>
+<h3>標準機能の制限事項</h3>
+<ul>
+<li><strong>システムアプリ</strong>: マップや天気などの一部アプリは、完全に無効化すると地図機能が破綻するため、「使用時のみ許可」に留めるのが現実的な落とし所です。</li>
+<li><strong>写真へのアクセス</strong>: Appleのプライバシー保護により、特定のフォルダだけを許可するような細分化は標準では非対応です（iCloudフォトライブラリの同期設定変更で調整）。</li>
+</ul>
+<h3>よくあるトラブルと解決法</h3>
+<ol>
+<li><strong>「位置情報が取得できません」と表示される場合</strong></li>
+<li><strong>原因</strong>: GPSモジュールの無効化、またはモバイルデータ/Wi-Fiの接続問題。</li>
+<li><strong>対策</strong>: 「設定」&gt;「プライバシーとセキュリティ」で「位置情報」をオンにし、コントロールセンターからGPSモードを確認してください。</li>
+<li><strong>「カメラが反応しない」というエラーが出る場合</strong></li>
+<li><strong>原因</strong>: セキュリティ拡張機能の許可不足またはUSB-Cケーブルの問題。</li>
+<li><strong>対策</strong>: 「設定」&gt;「プライバシーとセキュリティ」で「カメラ」をオンにし、再起動が必要な場合はApple公式ガイドに従ってください。</li>
+<li><strong>「写真アプリが開かない」「権限がない」と表示される場合</strong></li>
+<li><strong>原因</strong>: アプリのサンドボックス化による制限またはiCloudフォトライブラリの設定不一致。</li>
+<li><strong>対策</strong>: 「設定」&gt;「プライバシーとセキュリティ」で個別の管理を確認し、「iCloud」&gt;「フォト」の設定を再確認してください（解決しない場合は <code>sudo tccutil reset All</code> を試行）。</li>
+</ol>
+<hr />
+<h2>4. Android (Pixel / Galaxy など) での実例手順</h2>
+<p>AndroidはメーカーごとにUIが異なりますが、基本となる権限管理の構造は共通しています。</p>
+<h3>【実例手順】設定アプリからの権限一括管理</h3>
+<ol>
+<li><strong>「設定」</strong>アプリを開き、<strong>「アプリ」</strong>（または「アプリと通知」）&gt;<strong>「すべてのアプリ」</strong>を選択します。</li>
+<li>対象のアプリをタップし、<strong>「許可」</strong>タブに移動します。</li>
+<li>「位置情報」「カメラ」「マイク」「写真（ファイル）」を確認し、不要な項目はオフにします。</li>
+<li><strong>注意</strong>: 位置情報は「常に許可」と「使用時のみ許可」の両方を確認してください。</li>
+</ol>
+<h3>標準機能の制限事項</h3>
+<ul>
+<li><strong>メーカーUIの差異</strong>: Galaxyは「アプリと通知」、Pixelは「アプリ」などメニュー構成が異なります。</li>
+<li><strong>写真へのアクセス</strong>: 「ファイルマネージャー」権限として扱われることが多く、細かなフォルダ単位での権限制限は標準では非対応です（代替案としてサードパーティ製ファイルマネージャーの利用を検討）。</li>
+<li><strong>パスキー移行</strong>: GoogleアカウントとAndroidデバイスの同期が必要であり、Windowsのようにローカルアカウントからの直接設定変更が制限される場合があります。</li>
+</ul>
+<h3>よくあるトラブルと解決法</h3>
+<ol>
+<li><strong>「位置情報が取得できません」と表示される場合</strong></li>
+<li><strong>原因</strong>: GPSモジュールの無効化、またはモバイルデータ/Wi-Fiの接続問題。</li>
+<li><strong>対策</strong>: 「設定」&gt;「プライバシーとセキュリティ」で「位置情報」をオンにし、コントロールセンターからGPSモードを確認してください。</li>
+<li><strong>「カメラが反応しない」というエラーが出る場合</strong></li>
+<li><strong>原因</strong>: セキュリティ拡張機能の許可不足またはUSB-Cケーブルの問題。</li>
+<li><strong>対策</strong>: 「設定」&gt;「プライバシーとセキュリティ」で「カメラ」をオンにし、再起動が必要な場合はApple公式ガイドに従ってください。</li>
+</ol>
+<hr />
+<h2>よくあるトラブルと解決法（共通チェックリスト）</h2>
+<p>権限設定を変更した際に陥りやすいエラーの主な原因と対処法です。</p>
+<ul>
+<li><strong>[ ] 設定変更後にアプリが動作しなくなった</strong></li>
+<li><strong>原因</strong>: 必要な権限まで「拒否」してしまっている可能性があります。</li>
+<li><strong>対策</strong>: アプリを一度開き、要求される権限（例：カメラなど）だけを個別に「許可」に切り替えてください。</li>
+<li><strong>[ ] 設定画面でアプリのスイッチがグレーアウトしている</strong></li>
+<li><strong>原因</strong>: システム保護や管理者権限による制限がかかっている可能性があります。</li>
+<li><strong>対策</strong>: 管理者アカウントでログインしているか確認し、必要に応じてデバイスの再起動を行ってください。</li>
+<li><strong>[ ] ネットワーク経由での位置情報取得に失敗する</strong></li>
+<li><strong>原因</strong>: Wi-Fiやモバイルデータ通信が不安定、または機内モードになっている。</li>
+<li><strong>対策</strong>: 通信環境を再確認し、GPS（位置情報サービス）がオンになっているか再度チェックしてください。</li>
+</ul>
+<hr />
+<h2>まとめ：快適なマルチOS環境を作るポイント</h2>
+<p>今回の点検で「不要なアプリに権限を与えない」という基本を押さえることができれば、プライバシー保護の第一歩は完了です。しかし、真のセキュリティを確保するためには、権限管理以外の対策も組み合わせることが重要です。</p>
+<p>より強固なマルチOS環境を構築するために、以下のツールの導入も検討してみてください：</p>
+<ul>
+<li><strong>パスワード管理ツール</strong>: 複雑なパスワードを個別に覚えるストレスを減らしつつ、安全に管理できます。</li>
+<li><strong>セキュリティキー（YubiKey等）</strong>: フィッシング詐欺を防ぐための物理的な二要素認証は、最も強力な防御の一つです。</li>
+<li><strong>VPN</strong>: 公共Wi-Fiなどでの通信内容の盗聴を防ぎ、プライバシーを保護します。</li>
+<li><strong>セキュリティソフト</strong>: OS標準の保護に加え、リアルタイムで脅威を検知するツールを導入することで、多層的な防御が可能になります。</li>
+</ul>
+<p>「便利さ」と「安全」のバランスを意識しながら、自分に合った最適な設定を見つけていきましょう。</p>
+<hr />
+<h2>参考文献・公式ドキュメント（一次情報ソース）</h2>
+<p>本記事の手順・仕様は以下の各OSおよびツールの公式ドキュメントに基づいています。OSアップデートによりメニュー名称や挙動が変わる場合があるため、最新仕様の確認にもご活用ください。</p>
+<ul>
+<li><strong>[Windows]</strong> <a href="https://support.microsoft.com/ja-jp/windows/windows-%E3%81%AE%E3%83%91%E3%82%B9%E3%82%AD%E3%83%BC-301c8944-5ea2-452b-9886-97e4d2ef4422">Windows のパスキー（Passkey）公式ガイド - Microsoft サポート</a></li>
+<li><strong>[macOS / iOS]</strong> <a href="https://support.apple.com/ja-jp/102195">パスキーのセキュリティについて - Apple サポート (日本)</a></li>
+<li><strong>[Android / 共通]</strong> <a href="https://support.google.com/accounts/answer/13548313?hl=ja">パスワードの代わりにパスキーでログインする - Google アカウント ヘルプ</a></li>
+<li><strong>[共通]</strong> <a href="https://support.google.com/accounts/answer/185839?hl=ja">2 段階認証プロセスを有効にする - Google アカウント ヘルプ</a></li>
+</ul>
+    </article>
+  </main>
+  <footer>Generated with Local Ollama (qwen3.5 / gemma4) &amp; Draw Things (FLUX.2 klein 4B)</footer>
+</body>
+</html>

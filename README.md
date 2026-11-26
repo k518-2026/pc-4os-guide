@@ -29,10 +29,11 @@ python -m src.main -n 1 --push
 python -m src.main -n 1 --category 11
 ```
 
-## 書き溜め済み記事一覧（全 79 本 / 最終更新: 2026-11-26 13:57 JST）
+## 書き溜め済み記事一覧（全 80 本 / 最終更新: 2026-11-26 14:02 JST）
 
 | No. | 17分類カテゴリ | 記事タイトル（Markdown） | 挿絵 | 生成日 |
 | :---: | :--- | :--- | :---: | :---: |
+| #80 | 分類12: セキュリティ・プライバシー対策 | [位置情報・カメラ・写真のアプリ権限を一斉点検！プライバシー保護の実例｜Windows・macOS・iOS・Android](content/2026-11-26_art80_app_permission_privacy_audit.md) | あり | 2026-11-26 |
 | #79 | 分類11: ネットワーク・サーバー・インフラ構築 | [自宅Wi-FiパスワードをQRコード＆ワンタップで安全に共有する実例｜Windows・macOS・iOS・Android](content/2026-11-26_art79_wifi_qr_password_share_guest.md) | あり | 2026-11-26 |
 | #78 | 分類10: システム管理・OS設定・メンテナンス | [目の疲れを軽減する「ダークモード＆夜間モード」自動切替設定の実例｜Windows・macOS・iOS・Android](content/2026-11-26_art78_dark_mode_eye_care_night_shift.md) | あり | 2026-11-26 |
 | #77 | 分類09: データ分析・科学計算・AI活用 | [アンケート・出欠確認を無料フォームで作成＆自動グラフ集計する実例｜Windows・macOS・iOS・Android](content/2026-11-26_art77_google_forms_survey_aggregate.md) | あり | 2026-11-26 |
