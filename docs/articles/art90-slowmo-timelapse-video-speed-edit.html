@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>スローモーション・倍速動画の速度調整と他端末で元に戻る時の対処実例｜Windows・macOS・iOS・Android | PC 4OS実例ガイド</title>
+  <style>
+:root {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --muted: #475569;
+  --accent: #0284c7;
+  --accent-soft: #e0f2fe;
+  --border: #e2e8f0;
+  --code-bg: #0f172a;
+  --code-text: #e2e8f0;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Noto Sans JP", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+}
+header.site-header {
+  background: linear-gradient(135deg, #0f172a 0%, #0369a1 100%);
+  color: #fff;
+  padding: 2.2rem 1.25rem;
+}
+header.site-header .inner { max-width: 980px; margin: 0 auto; }
+header.site-header h1 { margin: 0 0 0.4rem; font-size: 1.75rem; }
+header.site-header p { margin: 0; opacity: 0.9; font-size: 0.96rem; }
+main { max-width: 980px; margin: 2rem auto; padding: 0 1.25rem 3rem; }
+.badge {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: var(--accent-soft);
+  color: #0369a1;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1.25rem;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08); }
+.card img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; display: block; background: #e2e8f0; }
+.card-body { padding: 1rem 1.1rem 1.2rem; flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+.card-title { font-size: 1.02rem; font-weight: 700; margin: 0; line-height: 1.45; }
+.card-meta { font-size: 0.82rem; color: var(--muted); margin-top: auto; }
+article.post {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 2rem;
+}
+article.post img.eyecatch {
+  width: 100%;
+  max-height: 460px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+}
+article.post h1 { font-size: 1.65rem; line-height: 1.35; margin-top: 0; }
+article.post h2 {
+  font-size: 1.3rem;
+  margin-top: 2.1rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 2px solid var(--accent-soft);
+}
+article.post h3 { font-size: 1.08rem; margin-top: 1.4rem; }
+article.post table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.2rem 0;
+  font-size: 0.92rem;
+  display: block;
+  overflow-x: auto;
+}
+article.post th, article.post td {
+  border: 1px solid var(--border);
+  padding: 0.6rem 0.8rem;
+  text-align: left;
+}
+article.post th { background: #f1f5f9; font-weight: 700; }
+article.post pre {
+  background: var(--code-bg);
+  color: var(--code-text);
+  padding: 1rem 1.15rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+article.post code {
+  background: #f1f5f9;
+  padding: 0.15rem 0.38rem;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+article.post pre code { background: transparent; padding: 0; color: inherit; }
+article.post blockquote {
+  margin: 1.2rem 0;
+  padding: 0.8rem 1.1rem;
+  border-left: 4px solid var(--accent);
+  background: #f0f9ff;
+  border-radius: 0 8px 8px 0;
+}
+.back-link { display: inline-block; margin-bottom: 1rem; color: var(--accent); text-decoration: none; font-weight: 600; }
+.filter-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.15rem 1.25rem;
+  margin-bottom: 1.5rem;
+}
+.filter-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) auto;
+  gap: 0.9rem;
+  align-items: end;
+}
+.filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.filter-field label {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.filter-field input[type="search"],
+.filter-field select {
+  font: inherit;
+  font-size: max(1rem, 1em);
+  min-height: 48px;
+  padding: 0.55rem 0.85rem;
+  border: 1.5px solid #767676;
+  border-radius: 8px;
+  background: #fff;
+  color: var(--text);
+  width: 100%;
+}
+.filter-field input[type="search"]:focus-visible,
+.filter-field select:focus-visible,
+.filter-actions button:focus-visible {
+  outline: 3px solid #0284c7;
+  outline-offset: 2px;
+}
+.filter-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+.filter-actions button {
+  font: inherit;
+  font-size: max(1rem, 0.95em);
+  font-weight: 600;
+  min-height: 48px;
+  padding: 0 1.05rem;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+}
+.btn-primary {
+  background: #0369a1;
+  color: #fff;
+}
+.btn-primary:hover { background: #075985; }
+.btn-secondary {
+  background: #f1f5f9;
+  color: var(--text);
+  border-color: #94a3b8;
+}
+.btn-secondary:hover { background: #e2e8f0; }
+.results-status {
+  color: var(--muted);
+  font-size: 0.92rem;
+  margin: 0 0 1.1rem;
+}
+.empty-state {
+  background: var(--surface);
+  border: 1px dashed #94a3b8;
+  border-radius: 12px;
+  padding: 2rem 1.25rem;
+  text-align: center;
+  color: var(--muted);
+}
+.card[hidden],
+.empty-state[hidden] { display: none; }
+footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2rem 1rem; }
+@media (max-width: 720px) {
+  .filter-form { grid-template-columns: 1fr; }
+  .filter-actions { width: 100%; }
+  .filter-actions button { flex: 1; }
+}
+@media (max-width: 640px) {
+  article.post { padding: 1.2rem; }
+}
+</style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="inner">
+      <h1>PC 4OS実例ガイド</h1>
+      <p>Windows・macOS・iOS・Android の実践比較＆トラブル解決アーカイブ</p>
+    </div>
+  </header>
+  <main>
+    <a class="back-link" href="../index.html">← 記事一覧へ戻る</a>
+    <article class="post">
+      <p><span class="badge">#90｜分類05: 動画・音声・音楽制作</span> <small style="color:#64748b;margin-left:0.5rem;">2026-11-26</small></p>
+      <img class="eyecatch" src="../images/2026-11-26_art90_slowmo_timelapse_video_speed_edit.png" alt="スローモーション・倍速動画の速度調整と他端末で元に戻る時の対処実例｜Windows・macOS・iOS・Android">
+      <h1>スローモーション・倍速動画の速度調整と他端末で元に戻る時の対処実例｜Windows・macOS・iOS・Android</h1>
+<p>「iPhoneで撮ったスローモーション動画を、PCで編集して倍速にしたのに、スマホに送り返すと元の速度に戻ってしまう…」<br />
+「Windowsで加工した動画をAndroidで見たら、なぜか再生速度がおかしくなっている」</p>
+<p>このようなトラブルに直面したことはありませんか？実はこれ、OSごとの「動画の扱い方」や「再エンコード（圧縮）」の仕様が原因で起こる非常に一般的な問題です。</p>
+<p>本記事では、Windows、macOS、iOS、Androidの主要4OSにおいて、標準機能を使って動画の速度を調整する具体的な手順を解説します。さらに、<strong>「なぜ他端末で見ると元に戻ってしまうのか」という根本原因と、それを防ぐための実践的な解決策</strong>まで徹底的に網羅しました。</p>
+<hr />
+<h2>4OS比較早見表</h2>
+<p>各OSにおける標準での速度調整機能と、注意点をまとめました。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">OS</th>
+<th style="text-align: left;">推奨アプリ</th>
+<th style="text-align: left;">速度調整の可否</th>
+<th style="text-align: left;">特徴・注意点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Windows 11</strong></td>
+<td style="text-align: left;">Clipchamp</td>
+<td style="text-align: left;">可能</td>
+<td style="text-align: left;">再エンコードを伴う編集。MP4(H.264)での書き出しが安定。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>macOS</strong></td>
+<td style="text-align: left;">iMovie / QuickTime</td>
+<td style="text-align: left;">可能</td>
+<td style="text-align: left;">QuickTimeは簡易的。高度な調整はiMovie（無料）を推奨。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>iOS</strong></td>
+<td style="text-align: left;">写真アプリ</td>
+<td style="text-align: left;">可能</td>
+<td style="text-align: left;">非常に直感的だが、他OSへの共有時にメタデータが消失しやすい。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Android</strong></td>
+<td style="text-align: left;">Google フォト</td>
+<td style="text-align: left;">可能</td>
+<td style="text-align: left;">基本的にGoogleフォトの編集機能を使用。再エンコードに注意。</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>1. Windows 11 での実例手順</h2>
+<p>Windows 11では、標準搭載されている動画編集アプリ「Clipchamp」を使用するのが最も確実な方法です。</p>
+<h3>公式手順（Clipchamp）</h3>
+<ol>
+<li><strong>アプリ起動</strong>: スタートメニューから「Clipchamp」を起動します。</li>
+<li><strong>プロジェクト作成</strong>: 「新規作成」をクリックし、編集画面へ進みます。</li>
+<li><strong>メディアの読み込み</strong>: 編集したい動画ファイルをドラッグ＆ドロップしてタイムラインに配置します。</li>
+<li><strong>速度調整</strong>: 再生ヘッド（白い縦線）を動画の上に置き、上部ツールバーにある<strong>「速度」アイコン</strong>をクリックします。</li>
+<li><strong>設定</strong>: スライダーを動かしてスローモーション（例：0.5x）や倍速を設定し、「適用」を押します。</li>
+<li><strong>エクスポート</strong>: 右上の「エクスポート」ボタンを押し、画質（1080pなど）を選択して保存します。</li>
+</ol>
+<h3>注意点と制限事項</h3>
+<ul>
+<li><strong>プロパティの書き換えではない</strong>: Clipchampは動画データを「再エンコード（作り直し）」します。そのため、「設定をオフにする」という概念はなく、一度保存したファイルは元のデータには戻せません。</li>
+<li><strong>フォトアプリの制限</strong>: Windows標準の「フォト」アプリではトリミングやエフェクトの追加は可能ですが、<strong>速度変更機能は備わっていません。</strong></li>
+</ul>
+<h3>よくあるトラブルと解決法</h3>
+<ul>
+<li><strong>トラブルA：iPhone/Androidで再生すると通常速度に戻る</strong><ul>
+<li><strong>原因</strong>: Clipchampでの出力形式が、iOS/Androidの標準プレイヤーと相性の悪いコーデックやストリーミング形式（HLS等）に変換されている可能性があります。</li>
+<li><strong>解決</strong>: エクスポート設定を必ず<strong>「MP4 (H.264)」</strong>に固定してください。また、他端末で元に戻る現象は「スマホ側が本来の再生速度（メタデータ）を優先して表示している」ケースも多いため、編集後の動画は常にVLC等の汎用プレイヤーで確認する癖をつけるのが安全です。</li>
+</ul>
+</li>
+<li><strong>トラブルB：エクスポート時にエラーが出る</strong><ul>
+<li><strong>原因</strong>: ファイルがDRM保護されているか、コーデックが未対応。</li>
+<li><strong>解決</strong>: 元ファイルを一度「MP4」形式に変換してからClipchampに読み込ませてください。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2>2. macOS での実例手順</h2>
+<p>macOSではQuickTime Playerを使用しますが、近年のバージョンでは速度変更メニューが制限されている場合があるため、無料のiMovieを併用するのが標準的なワークフローです。</p>
+<h3>公式手順（iMovie）</h3>
+<ol>
+<li><strong>アプリ起動</strong>: 「iMovie」を起動し、新規プロジェクトを作成します。</li>
+<li><strong>メディア読み込み</strong>: 動画ファイルをタイムラインにドラッグします。</li>
+<li><strong>速度変更</strong>: タイムライン上のクリップを選択し、上部メニューの「編集」から速度変更（またはクリップの長さを調整）を行います。</li>
+<li><strong>書き出し</strong>: 「共有」ボタンから「ファイル」を選択し、MP4形式で出力します。</li>
+</ol>
+<h3>注意点と制限事項</h3>
+<ul>
+<li><strong>QuickTimeの制限</strong>: QuickTime Player単体では「トリミング」は得意ですが、滑らかなスローモーション編集は標準では非対応となることが多いです。高度な操作にはiMovie等のクリエイターツールが必要です。</li>
+</ul>
+<h3>よくあるトラブルと解決法</h3>
+<ul>
+<li><strong>トラブルA：Windowsに送った後、通常速度で再生される</strong><ul>
+<li><strong>原因</strong>: Mac特有のメタデータやコーデック（ProRes等）がWindows側で正しく解釈されず、再エンコードの結果として速度情報が消失します。</li>
+<li><strong>解決</strong>: 書き出し時は必ず<strong>「MP4 (H.264/H.265)」</strong>を選択してください。根本的な解決策としては、「編集前の原稿」を常にバックアップしておくことが重要です。</li>
+</ul>
+</li>
+<li><strong>トラブルB：動画が黒画面になる</strong><ul>
+<li><strong>原因</strong>: 出力設定でWindows非対応のコーデック（ProRes等）を選択している。</li>
+<li><strong>解決</strong>: エクスポート時に「MP4」を指定してください。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2>3. iOS（iPhone / iPad）での実例手順</h2>
+<p>iOSは最も直感的に操作できますが、他OSへの互換性において最も注意が必要です。</p>
+<h3>公式手順（写真アプリ）</h3>
+<ol>
+<li><strong>動画選択</strong>: 「フォト」アプリで編集したい動画を開きます。</li>
+<li><strong>編集ボタン</strong>: 右上の「編集」をタップします。</li>
+<li><strong>速度調整</strong>: タイムラインの下部にある<strong>速度スライダー（時計アイコン）</strong>を長押しまたはドラッグして、好みの速度に設定します。</li>
+<li><strong>保存</strong>: 「完了」を押し、「共有」→「ビデオを保存」を選択します。</li>
+</ol>
+<h3>注意点と制限事項</h3>
+<ul>
+<li><strong>再エンコードの仕様</strong>: 保存ボタンを押した時点で、元の動画とは別の「新しいファイル」として書き出されます。そのため、一度保存すると「編集前の状態に戻す」ことはできません。</li>
+</ul>
+<h3>よくあるトラブルと解決法</h3>
+<ul>
+<li><strong>トラブルA：Android/Windowsで再生すると通常速度に戻る</strong><ul>
+<li><strong>原因</strong>: iOSのフォトアプリはApple独自の圧縮規格（HEVC等）を優先するため、他OSの標準プレイヤーが「速度変更のメタデータ」を無視して再生することがあります。</li>
+<li><strong>解決</strong>: 他端末へ送る際は、iOS標準アプリで完結させず、VLC for iPhoneなどの外部アプリを使用して「MP4 (H.264)」に変換してから共有するのが最も確実です。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2>4. Android での実例手順</h2>
+<p>AndroidではGoogleフォトの編集機能を利用するのが一般的です。</p>
+<h3>公式手順（Google フォト）</h3>
+<ol>
+<li><strong>動画選択</strong>: 「Google フォト」アプリで動画を開きます。</li>
+<li><strong>編集ボタン</strong>: 下部の「編集」をタップします。</li>
+<li><strong>速度調整</strong>: ツールバーから「動画」または「速度」の項目を選択し、スライダーで調整します（※機種によりメニュー構成が異なる場合があります）。</li>
+<li><strong>保存コピー</strong>: 「コピーを保存」をタップして完了です。</li>
+</ol>
+<h3>注意点と制限事項</h3>
+<ul>
+<li><strong>標準機能のみでは制限あり</strong>: 高度なフレームレート固定や、特定のビットレート指定は標準アプリではできません。より精密な調整が必要な場合は、CapCutなどの外部アプリの活用を推奨します。</li>
+</ul>
+<hr />
+<h2>よくあるトラブルと解決チェックリスト</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">トラブル現象</th>
+<th style="text-align: left;">原因の可能性</th>
+<th style="text-align: left;">対処法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>他端末で速度が元に戻る</strong></td>
+<td style="text-align: left;">再エンコード時のメタデータ消失</td>
+<td style="text-align: left;">書き出し形式を「MP4 (H.264)」に固定する。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>動画の長さが変わる</strong></td>
+<td style="text-align: left;">フレーム間隔の再計算による誤差</td>
+<td style="text-align: left;">編集後の動画を必ず汎用プレイヤー（VLC等）で確認する。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>音声と映像がズレる</strong></td>
+<td style="text-align: left;">高速化時のサンプリングレート不一致</td>
+<td style="text-align: left;">外部ツールで「オーディオビットレート固定」を試みる。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>エクスポートエラー</strong></td>
+<td style="text-align: left;">コーデック未対応・DRM保護</td>
+<td style="text-align: left;">元ファイルを標準的なMP4に変換してから編集ソフトへ読み込む。</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>まとめ：快適なマルチOS環境を作るポイント</h2>
+<p>動画の速度調整は、単に「ボタンを押す」だけでは解決しない「互換性の壁」が存在します。特にスローモーションや倍速を多用する場合、<strong>「どのOSで編集し、どの形式で書き出すか」</strong>というルールを決めることが重要です。</p>
+<p>快適なマルチOS環境（Windowsでの編集・iPhoneでの確認など）を実現するためには、以下の周辺機器やツールの導入も検討してみてください。</p>
+<ul>
+<li><strong>高速外付けSSD</strong>: 4K動画などの大容量データを扱う際、PCのストレージを圧迫せずスムーズなプレビューを可能にします。</li>
+<li><strong>オーディオインターフェース / USBマイク</strong>: 動画制作において「音」の品質は映像と同じくらい重要です。クリアな音声を録り、正確に編集することで、再エンコード時の音声ズレトラブルも防ぎやすくなります。</li>
+<li><strong>動画編集ソフト（CapCut, DaVinci Resolve等）</strong>: 標準アプリの制限を超え、より安定した「MP4 (H.264)」書き出しを求めるなら、これらのツールを導入するのが近道です。</li>
+</ul>
+<p>正しい知識と適切なツール選びで、OSの壁を越えたスムーズな動画制作環境を構築しましょう。</p>
+<hr />
+<h2>参考文献・公式ドキュメント（一次情報ソース）</h2>
+<p>本記事の手順・仕様は以下の各OSおよびツールの公式ドキュメントに基づいています。OSアップデートによりメニュー名称や挙動が変わる場合があるため、最新仕様の確認にもご活用ください。</p>
+<ul>
+<li><strong>[Windows]</strong> <a href="https://support.microsoft.com/ja-jp/windows">Windows のヘルプとラーニング（Clipchamp / フォト動画編集） - Microsoft サポート</a></li>
+<li><strong>[macOS]</strong> <a href="https://support.apple.com/ja-jp/guide/quicktime-player/qtp76b9321b3/mac">Mac用QuickTime Playerユーザガイド（トリミング・書き出し） - Apple サポート (日本)</a></li>
+<li><strong>[iOS]</strong> <a href="https://support.apple.com/ja-jp/guide/iphone/iph1d13452f2/ios">iPhoneユーザガイド（写真アプリでのビデオ編集・トリミング） - Apple サポート (日本)</a></li>
+<li><strong>[Android]</strong> <a href="https://support.google.com/photos/answer/6128850?hl=ja">写真や動画を編集する - Google フォト ヘルプ</a></li>
+</ul>
+    </article>
+  </main>
+  <footer>Generated with Local Ollama (qwen3.5 / gemma4) &amp; Draw Things (FLUX.2 klein 4B)</footer>
+</body>
+</html>
