@@ -29,10 +29,11 @@ python -m src.main -n 1 --push
 python -m src.main -n 1 --category 11
 ```
 
-## 書き溜め済み記事一覧（全 81 本 / 最終更新: 2026-11-26 14:07 JST）
+## 書き溜め済み記事一覧（全 82 本 / 最終更新: 2026-11-26 14:12 JST）
 
 | No. | 17分類カテゴリ | 記事タイトル（Markdown） | 挿絵 | 生成日 |
 | :---: | :--- | :--- | :---: | :---: |
+| #82 | 分類14: ハードウェア・周辺機器・IoT連携 | [スマートプラグ＆リモコンで家電をタイマー・音声操作する入門実例｜Windows・macOS・iOS・Android](content/2026-11-26_art82_smart_plug_home_automation.md) | あり | 2026-11-26 |
 | #81 | 分類13: ファイル管理・バックアップ・データ復旧 | [重複写真・連写写真を安全に見つけて一括整理＆容量節約する実例｜Windows・macOS・iOS・Android](content/2026-11-26_art81_duplicate_photo_cleanup_merge.md) | あり | 2026-11-26 |
 | #80 | 分類12: セキュリティ・プライバシー対策 | [位置情報・カメラ・写真のアプリ権限を一斉点検！プライバシー保護の実例｜Windows・macOS・iOS・Android](content/2026-11-26_art80_app_permission_privacy_audit.md) | あり | 2026-11-26 |
 | #79 | 分類11: ネットワーク・サーバー・インフラ構築 | [自宅Wi-FiパスワードをQRコード＆ワンタップで安全に共有する実例｜Windows・macOS・iOS・Android](content/2026-11-26_art79_wifi_qr_password_share_guest.md) | あり | 2026-11-26 |
