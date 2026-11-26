@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>知らない間の月額課金を点検！サブスク一覧確認と安全な解約手順の実例｜Windows・macOS・iOS・Android | PC 4OS実例ガイド</title>
+  <style>
+:root {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --muted: #475569;
+  --accent: #0284c7;
+  --accent-soft: #e0f2fe;
+  --border: #e2e8f0;
+  --code-bg: #0f172a;
+  --code-text: #e2e8f0;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Noto Sans JP", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+}
+header.site-header {
+  background: linear-gradient(135deg, #0f172a 0%, #0369a1 100%);
+  color: #fff;
+  padding: 2.2rem 1.25rem;
+}
+header.site-header .inner { max-width: 980px; margin: 0 auto; }
+header.site-header h1 { margin: 0 0 0.4rem; font-size: 1.75rem; }
+header.site-header p { margin: 0; opacity: 0.9; font-size: 0.96rem; }
+main { max-width: 980px; margin: 2rem auto; padding: 0 1.25rem 3rem; }
+.badge {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: var(--accent-soft);
+  color: #0369a1;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1.25rem;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08); }
+.card img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; display: block; background: #e2e8f0; }
+.card-body { padding: 1rem 1.1rem 1.2rem; flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+.card-title { font-size: 1.02rem; font-weight: 700; margin: 0; line-height: 1.45; }
+.card-meta { font-size: 0.82rem; color: var(--muted); margin-top: auto; }
+article.post {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 2rem;
+}
+article.post img.eyecatch {
+  width: 100%;
+  max-height: 460px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+}
+article.post h1 { font-size: 1.65rem; line-height: 1.35; margin-top: 0; }
+article.post h2 {
+  font-size: 1.3rem;
+  margin-top: 2.1rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 2px solid var(--accent-soft);
+}
+article.post h3 { font-size: 1.08rem; margin-top: 1.4rem; }
+article.post table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.2rem 0;
+  font-size: 0.92rem;
+  display: block;
+  overflow-x: auto;
+}
+article.post th, article.post td {
+  border: 1px solid var(--border);
+  padding: 0.6rem 0.8rem;
+  text-align: left;
+}
+article.post th { background: #f1f5f9; font-weight: 700; }
+article.post pre {
+  background: var(--code-bg);
+  color: var(--code-text);
+  padding: 1rem 1.15rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+article.post code {
+  background: #f1f5f9;
+  padding: 0.15rem 0.38rem;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+article.post pre code { background: transparent; padding: 0; color: inherit; }
+article.post blockquote {
+  margin: 1.2rem 0;
+  padding: 0.8rem 1.1rem;
+  border-left: 4px solid var(--accent);
+  background: #f0f9ff;
+  border-radius: 0 8px 8px 0;
+}
+.back-link { display: inline-block; margin-bottom: 1rem; color: var(--accent); text-decoration: none; font-weight: 600; }
+.filter-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.15rem 1.25rem;
+  margin-bottom: 1.5rem;
+}
+.filter-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) auto;
+  gap: 0.9rem;
+  align-items: end;
+}
+.filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.filter-field label {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.filter-field input[type="search"],
+.filter-field select {
+  font: inherit;
+  font-size: max(1rem, 1em);
+  min-height: 48px;
+  padding: 0.55rem 0.85rem;
+  border: 1.5px solid #767676;
+  border-radius: 8px;
+  background: #fff;
+  color: var(--text);
+  width: 100%;
+}
+.filter-field input[type="search"]:focus-visible,
+.filter-field select:focus-visible,
+.filter-actions button:focus-visible {
+  outline: 3px solid #0284c7;
+  outline-offset: 2px;
+}
+.filter-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+.filter-actions button {
+  font: inherit;
+  font-size: max(1rem, 0.95em);
+  font-weight: 600;
+  min-height: 48px;
+  padding: 0 1.05rem;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+}
+.btn-primary {
+  background: #0369a1;
+  color: #fff;
+}
+.btn-primary:hover { background: #075985; }
+.btn-secondary {
+  background: #f1f5f9;
+  color: var(--text);
+  border-color: #94a3b8;
+}
+.btn-secondary:hover { background: #e2e8f0; }
+.results-status {
+  color: var(--muted);
+  font-size: 0.92rem;
+  margin: 0 0 1.1rem;
+}
+.empty-state {
+  background: var(--surface);
+  border: 1px dashed #94a3b8;
+  border-radius: 12px;
+  padding: 2rem 1.25rem;
+  text-align: center;
+  color: var(--muted);
+}
+.card[hidden],
+.empty-state[hidden] { display: none; }
+footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2rem 1rem; }
+@media (max-width: 720px) {
+  .filter-form { grid-template-columns: 1fr; }
+  .filter-actions { width: 100%; }
+  .filter-actions button { flex: 1; }
+}
+@media (max-width: 640px) {
+  article.post { padding: 1.2rem; }
+}
+</style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="inner">
+      <h1>PC 4OS実例ガイド</h1>
+      <p>Windows・macOS・iOS・Android の実践比較＆トラブル解決アーカイブ</p>
+    </div>
+  </header>
+  <main>
+    <a class="back-link" href="../index.html">← 記事一覧へ戻る</a>
+    <article class="post">
+      <p><span class="badge">#85｜分類17: 生活・行政手続き・家計・資産管理</span> <small style="color:#64748b;margin-left:0.5rem;">2026-11-26</small></p>
+      <img class="eyecatch" src="../images/2026-11-26_art85_subscription_audit_cancel_guide.png" alt="知らない間の月額課金を点検！サブスク一覧確認と安全な解約手順の実例｜Windows・macOS・iOS・Android">
+      <h1>知らない間の月額課金を点検！サブスク一覧確認と安全な解約手順の実例｜Windows・macOS・iOS・Android</h1>
+<p>「いつの間にか、もう使っていないアプリの料金が引き落とされている……」<br />
+そんな経験はありませんか？</p>
+<p>現代のデジタルライフでは、動画配信サービス、クラウドストレージ、音楽アプリなど、あらゆるサービスがサブスクリプション（月額課金）モデルへと移行しています。しかし、Apple、Google、Microsoftといった各社のエコシステムを横断して利用していると、<strong>「どこで契約したか」「いつ解約すればいいのか」</strong>の把握が非常に難しくなっています。</p>
+<p>この記事では、Windows、macOS、iOS、Androidの4つの主要OSにおいて、標準機能を使って安全にサブスクリプションを確認・解約する手順を徹底比較します。あわせて、電子帳簿保存法を見据えた領収書の管理術についても解説します。</p>
+<h2>4OS比較早見表</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">OS</th>
+<th style="text-align: left;">主な確認場所（自社サービス）</th>
+<th style="text-align: left;">他社サービスの確認方法</th>
+<th style="text-align: left;">特徴・注意点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Windows 11</strong></td>
+<td style="text-align: left;">Microsoft アカウント設定</td>
+<td style="text-align: left;">ブラウザ経由の各社公式サイト</td>
+<td style="text-align: left;">システム内には他社一覧は存在しない</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>macOS</strong></td>
+<td style="text-align: left;">システム設定（Apple ID）</td>
+<td style="text-align: left;">Safari等によるブラウザ操作</td>
+<td style="text-align: left;">iCloud連携と連動した管理が可能</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>iOS</strong></td>
+<td style="text-align: left;">設定アプリ ＞ サブスクリプション</td>
+<td style="text-align: left;">Safari/Chrome等のブラウザ操作</td>
+<td style="text-align: left;">モバイルから最も直感的に解約可能</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Android</strong></td>
+<td style="text-align: left;">設定 ＞ 支払いとサブスクリプション</td>
+<td style="text-align: left;">ブラウザ経由の各社公式サイト</td>
+<td style="text-align: left;">メーカー固有ストアの契約は別管理</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>1. Windows 11 での実例手順</h2>
+<p>Windows環境では、OSの設定画面よりも「ブラウザ」を起点とした管理が中心となります。</p>
+<p><strong>【標準機能での操作手順】</strong><br />
+1.  <strong>Microsoft系サブスクリプション</strong>: 「設定」＞「アカウント」＞「サービスとサブスクリプション」を開きます。ここでMicrosoft 365やXbox Game Passなどの更新日確認・変更が可能です。<br />
+2.  <strong>Apple/Google系サブスクリプション</strong>: Windowsのシステム設定内にはこれらの一覧を表示する機能はありません。EdgeやChrome等のブラウザを起動し、各社の公式サイト（Apple ID管理画面やGoogle Pay）へログインして確認します。</p>
+<p><strong>【標準機能の制限事項】</strong><br />
+Windows 11のシステム設定は「Microsoft製品」に特化しているため、他社サービスの契約状況を統合的に表示する機能は備わっていません。すべてブラウザ依存となります。</p>
+<p><strong>【よくあるトラブルと解決法】</strong><br />
+*   <strong>「更新日変更できない」と表示される場合</strong>: Webサイトの「支払い方法の変更」ボタンをクリックしてください。クレジットカードを登録していない（または有効期限切れ）場合にこのエラーが出やすいため、決済手段の再登録が必要です。<br />
+*   <strong>ブラウザでログイン画面が出ない場合</strong>: Windows Helloでサインインしているアカウントと、サブスク契約中のアカウントが異なる可能性があります。「別のブラウザ（Chrome等）」や「ゲストモード」で試してください。<br />
+*   <strong>領収書の保存漏れ防止</strong>: 標準機能では自動保存されません。Edgeのブックマークに管理ページを登録するか、決済完了画面から「印刷」を選択し、PDFとして保存する習慣をつけましょう。</p>
+<hr />
+<h2>2. macOS での実例手順</h2>
+<p>macOSはAppleエコシステムの一部であるため、Apple系サービスの管理は非常にスムーズです。</p>
+<p><strong>【標準機能での操作手順】</strong><br />
+1.  <strong>Appleサブスク（iCloud+等）</strong>: 「システム設定」＞「自分の名前」＞「サブスクリプション」から一括確認・解約が可能です。<br />
+2.  <strong>Google/Amazon系サブスク</strong>: Safariを介し、各社の公式管理画面へアクセスして操作します。</p>
+<p><strong>【標準機能の制限事項】</strong><br />
+セキュリティ上の理由により、macOSのターミナルやコマンドラインツールから他社（Google等）のサブスクリプションを直接制御することはできません。Google Playの定期購入確認も、システム設定内には表示されずブラウザ経由のみとなります。</p>
+<p><strong>【よくあるトラブルと解決法】</strong><br />
+*   <strong>「サブスクリプション」という項目が見つからない場合</strong>: Apple IDのパスワード変更やセキュリティ確認（2要素認証）が未完了な可能性があります。「サインインして再認証」を最初に行ってください。<br />
+*   <strong>iCloud+ ストレージ容量不足で解約できない場合</strong>: 「システム設定」＞「名前」＞「iCloud」＞「ストレージ管理」から不要なデータを削除するか、プランを下げる操作を先に行う必要があります。<br />
+*   <strong>Safariで公式画面が開かない場合</strong>: キャッシュエラーの可能性があります。「開発者ツール ＞ ネットワーク ＞ キャッシュクリア」を行うか、別のブラウザ（Chrome等）を試してください。</p>
+<hr />
+<h2>3. iOS (iPhone / iPad) での実例手順</h2>
+<p>モバイル端末では、最も「設定アプリ」から直接操作できる範囲が広いです。</p>
+<p><strong>【標準機能での操作手順】</strong><br />
+1.  <strong>Appleサブスク</strong>: 「設定」＞「自分の名前」＞「サブスクリプション」から確認・解約可能です。<br />
+2.  <strong>Google/Amazon系サブスク</strong>: SafariまたはChromeを介し、各社の管理画面へアクセスします。なお、Google Playは「設定」＞「自分の名前」＞「支払いとサブスクリプション」から確認できる場合がありますが、確実な解約にはWebブラウザが推奨されます。</p>
+<p><strong>【標準機能の制限事項】</strong><br />
+iOSの設定内では、サードパーティ製（Amazon PrimeやNetflix等）の利用状況グラフや詳細な請求明細を表示する機能はありません。</p>
+<p><strong>【よくあるトラブルと解決法】</strong><br />
+*   <strong>「サブスクリプション」メニューがグレーアウトしている場合</strong>: Apple IDの認証が切れています。「サインインして再認証」を行ってください。<br />
+*   <strong>Google Playのサブスク更新日が表示されない場合</strong>: iOSではGoogleアカウントの詳細情報に制限があるため、必ず「設定」＞「自分の名前」＞「支払いとサブスクリプション」から確認してください（機種により階層が異なる場合があります）。<br />
+*   <strong>Safariで公式画面が開かない場合</strong>: 「設定」＞「Safari」＞「履歴とデータ」＞「すべてのデータを消去」を実行するか、別のブラウザを試してください。</p>
+<hr />
+<h2>4. Android での実例手順</h2>
+<p>AndroidはGoogle Playとの親和性が高く、モバイルでの管理が非常に強力です。</p>
+<p><strong>【標準機能での操作手順】</strong><br />
+1.  <strong>Googleサブスク</strong>: 「設定」＞「自分の名前」＞「支払いとサブスクリプション」＞「Google Pay」から確認・解約可能です（機種によりメニュー階層は異なります）。<br />
+2.  <strong>Apple/Microsoft系サブスク</strong>: ブラウザを介し、各社の公式管理画面へアクセスします。Microsoftアカウントは独立しているため、「設定」＞「アカウントとバックアップ」から追加・確認が必要です。</p>
+<p><strong>【標準機能の制限事項】</strong><br />
+Android本体の設定メニュー内に、AppleやAmazonのサブスク一覧を表示する機能はありません。また、Samsung Galaxy Storeなどメーカー固有ストアで契約したものは、Google Playの管理画面からは見えません。</p>
+<p><strong>【よくあるトラブルと解決法】</strong><br />
+*   <strong>「支払いとサブスクリプション」メニューが見つからない場合</strong>: Androidバージョンや機種（Pixel / Galaxy等）により統合度合いが異なります。「設定」＞「アカウントとバックアップ」からGoogleアカウントを選択し、再度確認画面を開いてください。<br />
+*   <strong>Microsoftサブスクの更新日が表示されない場合</strong>: Androidではシステム設定内に表示されません。必ずブラウザ経由で管理する必要があります。<br />
+*   <strong>Google Playのサブスクが自動更新されているのに解約できない場合</strong>: 「支払いとサブスクリプション」＞「アクティブなサブスクリプション」から個別に解除を試み、エラーが出る場合はGoogleアカウントのパスワード再設定を検討してください。</p>
+<hr />
+<h2>よくあるトラブルと解決チェックリスト</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">エラー・事象</th>
+<th style="text-align: left;">原因の可能性</th>
+<th style="text-align: left;">対処法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>解約ボタンが反応しない / グレーアウト</strong></td>
+<td style="text-align: left;">セキュリティ認証（2FA）の未完了</td>
+<td style="text-align: left;">設定画面から「サインイン」を再実行し、最新の認証を通す。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>他社サービスの契約が見つからない</strong></td>
+<td style="text-align: left;">OS標準機能の範囲外</td>
+<td style="text-align: left;">ブラウザを開き、各社の公式サイトへ直接ログインして確認する。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>ブラウザで管理ページが開かない</strong></td>
+<td style="text-align: left;">キャッシュエラーまたはCookie制限</td>
+<td style="text-align: left;">別のブラウザ（Chrome等）を使用するか、プライベートモードで試す。</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>更新日が正しく表示されない</strong></td>
+<td style="text-align: left;">アカウントの紐付けミス</td>
+<td style="text-align: left;">サブスク契約時と現在ログイン中のアカウントが同一か確認する。</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>まとめ：快適なマルチOS環境を作るポイント</h2>
+<p>4つのOSを横断して利用する場合、最も重要なのは<strong>「自分のエコシステム（AppleならiPhone/Mac、GoogleならAndroid）以外のサブスクはブラウザで管理する」</strong>というルールを確立することです。</p>
+<p>また、月額課金の点検と同時に、家計の透明性を高めるための「証跡管理」もセットで行うことをお勧めします。</p>
+<ul>
+<li><strong>領収書のデジタル化</strong>: iPhone/AndroidのカメラアプリやGoogleドライブの「ドキュメントスキャナー」を活用し、紙の請求書を即座にPDF化しましょう。</li>
+<li><strong>効率的な資産管理</strong>: 確定申告や経費精算を見据えるなら、<strong>ICカードリーダー（e-Tax対応）</strong>で公的書類を読み取ったり、<strong>会計ソフト</strong>や<strong>家計管理アプリ</strong>と連携させることで、サブスクの支出も一元管理が可能になります。</li>
+<li><strong>スキャン環境の整備</strong>: 物理的な領収書が多い場合は、<strong>モバイルスキャナー</strong>を導入することで、電子帳簿保存法の要件を満たしつつ、スムーズな事務処理を実現できます。</li>
+</ul>
+<p>正しい解約フローと適切なツール選びで、無駄な支出をカットし、スマートなマルチOS環境を構築しましょう。</p>
+<hr />
+<h2>参考文献・公式ドキュメント（一次情報ソース）</h2>
+<p>本記事の手順・仕様は以下の各OSおよびツールの公式ドキュメントに基づいています。OSアップデートによりメニュー名称や挙動が変わる場合があるため、最新仕様の確認にもご活用ください。</p>
+<ul>
+<li><strong>[日本公式（税務）]</strong> <a href="https://www.nta.go.jp/law/joho-zeikaishaku/sonota/jirei/index.htm">電子帳簿保存法関係（領収書・電子取引データの保存要件） - 国税庁</a></li>
+<li><strong>[Windows]</strong> <a href="https://support.microsoft.com/ja-jp/windows/windows-%E3%81%A7-pc-%E3%82%92%E3%83%90%E3%83%83%E3%82%AF%E3%82%A2%E3%83%83%E3%83%97%E3%81%8A%E3%82%88%E3%81%B3%E5%BE%A9%E5%85%83%E3%81%99%E3%82%8B-352091d2-bb9d-3ea3-ed18-52ef2b88cbef">Windows で PC をバックアップおよび復元する - Microsoft サポート</a></li>
+<li><strong>[macOS / iOS]</strong> <a href="https://support.apple.com/ja-jp/108963">iPhoneやiPadで書類をスキャンする方法 - Apple サポート (日本)</a></li>
+<li><strong>[Android]</strong> <a href="https://support.google.com/drive/answer/3145835?hl=ja">Google ドライブでドキュメントをスキャンする - Google ドライブ ヘルプ</a></li>
+</ul>
+    </article>
+  </main>
+  <footer>Generated with Local Ollama (qwen3.5 / gemma4) &amp; Draw Things (FLUX.2 klein 4B)</footer>
+</body>
+</html>
