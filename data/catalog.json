@@ -955,5 +955,135 @@
       "声を分離 iPhone Mac",
       "通話 雑音 消す"
     ]
+  },
+  {
+    "id": "art74-ar-furniture-placement-shopping",
+    "article_num": 74,
+    "cat_num": 6,
+    "category": "3D・CAD・ものづくり",
+    "task_topic": "家具や家電を買う前にAR機能で部屋に試し置きしてサイズ感・動線を確認しPCで比較する実例",
+    "title": "家具・家電の購入前にARで部屋へ試し置き！サイズ確認とPC比較の実例｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "AR 家具 試し置き",
+      "部屋 3D 配置 無料",
+      "Amazon ARビュー 使い方"
+    ]
+  },
+  {
+    "id": "art75-find-replace-bulk-text-cleanup",
+    "article_num": 75,
+    "cat_num": 7,
+    "category": "プログラミング・ソフトウェア開発",
+    "task_topic": "長い文章や名簿の表記ゆれ・不要なスペースを一括修正する「検索と置換」＆基本パターンの実例",
+    "title": "文章や名簿の表記ゆれを一括修正！「検索と置換」時短テクニック実例｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "一括置換 方法",
+      "全角 半角 統一",
+      "検索と置換 ショートカット"
+    ]
+  },
+  {
+    "id": "art76-pwa-website-home-screen-app",
+    "article_num": 76,
+    "cat_num": 8,
+    "category": "Web制作・ブログ・デジタルマーケティング",
+    "task_topic": "よく使うWebサイトや管理画面をホーム画面・デスクトップにアプリ化して1タップ起動する（PWA）手順",
+    "title": "よく使うWebサイトをホーム画面へアプリ化（PWA）して1タップ起動する実例｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "ホーム画面に追加 サイト",
+      "PWA アプリ化 方法",
+      "Webサイト ショートカット作成"
+    ]
+  },
+  {
+    "id": "art77-google-forms-survey-aggregate",
+    "article_num": 77,
+    "cat_num": 9,
+    "category": "データ分析・科学計算・AI活用",
+    "task_topic": "出欠確認やアンケートをGoogleフォーム等で無料作成し自動でグラフ集計・共有する実例",
+    "title": "アンケート・出欠確認を無料フォームで作成＆自動グラフ集計する実例｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "Googleフォーム 作り方",
+      "アンケート 自動集計 無料",
+      "スマホ フォーム 作成"
+    ]
+  },
+  {
+    "id": "art78-dark-mode-eye-care-night-shift",
+    "article_num": 78,
+    "cat_num": 10,
+    "category": "システム管理・OS設定・メンテナンス",
+    "task_topic": "長時間の画面作業による目の疲れを抑えるダークモード・夜間モード（ブルーライト軽減）の自動切替設定",
+    "title": "目の疲れを軽減する「ダークモード＆夜間モード」自動切替設定の実例｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "ダークモード 自動切り替え",
+      "夜間モード ブルーライト 設定",
+      "Night Shift 使い方"
+    ]
+  },
+  {
+    "id": "art79-wifi-qr-password-share-guest",
+    "article_num": 79,
+    "cat_num": 11,
+    "category": "ネットワーク・サーバー・インフラ構築",
+    "task_topic": "家族や来客に自宅Wi-Fiパスワードを安全・簡単に共有するQRコード表示とワンタップ共有手順",
+    "title": "自宅Wi-FiパスワードをQRコード＆ワンタップで安全に共有する実例｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "Wi-Fi パスワード 共有",
+      "Wi-Fi QRコード 表示",
+      "Wi-Fi パスワード 確認"
+    ]
+  },
+  {
+    "id": "art80-app-permission-privacy-audit",
+    "article_num": 80,
+    "cat_num": 12,
+    "category": "セキュリティ・プライバシー対策",
+    "task_topic": "位置情報・カメラ・マイク・写真へのアプリ権限を一斉点検してプライバシーを守る標準設定手順",
+    "title": "位置情報・カメラ・写真のアプリ権限を一斉点検！プライバシー保護の実例｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "アプリ 権限 確認",
+      "位置情報 許可 見直し",
+      "プライバシー 設定 チェック"
+    ]
+  },
+  {
+    "id": "art81-duplicate-photo-cleanup-merge",
+    "article_num": 81,
+    "cat_num": 13,
+    "category": "ファイル管理・バックアップ・データ復旧",
+    "task_topic": "気づけば増えている重複写真・連写写真をOS標準機能で安全に見つけて結合・整理する実例",
+    "title": "重複写真・連写写真を安全に見つけて一括整理＆容量節約する実例｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "重複写真 削除 方法",
+      "iPhone 重複項目 結合",
+      "Googleフォト 重複 整理"
+    ]
+  },
+  {
+    "id": "art82-smart-plug-home-automation",
+    "article_num": 82,
+    "cat_num": 14,
+    "category": "ハードウェア・周辺機器・IoT連携",
+    "task_topic": "スマートプラグやスマートリモコンをスマホ・PCと連携して家電をタイマー制御・音声操作する入門実例",
+    "title": "スマートプラグ＆リモコンで家電をタイマー・音声操作する入門実例｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "スマートプラグ 使い方",
+      "スマートホーム 初心者",
+      "家電 スマホ 操作 設定"
+    ]
+  },
+  {
+    "id": "art83-podcast-audiobook-sleep-timer",
+    "article_num": 83,
+    "cat_num": 15,
+    "category": "エンターテインメント・趣味",
+    "task_topic": "ポッドキャスト・ラジオ・オーディオブックの倍速再生・スリープタイマー・オフライン聴取の活用実例",
+    "title": "ポッドキャスト＆オーディオブックの倍速再生・スリープタイマー活用実例｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "ポッドキャスト 聴き方",
+      "スリープタイマー 音楽 停止",
+      "倍速再生 オーディオ"
+    ]
   }
 ]
