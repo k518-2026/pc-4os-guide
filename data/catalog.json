@@ -1085,5 +1085,96 @@
       "スリープタイマー 音楽 停止",
       "倍速再生 オーディオ"
     ]
+  },
+  {
+    "id": "art84-screen-time-app-limit-focus",
+    "article_num": 84,
+    "cat_num": 16,
+    "category": "学習・教育・自己啓発",
+    "task_topic": "SNSや動画の見過ぎを防いで学習時間を確保する「スクリーンタイム／デジタルウェルビーイング」アプリ制限設定",
+    "title": "SNS・動画の見過ぎを防ぐ！スクリーンタイム＆アプリ時間制限の設定実例｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "スクリーンタイム 制限",
+      "Digital Wellbeing 使い方",
+      "スマホ 使いすぎ 防止"
+    ]
+  },
+  {
+    "id": "art85-subscription-audit-cancel-guide",
+    "article_num": 85,
+    "cat_num": 17,
+    "category": "生活・行政手続き・家計・資産管理",
+    "task_topic": "契約中の月額サブスクリプション（Apple/Google/Microsoft）を一覧確認して解約・見直しする手順",
+    "title": "知らない間の月額課金を点検！サブスク一覧確認と安全な解約手順の実例｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "サブスク 解約 方法",
+      "Apple サブスクリプション 確認",
+      "Google Play 定期購入 解約"
+    ]
+  },
+  {
+    "id": "art86-pdf-handwritten-signature-markup",
+    "article_num": 86,
+    "cat_num": 1,
+    "category": "文書作成・オフィス業務・事務作業",
+    "task_topic": "PDFの申込書や同意書に印刷せず手書きサイン・文字入力（マークアップ）をして返信する標準機能の実例",
+    "title": "PDF申込書・同意書に印刷なしでサイン＆文字入力（マークアップ）する実例｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "PDF サイン 書き込む 無料",
+      "PDF 文字入力 標準機能",
+      "iPhone PDF マークアップ"
+    ]
+  },
+  {
+    "id": "art87-nearby-share-airdrop-quickshare",
+    "article_num": 87,
+    "cat_num": 2,
+    "category": "コミュニケーション・情報共有",
+    "task_topic": "目の前の端末同士で写真や動画を画質劣化なく高速転送するAirDrop・クイック共有・近距離共有の実例",
+    "title": "ケーブル不要で高速転送！AirDrop・クイック共有・近距離共有の使い分け実例｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "AirDrop 使い方 できない",
+      "クイック共有 Windows Android",
+      "近距離共有 設定"
+    ]
+  },
+  {
+    "id": "art88-safe-online-shopping-browser-tips",
+    "article_num": 88,
+    "cat_num": 3,
+    "category": "情報収集・リサーチ・Web利用",
+    "task_topic": "ネット通販で偽ショップを見抜くURL・証明書確認とブラウザのパスワード／決済保護機能の実例",
+    "title": "ネット通販の偽サイトを見抜く確認手順とブラウザ安全決済の設定実例｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "偽通販サイト 見分け方",
+      "SSL 証明書 確認",
+      "安全なブラウジング 設定"
+    ]
+  },
+  {
+    "id": "art89-photo-watermark-copyright-protect",
+    "article_num": 89,
+    "cat_num": 4,
+    "category": "画像・イラスト・デザイン制作",
+    "task_topic": "ブログやSNSに載せるオリジナル写真・図解に透かし（ウォーターマーク／クレジット）を入れる実例",
+    "title": "ブログ・SNS写真に透かし（ウォーターマーク）を入れて無断転載を防ぐ実例｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "写真 透かし 入れ方 無料",
+      "ウォーターマーク アプリ",
+      "画像 文字入れ 著作権"
+    ]
+  },
+  {
+    "id": "art90-slowmo-timelapse-video-speed-edit",
+    "article_num": 90,
+    "cat_num": 5,
+    "category": "動画・音声・音楽制作",
+    "task_topic": "スローモーションや倍速（タイムラプス）動画の速度調整と他OSへ送った時に通常速度に戻るトラブル対処",
+    "title": "スローモーション・倍速動画の速度調整と他端末で元に戻る時の対処実例｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "スローモーション 動画 編集",
+      "動画 速度変更 無料",
+      "iPhone スロー動画 共有"
+    ]
   }
 ]
