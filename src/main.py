@@ -82,7 +82,9 @@ def git_sync_and_push(generated_files: List[Path]) -> bool:
             logger.warning("Git remote 'origin' is not configured yet. Changes were committed locally.")
             return True
 
-        subprocess.run(["git", "pull", "--rebase", "origin", "main"], check=False)
+        git_env = {**os.environ, "GIT_EDITOR": "true"}
+        subprocess.run(["git", "fetch", "origin", "main"], check=False, env=git_env)
+        subprocess.run(["git", "merge", "--no-edit", "-X", "ours", "origin/main"], check=False, env=git_env)
         subprocess.run(["git", "push", "origin", "HEAD:main"], check=True)
         logger.info("Successfully pushed articles, illustrations & GitHub Pages to GitHub!")
         return True
