@@ -1176,5 +1176,75 @@
       "動画 速度変更 無料",
       "iPhone スロー動画 共有"
     ]
+  },
+  {
+    "id": "art91-cad-blueprint-viewer-mobile-sync",
+    "article_num": 91,
+    "cat_num": 6,
+    "category": "3D・CAD・ものづくり",
+    "task_topic": "PC・スマホ作業をWindows・macOS・iOS・Androidの4OSで実例比較する初心者向けブログの新規記事テーマ",
+    "title": "3Dプリンター出力前にSTLデータをブラウザで見比べ・修正し、どの端末からでも同じ図面を確認できる連携方法｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "CAD",
+      "STLファイル閲覧",
+      "WebGLビューワ",
+      "クラウド共有リンク"
+    ]
+  },
+  {
+    "id": "art92-ai-image-generator-prompt-writing-guide",
+    "article_num": 92,
+    "cat_num": 7,
+    "category": "プログラミング・ソフトウェア開発",
+    "task_topic": "AI画像生成器（DALL-E / Midjourney等）に文字を入れるコツと、4OSで保存したプロンプトを共有する実例比較",
+    "title": "【第92回】PC・スマホ作業をWindows・macOS・iOS・Androidの4OSで実例比較：AI画像生成器（DALL-E / Midjourney等）に文字を入れるコツと、保存したプロンプトを共有する初心者向けブログの新規記事テーマ｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "AI画像生成",
+      "テキスト入力",
+      "プロンプト管理",
+      "クロスプラットフォーム比較"
+    ]
+  },
+  {
+    "id": "art93-web-editor-comparison-across-windows-macos-ios-android",
+    "article_num": 93,
+    "cat_num": 8,
+    "category": "Web制作・ブログ・デジタルマーケティング",
+    "task_topic": "Web Editor Comparison: Text Formatting & Link Management Across Windows, macOS, iOS, Android",
+    "title": "Windows、macOS、iOS、Androidの4 OSで Web テキストエディタを比較：リンク管理と書式設定の実践例｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "web editor comparison",
+      "cross-device text editing",
+      "link management windows macos ios android",
+      "markdown formatting universal"
+    ]
+  },
+  {
+    "id": "art94-ai-spreadsheet-trend-analysis-mobile",
+    "article_num": 94,
+    "cat_num": 9,
+    "category": "データ分析・科学計算・AI活用",
+    "task_topic": "PC・スマホ作業をWindows・macOS・iOS・Androidの4OSで実例比較する初心者向けブログの新規記事テーマ",
+    "title": "Excel で株価や売上データをグラフ化する！標準アプリ「Numbers」＋Web ブラウザを使えば iPhone でも Windows でも同じ結果が出る｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "データ分析",
+      "AI活用",
+      "グラフ作成",
+      "Excel代替"
+    ]
+  },
+  {
+    "id": "art95-backup-files-cloud-storage-sync",
+    "article_num": 95,
+    "cat_num": 10,
+    "category": "システム管理・OS設定・メンテナンス",
+    "task_topic": "PC・スマホ作業を Windows・macOS・iOS・Android の 4 OS で実例比較。重要データを「Google ドライブ」と「OneDrive」のクラウドストレージに自動バックアップして、端末が壊れても安全な保存場所を探す方法",
+    "title": "Windows・macOS・iOS・Androidで重要なファイルをどこにも失わず保存する｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "データ損失の予防",
+      "クラウドバックアップ",
+      "Google ドライブ設定",
+      "OneDrive活用"
+    ]
   }
 ]
