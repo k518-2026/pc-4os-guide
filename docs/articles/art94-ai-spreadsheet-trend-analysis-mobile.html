@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Excel で株価や売上データをグラフ化する！標準アプリ「Numbers」＋Web ブラウザを使えば iPhone でも Windows でも同じ結果が出る｜Windows・macOS・iOS・Android | PC 4OS実例ガイド</title>
+  <style>
+:root {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --muted: #475569;
+  --accent: #0284c7;
+  --accent-soft: #e0f2fe;
+  --border: #e2e8f0;
+  --code-bg: #0f172a;
+  --code-text: #e2e8f0;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Noto Sans JP", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+}
+header.site-header {
+  background: linear-gradient(135deg, #0f172a 0%, #0369a1 100%);
+  color: #fff;
+  padding: 2.2rem 1.25rem;
+}
+header.site-header .inner { max-width: 980px; margin: 0 auto; }
+header.site-header h1 { margin: 0 0 0.4rem; font-size: 1.75rem; }
+header.site-header p { margin: 0; opacity: 0.9; font-size: 0.96rem; }
+main { max-width: 980px; margin: 2rem auto; padding: 0 1.25rem 3rem; }
+.badge {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: var(--accent-soft);
+  color: #0369a1;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1.25rem;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08); }
+.card img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; display: block; background: #e2e8f0; }
+.card-body { padding: 1rem 1.1rem 1.2rem; flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+.card-title { font-size: 1.02rem; font-weight: 700; margin: 0; line-height: 1.45; }
+.card-meta { font-size: 0.82rem; color: var(--muted); margin-top: auto; }
+article.post {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 2rem;
+}
+article.post img.eyecatch {
+  width: 100%;
+  max-height: 460px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+}
+article.post h1 { font-size: 1.65rem; line-height: 1.35; margin-top: 0; }
+article.post h2 {
+  font-size: 1.3rem;
+  margin-top: 2.1rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 2px solid var(--accent-soft);
+}
+article.post h3 { font-size: 1.08rem; margin-top: 1.4rem; }
+article.post table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.2rem 0;
+  font-size: 0.92rem;
+  display: block;
+  overflow-x: auto;
+}
+article.post th, article.post td {
+  border: 1px solid var(--border);
+  padding: 0.6rem 0.8rem;
+  text-align: left;
+}
+article.post th { background: #f1f5f9; font-weight: 700; }
+article.post pre {
+  background: var(--code-bg);
+  color: var(--code-text);
+  padding: 1rem 1.15rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+article.post code {
+  background: #f1f5f9;
+  padding: 0.15rem 0.38rem;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+article.post pre code { background: transparent; padding: 0; color: inherit; }
+article.post blockquote {
+  margin: 1.2rem 0;
+  padding: 0.8rem 1.1rem;
+  border-left: 4px solid var(--accent);
+  background: #f0f9ff;
+  border-radius: 0 8px 8px 0;
+}
+.back-link { display: inline-block; margin-bottom: 1rem; color: var(--accent); text-decoration: none; font-weight: 600; }
+.filter-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.15rem 1.25rem;
+  margin-bottom: 1.5rem;
+}
+.filter-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) auto;
+  gap: 0.9rem;
+  align-items: end;
+}
+.filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.filter-field label {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.filter-field input[type="search"],
+.filter-field select {
+  font: inherit;
+  font-size: max(1rem, 1em);
+  min-height: 48px;
+  padding: 0.55rem 0.85rem;
+  border: 1.5px solid #767676;
+  border-radius: 8px;
+  background: #fff;
+  color: var(--text);
+  width: 100%;
+}
+.filter-field input[type="search"]:focus-visible,
+.filter-field select:focus-visible,
+.filter-actions button:focus-visible {
+  outline: 3px solid #0284c7;
+  outline-offset: 2px;
+}
+.filter-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+.filter-actions button {
+  font: inherit;
+  font-size: max(1rem, 0.95em);
+  font-weight: 600;
+  min-height: 48px;
+  padding: 0 1.05rem;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+}
+.btn-primary {
+  background: #0369a1;
+  color: #fff;
+}
+.btn-primary:hover { background: #075985; }
+.btn-secondary {
+  background: #f1f5f9;
+  color: var(--text);
+  border-color: #94a3b8;
+}
+.btn-secondary:hover { background: #e2e8f0; }
+.results-status {
+  color: var(--muted);
+  font-size: 0.92rem;
+  margin: 0 0 1.1rem;
+}
+.empty-state {
+  background: var(--surface);
+  border: 1px dashed #94a3b8;
+  border-radius: 12px;
+  padding: 2rem 1.25rem;
+  text-align: center;
+  color: var(--muted);
+}
+.card[hidden],
+.empty-state[hidden] { display: none; }
+footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2rem 1rem; }
+@media (max-width: 720px) {
+  .filter-form { grid-template-columns: 1fr; }
+  .filter-actions { width: 100%; }
+  .filter-actions button { flex: 1; }
+}
+@media (max-width: 640px) {
+  article.post { padding: 1.2rem; }
+}
+</style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="inner">
+      <h1>PC 4OS実例ガイド</h1>
+      <p>Windows・macOS・iOS・Android の実践比較＆トラブル解決アーカイブ</p>
+    </div>
+  </header>
+  <main>
+    <a class="back-link" href="../index.html">← 記事一覧へ戻る</a>
+    <article class="post">
+      <p><span class="badge">#94｜分類09: データ分析・科学計算・AI活用</span> <small style="color:#64748b;margin-left:0.5rem;">2026-11-28</small></p>
+      <img class="eyecatch" src="../images/2026-11-28_art94_ai_spreadsheet_trend_analysis_mobile.png" alt="Excel で株価や売上データをグラフ化する！標準アプリ「Numbers」＋Web ブラウザを使えば iPhone でも Windows でも同じ結果が出る｜Windows・macOS・iOS・Android">
+      <h1>Excel で株価や売上データをグラフ化する！標準アプリ「Numbers」＋Web ブラウザを使えば iPhone でも Windows でも同じ結果が出る｜Windows・macOS・iOS・Android</h1>
+<p>「Excelで作成したデータやグラフを、外出先でも確認したい」「スマホから手軽に売上推移を見たいけれど、OSごとに操作が違って混乱する……」といった悩みをお持ちではありませんか？</p>
+<p>データ分析の現場では、PCでの高度な編集と、モバイルでの素早い確認という2つのシーンを使い分けることが重要です。しかし、Windows、macOS、iOS、AndroidとOSが異なると、アプリの挙動や操作感が変わり、データの整合性を保つのが難しくなることもあります。</p>
+<p>この記事では、<strong>「CSVファイル」を共通基盤として活用する</strong>ことで、4つの主要OSすべてで一貫したデータ分析・グラフ化を行うための実践的なワークフローを解説します。標準機能を最大限に活かし、デバイスの垣根を超えたスムーズなデータ連携を実現しましょう。</p>
+<h2>4OS比較早見表</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">機能・項目</th>
+<th style="text-align: left;">Windows (Excel)</th>
+<th style="text-align: left;">macOS (Numbers)</th>
+<th style="text-align: left;">iOS (Numbers/Web)</th>
+<th style="text-align: left;">Android (Sheets)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>主な標準アプリ</strong></td>
+<td style="text-align: left;">Microsoft Excel</td>
+<td style="text-align: left;">Numbers</td>
+<td style="text-align: left;">Numbers / Safari</td>
+<td style="text-align: left;">Google スプレッドシート</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>CSV対応</strong></td>
+<td style="text-align: left;">◎ 非常に強力</td>
+<td style="text-align: left;">◎ 高い互換性</td>
+<td style="text-align: left;">○ 標準的</td>
+<td style="text-align: left;">○ 標準的</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>グラフ作成</strong></td>
+<td style="text-align: left;">高度なカスタマイズ可</td>
+<td style="text-align: left;">直感的で美しいUI</td>
+<td style="text-align: left;">シンプルな操作</td>
+<td style="text-align: left;">クラウド連携に強い</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>AI機能(標準)</strong></td>
+<td style="text-align: left;">Copilot (要サブスク)</td>
+<td style="text-align: left;">非対応</td>
+<td style="text-align: left;">非対応</td>
+<td style="text-align: left;">限定的（Web版）</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>主な用途</strong></td>
+<td style="text-align: left;">大規模データ分析</td>
+<td style="text-align: left;">クリエイティブな可視化</td>
+<td style="text-align: left;">外出先での確認</td>
+<td style="text-align: left;">共同編集・モバイル入力</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>1. Windows 11 での実例手順</h2>
+<p>Windows環境では、世界標準の「Microsoft Excel」をフル活用します。最も汎用性の高いCSV形式をインポートすることで、正確なグラフ作成が可能です。</p>
+<p><strong>【操作手順】</strong><br />
+1. <strong>アプリの起動</strong>: 「スタートメニュー」から「Microsoft Excel」を選択して開きます（ショートカットキー <code>Win + R</code> で <code>excel</code> と入力して実行も可能です）。<br />
+2. <strong>CSVのインポート</strong>: ファイルタブ ＞ 「開く」 ＞ 「この PC / OneDrive から選択」をクリックし、用意したCSVファイルを選択します。<br />
+3. <strong>グラフの作成</strong>: グラフ化したいデータ範囲（例：日付と株価の列）をドラッグして選択します。その後、「挿入」タブをクリックし、「グラフの作成」から「折れ線図」や「棒グラフ」を選択してください。</p>
+<p><strong>【標準機能の制限事項】</strong><br />
+*   <strong>AI活用</strong>: Excel内の高度なAIツール（Copilotなど）は、Microsoft 365の有料サブスクリプションが必要です。無料版では基本的な関数操作に留まります。<br />
+*   <strong>モバイル連携</strong>: WindowsとiOS/Androidを直接同期する公式アプリはないため、データの受け渡しにはCSVファイルでの保存、またはOneDrive等のクラウドストレージを経由した手動転送が基本となります。</p>
+<hr />
+<h2>2. macOS での実例手順</h2>
+<p>Macユーザーであれば、標準アプリの「Numbers」を活用するのが最もスムーズです。Apple製品らしい洗練されたUIでグラフを作成できます。</p>
+<p><strong>【操作手順】</strong><br />
+1. <strong>アプリの起動</strong>: 「Finder」から「アプリケーション」フォルダを開き、「Numbers.app」を起動します。<br />
+2. <strong>CSVの読み込み</strong>: メニューバーの「ファイル」 ＞ 「開く」を選択し、CSVファイルを選んでインポートします。<br />
+3. <strong>グラフの作成</strong>: データ範囲を選択した状態で、ツールバーにある「グラフアイコン」をクリックします。好みのグラフタイプ（折れ線など）を選択するだけで、瞬時に可視化されます。</p>
+<p><strong>【標準機能の制限事項】</strong><br />
+*   <strong>AI活用</strong>: Numbersアプリ単体では、AIによる高度な予測分析や自動要約機能には非対応です。高度な分析が必要な場合は、Webブラウザ経由でGoogleスプレッドシート等と連携することをお勧めします。<br />
+*   <strong>ファイル互換性</strong>: Excel形式（.xlsx）を直接開く際にレイアウトが崩れることがあるため、OS間でのやり取りは必ず「CSV」または「.numbers」形式で行うのが安全です。</p>
+<hr />
+<h2>3. iOS（iPhone / iPad）での実例手順</h2>
+<p>モバイル端末では、「Numbersアプリ」と「Webブラウザ（Safari）」の使い分けがポイントです。</p>
+<p><strong>【操作手順】</strong><br />
+1. <strong>ファイルを開く</strong>: 「ファイルアプリ（Files）」からダウンロード済みのCSVをタップし、Numbersで開きます。または、SafariからGoogleスプレッドシートへ直接アクセスしてCSVをアップロードします。<br />
+2. <strong>Numbersでの可視化</strong>: アプリ内でデータを開き、「編集」 ＞ 「グラフを追加」を選択して操作します。<br />
+3. <strong>Webブラウザ経由（Safari）</strong>: Googleアカウントにログインし、Web版スプレッドシートでCSVをアップロードします。自動生成された表をタップすることで簡易的なグラフ確認が可能です。</p>
+<p><strong>【標準機能の制限事項】</strong><br />
+*   <strong>AI活用</strong>: iOS標準アプリにはAI分析機能はありません。GoogleスプレッドシートのWeb版でも、高度なAIツールは有料プラン（Google Workspace等）が必要となることが一般的です。<br />
+*   <strong>メモリ制約</strong>: iPad Proなどの大画面端末でも、Windows/macOSと比較すると極端に大量のデータ（数万行〜）を処理する際の描画速度が低下する場合があります。</p>
+<hr />
+<h2>4. Android での実例手順</h2>
+<p>Androidでは「Google スプレッドシート」アプリが標準的な選択肢となります。</p>
+<p><strong>【操作手順】</strong><br />
+1. <strong>アプリの起動</strong>: Playストアからインストール、またはプリインストールされている「スプレッドシート（Sheets）」を開きます。<br />
+2. <strong>CSVのインポート</strong>: メニューの「ファイル」 ＞ 「インポート」を選択し、端末内のCSVファイルを選択します。<br />
+3. <strong>グラフの作成</strong>: データ範囲を選択し、「挿入」タブ ＞ 「グラフ」から種類を選びます。（※機種によりメニュー階層が異なる場合があるため、アイコンを順に確認してください）</p>
+<p><strong>【標準機能の制限事項】</strong><br />
+*   <strong>AI活用</strong>: 標準アプリではAIによる予測分析は非対応です。Chromeブラウザ版でも無料プランでは機能が限定的です。<br />
+*   <strong>OS依存性</strong>: PixelやGalaxyなど機種によって「ファイル管理」アプリの名前や階層が異なるため、CSVの読み込みパスが微妙に異なる点に注意が必要です。</p>
+<hr />
+<h2>よくあるトラブルと解決チェックリスト</h2>
+<p>データ分析中に遭遇しやすいエラーと、その対処法をまとめました。</p>
+<ol>
+<li><strong>CSVファイルが開けない / 文字化けする</strong><ul>
+<li><strong>原因</strong>: 改行コードの違い（CRLF vs LF）や、エンコーディング（Shift-JIS vs UTF-8）の不一致。</li>
+<li><strong>解決策</strong>: Windows Excelでは「データ」タブの「テキストからインポート」を使い、元のファイルの文字コードを指定します。Googleスプレッドシートで開く際に文字化けした場合は、ブラウザで再読み込みするか、アップロード時のエンコーディング設定を確認してください。</li>
+</ul>
+</li>
+<li><strong>グラフが正しく表示されない / 軸がおかしい</strong><ul>
+<li><strong>原因</strong>: 日付が「テキスト」として認識されている、または数値列に空白や全角文字が含まれている。</li>
+<li><strong>解決策</strong>: セルを選択し、書式設定を「テキスト」から「数値」または「日付」へ手動で変更してください。異常値の自動検出を行いたい場合は、標準機能の範囲を超えるためPython等の外部ツール活用を検討しましょう。</li>
+</ul>
+</li>
+<li><strong>大容量データでの動作が重い / グラフ描画に時間がかかる</strong><ul>
+<li><strong>原因</strong>: メモリ不足やCPUへの過度な負荷。</li>
+<li><strong>解決策</strong>: Windows/macOSでは「外付けNVMe SSD」へデータを移動して高速読み込みを行い、Excelの「計算オプション」を「手動」または「非同期計算」に設定します。モバイル端末ではデータ量を分割（例：月別・年別）して処理することをお勧めします。</li>
+</ul>
+</li>
+<li><strong>AI機能を利用したいが標準アプリでは使えない</strong><ul>
+<li><strong>原因</strong>: OSの標準アプリには、CopilotやApple Intelligenceのような高度なAIモジュールが統合されていないため。</li>
+<li><strong>解決策</strong>: ブラウザ経由で「Microsoft Excel Online」や「Google スプレッドシート」にアクセスし、クラウド側で提供されている限定的なAI機能を試すか、専用のAIツールを導入する必要があります。</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h2>まとめ：快適なマルチOS環境を作るポイント</h2>
+<p>4つのOSすべてで一貫したデータ分析を行うための鍵は、<strong>「CSVという共通言語」を使いこなすこと</strong>にあります。どのデバイスでも標準アプリでCSVを読み込み、グラフ化するワークフローを確立すれば、場所を選ばず正確なデータ確認が可能になります。</p>
+<p>さらに、より高度でストレスのない分析環境を構築するためには、以下の周辺機器やスペックの検討も非常に有効です。</p>
+<ul>
+<li><strong>大容量メモリ・GPU搭載PC</strong>: 数万行を超える大規模データの処理や、AIモデルのローカル学習を行う場合は、Windows/macOSの高スペック機が必須です。特にGPUはデータ処理の高速化に直結します。</li>
+<li><strong>外付けNVMe SSD</strong>: 大量のCSVファイルやログデータを扱う際、内蔵ストレージを圧迫せず高速に読み込むための「外付けNVMe SSD」は、分析者の生産性を支える強力な武器となります。</li>
+</ul>
+<p>デバイスごとの特性を理解し、適切なツールとハードウェアを組み合わせることで、あなたのデータ分析体験は劇的に向上するはずです。</p>
+<hr />
+<h2>参考文献・公式ドキュメント（一次情報ソース）</h2>
+<p>本記事の手順・仕様は以下の各OSおよびツールの公式ドキュメントに基づいています。OSアップデートによりメニュー名称や挙動が変わる場合があるため、最新仕様の確認にもご活用ください。</p>
+<ul>
+<li><strong>[Windows]</strong> <a href="https://support.microsoft.com/ja-jp/office/%E3%83%86%E3%82%AD%E3%82%B9%E3%83%88-txt-%E3%81%BE%E3%81%9F%E3%81%AF-csv-%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%92%E3%82%A4%E3%83%B3%E3%83%9D%E3%83%BC%E3%83%88%E3%81%BE%E3%81%9F%E3%81%AF%E3%82%A8%E3%82%AF%E3%82%B9%E3%83%9D%E3%83%BC%E3%83%88%E3%81%99%E3%82%8B-5250ac4c-663c-47ce-937b-339e391393ba">テキスト (.txt) または CSV ファイルをインポートまたはエクスポートする - Microsoft サポート</a></li>
+<li><strong>[macOS]</strong> <a href="https://support.apple.com/ja-jp/guide/numbers/tan581f5365e/mac">Mac用Numbersユーザガイド（CSV読み込み・書き出し） - Apple サポート (日本)</a></li>
+<li><strong>[iOS / Android / 共通]</strong> <a href="https://support.google.com/docs/answer/40608?hl=ja">Google スプレッドシートでデータセット・CSVを読み込む - Google ドキュメント エディタ ヘルプ</a></li>
+</ul>
+    </article>
+  </main>
+  <footer>Generated with Local Ollama (qwen3.5 / gemma4) &amp; Draw Things (FLUX.2 klein 4B)</footer>
+</body>
+</html>
