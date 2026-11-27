@@ -272,9 +272,10 @@ class ArticleGenerator:
         num_ctx: int = 8192,
         timeout: int = 600,
         max_retries: int = 3,
+        response_format: Optional[Any] = None,
     ) -> str:
         url = f"{self.ollama_host}/api/chat"
-        payload = {
+        payload: Dict[str, Any] = {
             "model": model,
             "messages": messages,
             "stream": False,
@@ -286,6 +287,8 @@ class ArticleGenerator:
                 "repeat_penalty": 1.1,
             },
         }
+        if response_format is not None:
+            payload["format"] = response_format
         last_err: Optional[Exception] = None
         for attempt in range(1, max_retries + 1):
             try:
@@ -541,43 +544,65 @@ class ArticleGenerator:
         categories: List[Dict[str, Any]],
         target_cat_nums: List[int],
     ) -> List[Dict[str, Any]]:
-        """Auto-generates fresh article themes for the next 17-category rotation round."""
+        """Auto-generates fresh article themes (1 item per call with JSON Schema) for the 17-category rotation."""
         cat_map = {int(c["cat_num"]): c for c in categories}
-        existing_topics = [f"- (cat#{x.get('cat_num')}) {x.get('task_topic')}" for x in existing_catalog[-50:]]
-        next_num = max((int(x.get("article_num", 0)) for x in existing_catalog), default=0) + 1
+        base_num = max((int(x.get("article_num", 0)) for x in existing_catalog), default=0)
+        existing_ids = {str(x.get("id", "")) for x in existing_catalog}
 
-        requested_lines = []
+        item_schema = {
+            "type": "object",
+            "properties": {
+                "slug": {"type": "string"},
+                "task_topic": {"type": "string"},
+                "title": {"type": "string"},
+                "keywords": {"type": "array", "items": {"type": "string"}},
+            },
+            "required": ["slug", "task_topic", "title", "keywords"],
+        }
+
+        generated: List[Dict[str, Any]] = []
         for idx, cnum in enumerate(target_cat_nums):
+            art_n = base_num + idx + 1
             cname = cat_map.get(cnum, {}).get("name", f"Category {cnum}")
-            requested_lines.append(f"{idx + 1}. article_num={next_num + idx}, cat_num={cnum}, category=\"{cname}\"")
-
-        prompt = (
-            "PC・スマホ作業をWindows・macOS・iOS・Androidの4OSで実例比較する初心者向けブログの新しい記事テーマをJSON配列で生成してください。\n"
-            "既存テーマと重複しない、検索需要が高くトラブル解決に役立つ実践テーマにしてください。\n\n"
-            f"【生成するスロット】\n" + "\n".join(requested_lines) + "\n\n"
-            f"【既存テーマ（重複禁止）】\n" + "\n".join(existing_topics) + "\n\n"
-            "【出力形式】JSON配列のみ出力（Markdownコードフェンス不要）。各要素のキー:\n"
-            '{"id": "artXX-short-english-slug", "article_num": 数値, "cat_num": 数値, "category": "カテゴリ名", '
-            '"task_topic": "具体的な作業内容", "title": "...｜Windows・macOS・iOS・Android", "keywords": ["kw1", "kw2", "kw3"]}'
-        )
-        raw = self._clean_markdown(
-            self._call_ollama_chat(
-                model=self.planner_model,
-                messages=[
-                    {"role": "system", "content": "You output strictly valid JSON arrays for a Japanese tech blog catalog."},
-                    {"role": "user", "content": prompt},
-                ],
-                temperature=0.6,
-                num_predict=2500,
+            recent_topics = [f"- (cat#{x.get('cat_num')}) {x.get('task_topic')}" for x in (existing_catalog + generated)[-40:]]
+            prompt = (
+                f"PC・スマホ作業をWindows・macOS・iOS・Androidの4OSで実例比較する初心者向けブログの新規記事テーマを1件（第{art_n}回・分類#{cnum}: {cname}）作成してください。\n"
+                "既存テーマと重複しない、日常・仕事で役立つ具体的な実践テーマにしてください（Linuxは含めないこと）。\n"
+                "`slug` は英小文字とハイフンのみ（例: `cloud-photo-album-share`）。\n"
+                "`title` の末尾は `｜Windows・macOS・iOS・Android` としてください。\n\n"
+                "【既存テーマ（重複禁止）】\n" + "\n".join(recent_topics)
             )
-        )
-        match = re.search(r"\[.*\]", raw, flags=re.DOTALL)
-        if not match:
-            logger.warning("Failed to parse JSON array for new rotation themes.")
-            return []
-        try:
-            items = json.loads(match.group(0))
-            return [x for x in items if isinstance(x, dict) and x.get("id") and x.get("title")]
-        except Exception as e:
-            logger.warning(f"JSON decode failed for new rotation themes: {e}")
-            return []
+            for attempt in range(1, 4):
+                try:
+                    raw = self._call_ollama_chat(
+                        model=self.planner_model,
+                        messages=[
+                            {"role": "system", "content": "Output a single valid JSON object matching the schema."},
+                            {"role": "user", "content": prompt},
+                        ],
+                        temperature=0.65,
+                        num_predict=800,
+                        response_format=item_schema,
+                    )
+                    it = json.loads(self._clean_markdown(raw), strict=False)
+                    if isinstance(it, dict) and it.get("title") and it.get("task_topic"):
+                        slug = re.sub(r"[^a-z0-9-]+", "-", str(it.get("slug", "guide")).lower()).strip("-")
+                        slug = re.sub(r"^art\d+-", "", slug) or "practical-guide"
+                        aid = f"art{art_n:02d}-{slug}"
+                        if aid in existing_ids:
+                            aid = f"{aid}-{int(time.time()) % 1000}"
+                        existing_ids.add(aid)
+                        generated.append({
+                            "id": aid,
+                            "article_num": art_n,
+                            "cat_num": cnum,
+                            "category": cname,
+                            "task_topic": str(it["task_topic"]).strip(),
+                            "title": str(it["title"]).strip(),
+                            "keywords": [str(k) for k in (it.get("keywords") or [])][:4] or [cname, "4OS比較"],
+                        })
+                        break
+                except Exception as e:
+                    logger.warning(f"PC-4OS theme design attempt {attempt} for art#{art_n} failed: {e}")
+                    time.sleep(2)
+        return generated

@@ -279,6 +279,9 @@ def main() -> None:
             if args.push:
                 git_sync_and_push(assets)
 
+        if not generated_all and args.stock_count > 0:
+            logger.error("Failed to generate any new articles!")
+            sys.exit(1)
         print_status_report(catalog_mgr)
         return
 
