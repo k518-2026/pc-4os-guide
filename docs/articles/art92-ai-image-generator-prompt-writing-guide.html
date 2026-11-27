@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>【第92回】PC・スマホ作業をWindows・macOS・iOS・Androidの4OSで実例比較：AI画像生成器（DALL-E / Midjourney等）に文字を入れるコツと、保存したプロンプトを共有する初心者向けブログの新規記事テーマ｜Windows・macOS・iOS・Android | PC 4OS実例ガイド</title>
+  <style>
+:root {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --muted: #475569;
+  --accent: #0284c7;
+  --accent-soft: #e0f2fe;
+  --border: #e2e8f0;
+  --code-bg: #0f172a;
+  --code-text: #e2e8f0;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Noto Sans JP", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+}
+header.site-header {
+  background: linear-gradient(135deg, #0f172a 0%, #0369a1 100%);
+  color: #fff;
+  padding: 2.2rem 1.25rem;
+}
+header.site-header .inner { max-width: 980px; margin: 0 auto; }
+header.site-header h1 { margin: 0 0 0.4rem; font-size: 1.75rem; }
+header.site-header p { margin: 0; opacity: 0.9; font-size: 0.96rem; }
+main { max-width: 980px; margin: 2rem auto; padding: 0 1.25rem 3rem; }
+.badge {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: var(--accent-soft);
+  color: #0369a1;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1.25rem;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08); }
+.card img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; display: block; background: #e2e8f0; }
+.card-body { padding: 1rem 1.1rem 1.2rem; flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+.card-title { font-size: 1.02rem; font-weight: 700; margin: 0; line-height: 1.45; }
+.card-meta { font-size: 0.82rem; color: var(--muted); margin-top: auto; }
+article.post {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 2rem;
+}
+article.post img.eyecatch {
+  width: 100%;
+  max-height: 460px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+}
+article.post h1 { font-size: 1.65rem; line-height: 1.35; margin-top: 0; }
+article.post h2 {
+  font-size: 1.3rem;
+  margin-top: 2.1rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 2px solid var(--accent-soft);
+}
+article.post h3 { font-size: 1.08rem; margin-top: 1.4rem; }
+article.post table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.2rem 0;
+  font-size: 0.92rem;
+  display: block;
+  overflow-x: auto;
+}
+article.post th, article.post td {
+  border: 1px solid var(--border);
+  padding: 0.6rem 0.8rem;
+  text-align: left;
+}
+article.post th { background: #f1f5f9; font-weight: 700; }
+article.post pre {
+  background: var(--code-bg);
+  color: var(--code-text);
+  padding: 1rem 1.15rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+article.post code {
+  background: #f1f5f9;
+  padding: 0.15rem 0.38rem;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+article.post pre code { background: transparent; padding: 0; color: inherit; }
+article.post blockquote {
+  margin: 1.2rem 0;
+  padding: 0.8rem 1.1rem;
+  border-left: 4px solid var(--accent);
+  background: #f0f9ff;
+  border-radius: 0 8px 8px 0;
+}
+.back-link { display: inline-block; margin-bottom: 1rem; color: var(--accent); text-decoration: none; font-weight: 600; }
+.filter-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.15rem 1.25rem;
+  margin-bottom: 1.5rem;
+}
+.filter-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) auto;
+  gap: 0.9rem;
+  align-items: end;
+}
+.filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.filter-field label {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.filter-field input[type="search"],
+.filter-field select {
+  font: inherit;
+  font-size: max(1rem, 1em);
+  min-height: 48px;
+  padding: 0.55rem 0.85rem;
+  border: 1.5px solid #767676;
+  border-radius: 8px;
+  background: #fff;
+  color: var(--text);
+  width: 100%;
+}
+.filter-field input[type="search"]:focus-visible,
+.filter-field select:focus-visible,
+.filter-actions button:focus-visible {
+  outline: 3px solid #0284c7;
+  outline-offset: 2px;
+}
+.filter-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+.filter-actions button {
+  font: inherit;
+  font-size: max(1rem, 0.95em);
+  font-weight: 600;
+  min-height: 48px;
+  padding: 0 1.05rem;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+}
+.btn-primary {
+  background: #0369a1;
+  color: #fff;
+}
+.btn-primary:hover { background: #075985; }
+.btn-secondary {
+  background: #f1f5f9;
+  color: var(--text);
+  border-color: #94a3b8;
+}
+.btn-secondary:hover { background: #e2e8f0; }
+.results-status {
+  color: var(--muted);
+  font-size: 0.92rem;
+  margin: 0 0 1.1rem;
+}
+.empty-state {
+  background: var(--surface);
+  border: 1px dashed #94a3b8;
+  border-radius: 12px;
+  padding: 2rem 1.25rem;
+  text-align: center;
+  color: var(--muted);
+}
+.card[hidden],
+.empty-state[hidden] { display: none; }
+footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2rem 1rem; }
+@media (max-width: 720px) {
+  .filter-form { grid-template-columns: 1fr; }
+  .filter-actions { width: 100%; }
+  .filter-actions button { flex: 1; }
+}
+@media (max-width: 640px) {
+  article.post { padding: 1.2rem; }
+}
+</style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="inner">
+      <h1>PC 4OS実例ガイド</h1>
+      <p>Windows・macOS・iOS・Android の実践比較＆トラブル解決アーカイブ</p>
+    </div>
+  </header>
+  <main>
+    <a class="back-link" href="../index.html">← 記事一覧へ戻る</a>
+    <article class="post">
+      <p><span class="badge">#92｜分類07: プログラミング・ソフトウェア開発</span> <small style="color:#64748b;margin-left:0.5rem;">2026-11-28</small></p>
+      <img class="eyecatch" src="../images/2026-11-28_art92_ai_image_generator_prompt_writing_guide.png" alt="【第92回】PC・スマホ作業をWindows・macOS・iOS・Androidの4OSで実例比較：AI画像生成器（DALL-E / Midjourney等）に文字を入れるコツと、保存したプロンプトを共有する初心者向けブログの新規記事テーマ｜Windows・macOS・iOS・Android">
+      <h1>【第92回】PC・スマホ作業をWindows・macOS・iOS・Androidの4OSで実例比較：AI画像生成器（DALL-E / Midjourney等）に文字を入れるコツと、保存したプロンプトを共有する初心者向けブログの新規記事テーマ｜Windows・macOS・iOS・Android</h1>
+<p>「AIでかっこいい画像を作ったけれど、肝心の文字が崩れてしまう…」「作ったプロンプト（指示文）をスマホでもPCでもすぐに呼び出したい」といった悩みをお持ちではありませんか？</p>
+<p>AI画像生成ツール（DALL-E 3やMidjourneyなど）の進化により、画像内のテキスト描写能力は向上していますが、依然として正確なフォント指定や複雑なレイアウトを完璧に再現するのは難しいのが現状です。また、複数のデバイスを使い分ける現代では、<strong>「どこで作成したプロンプトをどうやって同期するか」</strong>というワークフローの構築も重要です。</p>
+<p>この記事では、Windows、macOS、iOS、Androidの4つの主要OSを横断しながら、<strong>「AI画像への文字入れテクニック」</strong>と<strong>「GitHubを活用したプロンプト管理術」</strong>の実例を徹底比較します。この記事を読めば、どのデバイスでもスムーズにクリエイティブな作業を進めるための最適解が見つかります。</p>
+<h2>4OS比較早見表</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">機能・項目</th>
+<th style="text-align: left;">Windows 11</th>
+<th style="text-align: left;">macOS</th>
+<th style="text-align: left;">iOS (iPhone/iPad)</th>
+<th style="text-align: left;">Android</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>主な画像編集ツール</strong></td>
+<td style="text-align: left;">Paint / Photoshop Express</td>
+<td style="text-align: left;">Pages / Photopea (Web)</td>
+<td style="text-align: left;">写真アプリ (Markup)</td>
+<td style="text-align: left;">Google フォト / Snapseed</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>プロンプト管理</strong></td>
+<td style="text-align: left;">VS Code / github.dev</td>
+<td style="text-align: left;">VS Code / github.dev</td>
+<td style="text-align: left;">GitHub Mobile アプリ</td>
+<td style="text-align: left;">GitHub Mobile アプリ</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>テキスト追加の自由度</strong></td>
+<td style="text-align: left;">高（レイアウト自由）</td>
+<td style="text-align: left;">中（Pages等で補完）</td>
+<td style="text-align: left;">低（簡易的な挿入）</td>
+<td style="text-align: left;">低（機種依存あり）</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>同期の利便性</strong></td>
+<td style="text-align: left;">◎ (Git連携)</td>
+<td style="text-align: left;">◎ (Git連携)</td>
+<td style="text-align: left;">◯ (Mobileアプリ)</td>
+<td style="text-align: left;">◯ (Mobileアプリ)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>1. Windows 11 での実例手順</h2>
+<p>Windows環境は、自由度の高い編集と強力な開発ツールとの親和性が最大の特徴です。</p>
+<h3>画像へのテキスト追加手順</h3>
+<ol>
+<li>AIで生成した画像をブラウザで開き、右クリックから「イメージとして保存」を選択。</li>
+<li>標準アプリの<strong>「Microsoft Paint（ペイント）」</strong>またはストアアプリの<strong>「Photoshop Express」</strong>を起動。</li>
+<li>
+<p>「描画ツール」タブからテキストボックスを追加し、「Aa」ボタンを押して文字を入力。</p>
+</li>
+<li>
+<p><strong>制限事項</strong>: 標準のPaintはフォントの種類が限られるため、高度なデザインには「Photoshop Express」等の外部アプリ導入を推奨します。</p>
+</li>
+<li><strong>よくあるトラブルと解決法</strong>:<ul>
+<li><strong>問題</strong>: 背景色と文字が重なって見にくい。<ul>
+<li><strong>解決</strong>: 「写真」アプリでコントラストを調整するか、Paintで文字に枠線（アウトライン）を引く。</li>
+</ul>
+</li>
+<li><strong>問題</strong>: 保存時に画像が圧縮され文字がぼやける。<ul>
+<li><strong>解決</strong>: 「名前を付けて保存」から形式を「PNG（非圧縮）」に指定する。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h3>プロンプト管理</h3>
+<p>ローカルの<strong>VS Code</strong>でプロンプトを記述し、GitHubリポジトリへプッシュすることで、他のデバイスと同期します。</p>
+<hr />
+<h2>2. macOS での実例手順</h2>
+<p>macOSは洗練されたUIを持ちますが、標準の「プレビュー」アプリだけでは画像への自由な文字入れには限界があります。</p>
+<h3>画像へのテキスト追加手順</h3>
+<ol>
+<li>AI画像をダウンロードし、「プレビュー」で開く（※ここでは確認用）。</li>
+<li><strong>「Pages」</strong>アプリを起動し、画像をドラッグ＆ドロップ。</li>
+<li>
+<p>ツールバーの「T」アイコンをクリックしてテキストを追加。背景透過処理も行えるため、デザイン性が高まります。</p>
+</li>
+<li>
+<p><strong>制限事項</strong>: 「プレビュー」単体では画像上の自由な位置へのテキスト挿入機能が弱いため、PagesやWeb版のPhotopeaを併用するのが標準的なワークフローです。</p>
+</li>
+<li><strong>よくあるトラブルと解決法</strong>:<ul>
+<li><strong>問題</strong>: Pagesで保存した際にメタデータ（プロンプト情報等）が消える。<ul>
+<li><strong>解決</strong>: 修正前に元のファイルをバックアップし、プロンプトは別途テキストファイルとして管理する。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h2>3. iOS（iPhone / iPad）での実例手順</h2>
+<p>モバイル環境では「手軽さ」を重視したワークフローになります。</p>
+<h3>画像へのテキスト追加手順</h3>
+<ol>
+<li>「写真」アプリでAI画像を開く。</li>
+<li><strong>「共有ボタン」</strong>をタップし、<strong>「マークアップして送信」</strong>を選択。</li>
+<li>
+<p>ツールバーの「T（テキスト）」アイコンをタップし、フォントを選んで入力。</p>
+</li>
+<li>
+<p><strong>制限事項</strong>: 複雑なレイアウトや正確な位置調整には限界があります。</p>
+</li>
+<li><strong>よくあるトラブルと解決法</strong>:<ul>
+<li><strong>問題</strong>: 「マークアップして送信」ではファイル自体が更新されない場合がある。<ul>
+<li><strong>解決</strong>: 共有先を「ファイルを保存（iCloud/Google Drive）」にし、新しい画像として書き出す。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h2>4. Android での実例手順</h2>
+<p>AndroidはメーカーごとにUIが異なりますが、Googleエコシステムを活用するのが最も安定します。</p>
+<h3>画像へのテキスト追加手順</h3>
+<ol>
+<li><strong>「Google フォト」</strong>アプリでAI画像を開く。</li>
+<li>「編集」→「マークアップ（またはペンツール）」を選択。</li>
+<li>
+<p>テキストアイコンをタップして入力。（※機種によりメニュー名が異なる場合があります）</p>
+</li>
+<li>
+<p><strong>制限事項</strong>: 機種依存が大きく、標準機能では複雑な装飾が困難です。</p>
+</li>
+<li><strong>よくあるトラブルと解決法</strong>:<ul>
+<li><strong>問題</strong>: 「マークアップ」ボタンが表示されない。<ul>
+<li><strong>解決</strong>: Playストアから「Snapseed」などの無料アプリをインストールし、テキストツールを使用する。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h2>プロンプトの管理と共有：4OS で GitHub を活用する実例比較</h2>
+<p>どのOSでも共通して使える最強のプロンプト同期術が<strong>GitHub</strong>の活用です。</p>
+<h3>コンセプト: ローカル編集 → GitHub Web/アプリへプッシュ・プル</h3>
+<ol>
+<li><strong>Windows / macOS</strong>: <strong>VS Code</strong>でプロンプトを管理。<code>github.dev</code>（ブラウザ版エディタ）を使えば、インストール不要でどこからでも編集可能です。</li>
+<li>
+<p><strong>iOS / Android</strong>: <strong>GitHub Mobileアプリ</strong>をインストール。外出先でも最新のプロンプトを確認・修正し、即座に生成へ反映できます。</p>
+</li>
+<li>
+<p><strong>共通の注意点</strong>: プロンプトファイルはテキストのみを管理してください。画像データ自体をリポジトリに入れると容量制限や読み込み遅延の原因になります。</p>
+</li>
+</ol>
+<hr />
+<h2>よくあるトラブルと解決チェックリスト</h2>
+<ul>
+<li><strong>[ ] 問題: Git pushが失敗し「Authentication failed」と出る</strong><ul>
+<li><strong>解決</strong>: GitHub Desktopアプリを導入するか、ブラウザのGitHubタブでログイン状態を再確認してください。<code>github.dev</code>ならブラウザ認証のみで動作します。</li>
+</ul>
+</li>
+<li><strong>[ ] 問題: AI生成画像の文字が「ハルシネーション（崩れ）」を起こす</strong><ul>
+<li><strong>解決</strong>: プロンプト内で「Text: [単語]」と強調するだけでなく、生成後に各OSの標準機能（Paint, Pages, Markup等）で上書きするのが最も確実です。</li>
+</ul>
+</li>
+<li><strong>[ ] 問題: 保存した画像にテキスト情報が埋め込まれていない（コピペで消える）</strong><ul>
+<li><strong>解決</strong>: 「共有」→「ファイルとして送信」を選択し、必ず新しい画像形式（PNG/JPG）として書き出してから他のOSへ渡してください。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2>まとめ：快適なマルチOS環境を作るポイント</h2>
+<p>AI画像生成とプロンプト管理を4OSで円滑に行う鍵は、<strong>「各デバイスの得意分野を使い分けること」</strong>です。</p>
+<ul>
+<li><strong>Windows/macOS</strong>: 高精度な編集とVS Codeによる本格的なプロンプト管理。</li>
+<li><strong>iOS/Android</strong>: 隙間時間での確認と、標準ツールを使ったクイックな文字入れ。</li>
+</ul>
+<p>このワークフローを快適にするために、以下の周辺機器やツールの導入も検討してみてください。<br />
+- <strong>メカニカルキーボード</strong>: 長時間のプロンプト記述における打鍵感の向上。<br />
+- <strong>ウルトラワイドモニター</strong>: 画像生成とエディタの同時表示による作業効率の最大化。<br />
+- <strong>技術書・VPS・クラウド</strong>: 複雑なAIモデルを動かすための知識習得や、より高度な環境（GPUサーバー等）へのアクセスは、クリエイティブの幅を劇的に広げてくれます。</p>
+<p>各OSの特性を理解し、GitHubをハブとした同期体制を築くことで、あなたのクリエイティブ制作はよりスムーズでプロフェッショナルなものになるはずです。</p>
+<hr />
+<h2>参考文献・公式ドキュメント（一次情報ソース）</h2>
+<p>本記事の手順・仕様は以下の各OSおよびツールの公式ドキュメントに基づいています。OSアップデートによりメニュー名称や挙動が変わる場合があるため、最新仕様の確認にもご活用ください。</p>
+<ul>
+<li><strong>[Windows / macOS]</strong> <a href="https://docs.github.com/ja/codespaces/the-githubdev-web-based-editor">GitHubからの Web 用 VS Code の使用 (github.dev) - GitHubドキュメント</a></li>
+<li><strong>[共通]</strong> <a href="https://docs.github.com/ja/repositories/working-with-files/managing-files/editing-files">GitHub上でファイルを編集する - GitHubドキュメント</a></li>
+<li><strong>[iOS / Android]</strong> <a href="https://docs.github.com/ja/get-started/using-github/github-mobile">GitHub Mobile 公式ガイド - GitHubドキュメント</a></li>
+</ul>
+    </article>
+  </main>
+  <footer>Generated with Local Ollama (qwen3.5 / gemma4) &amp; Draw Things (FLUX.2 klein 4B)</footer>
+</body>
+</html>
