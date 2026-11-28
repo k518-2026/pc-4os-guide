@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>銀行取引明細を「カテゴリ」で自動整理する：Windows・macOS、iOS、Androidの標準アプリ比較 | PC 4OS実例ガイド</title>
+  <style>
+:root {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --muted: #475569;
+  --accent: #0284c7;
+  --accent-soft: #e0f2fe;
+  --border: #e2e8f0;
+  --code-bg: #0f172a;
+  --code-text: #e2e8f0;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Noto Sans JP", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+}
+header.site-header {
+  background: linear-gradient(135deg, #0f172a 0%, #0369a1 100%);
+  color: #fff;
+  padding: 2.2rem 1.25rem;
+}
+header.site-header .inner { max-width: 980px; margin: 0 auto; }
+header.site-header h1 { margin: 0 0 0.4rem; font-size: 1.75rem; }
+header.site-header p { margin: 0; opacity: 0.9; font-size: 0.96rem; }
+main { max-width: 980px; margin: 2rem auto; padding: 0 1.25rem 3rem; }
+.badge {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: var(--accent-soft);
+  color: #0369a1;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1.25rem;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08); }
+.card img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; display: block; background: #e2e8f0; }
+.card-body { padding: 1rem 1.1rem 1.2rem; flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+.card-title { font-size: 1.02rem; font-weight: 700; margin: 0; line-height: 1.45; }
+.card-meta { font-size: 0.82rem; color: var(--muted); margin-top: auto; }
+article.post {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 2rem;
+}
+article.post img.eyecatch {
+  width: 100%;
+  max-height: 460px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+}
+article.post h1 { font-size: 1.65rem; line-height: 1.35; margin-top: 0; }
+article.post h2 {
+  font-size: 1.3rem;
+  margin-top: 2.1rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 2px solid var(--accent-soft);
+}
+article.post h3 { font-size: 1.08rem; margin-top: 1.4rem; }
+article.post table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.2rem 0;
+  font-size: 0.92rem;
+  display: block;
+  overflow-x: auto;
+}
+article.post th, article.post td {
+  border: 1px solid var(--border);
+  padding: 0.6rem 0.8rem;
+  text-align: left;
+}
+article.post th { background: #f1f5f9; font-weight: 700; }
+article.post pre {
+  background: var(--code-bg);
+  color: var(--code-text);
+  padding: 1rem 1.15rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+article.post code {
+  background: #f1f5f9;
+  padding: 0.15rem 0.38rem;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+article.post pre code { background: transparent; padding: 0; color: inherit; }
+article.post blockquote {
+  margin: 1.2rem 0;
+  padding: 0.8rem 1.1rem;
+  border-left: 4px solid var(--accent);
+  background: #f0f9ff;
+  border-radius: 0 8px 8px 0;
+}
+.back-link { display: inline-block; margin-bottom: 1rem; color: var(--accent); text-decoration: none; font-weight: 600; }
+.filter-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.15rem 1.25rem;
+  margin-bottom: 1.5rem;
+}
+.filter-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) auto;
+  gap: 0.9rem;
+  align-items: end;
+}
+.filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.filter-field label {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.filter-field input[type="search"],
+.filter-field select {
+  font: inherit;
+  font-size: max(1rem, 1em);
+  min-height: 48px;
+  padding: 0.55rem 0.85rem;
+  border: 1.5px solid #767676;
+  border-radius: 8px;
+  background: #fff;
+  color: var(--text);
+  width: 100%;
+}
+.filter-field input[type="search"]:focus-visible,
+.filter-field select:focus-visible,
+.filter-actions button:focus-visible {
+  outline: 3px solid #0284c7;
+  outline-offset: 2px;
+}
+.filter-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+.filter-actions button {
+  font: inherit;
+  font-size: max(1rem, 0.95em);
+  font-weight: 600;
+  min-height: 48px;
+  padding: 0 1.05rem;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+}
+.btn-primary {
+  background: #0369a1;
+  color: #fff;
+}
+.btn-primary:hover { background: #075985; }
+.btn-secondary {
+  background: #f1f5f9;
+  color: var(--text);
+  border-color: #94a3b8;
+}
+.btn-secondary:hover { background: #e2e8f0; }
+.results-status {
+  color: var(--muted);
+  font-size: 0.92rem;
+  margin: 0 0 1.1rem;
+}
+.empty-state {
+  background: var(--surface);
+  border: 1px dashed #94a3b8;
+  border-radius: 12px;
+  padding: 2rem 1.25rem;
+  text-align: center;
+  color: var(--muted);
+}
+.card[hidden],
+.empty-state[hidden] { display: none; }
+footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2rem 1rem; }
+@media (max-width: 720px) {
+  .filter-form { grid-template-columns: 1fr; }
+  .filter-actions { width: 100%; }
+  .filter-actions button { flex: 1; }
+}
+@media (max-width: 640px) {
+  article.post { padding: 1.2rem; }
+}
+</style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="inner">
+      <h1>PC 4OS実例ガイド</h1>
+      <p>Windows・macOS・iOS・Android の実践比較＆トラブル解決アーカイブ</p>
+    </div>
+  </header>
+  <main>
+    <a class="back-link" href="../index.html">← 記事一覧へ戻る</a>
+    <article class="post">
+      <p><span class="badge">#102｜分類17: 生活・行政手続き・家計・資産管理</span> <small style="color:#64748b;margin-left:0.5rem;">2026-11-28</small></p>
+      <img class="eyecatch" src="../images/2026-11-28_art102_bank_statement_digital_categorization.png" alt="銀行取引明細を「カテゴリ」で自動整理する：Windows・macOS、iOS、Androidの標準アプリ比較">
+      <h1>銀行取引明細を「カテゴリ」で自動整理する：Windows・macOS、iOS、Androidの標準アプリ比較</h1>
+<p>「毎月の銀行明細を見返るだけで、何にいくら使ったか把握したい……」<br />
+「領収書の管理や家計簿の入力が面倒で、結局後回しになってしまう……」</p>
+<p>そんな悩みを持つ方は非常に多いです。特に近年では<strong>電子帳簿保存法</strong>への対応など、データの正確な保管と整理が求められる場面が増えています。しかし、いざ「自動でカテゴリ分けしたい」と思っても、スマホやPCの標準アプリだけでどこまでできるのか、戸惑ってしまうことも少なくありません。</p>
+<p>この記事では、Windows、macOS、iOS、Androidの4つの主要OSにおいて、<strong>「標準機能のみ」を使って銀行明細をどのように取り込み、整理・管理するのか</strong>を徹底比較します。</p>
+<hr />
+<h2>4OS比較早見表</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">OS</th>
+<th style="text-align: left;">推奨される標準ツール</th>
+<th style="text-align: left;">主なデータ操作方法</th>
+<th style="text-align: left;">自動カテゴリ分類</th>
+<th style="text-align: left;">特徴・備考</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Windows</strong></td>
+<td style="text-align: left;">Excel (Microsoft 365)</td>
+<td style="text-align: left;">CSV/PDFのインポート</td>
+<td style="text-align: left;">手動ルール定義（関数）</td>
+<td style="text-align: left;">Power Queryによる高度なデータ加工が可能</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>macOS</strong></td>
+<td style="text-align: left;">Numbers / iCloud Drive</td>
+<td style="text-align: left;">ファイル読み込み・列定義</td>
+<td style="text-align: left;">手動分類</td>
+<td style="text-align: left;">iCloud連携でPC・iPhone間のデータ共有がスムーズ</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>iOS</strong></td>
+<td style="text-align: left;">Wallet / メモ / Files</td>
+<td style="text-align: left;">アプリ内閲覧・手入力</td>
+<td style="text-align: left;">非対応</td>
+<td style="text-align: left;">分析機能は弱いが、Apple Payとの親和性が高い</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Android</strong></td>
+<td style="text-align: left;">Google スプレッドシート</td>
+<td style="text-align: left;">Gmail/ブラウザ連携</td>
+<td style="text-align: left;">条件付き書式による視認化</td>
+<td style="text-align: left;">Googleエコシステムでの同期と検索性が強力</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>1. Windows 11 での実例手順</h2>
+<p>Windows環境では、<strong>Excel（Microsoft 365搭載版）</strong>が最強の管理ツールとなります。</p>
+<h3>実装手順</h3>
+<ol>
+<li><strong>データ取得</strong>: 銀行のWebサイトから取引明細を「CSV形式」または「PDF形式」でダウンロードします。</li>
+<li><strong>インポート</strong>: Excelを開き、「ファイル」&gt;「開く」&gt;「PCにある場所」からダウンロードしたファイルを読み込みます。</li>
+<li><strong>データ整形</strong>: 「データ」タブの「データの取得（Power Query）」を使用すると、複雑な明細データから必要な項目（日付、金額、内容）だけを抽出できます。</li>
+<li><strong>カテゴリ分類</strong>: 支出カテゴリという概念は標準では存在しないため、「支出カテゴリ」という列を新しく作成します。特定のキーワード（例：「コンビニ」「公共料金」）が含まれる場合に自動でカテゴリを割り当てるには、<code>IF</code>関数や<code>VLOOKUP</code>関数を用いて手動ルールを定義します。</li>
+</ol>
+<p><strong>【制限事項】</strong><br />
+標準機能のみではAIによる完全な自動カテゴリ割り当ては非対応です。より高度な自動化を求める場合は「Power Automate」の導入や、サードパーティ製のExcelアドインの活用を検討してください。</p>
+<hr />
+<h2>2. macOS (Sonoma/Sequoia) での実例手順</h2>
+<p>macOSでは、iCloudと密接に連携する<strong>Numbers</strong>を活用するのが標準的なアプローチです。</p>
+<h3>実装手順</h3>
+<ol>
+<li><strong>データ取得</strong>: ブラウザから銀行明細をダウンロードし、Numbersへドラッグ＆ドロップします。</li>
+<li><strong>列の定義</strong>: スプレッドシートビューで「支出カテゴリ」という新しいカラムを作成します。</li>
+<li><strong>分類作業</strong>: 各行の内容を確認しながら、手動でカテゴリを選択（または入力）します。</li>
+</ol>
+<p><strong>【制限事項】</strong><br />
+Apple純正の標準機能では、銀行口座と直接連携して自動集計する家計簿アプリのような挙動は提供されていません。「Wallet」アプリで一部の明細確認は可能ですが、高度な分析やカテゴリ分けを行うにはNumbersでの手動管理が基本となります。</p>
+<hr />
+<h2>3. iOS（iPhone / iPad）での実例手順</h2>
+<p>iOSでは、<strong>「Wallet」「メモ」「ファイル」</strong>アプリを組み合わせて運用します。</p>
+<h3>実装手順</h3>
+<ol>
+<li><strong>データ取得</strong>: 「Wallet」アプリを開き、「カード」タブから登録した銀行口座の明細を閲覧します（※Apple Pay利用履歴は自動保存されます）。</li>
+<li><strong>整理・記録</strong>: 重要な支出については「メモ」アプリにテキスト形式で入力するか、「ファイル」アプリからNumbers/Excelファイルを開いて直接編集します。</li>
+</ol>
+<p><strong>【制限事項】</strong><br />
+Appleが提供する標準機能には、家計簿特有の「カテゴリごとの自動集計」や「グラフ表示」といった分析UIは実装されていません。汎用的なツールとしての利用に留まるため、複雑な管理には外部アプリの併用が必要です。</p>
+<hr />
+<h2>4. Android (Pixel/Galaxy 等) での実例手順</h2>
+<p>Androidでは、<strong>Google スプレッドシート</strong>と<strong>Gmail</strong>の連携を最大限に活かします。</p>
+<h3>実装手順</h3>
+<ol>
+<li><strong>データ集約</strong>: Gmailに届く銀行の取引通知メールを「ラベル」で整理し、インボックスに集約します。</li>
+<li><strong>スプレッドシート移行</strong>: Googleドライブから明細PDFを開き、必要な数値をコピー＆ペーストしてGoogle スプレッドシートへ移行します。</li>
+<li><strong>視認性の向上</strong>: 「条件付き書式」を使い、特定の金額以上の支出や特定のキーワードを含む行に色を付けることで、手動管理の効率を高めます。</li>
+</ol>
+<p><strong>【制限事項】</strong><br />
+Android標準アプリ群には自動分類AIは搭載されていません。「Google Wallet」での明細閲覧は可能ですが、集計機能はありません。機種により「Samsung Notes」などのプリインストールアプリがあるため、利用するツールを統一することが重要です。</p>
+<hr />
+<h2>よくあるトラブルと解決チェックリスト</h2>
+<p>運用中に陥りやすいエラーと、その解決策をまとめました。</p>
+<ul>
+<li>
+<p><strong>トラブルA：PDFの取引明細が開けない、文字化けする</strong></p>
+<ul>
+<li><strong>原因</strong>: 銀行側のセキュリティ設定（Protected View）やAdobe Readerの制限。</li>
+<li><strong>解決策(Windows)</strong>: 「ファイル」&gt;「オプション」&gt;「全般」で保護されたビューを無効にするか、Edge/Chromeブラウザから直接PDFを開いて内容を確認してください。</li>
+<li><strong>解決策(他OS)</strong>: AirDropやGoogleドライブへのアップロード・再ダウンロードを行い、データ転送の過程でエラーが解消されるか確認します。</li>
+</ul>
+</li>
+<li>
+<p><strong>トラブルB：カテゴリごとの集計グラフが出ない</strong></p>
+<ul>
+<li><strong>原因</strong>: データ形式が正しくない、または「ピボットテーブル」を作成していない。</li>
+<li><strong>解決策</strong>: Excel/Numbersの「挿入」&gt;「ピボットテーブル」を選択し、「行」にカテゴリ、「値」に金額を設定してください。</li>
+</ul>
+</li>
+<li>
+<p><strong>トラブルC：スマホとPCでデータが同期しない</strong></p>
+<ul>
+<li><strong>原因</strong>: iCloud、Googleドライブ、OneDriveなどのログインアカウントが混在している。</li>
+<li><strong>解決策</strong>: 設定画面から正しいIDを選択し、同期オプションがオンになっているか確認してください。特にWindowsではOneDriveクライアントの状態をチェックしましょう。</li>
+</ul>
+</li>
+<li>
+<p><strong>トラブルD：領収書の画像が保存できない（または文字が読み取れない）</strong></p>
+<ul>
+<li><strong>原因</strong>: 単なる「写真」として撮影しており、メタデータやスキャン情報が不足している。</li>
+<li><strong>解決策(iOS)</strong>: カメラアプリの「メモ」ボタンを使い、公式のスキャン機能を利用してください。</li>
+<li><strong>解決策(Android)</strong>: Googleドライブの「＋」&gt;「スキャン」からPDF化して保存します。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2>まとめ：快適なマルチOS環境を作るポイント</h2>
+<p>今回の比較で分かった通り、Windows/macOS/iOS/Androidのいずれも、標準機能だけで「高度な自動カテゴリ分類」を行う専用アプリを提供しているわけではありません。基本的には<strong>ExcelやGoogleスプレッドシートを「母艦」として使い、手動または簡易的な関数で整理する</strong>のが最も確実でコストのかからない方法です。</p>
+<p>しかし、より効率的に、あるいは法的に正確に管理を行いたい場合は、以下の周辺機器やツールの導入を検討することで、標準機能の限界を補うことができます。</p>
+<ul>
+<li><strong>ICカードリーダー（e-Tax対応）</strong>: 確定申告や公的な手続きを伴う場合、物理的なカード読み取りと連動させることで入力ミスを防げます。</li>
+<li><strong>会計ソフト・家計管理アプリ</strong>: 標準機能での手動分類に限界を感じるなら、銀行APIと連携して自動でカテゴリ分けを行う専用ツールへの移行が最もストレスフリーな解決策です。</li>
+<li><strong>モバイルスキャナー（またはスキャン機能の活用）</strong>: 領収書を「ただの写真」ではなく「データとしてのPDF」として保存することで、電子帳簿保存法への対応もスムーズになります。</li>
+</ul>
+<p>自分のライフスタイルに合わせて、「標準機能でどこまでやるか」と「どのツールに投資するか」のバランスを見極めることが、快適な資産管理への第一歩です。</p>
+<hr />
+<h2>参考文献・公式ドキュメント（一次情報ソース）</h2>
+<p>本記事の手順・仕様は以下の各OSおよびツールの公式ドキュメントに基づいています。OSアップデートによりメニュー名称や挙動が変わる場合があるため、最新仕様の確認にもご活用ください。</p>
+<ul>
+<li><strong>[日本公式（税務）]</strong> <a href="https://www.nta.go.jp/law/joho-zeikaishaku/sonota/jirei/index.htm">電子帳簿保存法関係（領収書・電子取引データの保存要件） - 国税庁</a></li>
+<li><strong>[Windows]</strong> <a href="https://support.microsoft.com/ja-jp/windows/windows-%E3%81%A7-pc-%E3%82%92%E3%83%90%E3%83%83%E3%82%AF%E3%82%A2%E3%83%83%E3%83%97%E3%81%8A%E3%82%88%E3%81%B3%E5%BE%A9%E5%85%83%E3%81%99%E3%82%8B-352091d2-bb9d-3ea3-ed18-52ef2b88cbef">Windows で PC をバックアップおよび復元する - Microsoft サポート</a></li>
+<li><strong>[macOS / iOS]</strong> <a href="https://support.apple.com/ja-jp/108963">iPhoneやiPadで書類をスキャンする方法 - Apple サポート (日本)</a></li>
+<li><strong>[Android]</strong> <a href="https://support.google.com/drive/answer/3145835?hl=ja">Google ドライブでドキュメントをスキャンする - Google ドライブ ヘルプ</a></li>
+</ul>
+    </article>
+  </main>
+  <footer>Generated with Local Ollama (qwen3.5 / gemma4) &amp; Draw Things (FLUX.2 klein 4B)</footer>
+</body>
+</html>
