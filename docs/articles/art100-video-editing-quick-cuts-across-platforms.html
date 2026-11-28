@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>動画編集の『カットと継ぎ目』調整：Premiere Pro / iMovie / CapCut / Clipchamp を使い分けるクロスプラットフォーム実例比較 (第100 回) ｜ Windows・macOS・iOS・Android | PC 4OS実例ガイド</title>
+  <style>
+:root {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --muted: #475569;
+  --accent: #0284c7;
+  --accent-soft: #e0f2fe;
+  --border: #e2e8f0;
+  --code-bg: #0f172a;
+  --code-text: #e2e8f0;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Noto Sans JP", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+}
+header.site-header {
+  background: linear-gradient(135deg, #0f172a 0%, #0369a1 100%);
+  color: #fff;
+  padding: 2.2rem 1.25rem;
+}
+header.site-header .inner { max-width: 980px; margin: 0 auto; }
+header.site-header h1 { margin: 0 0 0.4rem; font-size: 1.75rem; }
+header.site-header p { margin: 0; opacity: 0.9; font-size: 0.96rem; }
+main { max-width: 980px; margin: 2rem auto; padding: 0 1.25rem 3rem; }
+.badge {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: var(--accent-soft);
+  color: #0369a1;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1.25rem;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08); }
+.card img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; display: block; background: #e2e8f0; }
+.card-body { padding: 1rem 1.1rem 1.2rem; flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+.card-title { font-size: 1.02rem; font-weight: 700; margin: 0; line-height: 1.45; }
+.card-meta { font-size: 0.82rem; color: var(--muted); margin-top: auto; }
+article.post {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 2rem;
+}
+article.post img.eyecatch {
+  width: 100%;
+  max-height: 460px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+}
+article.post h1 { font-size: 1.65rem; line-height: 1.35; margin-top: 0; }
+article.post h2 {
+  font-size: 1.3rem;
+  margin-top: 2.1rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 2px solid var(--accent-soft);
+}
+article.post h3 { font-size: 1.08rem; margin-top: 1.4rem; }
+article.post table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.2rem 0;
+  font-size: 0.92rem;
+  display: block;
+  overflow-x: auto;
+}
+article.post th, article.post td {
+  border: 1px solid var(--border);
+  padding: 0.6rem 0.8rem;
+  text-align: left;
+}
+article.post th { background: #f1f5f9; font-weight: 700; }
+article.post pre {
+  background: var(--code-bg);
+  color: var(--code-text);
+  padding: 1rem 1.15rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+article.post code {
+  background: #f1f5f9;
+  padding: 0.15rem 0.38rem;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+article.post pre code { background: transparent; padding: 0; color: inherit; }
+article.post blockquote {
+  margin: 1.2rem 0;
+  padding: 0.8rem 1.1rem;
+  border-left: 4px solid var(--accent);
+  background: #f0f9ff;
+  border-radius: 0 8px 8px 0;
+}
+.back-link { display: inline-block; margin-bottom: 1rem; color: var(--accent); text-decoration: none; font-weight: 600; }
+.filter-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.15rem 1.25rem;
+  margin-bottom: 1.5rem;
+}
+.filter-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) auto;
+  gap: 0.9rem;
+  align-items: end;
+}
+.filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.filter-field label {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.filter-field input[type="search"],
+.filter-field select {
+  font: inherit;
+  font-size: max(1rem, 1em);
+  min-height: 48px;
+  padding: 0.55rem 0.85rem;
+  border: 1.5px solid #767676;
+  border-radius: 8px;
+  background: #fff;
+  color: var(--text);
+  width: 100%;
+}
+.filter-field input[type="search"]:focus-visible,
+.filter-field select:focus-visible,
+.filter-actions button:focus-visible {
+  outline: 3px solid #0284c7;
+  outline-offset: 2px;
+}
+.filter-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+.filter-actions button {
+  font: inherit;
+  font-size: max(1rem, 0.95em);
+  font-weight: 600;
+  min-height: 48px;
+  padding: 0 1.05rem;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+}
+.btn-primary {
+  background: #0369a1;
+  color: #fff;
+}
+.btn-primary:hover { background: #075985; }
+.btn-secondary {
+  background: #f1f5f9;
+  color: var(--text);
+  border-color: #94a3b8;
+}
+.btn-secondary:hover { background: #e2e8f0; }
+.results-status {
+  color: var(--muted);
+  font-size: 0.92rem;
+  margin: 0 0 1.1rem;
+}
+.empty-state {
+  background: var(--surface);
+  border: 1px dashed #94a3b8;
+  border-radius: 12px;
+  padding: 2rem 1.25rem;
+  text-align: center;
+  color: var(--muted);
+}
+.card[hidden],
+.empty-state[hidden] { display: none; }
+footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2rem 1rem; }
+@media (max-width: 720px) {
+  .filter-form { grid-template-columns: 1fr; }
+  .filter-actions { width: 100%; }
+  .filter-actions button { flex: 1; }
+}
+@media (max-width: 640px) {
+  article.post { padding: 1.2rem; }
+}
+</style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="inner">
+      <h1>PC 4OS実例ガイド</h1>
+      <p>Windows・macOS・iOS・Android の実践比較＆トラブル解決アーカイブ</p>
+    </div>
+  </header>
+  <main>
+    <a class="back-link" href="../index.html">← 記事一覧へ戻る</a>
+    <article class="post">
+      <p><span class="badge">#100｜分類15: エンターテインメント・趣味</span> <small style="color:#64748b;margin-left:0.5rem;">2026-11-28</small></p>
+      <img class="eyecatch" src="../images/2026-11-28_art100_video_editing_quick_cuts_across_platforms.png" alt="動画編集の『カットと継ぎ目』調整：Premiere Pro / iMovie / CapCut / Clipchamp を使い分けるクロスプラットフォーム実例比較 (第100 回) ｜ Windows・macOS・iOS・Android">
+      <h1>動画編集の『カットと継ぎ目』調整：Premiere Pro / iMovie / CapCut / Clipchamp を使い分けるクロスプラットフォーム実例比較 (第100 回) ｜ Windows・macOS・iOS・Android</h1>
+<p>「スマホで撮った動画をPCで仕上げたいけれど、デバイスごとに操作が違って混乱する」「カットのつなぎ目が不自然で、どう調整すればいいか分からない」といった悩みをお持ちではありませんか？</p>
+<p>動画制作において、素材の確保（スマホ）から高度な編集（PC）までをシームレスにつなぐワークフローの構築は非常に重要です。この記事では、Windows、macOS、iOS、Androidの4つのOS環境において、標準アプリや公式推奨ツールを使い分けながら「カットと継ぎ目」を効率的に調整する具体的な手順を徹底比較します。</p>
+<p>この記事を読めば、お持ちのデバイスを最大限に活かした最適な動画編集フローが見つかるはずです。</p>
+<h2>4OS比較早見表</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">OS</th>
+<th style="text-align: left;">推奨標準アプリ / 公式ツール</th>
+<th style="text-align: left;">特徴・得意なこと</th>
+<th style="text-align: left;">カット・継ぎ目の調整</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Windows</strong></td>
+<td style="text-align: left;">Clipchamp / Premiere Pro</td>
+<td style="text-align: left;">高機能なタイムライン操作、ビジネス利用に強い</td>
+<td style="text-align: left;">自動切り替え機能や高度なエフェクト対応</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>macOS</strong></td>
+<td style="text-align: left;">iMovie</td>
+<td style="text-align: left;">直感的なUI、Appleエコシステムとの親和性</td>
+<td style="text-align: left;">トリムツールによる直感的なカットと自動接続</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>iOS</strong></td>
+<td style="text-align: left;">iMovie / 写真アプリ</td>
+<td style="text-align: left;">どこでも編集可能、AirPlay連携が強力</td>
+<td style="text-align: left;">シンプルなトリム操作、iCloud同期でPCへ継承</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Android</strong></td>
+<td style="text-align: left;">Google フォト / CapCut</td>
+<td style="text-align: left;">高い自由度、Googleエコシステムとの統合</td>
+<td style="text-align: left;">Googleフォトでの簡易カット、CapCutでの高度調整</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>1. Windows 11 での実例手順</h2>
+<p>Windows環境では、標準搭載の「Clipchamp」を活用することで、複雑なソフトをインストールせずに素早い編集が可能です。より高度な制作を行う場合はAdobe Premiere Proへの移行を検討します。</p>
+<h3>Clipchamp を使用した基本操作</h3>
+<ol>
+<li><strong>プロジェクトの開始</strong>: 「Clipchamp」アプリを起動し、「新しいビデオを作成」を選択して素材を追加します。</li>
+<li><strong>カットの挿入</strong>: タイムライン上の動画クリップをクリックし、不要な部分を削除または分割します。</li>
+<li><strong>継ぎ目の調整</strong>: Clipchampでは「自動切り替え」機能により、基本的なつなぎ目をスムーズに処理できます。※より高度なクロスフェード（滑らかな重なり）を適用する場合は、手動でトランジションメニューからスライダー操作を行う必要があります。</li>
+</ol>
+<h3>高度な編集への移行</h3>
+<p>プロレベルの正確なカット調整が必要な場合は、<strong>Adobe Premiere Pro</strong> を使用します。注意点として、Premiere ProはMicrosoft Storeではなく、Adobe公式サイトからインストーラーをダウンロードして導入するのが公式の推奨手順です。</p>
+<hr />
+<h2>2. macOS での実例手順</h2>
+<p>macOSおよびiOS環境では、Apple純正の「iMovie」が最も安定したワークフローを提供します。</p>
+<h3>iMovie を使用した基本操作</h3>
+<ol>
+<li><strong>プロジェクトの作成</strong>: Macでは「ファイル」→「新規プロジェクト」、iPhone/iPadでは「写真」アプリ内または「ビデオ」タブから開始します。</li>
+<li><strong>カット（トリム）</strong>: タイムライン上のクリップの両端にあるハンドルをドラッグすることで、直感的に長さを調整できます。</li>
+<li><strong>継ぎ目の調整</strong>: iMovieの仕様として、カットした隣接するクリップは自動的に接続されます。特定の「クロスフェード」効果を適用したい場合は、トランジションメニューから個別に選択する必要があります。</li>
+</ol>
+<h3>デバイス間連携（AirPlay）</h3>
+<p>iPhoneで簡易的なカット編集を行った動画は、iCloudフォトライブラリを経由することで、Mac側へ転送の手間なく同期・共有が可能です。この「デバイスの壁を越えた素材共有」がAppleエコシステムの強みです。</p>
+<hr />
+<h2>3. iOS（iPhone / iPad）での実例手順</h2>
+<p>モバイル端末では、「写真」アプリによる超簡易編集と、外部アプリによる高度な調整を使い分けるのがコツです。</p>
+<h3>「写真」アプリでのクイックカット</h3>
+<ol>
+<li><strong>トリム機能</strong>: 写真アプリで動画を選択し「編集」をタップ。下のスライダーを動かすだけで、不要な前後を瞬時にカットできます。</li>
+<li><strong>継ぎ目の調整</strong>: 標準機能のみではクロスフェード等の複雑なつなぎ目調整には制限があります。</li>
+</ol>
+<h3>高度な調整（CapCutの活用）</h3>
+<p>より滑らかな継ぎ目やエフェクトが必要な場合は、公式アプリの<strong>CapCut</strong>を推奨します。App Storeから入手でき、モバイルでもPCに近い感覚で精密なカット操作が可能です。</p>
+<hr />
+<h2>4. Android での実例手順</h2>
+<p>AndroidではGoogle純正の利便性と、強力なサードパーティ製アプリの組み合わせが主流です。</p>
+<h3>Google「写真」アプリでの編集</h3>
+<ol>
+<li><strong>カット</strong>: 動画を選択し「編集」ボタンからトリム機能を使用します。</li>
+<li><strong>継ぎ目の調整</strong>: 自動的なつなぎ目はスムーズですが、高度なトランジションは制限があるため、簡易的なカット用途に向いています。</li>
+</ol>
+<h3>CapCut を使用した詳細編集</h3>
+<p>よりクリエイティブな表現が必要な場合は、Google Playストアから<strong>CapCut</strong>をインストールして使用します。Android版はUIの更新頻度が高いため、常に最新バージョンを維持することがスムーズな操作の鍵となります。</p>
+<hr />
+<h2>よくあるトラブルと解決チェックリスト</h2>
+<p>動画編集やデバイス連携中に遭遇しやすいエラーへの対処法をまとめました。</p>
+<h3>エラー A: 「素材が開けない」「読み込みに失敗」</h3>
+<ul>
+<li><strong>Windows (Clipchamp)</strong>: 高解像度動画で動作が重い場合、コーデックの問題が考えられます。標準機能での解決策として、まずは「メディアの保存場所を変更」するか、ファイル名の変更を試してください。</li>
+<li><strong>macOS/iOS/Android</strong>: HEVC (H.265) 形式が認識されない場合、QuickTime Player等の標準アプリで一度フォーマットを確認します。AndroidではGoogleファイルエクスプローラー等で形式の互換性を確認してください。</li>
+</ul>
+<h3>エラー B: 「画面が割れる」「ミラーリング・キャスト中に音が出ない」</h3>
+<ul>
+<li><strong>Windows</strong>: ディスプレイ設定で出力先を確認し、Microsoftサポートのガイドに従い「サウンド設定」から出力デバイスをHDMI接続のモニターへ手動で変更してください。</li>
+<li><strong>macOS/iOS</strong>: AirPlayで音がiPhoneから出る場合は、Macの「システム設定」→「サウンド」で出力先をMacに変更するか、コントロールセンターから再確認します。</li>
+<li><strong>Android</strong>: Chromecast等のキャストが不安定な場合は、Google Homeアプリからデバイスを再起動し、Wi-Fi帯域（2.4GHz/5GHz）を統一してください。</li>
+</ul>
+<h3>エラー C: 「アプリが起動しない」「保存場所が見つからない」</h3>
+<ul>
+<li><strong>Windows</strong>: Clipchampが終了する場合、「設定」→「プライバシーとセキュリティ」でバックグラウンド活動の権限を確認し、Microsoft Storeから再インストールを試みてください。</li>
+<li><strong>macOS/iOS/Android</strong>: ストレージ不足が原因であることが多いため、「設定」→「一般」→「ストレージ」で空き容量を確認してください。また、App StoreやPlayストアでの最新アップデートの有無も確認必須です。</li>
+</ul>
+<hr />
+<h2>まとめ：快適なマルチOS環境を作るポイント</h2>
+<p>4つのOSを使い分ける際の鍵は、<strong>「各OSの得意分野に合わせた役割分担」</strong>です。</p>
+<ul>
+<li><strong>Windows</strong>: Clipchampで素早くカットし、必要に応じてPremiere Proへ移行する重厚なワークフロー。</li>
+<li><strong>macOS/iOS</strong>: iMovieとAirPlayを駆使した、シームレスなデバイス間連携による軽快な編集。</li>
+<li><strong>Android</strong>: Googleフォトでの素材整理と、CapCutでの高度なつなぎ目調整のハイブリッド活用。</li>
+</ul>
+<p>また、より快適な編集環境を構築するためには、周辺機器の選定も重要です。高精細な<strong>ゲーミングモニター</strong>はタイムラインの微細なカット位置の把握を助け、<strong>DAC・ヘッドホン</strong>の導入は継ぎ目の音の違和感を正確にキャッチするために不可欠です。さらに、ストリーミング機器や<strong>ゲームパッド</strong>（ショートカット操作の補助など）を組み合わせることで、編集から配信までの一貫したクリエイティブ環境が完成します。</p>
+<hr />
+<h2>参考文献・公式ドキュメント（一次情報ソース）</h2>
+<p>本記事の手順・仕様は以下の各OSおよびツールの公式ドキュメントに基づいています。OSアップデートによりメニュー名称や挙動が変わる場合があるため、最新仕様の確認にもご活用ください。</p>
+<ul>
+<li><strong>[Windows]</strong> <a href="https://support.microsoft.com/ja-jp/windows/windows-%E3%81%A7%E7%94%BB%E9%9D%A2%E3%82%92%E3%83%9F%E3%83%A9%E3%83%BC%E3%83%AA%E3%83%B3%E3%82%B0%E3%81%99%E3%82%8B%E3%81%8B%E3%82%AD%E3%83%A3%E3%82%B9%E3%83%88%E3%81%99%E3%82%8B-5af9f371-c704-1c7f-8f0d-fa607551d09c">Windows で画面をミラーリングするかキャストする - Microsoft サポート</a></li>
+<li><strong>[macOS / iOS]</strong> <a href="https://support.apple.com/ja-jp/102661">AirPlayを使ってiPhoneやiPadからビデオをストリーミングする／画面をミラーリングする - Apple サポート (日本)</a></li>
+<li><strong>[Android]</strong> <a href="https://support.google.com/chromecast/answer/6059461?hl=ja">Google Home アプリで Android の画面をキャストする - Google ヘルプ</a></li>
+</ul>
+    </article>
+  </main>
+  <footer>Generated with Local Ollama (qwen3.5 / gemma4) &amp; Draw Things (FLUX.2 klein 4B)</footer>
+</body>
+</html>
