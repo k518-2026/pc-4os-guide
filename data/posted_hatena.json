@@ -40,5 +40,12 @@
     "title": "3Dデータ（STL/OBJ/AR）の閲覧・確認の実例ガイド｜Windows・macOS・iOS・Android",
     "md_path": "content/2026-11-23_art06_3d_ar_model_viewer.md",
     "posted_at": "2026-11-27T22:49:30.555909+09:00"
+  },
+  {
+    "article_id": "art07-github-code-browser-mobile",
+    "article_num": 7,
+    "title": "初心者向けGitHub・コード閲覧とブラウザ開発環境の実例｜Windows・macOS・iOS・Android",
+    "md_path": "content/2026-11-23_art07_github_code_browser_mobile.md",
+    "posted_at": "2026-11-28T16:44:18.378951+09:00"
   }
 ]
