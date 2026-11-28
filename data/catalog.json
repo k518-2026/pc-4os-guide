@@ -1246,5 +1246,75 @@
       "Google ドライブ設定",
       "OneDrive活用"
     ]
+  },
+  {
+    "id": "art96-home-server-ssh-access-across-os",
+    "article_num": 96,
+    "cat_num": 11,
+    "category": "ネットワーク・サーバー・インフラ構築",
+    "task_topic": "第96回｜Windows・macOS・iOS・Android の SSH ホームサーバー接続とファイル共有実例比較",
+    "title": "PC・スマホ作業を Windows・macOS・iOS・Androidの4OSで実例比較する初心者向けブログの新規記事テーマ：自宅 PC で簡単に構築できる「SSH サーバー」からのリモート操作｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "ホームサーバー",
+      "SSH 接続",
+      "VNC 画面共有",
+      "遠隔デスクトップ"
+    ]
+  },
+  {
+    "id": "art97-os-standard-password-manager-sync",
+    "article_num": 97,
+    "cat_num": 12,
+    "category": "セキュリティ・プライバシー対策",
+    "task_topic": "PC・スマホ作業を Windows・macOS・iOS・Android で実例比較する初心者向けブログの新規記事テーマ（第97回）｜Windows・macOS・iOS・Android",
+    "title": "「パスワードマネージャー」の OS 標準機能で、端末ごとに保存されたパスワードを一括管理して安全に引き継ぐ方法",
+    "keywords": [
+      "パスワード管理",
+      "キーチェーン",
+      " iCloud キーチェーン",
+      "Android デバイス管理センター"
+    ]
+  },
+  {
+    "id": "art98-family-photo-album-sync-4os",
+    "article_num": 98,
+    "cat_num": 13,
+    "category": "ファイル管理・バックアップ・データ復旧",
+    "task_topic": "PC・スマホ作業を Windows・macOS・iOS・Android の 4 OS で実例比較する初心者向けブログの新規記事テーマ（第98回）｜Windows・macOS・iOS・Android",
+    "title": "家族写真の「共有アルバム」を作る：Windows/OneDrive vs macOS/iCloud Drive を使い分けて、iPhone と Windows PC でも瞬時に同期する方法｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "クラウドストレージ比較",
+      "iCloudとOneDriveの違い",
+      "家族写真管理",
+      "複数端末でのファイル共有"
+    ]
+  },
+  {
+    "id": "art99-smartwatch-wearable-health-data-sync-across-4-os",
+    "article_num": 99,
+    "cat_num": 14,
+    "category": "ハードウェア・周辺機器・IoT連携",
+    "task_topic": "PC・スマホ作業を Windows・macOS・iOS・Android の 4 OS で実例比較する初心者向けブログの新規記事テーマ（第99回）｜Windows・macOS・IOS・Android",
+    "title": "スマートウォッチの健康データを一括管理：Windows/macOS/iOS/Androidで自動同期させる方法",
+    "keywords": [
+      "smartwatch",
+      "health data sync",
+      "wearable device",
+      "windows macos ios android comparison"
+    ]
+  },
+  {
+    "id": "art100-video-editing-quick-cuts-across-platforms",
+    "article_num": 100,
+    "cat_num": 15,
+    "category": "エンターテインメント・趣味",
+    "task_topic": "「PC・スマホ作業を Windows・macOS・iOS・Android の4 OS で実例比較する初心者向けブログの新規記事テーマ（第100回）」｜Windows・macOS・iOS・Android",
+    "title": "動画編集の『カットと継ぎ目』調整：Premiere Pro / iMovie / CapCut / Clipchamp を使い分けるクロスプラットフォーム実例比較 (第100回) ｜ Windows・macOS・iOS・Android",
+    "keywords": [
+      "動画編集",
+      "4 OS 比較",
+      "カット編集",
+      "継ぎ目調整"
+    ]
   }
 ]

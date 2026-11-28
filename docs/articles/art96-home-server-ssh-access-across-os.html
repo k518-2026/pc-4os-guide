@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第96回｜自宅 PC で簡単に構築できる「SSH サーバー」からのリモート操作｜Windows・macOS・iOS・Android の実例比較 | PC 4OS実例ガイド</title>
+  <style>
+:root {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --muted: #475569;
+  --accent: #0284c7;
+  --accent-soft: #e0f2fe;
+  --border: #e2e8f0;
+  --code-bg: #0f172a;
+  --code-text: #e2e8f0;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Noto Sans JP", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+}
+header.site-header {
+  background: linear-gradient(135deg, #0f172a 0%, #0369a1 100%);
+  color: #fff;
+  padding: 2.2rem 1.25rem;
+}
+header.site-header .inner { max-width: 980px; margin: 0 auto; }
+header.site-header h1 { margin: 0 0 0.4rem; font-size: 1.75rem; }
+header.site-header p { margin: 0; opacity: 0.9; font-size: 0.96rem; }
+main { max-width: 980px; margin: 2rem auto; padding: 0 1.25rem 3rem; }
+.badge {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: var(--accent-soft);
+  color: #0369a1;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1.25rem;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08); }
+.card img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; display: block; background: #e2e8f0; }
+.card-body { padding: 1rem 1.1rem 1.2rem; flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+.card-title { font-size: 1.02rem; font-weight: 700; margin: 0; line-height: 1.45; }
+.card-meta { font-size: 0.82rem; color: var(--muted); margin-top: auto; }
+article.post {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 2rem;
+}
+article.post img.eyecatch {
+  width: 100%;
+  max-height: 460px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+}
+article.post h1 { font-size: 1.65rem; line-height: 1.35; margin-top: 0; }
+article.post h2 {
+  font-size: 1.3rem;
+  margin-top: 2.1rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 2px solid var(--accent-soft);
+}
+article.post h3 { font-size: 1.08rem; margin-top: 1.4rem; }
+article.post table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.2rem 0;
+  font-size: 0.92rem;
+  display: block;
+  overflow-x: auto;
+}
+article.post th, article.post td {
+  border: 1px solid var(--border);
+  padding: 0.6rem 0.8rem;
+  text-align: left;
+}
+article.post th { background: #f1f5f9; font-weight: 700; }
+article.post pre {
+  background: var(--code-bg);
+  color: var(--code-text);
+  padding: 1rem 1.15rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+article.post code {
+  background: #f1f5f9;
+  padding: 0.15rem 0.38rem;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+article.post pre code { background: transparent; padding: 0; color: inherit; }
+article.post blockquote {
+  margin: 1.2rem 0;
+  padding: 0.8rem 1.1rem;
+  border-left: 4px solid var(--accent);
+  background: #f0f9ff;
+  border-radius: 0 8px 8px 0;
+}
+.back-link { display: inline-block; margin-bottom: 1rem; color: var(--accent); text-decoration: none; font-weight: 600; }
+.filter-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.15rem 1.25rem;
+  margin-bottom: 1.5rem;
+}
+.filter-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) auto;
+  gap: 0.9rem;
+  align-items: end;
+}
+.filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.filter-field label {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.filter-field input[type="search"],
+.filter-field select {
+  font: inherit;
+  font-size: max(1rem, 1em);
+  min-height: 48px;
+  padding: 0.55rem 0.85rem;
+  border: 1.5px solid #767676;
+  border-radius: 8px;
+  background: #fff;
+  color: var(--text);
+  width: 100%;
+}
+.filter-field input[type="search"]:focus-visible,
+.filter-field select:focus-visible,
+.filter-actions button:focus-visible {
+  outline: 3px solid #0284c7;
+  outline-offset: 2px;
+}
+.filter-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+.filter-actions button {
+  font: inherit;
+  font-size: max(1rem, 0.95em);
+  font-weight: 600;
+  min-height: 48px;
+  padding: 0 1.05rem;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+}
+.btn-primary {
+  background: #0369a1;
+  color: #fff;
+}
+.btn-primary:hover { background: #075985; }
+.btn-secondary {
+  background: #f1f5f9;
+  color: var(--text);
+  border-color: #94a3b8;
+}
+.btn-secondary:hover { background: #e2e8f0; }
+.results-status {
+  color: var(--muted);
+  font-size: 0.92rem;
+  margin: 0 0 1.1rem;
+}
+.empty-state {
+  background: var(--surface);
+  border: 1px dashed #94a3b8;
+  border-radius: 12px;
+  padding: 2rem 1.25rem;
+  text-align: center;
+  color: var(--muted);
+}
+.card[hidden],
+.empty-state[hidden] { display: none; }
+footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2rem 1rem; }
+@media (max-width: 720px) {
+  .filter-form { grid-template-columns: 1fr; }
+  .filter-actions { width: 100%; }
+  .filter-actions button { flex: 1; }
+}
+@media (max-width: 640px) {
+  article.post { padding: 1.2rem; }
+}
+</style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="inner">
+      <h1>PC 4OS実例ガイド</h1>
+      <p>Windows・macOS・iOS・Android の実践比較＆トラブル解決アーカイブ</p>
+    </div>
+  </header>
+  <main>
+    <a class="back-link" href="../index.html">← 記事一覧へ戻る</a>
+    <article class="post">
+      <p><span class="badge">#96｜分類11: ネットワーク・サーバー・インフラ構築</span> <small style="color:#64748b;margin-left:0.5rem;">2026-11-28</small></p>
+      <img class="eyecatch" src="../images/2026-11-28_art96_home_server_ssh_access_across_os.png" alt="第96回｜自宅 PC で簡単に構築できる「SSH サーバー」からのリモート操作｜Windows・macOS・iOS・Android の実例比較">
+      <h1>第96回｜自宅 PC で簡単に構築できる「SSH サーバー」からのリモート操作｜Windows・macOS・iOS・Android の実例比較</h1>
+<p>「外出先から自宅のPCにあるファイルを確認したい」「スマホから自宅のサーバーを操作して自動化プログラムを動かしたい」といったニーズは、技術的な関心が高い方ほど共通する悩みです。</p>
+<p>しかし、いざ設定しようとすると「WindowsとMacでは設定項目が違う」「iPhoneからはどうやって接続すればいいのか？」と戸惑ってしまうことも少なくありません。この記事では、自宅のPCやNASをサーバーとして活用し、4つの主要OS（Windows, macOS, iOS, Android）からどのようにリモート操作を行うのか、標準機能と推奨アプリを交えて徹底比較します。</p>
+<hr />
+<h2>4OS比較早見表</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">機能</th>
+<th style="text-align: left;">Windows 11</th>
+<th style="text-align: left;">macOS</th>
+<th style="text-align: left;">iOS (iPhone/iPad)</th>
+<th style="text-align: left;">Android</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>SSHサーバー構築</strong></td>
+<td style="text-align: left;">標準機能（OpenSSH）あり</td>
+<td style="text-align: left;">標準機能（共有設定）あり</td>
+<td style="text-align: left;">非対応（アプリが必要）</td>
+<td style="text-align: left;">非対応（アプリが必要）</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>ファイル共有(SMB)</strong></td>
+<td style="text-align: left;">標準機能あり</td>
+<td style="text-align: left;">標準機能あり</td>
+<td style="text-align: left;">「ファイル」アプリで対応</td>
+<td style="text-align: left;">アプリ導入を推奨</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>リモートデスクトップ</strong></td>
+<td style="text-align: left;">RDP（標準）</td>
+<td style="text-align: left;">VNC / Screen Sharing</td>
+<td style="text-align: left;">サードパーティ製アプリ</td>
+<td style="text-align: left;">Microsoft Remote Desktop等</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>主な用途</strong></td>
+<td style="text-align: left;">業務・高度な操作</td>
+<td style="text-align: left;">クリエイティブ・管理</td>
+<td style="text-align: left;">外出先でのファイル確認</td>
+<td style="text-align: left;">自由度の高いターミナル操作</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>1. Windows 11 での実例手順</h2>
+<p>Windows 11は、標準機能で強力なリモートデスクトップ（RDP）とSSHサーバー機能を備えています。</p>
+<h3>① 公式仕様に基づく実例手順</h3>
+<ul>
+<li><strong>SSH サーバーとしての動作</strong>:<ol>
+<li>「設定」&gt;「アプリ」&gt;「オプションのアプリ」から<strong>OpenSSH Server</strong>をインストールします。</li>
+<li>「サービス」アプリを開き、「OpenSSH SSH Server」を探して、スタートアップの種類を「自動」に変更し、サービスを開始します。</li>
+</ol>
+</li>
+<li><strong>RDP（遠隔デスクトップ）接続</strong>:<ol>
+<li>「設定」&gt;「システム」&gt;「リモートデスクトップ」で「リモートデスクトップを有効にする」をオンにします。</li>
+<li>クライアント側から <code>mstsc</code> コマンドを実行し、ホストのIPアドレスを入力して接続します。</li>
+</ol>
+</li>
+<li><strong>ファイル共有（SMB）</strong>:<ol>
+<li>共有したいフォルダを右クリックし「プロパティ」&gt;「共有」から権限を設定します。</li>
+<li>クライアント側のエクスプローラーで <code>\\ホストIP\共有フォルダ</code> と入力してアクセスします。</li>
+</ol>
+</li>
+</ul>
+<h3>② 標準機能の制限事項・非対応項目</h3>
+<ul>
+<li><strong>iOS/macOS から SSH ターミナル接続</strong>: WindowsのSSHサーバーに対し、MacやiPhoneの標準UIから直接「ターミナル」としてコマンドを打ち込む公式な統合メニューはありません（SMBファイル共有は可能です）。<ul>
+<li><strong>解決策</strong>: Mac/iPhoneでは <strong>Termius</strong> などのサードパーティ製クライアントを使用してください。</li>
+</ul>
+</li>
+<li><strong>Android から RDP</strong>: Android標準の「設定」アプリにはWindows RDP接続ボタンはありません。<ul>
+<li><strong>解決策</strong>: Google Playストアから <strong>Microsoft Remote Desktop</strong> アプリをインストールする必要があります。</li>
+</ul>
+</li>
+</ul>
+<h3>③ よくあるトラブルと解決法</h3>
+<ol>
+<li><strong>接続エラー: 「この PC は遠隔デスクトップの受け入れに設定されていません」</strong><ul>
+<li>原因：Windowsの設定がオフ、またはユーザーアカウントに権限がない。</li>
+<li>対策：[システム] &gt; [リモートデスクトップ] で「有効にする」を選択し、管理者権限を確認してください。</li>
+</ul>
+</li>
+<li><strong>ファイル共有エラー: 「ネットワークパスが見つかりません」</strong><ul>
+<li>原因：SMBプロトコルバージョンの不一致。</li>
+<li>対策：Windowsホスト側でSMB 1.0を無効にし、最新のSMB 3系で動作するか確認してください。</li>
+</ul>
+</li>
+<li><strong>SSH ログイン失敗: 「接続を拒否されました」</strong><ul>
+<li>原因：OpenSSHサーバーの起動忘れ、またはパスワード認証が無効（キー認証のみ）。</li>
+<li>対策：<code>ssh-keygen</code> で鍵を作成し <code>.ssh/authorized_keys</code> に登録するか、設定で <code>PasswordAuthentication yes</code> を確認してください。</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h2>2. macOS での実例手順</h2>
+<p>macOSは「共有」設定をオンにするだけで、非常にスムーズにサーバー化が可能です。</p>
+<h3>① 公式仕様に基づく実例手順</h3>
+<ul>
+<li><strong>SSH サーバーとしての動作</strong>:<ol>
+<li>「システム設定」&gt;「一般」&gt;「共有」を開き、「SSH」のスイッチをオンにします（デフォルトポート22）。</li>
+</ol>
+</li>
+<li><strong>ファイル共有（SMB）</strong>:<ol>
+<li>同じく「共有」メニューで「ファイル共有」をオンにします。</li>
+<li>「オプション...」をクリックし、SMBファイル共有とAFPを有効化します。</li>
+</ol>
+</li>
+<li><strong>VNC（画面共有）</strong>:<ol>
+<li>「共有」メニューで「画面共有」をオンにし、パスワード保護を設定します。</li>
+</ol>
+</li>
+</ul>
+<h3>② 標準機能の制限事項・非対応項目</h3>
+<ul>
+<li><strong>Windows から macOS SSH への直接接続</strong>: Windows標準のRDPはmacOSには適用できません。<ul>
+<li><strong>解決策</strong>: VNCクライアントまたはSSHクライアント（PuTTY等）を使用してください。</li>
+</ul>
+</li>
+<li><strong>Windows 10/11 から VNC 接続</strong>: Windows標準機能には、macOS用VNCクライアントが含まれていません。</li>
+</ul>
+<h3>③ よくあるトラブルと解決法</h3>
+<ol>
+<li><strong>「ファイル共有」が有効なのにアクセスできない</strong><ul>
+<li>原因：Windows側のSMBプロトコル不一致、またはゲストアクセスの制限。</li>
+<li>対策：Macの「オプション...」で「SMBファイル共有を許可する（パスワード保護あり）」を選択し、ユーザー名/パスワードを指定してください。</li>
+</ul>
+</li>
+<li><strong>SSH ログイン時のエラー: 「Authentication failed」</strong><ul>
+<li>原因：macOSのデフォルト設定がキー認証のみになっている。</li>
+<li>対策：<code>ssh-keygen</code> で鍵を作成し <code>~/.ssh/authorized_keys</code> に追加するか、設定を再確認してください。</li>
+</ul>
+</li>
+<li><strong>VNC 接続時の画面表示がおかしい・黒い</strong><ul>
+<li>原因：解像度不一致やクライアント側のコーデック未対応。</li>
+<li>対策：Macの「ディスプレイ」設定でVNC互換性の高い解像度に固定するか、最新のVNCクライアントを使用してください。</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h2>3. iOS（iPhone / iPad）での実例手順</h2>
+<p>iOSはモバイルデバイスとしての制約があるため、標準アプリを賢く使い分けるのがコツです。</p>
+<h3>① 公式仕様に基づく実例手順</h3>
+<ul>
+<li><strong>ファイル共有（SMB/CIFS）</strong>:<ol>
+<li>「ファイル」アプリを開き、サイドバーの「…」から「場所を追加」を選択。</li>
+<li>サーバータイプで「Windows PC」や「Mac」等を選び、IPアドレスとフォルダ名を入力します。</li>
+</ol>
+</li>
+<li><strong>SSH ターミナル操作</strong>:<ul>
+<li>iOS標準機能にはSSHコマンドラインを直接入力するUIはありません。</li>
+<li><strong>解決策</strong>: App Storeから <strong>Termius</strong> や <strong>Fork</strong> といったサードパーティ製アプリをインストールして接続してください（公式仕様外の代替手段です）。</li>
+</ul>
+</li>
+</ul>
+<h3>② 標準機能の制限事項・非対応項目</h3>
+<ul>
+<li><strong>VNC/Virtual Network Computing</strong>: iOS標準アプリでmacOSやWindowsの画面を直接制御する公式機能はありません。</li>
+</ul>
+<h3>③ よくあるトラブルと解決法</h3>
+<ol>
+<li><strong>「ファイル」アプリでの接続エラー: 「ネットワークにアクセスできません」</strong><ul>
+<li>原因：同一Wi-Fiにいない、またはルーターのファイアウォールでポート445等がブロックされている。</li>
+<li>対策：iPhoneとホストが同じネットワークにあるか確認し、必要に応じてルーターのポート開放を行ってください。</li>
+</ul>
+</li>
+<li><strong>共有フォルダが見えない</strong><ul>
+<li>原因：ホスト側で「ゲストアクセス」が無効化されている。</li>
+<li>対策：ホストPC側で適切なユーザーアカウントを作成し、パスワードを設定した上で権限を付与してください。</li>
+</ul>
+</li>
+<li><strong>アプリのインストール制限（企業管理デバイスなど）</strong><ul>
+<li>原因：MDMによりサードパーティ製SSHクライアントがブロックされている。</li>
+<li>対策：IT管理者に許可を申請するか、WebベースのSSHクライアント等の代替案を検討してください。</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h2>4. Android での実例手順</h2>
+<p>Androidは自由度が高いため、アプリを組み合わせることで非常に強力なリモート操作環境を構築できます。</p>
+<h3>① 公式仕様に基づく実例手順</h3>
+<ul>
+<li><strong>ファイル共有</strong>:<ol>
+<li><strong>Files by Google</strong> や各メーカー純正の「ファイル」アプリを使用します。</li>
+<li>ただし、標準メニューに直接的なSMB接続ボタンがない機種が多いため、Playストアから <strong>Solid Explorer</strong> などのファイルマネージャーを導入するのが一般的です。</li>
+</ol>
+</li>
+<li><strong>SSH ターミナル</strong>:<ol>
+<li>Playストアから <strong>Termux</strong> や <strong>Juice SSH</strong> をダウンロードします。</li>
+<li>これにより、Android端末上で高度なシェル操作が可能になります。</li>
+</ol>
+</li>
+</ul>
+<h3>② 標準機能の制限事項・非対応項目</h3>
+<ul>
+<li><strong>標準システムメニューでのSMB接続</strong>: 機種によって「設定」内にSMBクライアントボタンが存在しないことが多いため、基本的にはアプリ導入を前提とします。</li>
+</ul>
+<hr />
+<h2>よくあるトラブルと解決チェックリスト</h2>
+<ul>
+<li>[ ] <strong>「接続拒否（Connection Refused）」が出る</strong><ul>
+<li>原因：サーバー側のサービス（OpenSSHやリモートデスクトップ）が起動していない。</li>
+<li>対策：サービスのステータスを確認し、自動起動に設定されているかチェック。</li>
+</ul>
+</li>
+<li>[ ] <strong>「タイムアウト」で接続できない</strong><ul>
+<li>原因：ルーターのポートフォワーディング設定ミス、またはファイアウォールによる遮断。</li>
+<li>対策：ルーターの設定画面で正しいIPアドレスに対してポート（22, 3389等）が開放されているか確認。</li>
+</ul>
+</li>
+<li>[ ] <strong>「認証失敗」で進めない</strong><ul>
+<li>原因：パスワードの打ち間違い、または鍵認証のみのモードになっている。</li>
+<li>対策：パスワードを再入力するか、設定ファイルでPasswordAuthenticationを許可する。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2>まとめ：快適なマルチOS環境を作るポイント</h2>
+<p>自宅PCやNASをサーバーとして活用し、4つのOSからシームレスにアクセスできる環境を整えることは、生産性を飛躍的に向上させます。しかし、安定したリモート操作を実現するためには、ソフトウェアの設定だけでなく「インフラの基礎」も重要です。</p>
+<p>例えば、<strong>Wi-Fi 6/6E/7対応ルーター</strong>を導入することで、多数のデバイスが接続されても低遅延・高速な通信を維持できます。また、<strong>家庭用NAS</strong>を導入すれば、PCを常に起動させておく必要がなくなり、より安定したファイル共有が可能になります。さらに、安定した有線接続のために高品質な<strong>LANケーブル</strong>や、ポートを拡張する<strong>スイッチングハブ</strong>を適切に配置することで、ネットワークのボトルネックを解消できます。</p>
+<p>まずは標準機能でできることを試し、足りない部分は信頼性の高いサードパーティ製ツールで補う。この「ハイブリッドなアプローチ」こそが、快適なマルチOS環境を作るための近道です。</p>
+<hr />
+<h2>参考文献・公式ドキュメント（一次情報ソース）</h2>
+<p>本記事の手順・仕様は以下の各OSおよびツールの公式ドキュメントに基づいています。OSアップデートによりメニュー名称や挙動が変わる場合があるため、最新仕様の確認にもご活用ください。</p>
+<ul>
+<li><strong>[Windows]</strong> <a href="https://support.microsoft.com/ja-jp/windows/windows-%E3%81%A7%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF%E3%82%92%E4%BB%8B%E3%81%97%E3%81%9F%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E5%85%B1%E6%9C%89-b58704b2-f53a-4b82-7bc1-80f9994725bf">Windows でネットワークを介したファイル共有（SMB） - Microsoft サポート</a></li>
+<li><strong>[macOS]</strong> <a href="https://support.apple.com/ja-jp/guide/mac-help/mchlp1140/mac">Macを共有コンピュータおよびサーバへ接続する（SMB） - Apple サポート (日本)</a></li>
+<li><strong>[iOS]</strong> <a href="https://support.apple.com/ja-jp/guide/iphone/iph8d8f0f1a0/ios">iPhoneユーザガイド（「ファイル」アプリからサーバへ接続） - Apple サポート (日本)</a></li>
+<li><strong>[Android]</strong> <a href="https://support.google.com/android/?hl=ja">Android ヘルプ - Google サポート</a></li>
+</ul>
+    </article>
+  </main>
+  <footer>Generated with Local Ollama (qwen3.5 / gemma4) &amp; Draw Things (FLUX.2 klein 4B)</footer>
+</body>
+</html>

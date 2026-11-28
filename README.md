@@ -29,10 +29,11 @@ python -m src.main -n 1 --push
 python -m src.main -n 1 --category 11
 ```
 
-## 書き溜め済み記事一覧（全 95 本 / 最終更新: 2026-11-28 00:53 JST）
+## 書き溜め済み記事一覧（全 96 本 / 最終更新: 2026-11-28 19:13 JST）
 
 | No. | 17分類カテゴリ | 記事タイトル（Markdown） | 挿絵 | 生成日 |
 | :---: | :--- | :--- | :---: | :---: |
+| #96 | 分類11: ネットワーク・サーバー・インフラ構築 | [第96回｜自宅 PC で簡単に構築できる「SSH サーバー」からのリモート操作｜Windows・macOS・iOS・Android の実例比較](content/2026-11-28_art96_home_server_ssh_access_across_os.md) | あり | 2026-11-28 |
 | #95 | 分類10: システム管理・OS設定・メンテナンス | [Windows・macOS・iOS・Androidで重要なファイルをどこにも失わず保存する｜クラウドバックアップの実践ガイド](content/2026-11-28_art95_backup_files_cloud_storage_sync.md) | あり | 2026-11-28 |
 | #94 | 分類09: データ分析・科学計算・AI活用 | [Excel で株価や売上データをグラフ化する！標準アプリ「Numbers」＋Web ブラウザを使えば iPhone でも Windows でも同じ結果が出る｜Windows・macOS・iOS・Android](content/2026-11-28_art94_ai_spreadsheet_trend_analysis_mobile.md) | あり | 2026-11-28 |
 | #93 | 分類08: Web制作・ブログ・デジタルマーケティング | [Windows、macOS、iOS、Androidの4 OSで Web テキストエディタを比較：リンク管理と書式設定の実践例｜Windows・macOS・iOS・Android](content/2026-11-28_art93_web_editor_comparison_across_windows_macos_ios_android.md) | あり | 2026-11-28 |
