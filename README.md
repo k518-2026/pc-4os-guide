@@ -29,10 +29,11 @@ python -m src.main -n 1 --push
 python -m src.main -n 1 --category 11
 ```
 
-## 書き溜め済み記事一覧（全 97 本 / 最終更新: 2026-11-28 19:18 JST）
+## 書き溜め済み記事一覧（全 98 本 / 最終更新: 2026-11-28 19:22 JST）
 
 | No. | 17分類カテゴリ | 記事タイトル（Markdown） | 挿絵 | 生成日 |
 | :---: | :--- | :--- | :---: | :---: |
+| #98 | 分類13: ファイル管理・バックアップ・データ復旧 | [家族写真の「共有アルバム」を作る：Windows/OneDrive vs macOS/iCloud Drive を使い分けて、iPhone と Windows PC でも瞬時に同期する方法｜Windows・macOS・iOS・Android](content/2026-11-28_art98_family_photo_album_sync_4os.md) | あり | 2026-11-28 |
 | #97 | 分類12: セキュリティ・プライバシー対策 | [「パスワードマネージャー」の OS 標準機能で、端末ごとに保存されたパスワードを一括管理して安全に引き継ぐ方法](content/2026-11-28_art97_os_standard_password_manager_sync.md) | あり | 2026-11-28 |
 | #96 | 分類11: ネットワーク・サーバー・インフラ構築 | [第96回｜自宅 PC で簡単に構築できる「SSH サーバー」からのリモート操作｜Windows・macOS・iOS・Android の実例比較](content/2026-11-28_art96_home_server_ssh_access_across_os.md) | あり | 2026-11-28 |
 | #95 | 分類10: システム管理・OS設定・メンテナンス | [Windows・macOS・iOS・Androidで重要なファイルをどこにも失わず保存する｜クラウドバックアップの実践ガイド](content/2026-11-28_art95_backup_files_cloud_storage_sync.md) | あり | 2026-11-28 |

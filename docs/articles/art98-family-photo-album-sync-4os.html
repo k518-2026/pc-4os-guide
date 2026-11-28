@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>家族写真の「共有アルバム」を作る：Windows/OneDrive vs macOS/iCloud Drive を使い分けて、iPhone と Windows PC でも瞬時に同期する方法｜Windows・macOS・iOS・Android | PC 4OS実例ガイド</title>
+  <style>
+:root {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --muted: #475569;
+  --accent: #0284c7;
+  --accent-soft: #e0f2fe;
+  --border: #e2e8f0;
+  --code-bg: #0f172a;
+  --code-text: #e2e8f0;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Noto Sans JP", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+}
+header.site-header {
+  background: linear-gradient(135deg, #0f172a 0%, #0369a1 100%);
+  color: #fff;
+  padding: 2.2rem 1.25rem;
+}
+header.site-header .inner { max-width: 980px; margin: 0 auto; }
+header.site-header h1 { margin: 0 0 0.4rem; font-size: 1.75rem; }
+header.site-header p { margin: 0; opacity: 0.9; font-size: 0.96rem; }
+main { max-width: 980px; margin: 2rem auto; padding: 0 1.25rem 3rem; }
+.badge {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: var(--accent-soft);
+  color: #0369a1;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1.25rem;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08); }
+.card img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; display: block; background: #e2e8f0; }
+.card-body { padding: 1rem 1.1rem 1.2rem; flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+.card-title { font-size: 1.02rem; font-weight: 700; margin: 0; line-height: 1.45; }
+.card-meta { font-size: 0.82rem; color: var(--muted); margin-top: auto; }
+article.post {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 2rem;
+}
+article.post img.eyecatch {
+  width: 100%;
+  max-height: 460px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+}
+article.post h1 { font-size: 1.65rem; line-height: 1.35; margin-top: 0; }
+article.post h2 {
+  font-size: 1.3rem;
+  margin-top: 2.1rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 2px solid var(--accent-soft);
+}
+article.post h3 { font-size: 1.08rem; margin-top: 1.4rem; }
+article.post table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.2rem 0;
+  font-size: 0.92rem;
+  display: block;
+  overflow-x: auto;
+}
+article.post th, article.post td {
+  border: 1px solid var(--border);
+  padding: 0.6rem 0.8rem;
+  text-align: left;
+}
+article.post th { background: #f1f5f9; font-weight: 700; }
+article.post pre {
+  background: var(--code-bg);
+  color: var(--code-text);
+  padding: 1rem 1.15rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+article.post code {
+  background: #f1f5f9;
+  padding: 0.15rem 0.38rem;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+article.post pre code { background: transparent; padding: 0; color: inherit; }
+article.post blockquote {
+  margin: 1.2rem 0;
+  padding: 0.8rem 1.1rem;
+  border-left: 4px solid var(--accent);
+  background: #f0f9ff;
+  border-radius: 0 8px 8px 0;
+}
+.back-link { display: inline-block; margin-bottom: 1rem; color: var(--accent); text-decoration: none; font-weight: 600; }
+.filter-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.15rem 1.25rem;
+  margin-bottom: 1.5rem;
+}
+.filter-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) auto;
+  gap: 0.9rem;
+  align-items: end;
+}
+.filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.filter-field label {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.filter-field input[type="search"],
+.filter-field select {
+  font: inherit;
+  font-size: max(1rem, 1em);
+  min-height: 48px;
+  padding: 0.55rem 0.85rem;
+  border: 1.5px solid #767676;
+  border-radius: 8px;
+  background: #fff;
+  color: var(--text);
+  width: 100%;
+}
+.filter-field input[type="search"]:focus-visible,
+.filter-field select:focus-visible,
+.filter-actions button:focus-visible {
+  outline: 3px solid #0284c7;
+  outline-offset: 2px;
+}
+.filter-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+.filter-actions button {
+  font: inherit;
+  font-size: max(1rem, 0.95em);
+  font-weight: 600;
+  min-height: 48px;
+  padding: 0 1.05rem;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+}
+.btn-primary {
+  background: #0369a1;
+  color: #fff;
+}
+.btn-primary:hover { background: #075985; }
+.btn-secondary {
+  background: #f1f5f9;
+  color: var(--text);
+  border-color: #94a3b8;
+}
+.btn-secondary:hover { background: #e2e8f0; }
+.results-status {
+  color: var(--muted);
+  font-size: 0.92rem;
+  margin: 0 0 1.1rem;
+}
+.empty-state {
+  background: var(--surface);
+  border: 1px dashed #94a3b8;
+  border-radius: 12px;
+  padding: 2rem 1.25rem;
+  text-align: center;
+  color: var(--muted);
+}
+.card[hidden],
+.empty-state[hidden] { display: none; }
+footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2rem 1rem; }
+@media (max-width: 720px) {
+  .filter-form { grid-template-columns: 1fr; }
+  .filter-actions { width: 100%; }
+  .filter-actions button { flex: 1; }
+}
+@media (max-width: 640px) {
+  article.post { padding: 1.2rem; }
+}
+</style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="inner">
+      <h1>PC 4OS実例ガイド</h1>
+      <p>Windows・macOS・iOS・Android の実践比較＆トラブル解決アーカイブ</p>
+    </div>
+  </header>
+  <main>
+    <a class="back-link" href="../index.html">← 記事一覧へ戻る</a>
+    <article class="post">
+      <p><span class="badge">#98｜分類13: ファイル管理・バックアップ・データ復旧</span> <small style="color:#64748b;margin-left:0.5rem;">2026-11-28</small></p>
+      <img class="eyecatch" src="../images/2026-11-28_art98_family_photo_album_sync_4os.png" alt="家族写真の「共有アルバム」を作る：Windows/OneDrive vs macOS/iCloud Drive を使い分けて、iPhone と Windows PC でも瞬時に同期する方法｜Windows・macOS・iOS・Android">
+      <h1>家族写真の「共有アルバム」を作る：Windows/OneDrive vs macOS/iCloud Drive を使い分けて、iPhone と Windows PC でも瞬時に同期する方法｜Windows・macOS・iOS・Android</h1>
+<p>「家族で撮った写真をみんなで見られるようにしたいけれど、iPhoneとWindows PC、中にはAndroidを使っている人もいて、どう管理すればいいのかわからない……」</p>
+<p>そんな悩みをお持ちではありませんか？ 家族の思い出を共有する際、最も重要なのは<strong>「誰がどのデバイスを使っていても、同じ最新のアルバムにアクセスできること」</strong>であり、同時に<strong>「大切なデータが消えないためのバックアップ体制」</strong>を整えることです。</p>
+<p>この記事では、Windows、macOS、iOS、Androidの4つのOSを横断して、OneDriveとiCloud Driveを賢く使い分けながら、家族全員で快適に写真を共有・管理するための実践的な手順を解説します。この記事を読み終える頃には、あなたの家族に最適な「ハイブリッドなバックアップ戦略」の道筋が見えているはずです。</p>
+<h2>4OS比較早見表</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">機能・項目</th>
+<th style="text-align: left;">Windows 11 (OneDrive)</th>
+<th style="text-align: left;">macOS (iCloud Drive)</th>
+<th style="text-align: left;">iOS (iPhone/iPad)</th>
+<th style="text-align: left;">Android</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>主なクラウド</strong></td>
+<td style="text-align: left;">OneDrive</td>
+<td style="text-align: left;">iCloud Drive</td>
+<td style="text-align: left;">iCloud フォト</td>
+<td style="text-align: left;">Google フォト</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>PCとの同期</strong></td>
+<td style="text-align: left;">標準アプリで高度に同期</td>
+<td style="text-align: left;">Finderとシームレスに統合</td>
+<td style="text-align: left;">Safari/ファイルアプリ経由</td>
+<td style="text-align: left;">ブラウザ/Googleドライブ連携</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>バックアップ</strong></td>
+<td style="text-align: left;">ファイル履歴 / 外付けHDD</td>
+<td style="text-align: left;">Time Machine (標準)</td>
+<td style="text-align: left;">iCloud バックアップ</td>
+<td style="text-align: left;">Googleアカウント自動同期</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>外部ストレージ</strong></td>
+<td style="text-align: left;">HDD/SSDの直接操作可</td>
+<td style="text-align: left;">HDD/SSDの直接操作可</td>
+<td style="text-align: left;">標準機能でのHDD接続不可</td>
+<td style="text-align: left;">SDカード対応（機種依存）</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>家族共有</strong></td>
+<td style="text-align: left;">リンク共有 / 特定ユーザー</td>
+<td style="text-align: left;">共有フォルダ / iCloud共有</td>
+<td style="text-align: left;">AirDrop(Apple間) / iCloud</td>
+<td style="text-align: left;">Quick Share / Googleフォト</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>1. Windows 11 での実例手順</h2>
+<p>Windows環境では、Microsoftのクラウドストレージ「OneDrive」をハブとして活用するのが最もスムーズです。</p>
+<h3>OneDrive で「家族アルバム」を構築・同期させる</h3>
+<p><strong>【準備】</strong> Microsoftアカウント（Outlook/Hotmail等）を用意し、Windows 11とiPhoneの両方でログインします。</p>
+<p><strong>PC側操作 (Windows 11):</strong><br />
+1. 「スタートメニュー」→「設定」→「アカウント」からOneDriveの同期状態を確認します。<br />
+2. エクスプローラーを開き、OneDriveフォルダ内に「家族アルバム」という名前のフォルダを作成します。<br />
+3. その中に写真をドラッグ＆ドロップで追加します。<br />
+4. フォルダを右クリックし、「共有」を選択。「特定の人のリンクを作成」を選び、家族のメールアドレス宛てに送信します。</p>
+<p><strong>iPhone側操作 (iOS):</strong><br />
+1. App Storeから「OneDrive」アプリをインストール・起動します。<br />
+2. PCで共有したリンクまたはQRコードを開き、アプリ内で該当フォルダへアクセスします。<br />
+3. iPhoneで撮影した写真をこのフォルダ内にアップロードすれば、PC側にも瞬時に反映されます。</p>
+<h3>Windows 11 の標準機能によるバックアップと復旧</h3>
+<p>Windowsの「設定」アプリ内には、OSそのものを丸ごと保存する「ワンクリックでのイメージバックアップ」ボタンは標準搭載されていません（OneDriveはファイル同期のみです）。<br />
+<strong>【推奨】</strong> システム全体の保護が必要な場合は、<strong>外付けHDDへの手動コピー</strong>や、サードパーティ製のバックアップソフトを併用するのが公式の代替案として一般的です。</p>
+<h3>よくあるトラブルと解決法（Win）</h3>
+<ul>
+<li><strong>トラブルA：共有リンクが有効期限切れになった</strong><ul>
+<li>原因：作成した共有リンクに有効期限を設定していたため。</li>
+<li>解決：OneDriveウィンドウの「共有」タブから再度リンクをコピーし、再発行します。</li>
+</ul>
+</li>
+<li><strong>トラブルB：OneDriveの同期アイコンが黄色い！</strong><ul>
+<li>原因：通信環境の問題または一時的なエラー。</li>
+<li>解決：タスクバーのアイコンをクリックし、「今すぐ同期」を選択するか、PCを再起動してください。</li>
+</ul>
+</li>
+<li><strong>トラブルC：iPhoneからPCの共有フォルダに直接アクセスできない</strong><ul>
+<li>原因：Windowsのファイアウォール制限やネットワークプロトコルの不一致。</li>
+<li>解決：両端末を同じWi-Fiに接続し、ブラウザではなく「OneDriveアプリ」経由で操作してください。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2>2. macOS での実例手順</h2>
+<p>Macユーザーであれば、iCloud Driveとの親和性を最大限に活かすのが正解です。</p>
+<h3>iCloud Drive で「家族アルバム」を構築・同期させる</h3>
+<p><strong>【準備】</strong> Apple IDでMacとiPhoneの両方にログインします。</p>
+<p><strong>Mac側操作 (macOS):</strong><br />
+1. 「Finder」を開き、サイドバーの「iCloudドライブ」を選択。<br />
+2. 新しいフォルダを作成し、「共有」ボタンをクリックして家族を招待します。<br />
+3. ファイルを追加すると、自動的にクラウドへ同期されます。</p>
+<p><strong>iPhone側操作 (iOS):</strong><br />
+1. iPhoneの「フォト」アプリで撮影した写真は、設定により自動で「iCloudフォト」へアップロードされます。<br />
+2. Macで共有されたフォルダへのアクセスは、「ファイル」アプリを開くか、Safariから <code>icloud.com</code> にログインして行います。</p>
+<h3>macOS の標準機能によるバックアップと復旧</h3>
+<p><strong>Time Machineの活用:</strong><br />
+1. 「システム設定」→「一般」→「Time Machine」へ進みます。<br />
+2. 外付けHDDを接続し、自動バックアップを設定します。<br />
+3. <strong>復元方法:</strong> Time Machine起動画面で過去の日付を選択し、リストから必要なファイルを選んで「復元」を押すだけです。</p>
+<h3>よくあるトラブルと解決法（Mac）</h3>
+<ul>
+<li><strong>トラブルA：iCloudドライブの同期が止まっている</strong><ul>
+<li>原因：ネットワーク切断やiCloud設定のオフ。</li>
+<li>解決：「システム設定」→「Apple ID」→「iCloud」で「iCloudドライブ」を再有効化します。</li>
+</ul>
+</li>
+<li><strong>トラブルB：Time Machineが外付けHDDに保存できない</strong><ul>
+<li>原因：ディスクのフォーマット（exFATなど）が非対応。</li>
+<li>解決：Time MachineはmacOS標準のファイルシステム（APFS/HFS+）を必要とします。ドライブの初期化を確認してください。</li>
+</ul>
+</li>
+<li><strong>トラブルC：iPhoneから直接PCに写真を転送したいが、ケーブル接続ができない</strong><ul>
+<li>原因：iOSのセキュリティ強化により、標準機能での自由なコピーが制限されているため。</li>
+<li>解決：「AirDrop」を使い、またはiCloudフォトを経由して同期させるのが公式の推奨ルートです。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2>3. iOS (iPhone/iPad) での実例手順</h2>
+<p>iPhoneは「撮影・共有の起点」となりますが、ファイル管理にはいくつかの制約があります。</p>
+<h3>iOS の標準機能によるデータ管理の限界と代替策</h3>
+<ul>
+<li><strong>外部ストレージへのアクセス:</strong> iPhoneに外付けHDDを接続して直接写真を読み取ることは、Appleの公式仕様として<strong>非対応</strong>です。</li>
+<li><strong>共有の代替手段:</strong> 「AirDrop」（Mac/iPhone間のみ）、iCloudフォト、またはOneDrive/Googleドライブアプリへのアップロードが唯一の公式ルートとなります。</li>
+</ul>
+<h3>よくあるトラブルと解決法（iOS）</h3>
+<ul>
+<li><strong>トラブルA：AirDropでWindows PCに写真を送れない</strong><ul>
+<li>原因：AirDropはAppleデバイス専用プロトコルであるため。</li>
+<li>解決：iPhoneの「フォト」アプリで共有ボタン→リンク発行を行い、PCのブラウザから取得してください。</li>
+</ul>
+</li>
+<li><strong>トラブルB：iCloudフォトの容量不足エラー</strong><ul>
+<li>原因：ストレージが満杯。</li>
+<li>解決：設定の「ストレージ管理」から不要なファイルを削除するか、有料プランへのアップグレードを検討してください。</li>
+</ul>
+</li>
+<li><strong>トラブルC：写真アプリでアルバムを編集できない</strong><ul>
+<li>原因：同期が完了していない。</li>
+<li>解決：設定→「iCloud」→「フォト」で「最適化されたサイズを表示」を選択し、通信環境の良い場所で再同期させてください。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2>4. Android での実例手順</h2>
+<p>AndroidはGoogleエコシステムとの親和性が高く、自由度の高いファイル操作が可能です。</p>
+<h3>Android の標準機能によるデータ管理と共有</h3>
+<ul>
+<li><strong>Google フォト:</strong> 「フォト」アプリで撮影した写真は自動的にクラウドへアップロードされます。PCからはブラウザの <code>photos.google.com</code> でアクセス可能です。</li>
+<li><strong>ファイル転送:</strong> USBケーブルでPCに接続し、Windowsのエクスプローラーから「My Phone」として認識させれば、ドラッグ＆ドロップで高速転送が可能です。</li>
+</ul>
+<h3>Android のバックアップと復元の注意点</h3>
+<ul>
+<li><strong>Googleアカウント連携:</strong> 「設定」→「アカウント」でGoogleアカウントを追加し、自動同期を有効にします（機種依存なし）。</li>
+<li><strong>外付けストレージの扱い:</strong> SDカードへの保存は標準サポートされていますが、HDD/SSDの直接接続管理はPC側での操作が必要になることが一般的です。</li>
+</ul>
+<h3>よくあるトラブルと解決法（Android）</h3>
+<ul>
+<li><strong>トラブルA：Googleフォトのバックアップが止まっている</strong><ul>
+<li>原因：データ通信制限または容量不足。</li>
+<li>解決：Wi-Fiに接続し、設定で「Wi-Fiのみ」をオフにしてデータ通信を許可するか、ストレージを拡張してください。</li>
+</ul>
+</li>
+<li><strong>トラブルB：PCへのケーブル転送が認識されない</strong><ul>
+<li>原因：USB接続モードが「充電のみ」になっている。</li>
+<li>解決：スマホの通知パネルから「USBの設定」を開き、「ファイル転送」を選択してください。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2>よくあるトラブルと解決チェックリスト</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">エラー・事象</th>
+<th style="text-align: left;">原因の可能性</th>
+<th style="text-align: left;">解決策（チェック項目）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>同期が止まる</strong></td>
+<td style="text-align: left;">通信環境、またはクラウド容量不足</td>
+<td style="text-align: left;">[ ] Wi-Fi接続を確認したか？<br>[ ] クラウドの空き容量は十分か？</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>ファイルが開けない</strong></td>
+<td style="text-align: left;">権限設定、またはリンク切れ</td>
+<td style="text-align: left;">[ ] 共有リンクの有効期限を再確認したか？<br>[ ] 特定ユーザーへのアクセス許可を与えたか？</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>デバイスが認識されない</strong></td>
+<td style="text-align: left;">ケーブル不良、または接続モード</td>
+<td style="text-align: left;">[ ] 正しいデータ転送用ケーブルを使用しているか？<br>[ ] スマホ側で「ファイル転送」を選択したか？</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>まとめ：快適なマルチOS環境を作るポイント</h2>
+<p>家族の思い出を安全に守るためには、<strong>「クラウドでの共有」と「物理的なバックアップ」の両輪</strong>が必要です。</p>
+<ol>
+<li><strong>クラウドの使い分け:</strong> WindowsユーザーはOneDrive、Mac/iPhoneユーザーはiCloudをベースにしつつ、Androidユーザーを含む場合はGoogleフォトやOneDriveを共通のハブとして使うのが最も効率的です。</li>
+<li><strong>物理バックアップの重要性:</strong> クラウドは便利ですが、万が一のアカウントロックや紛失に備え、定期的に<strong>外付けHDD/SSD</strong>へデータをコピーする習慣をつけましょう。</li>
+<li><strong>ツール選びのコツ:</strong> <ul>
+<li><strong>外付けストレージ:</strong> 高速な転送が必要なら「外付けSSD」、大容量保存なら「外付けHDD」を選びましょう。</li>
+<li><strong>バックアップソフト:</strong> Time MachineやOneDriveのファイル履歴に加え、より高度な復旧を求めるなら専用の<strong>データ復旧ソフト</strong>や<strong>クラウドバックアップサービス</strong>（Backblaze等）の導入も検討の価値があります。</li>
+</ul>
+</li>
+</ol>
+<p>正しいツールと手順を知ることで、デバイスの壁を越えた「家族だけの快適なアルバム」を構築しましょう。</p>
+<hr />
+<h2>参考文献・公式ドキュメント（一次情報ソース）</h2>
+<p>本記事の手順・仕様は以下の各OSおよびツールの公式ドキュメントに基づいています。OSアップデートによりメニュー名称や挙動が変わる場合があるため、最新仕様の確認にもご活用ください。</p>
+<ul>
+<li><strong>[Windows]</strong> <a href="https://support.microsoft.com/ja-jp/windows/windows-%E3%81%A7-pc-%E3%82%92%E3%83%90%E3%83%83%E3%82%AF%E3%82%A2%E3%83%83%E3%83%97%E3%81%8A%E3%82%88%E3%81%B3%E5%BE%A9%E5%85%83%E3%81%99%E3%82%8B-352091d2-bb9d-3ea3-ed18-52ef2b88cbef">Windows で PC をバックアップおよび復元する - Microsoft サポート</a></li>
+<li><strong>[macOS]</strong> <a href="https://support.apple.com/ja-jp/104984">Time MachineでMacをバックアップする - Apple サポート (日本)</a></li>
+<li><strong>[iOS]</strong> <a href="https://support.apple.com/ja-jp/guide/iphone/iph95baac91f/ios">iPhoneに外部ストレージデバイスを接続する - Apple サポート (日本)</a></li>
+<li><strong>[Android]</strong> <a href="https://support.google.com/android/answer/9064445?hl=ja">パソコンと Android デバイス間でファイルを転送する - Android ヘルプ</a></li>
+</ul>
+    </article>
+  </main>
+  <footer>Generated with Local Ollama (qwen3.5 / gemma4) &amp; Draw Things (FLUX.2 klein 4B)</footer>
+</body>
+</html>
