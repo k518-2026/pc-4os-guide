@@ -29,10 +29,11 @@ python -m src.main -n 1 --push
 python -m src.main -n 1 --category 11
 ```
 
-## 書き溜め済み記事一覧（全 103 本 / 最終更新: 2026-11-28 20:05 JST）
+## 書き溜め済み記事一覧（全 104 本 / 最終更新: 2026-11-28 20:10 JST）
 
 | No. | 17分類カテゴリ | 記事タイトル（Markdown） | 挿絵 | 生成日 |
 | :---: | :--- | :--- | :---: | :---: |
+| #104 | 分類02: コミュニケーション・情報共有 | [4OS（Win/Mac/iOS/Android）でグループ共同編集するタスク管理アプリの比較実例｜Windows・macOS・iOS・Android](content/2026-11-28_art104_cross_os_task_manager_group_project_sync.md) | あり | 2026-11-28 |
 | #103 | 分類01: 文書作成・オフィス業務・事務作業 | [Word エディタ比較：Windows/macOS/iOS/Android で「文字装飾とリンク管理」を徹底検証](content/2026-11-28_art103_word_editor_comparison_text_formatting_across_os.md) | あり | 2026-11-28 |
 | #102 | 分類17: 生活・行政手続き・家計・資産管理 | [銀行取引明細を「カテゴリ」で自動整理する：Windows・macOS、iOS、Androidの標準アプリ比較](content/2026-11-28_art102_bank_statement_digital_categorization.md) | あり | 2026-11-28 |
 | #101 | 分類16: 学習・教育・自己啓発 | [重要タスクを「メモ帳・アプリ連携」で4台同時に管理：Windows・macOS・iOS・Androidの標準機能活用実例](content/2026-11-28_art101_cross_os_todo_list_sync_templates.md) | あり | 2026-11-28 |

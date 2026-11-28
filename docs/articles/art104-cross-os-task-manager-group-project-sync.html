@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>4OS（Win/Mac/iOS/Android）でグループ共同編集するタスク管理アプリの比較実例｜Windows・macOS・iOS・Android | PC 4OS実例ガイド</title>
+  <style>
+:root {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --muted: #475569;
+  --accent: #0284c7;
+  --accent-soft: #e0f2fe;
+  --border: #e2e8f0;
+  --code-bg: #0f172a;
+  --code-text: #e2e8f0;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Noto Sans JP", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+}
+header.site-header {
+  background: linear-gradient(135deg, #0f172a 0%, #0369a1 100%);
+  color: #fff;
+  padding: 2.2rem 1.25rem;
+}
+header.site-header .inner { max-width: 980px; margin: 0 auto; }
+header.site-header h1 { margin: 0 0 0.4rem; font-size: 1.75rem; }
+header.site-header p { margin: 0; opacity: 0.9; font-size: 0.96rem; }
+main { max-width: 980px; margin: 2rem auto; padding: 0 1.25rem 3rem; }
+.badge {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: var(--accent-soft);
+  color: #0369a1;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1.25rem;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08); }
+.card img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; display: block; background: #e2e8f0; }
+.card-body { padding: 1rem 1.1rem 1.2rem; flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+.card-title { font-size: 1.02rem; font-weight: 700; margin: 0; line-height: 1.45; }
+.card-meta { font-size: 0.82rem; color: var(--muted); margin-top: auto; }
+article.post {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 2rem;
+}
+article.post img.eyecatch {
+  width: 100%;
+  max-height: 460px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+}
+article.post h1 { font-size: 1.65rem; line-height: 1.35; margin-top: 0; }
+article.post h2 {
+  font-size: 1.3rem;
+  margin-top: 2.1rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 2px solid var(--accent-soft);
+}
+article.post h3 { font-size: 1.08rem; margin-top: 1.4rem; }
+article.post table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.2rem 0;
+  font-size: 0.92rem;
+  display: block;
+  overflow-x: auto;
+}
+article.post th, article.post td {
+  border: 1px solid var(--border);
+  padding: 0.6rem 0.8rem;
+  text-align: left;
+}
+article.post th { background: #f1f5f9; font-weight: 700; }
+article.post pre {
+  background: var(--code-bg);
+  color: var(--code-text);
+  padding: 1rem 1.15rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+article.post code {
+  background: #f1f5f9;
+  padding: 0.15rem 0.38rem;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+article.post pre code { background: transparent; padding: 0; color: inherit; }
+article.post blockquote {
+  margin: 1.2rem 0;
+  padding: 0.8rem 1.1rem;
+  border-left: 4px solid var(--accent);
+  background: #f0f9ff;
+  border-radius: 0 8px 8px 0;
+}
+.back-link { display: inline-block; margin-bottom: 1rem; color: var(--accent); text-decoration: none; font-weight: 600; }
+.filter-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.15rem 1.25rem;
+  margin-bottom: 1.5rem;
+}
+.filter-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) auto;
+  gap: 0.9rem;
+  align-items: end;
+}
+.filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.filter-field label {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.filter-field input[type="search"],
+.filter-field select {
+  font: inherit;
+  font-size: max(1rem, 1em);
+  min-height: 48px;
+  padding: 0.55rem 0.85rem;
+  border: 1.5px solid #767676;
+  border-radius: 8px;
+  background: #fff;
+  color: var(--text);
+  width: 100%;
+}
+.filter-field input[type="search"]:focus-visible,
+.filter-field select:focus-visible,
+.filter-actions button:focus-visible {
+  outline: 3px solid #0284c7;
+  outline-offset: 2px;
+}
+.filter-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+.filter-actions button {
+  font: inherit;
+  font-size: max(1rem, 0.95em);
+  font-weight: 600;
+  min-height: 48px;
+  padding: 0 1.05rem;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+}
+.btn-primary {
+  background: #0369a1;
+  color: #fff;
+}
+.btn-primary:hover { background: #075985; }
+.btn-secondary {
+  background: #f1f5f9;
+  color: var(--text);
+  border-color: #94a3b8;
+}
+.btn-secondary:hover { background: #e2e8f0; }
+.results-status {
+  color: var(--muted);
+  font-size: 0.92rem;
+  margin: 0 0 1.1rem;
+}
+.empty-state {
+  background: var(--surface);
+  border: 1px dashed #94a3b8;
+  border-radius: 12px;
+  padding: 2rem 1.25rem;
+  text-align: center;
+  color: var(--muted);
+}
+.card[hidden],
+.empty-state[hidden] { display: none; }
+footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2rem 1rem; }
+@media (max-width: 720px) {
+  .filter-form { grid-template-columns: 1fr; }
+  .filter-actions { width: 100%; }
+  .filter-actions button { flex: 1; }
+}
+@media (max-width: 640px) {
+  article.post { padding: 1.2rem; }
+}
+</style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="inner">
+      <h1>PC 4OS実例ガイド</h1>
+      <p>Windows・macOS・iOS・Android の実践比較＆トラブル解決アーカイブ</p>
+    </div>
+  </header>
+  <main>
+    <a class="back-link" href="../index.html">← 記事一覧へ戻る</a>
+    <article class="post">
+      <p><span class="badge">#104｜分類02: コミュニケーション・情報共有</span> <small style="color:#64748b;margin-left:0.5rem;">2026-11-28</small></p>
+      <img class="eyecatch" src="../images/2026-11-28_art104_cross_os_task_manager_group_project_sync.png" alt="4OS（Win/Mac/iOS/Android）でグループ共同編集するタスク管理アプリの比較実例｜Windows・macOS・iOS・Android">
+      <h1>4OS（Win/Mac/iOS/Android）でグループ共同編集するタスク管理アプリの比較実例｜Windows・macOS・iOS・Android</h1>
+<p>「チームでタスクを管理したいけれど、メンバーによって使っているデバイスがバラバラで、どうすればスムーズに共同編集ができるのか分からない……」と悩んでいませんか？</p>
+<p>Windows PCで資料を作り、Macで確認し、移動中はiPhoneやAndroidで進捗をチェックする。現代のワークスタイルでは、特定のOSに縛られない「クロスプラットフォーム」での操作性が不可欠です。</p>
+<p>この記事では、4つの主要OS（Windows, macOS, iOS, Android）において、標準的なクラウドツールを使いながら「グループ共同編集」を実現するための具体的な手順と、各OS特有の注意点を徹底比較します。この記事を読めば、どのデバイスからでも同期のズレを防ぎ、円滑にプロジェクトを進めるための正解が見つかります。</p>
+<h2>4OS比較早見表</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">機能・項目</th>
+<th style="text-align: left;">Windows 11</th>
+<th style="text-align: left;">macOS</th>
+<th style="text-align: left;">iOS (iPhone/iPad)</th>
+<th style="text-align: left;">Android</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>推奨プラットフォーム</strong></td>
+<td style="text-align: left;">Microsoft Teams / SharePoint</td>
+<td style="text-align: left;">Google Workspace / Safari</td>
+<td style="text-align: left;">iCloud Drive / Files App</td>
+<td style="text-align: left;">Google Drive / Chrome</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>共同編集の核</strong></td>
+<td style="text-align: left;">Excel Online / SharePoint</td>
+<td style="text-align: left;">Google Sheets / Docs</td>
+<td style="text-align: left;">Files App 連携</td>
+<td style="text-align: left;">Google Sheets / Docs</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>主なブラウザ</strong></td>
+<td style="text-align: left;">Microsoft Edge</td>
+<td style="text-align: left;">Safari / Chrome</td>
+<td style="text-align: left;">Safari (モバイル版)</td>
+<td style="text-align: left;">Chrome</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>特筆すべき強み</strong></td>
+<td style="text-align: left;">高度なリスト管理と組織連携</td>
+<td style="text-align: left;">直感的な操作とブラウザ連携</td>
+<td style="text-align: left;">Apple Pencilとの親和性</td>
+<td style="text-align: left;">Googleエコシステムとの統合</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>標準機能の制限</strong></td>
+<td style="text-align: left;">ローカルファイルでの同時編集不可</td>
+<td style="text-align: left;">iCloudとGoogleドライブの混同注意</td>
+<td style="text-align: left;">モバイル版のUI反映遅延</td>
+<td style="text-align: left;">標準「ファイル」アプリの制約</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>1. Windows 11 での実例手順</h2>
+<p>Windows環境では、組織内で広く普及しているMicrosoft 365のエコシステムを活用するのが最も安定したアプローチです。</p>
+<h3>【実例手順】グループ共同編集タスクの作成・管理</h3>
+<ol>
+<li><strong>準備</strong>: Microsoft Edgeブラウザ、またはMicrosoft Storeからインストールした「Microsoft Teams」アプリを起動します。</li>
+<li><strong>共有リスト作成</strong>: チームの「チャネル」を選択し、「+ チャネルを追加」でプロジェクト専用スペースを作成。その中の「ファイル」タブから「SharePoint リスト（タスク管理テンプレート）」を選択して追加します。</li>
+<li><strong>共同編集</strong>: リスト内の任意の行をクリックすると、Excel Onlineが起動します。ここで複数人が同時にセルを編集でき、変更はリアルタイムで反映されます。</li>
+<li><strong>保存場所確認</strong>: ファイルは自動的にOneDrive for BusinessまたはSharePointオンラインに同期されるため、個人のPC内にのみ保存されることはありません。</li>
+</ol>
+<h3>【標準機能の制限事項】</h3>
+<ul>
+<li><strong>OS 固有アプリでの直接共有不可</strong>: Windowsの「ファイル」エクスプローラー内でExcelやWordをダブルクリックして開いた場合、他のOS（Mac/iOS）からの同時編集を行うと「競合エラー」が発生します。必ずWebブラウザ版、またはOfficeアプリのクラウド同期バージョンを使用してください。</li>
+<li><strong>ローカルキャッシュの問題</strong>: OneDriveの設定で「この PC に保存しない」を選択していても、Teams内での操作履歴は一時的にキャッシュされることがあります。オフライン環境では編集内容が反映されない可能性があるため注意が必要です。</li>
+</ul>
+<h3>【よくあるトラブルと解決法】</h3>
+<ol>
+<li><strong>「ファイルのバージョン」が見つからない場合</strong><ul>
+<li><strong>現象</strong>: Teamsでファイルを削除・上書きした際、以前の復元先が見当たらない。</li>
+<li><strong>原因/対策</strong>: OneDriveの「以前のバージョン」機能はSharePointリスト（タスク管理）には適用されない仕様があります。必ず「ファイル履歴」ではなく、「SharePoint サイトのライブラリ設定→バージョン履歴」から確認してください。</li>
+</ul>
+</li>
+<li><strong>同期エラーによる編集反映遅延</strong><ul>
+<li><strong>現象</strong>: Teamsで変更しても、PCのローカル表示が更新されない。</li>
+<li><strong>対策</strong>: 「ファイル」タブ右上のアイコン（歯車）から「設定→キャッシュをクリア」を実行するか、「OneDrive サインアウト・サインイン」を試してください。</li>
+</ul>
+</li>
+<li><strong>共同編集時の競合エラー</strong><ul>
+<li><strong>現象</strong>: 「このファイルは他で開かれています」と表示され、保存できない。</li>
+<li><strong>対策</strong>: 他のメンバーがブラウザ版Officeを使っている場合でも発生することがあります。その際はTeamsのチャット機能で「@everyone」を使い、全員に「編集モードをオフ（閲覧のみ）」にするよう依頼する代替手段をとります。</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h2>2. macOS での実例手順</h2>
+<p>macOSでは、Google Workspaceとの親和性が高く、ブラウザベースでの共同編集が非常にスムーズです。</p>
+<h3>【実例手順】グループ共同編集タスクの作成・管理</h3>
+<ol>
+<li><strong>準備</strong>: ChromeブラウザまたはSafariでGoogleドライブにアクセスし、「新規→スプレッドシート（またはドキュメント）」を作成します。</li>
+<li><strong>共有設定</strong>: 「共有」ボタンから、Macユーザー名やメールアドレスを指定して「編集者」として許可します。（※iCloud Driveとの混同に注意：Googleドライブはシステムアプリとしてインストール不要で動作します）。</li>
+<li><strong>共同編集</strong>: スプレッドシートを開き、複数人が同時にセルに数値を入力・修正。リアルタイムで自動保存が行われます。</li>
+</ol>
+<h3>【標準機能の制限事項】</h3>
+<ul>
+<li><strong>iCloud Drive と Google ドライブの違い</strong>: macOSの「ファイル」アプリ内でiCloud Driveにあるファイルを直接スプレッドシートとして編集することはできません（Googleドキュメント形式ではないため）。必ずChrome/Safariブラウザ経由、または公式Macアプリを使用する必要があります。</li>
+<li><strong>ショートカットキーの差異</strong>: Windowsの <code>Ctrl</code> キー操作はmacOSではすべて <code>Cmd</code> に置き換わりますが、一部のサードパーティ製タスク管理アプリではこのマッピングに対応していない場合があります。標準機能（Web版）であれば問題ありません。</li>
+</ul>
+<h3>【よくあるトラブルと解決法】</h3>
+<ol>
+<li><strong>「ファイルが見つかりません」エラー</strong><ul>
+<li><strong>現象</strong>: Googleドライブの共有リンクからアクセスしても「403 Forbidden」と表示される。</li>
+<li><strong>原因/対策</strong>: 管理者が「特定のユーザーのみを許可」に設定しているため、外部からの匿名アクセスやドメイン外アドレスでの編集ができないことがあります。権限設定を再確認してください。</li>
+</ul>
+</li>
+<li><strong>バージョン管理の混乱</strong><ul>
+<li><strong>現象</strong>: 複数人が同時に保存し、「誰が最後に変更したか」が見にくい。</li>
+<li><strong>対策</strong>: 「ファイル→履歴（または右クリック）」から操作ログを確認し、不要な編集を「元に戻す」機能で巻き戻します。</li>
+</ul>
+</li>
+<li><strong>Mac アプリの自動更新による不具合</strong><ul>
+<li><strong>現象</strong>: GoogleスプレッドシートのMacアプリが最新版にアップデートされ、Teamsとの同期が遅くなる。</li>
+<li><strong>対策</strong>: ブラウザ版（Web）をメインで使用し、アプリは「オフライン編集」が必要な場合のみ起動する代替手段をとります。</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h2>3. iOS (iPhone/iPad) での実例手順</h2>
+<p>モバイル端末では、通知の受け取りとクイックな更新確認が中心となります。</p>
+<h3>【実例手順】グループ共同編集タスクの作成・管理（モバイル最適化）</h3>
+<ol>
+<li><strong>準備</strong>: 「ファイル」アプリを開き、OneDriveまたはGoogleドライブを「場所を追加」として追加します。</li>
+<li><strong>共有リンク発行</strong>: ファイルを選択し、「共有→コピーで共有」からURLを取得し、LINEやメールなどでチームメンバーに送信します。（※iOSの標準機能では直接のグループチャット内での共同編集は不可）。</li>
+<li><strong>共同編集確認</strong>: メンバーが「ファイル」アプリまたはSafariでリンクを開き、リアルタイム更新を確認します。</li>
+</ol>
+<h3>【標準機能の制限事項】</h3>
+<ul>
+<li><strong>Safari/Chrome アプリ内の共同編集限界</strong>: iOSのブラウザで開いたExcelやGoogleスプレッドシートは、「表示モード」として動作することが多く、複数人が同時にセルをタップして入力する「真の意味での同時編集」がUI上反映されない場合があります（特にSafari）。</li>
+<li><strong>Apple Pencil との連携制限</strong>: iPadでApple Pencilを使って手書きメモを追加しても、それがExcel/スプレッドシートとして保存されるのではなく、「画像」として添付ファイルになるため、数値計算タスクには不向きです。</li>
+</ul>
+<h3>【よくあるトラブルと解決法】</h3>
+<ol>
+<li><strong>「共有」ボタンが反応しない</strong><ul>
+<li><strong>現象</strong>: ファイル選択後に「共有」アイコンが表示されない、またはコピーできない。</li>
+<li><strong>原因/対策</strong>: iOSのバージョンアップにより、「ファイル」アプリのUIが変更されたため。「設定→一般→iCloud→iCloud Drive」で同期を再確認し、再起動してください。</li>
+</ul>
+</li>
+<li><strong>オフライン編集時のデータ損失</strong><ul>
+<li><strong>現象</strong>: ネットワークがない状態で入力して保存したが、接続後に内容が消えた。</li>
+<li><strong>対策</strong>: 「クラウドストレージ（OneDrive/Google Drive）への自動同期が有効か確認」。無効な場合は、「設定→一般→iCloud→ファイルとiCloud」で「すべてのiCloudデータをこのiPhoneにダウンロード」する代替手段をとります。</li>
+</ul>
+</li>
+<li><strong>通知バナーの表示遅延</strong><ul>
+<li><strong>現象</strong>: 他のメンバーが編集しても、自分の画面に更新アラートが出ない。</li>
+<li><strong>対策</strong>: 「設定→通知」という代替手段で「ファイル」アプリへの許可を確認してください。</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h2>4. Android での実例手順</h2>
+<p>AndroidはGoogleエコシステムとの統合が非常に強力です。</p>
+<h3>【実例手順】グループ共同編集タスクの作成・管理（モバイル最適化）</h3>
+<ol>
+<li><strong>準備</strong>: 「ファイル」アプリまたはChromeブラウザでGoogleドライブを開きます。「＋→スプレッドシート/ドキュメント」を作成します。</li>
+<li><strong>共有設定</strong>: メニューから「共有」を選択し、チームメンバーのメールアドレスを登録。「編集者」として許可します。（※機種名PixelやGalaxyに依存せず、Googleアカウントさえあれば動作）。</li>
+<li><strong>共同編集確認</strong>: 他のメンバーがスマホでリンクを開き、リアルタイム更新を確認。</li>
+</ol>
+<h3>【標準機能の制限事項】</h3>
+<ul>
+<li><strong>「ファイル」アプリとGoogleドライブの違い</strong>: Androidの「ファイル」アプリはローカルストレージ管理用であり、Googleドキュメントを直接開くにはChromeブラウザまたは公式アプリ「Google スプレッドシート/ドキュメント」が必要となります。</li>
+</ul>
+<hr />
+<h2>よくあるトラブルと解決チェックリスト</h2>
+<ul>
+<li><strong>[ ] 同時編集中に「読み取り専用」になる</strong><ul>
+<li>原因：他のユーザーがファイルを開きっぱなしにしている、または権限設定が「閲覧者」になっている。</li>
+<li>対処：共有設定を再確認し、全員のブラウザタブを一度リフレッシュする。</li>
+</ul>
+</li>
+<li><strong>[ ] スマホから編集した内容がPCに反映されない</strong><ul>
+<li>原因：モバイルアプリ側で「オフライン保存」のみが行われ、クラウドへのアップロードが完了していない。</li>
+<li>対処：Wi-Fi環境下で同期完了のインジケーターを確認する。</li>
+</ul>
+</li>
+<li><strong>[ ] 特定のOSだけレイアウトが崩れる</strong><ul>
+<li>原因：ブラウザのズーム設定や、モバイル版UIへの自動切り替えによるもの。</li>
+<li>対処：PCでは「デスクトップサイトを表示」をオンにする、または標準的なフォントを使用する。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2>まとめ：快適なマルチOS環境を作るポイント</h2>
+<p>4つのOSを横断してスムーズに共同編集を行うための鍵は、<strong>「プラットフォームの統一」</strong>です。特定のアプリに依存しすぎるのではなく、Microsoft 365やGoogle Workspaceのような強力なクラウド基盤を軸に据えることで、デバイスの差異によるストレスを最小限に抑えられます。</p>
+<p>また、円滑な共同作業にはデジタルツールだけでなく、周辺機器の充実も重要です。<br />
+* <strong>Webカメラ・高音質マイク</strong>: TeamsやMeetでの会議時、クリアな音声は信頼関係を築く第一歩です。<br />
+* <strong>ノイズキャンセリングヘッドセット</strong>: カフェや移動中など、騒がしい環境でも集中力を維持し、チームの生産性を守ります。<br />
+* <strong>クラウドストレージ</strong>: OneDriveやGoogle Driveを活用することで、「最新版はどれ？」という無駄なコミュニケーションをゼロにできます。</p>
+<p>これらのツールと正しいOS操作を組み合わせることで、場所やデバイスを選ばない、真に自由なマルチOS共同編集環境を実現しましょう。</p>
+<hr />
+<h2>参考文献・公式ドキュメント（一次情報ソース）</h2>
+<p>本記事の手順・仕様は以下の各OSおよびツールの公式ドキュメントに基づいています。OSアップデートによりメニュー名称や挙動が変わる場合があるため、最新仕様の確認にもご活用ください。</p>
+<ul>
+<li><strong>[Windows]</strong> <a href="https://support.microsoft.com/ja-jp/office/onedrive-%E3%81%AB%E4%BF%9D%E5%AD%98%E3%81%95%E3%82%8C%E3%81%A6%E3%81%84%E3%82%8B%E4%BB%A5%E5%89%8D%E3%81%AE%E3%83%90%E3%83%BC%E3%82%B8%E3%83%A7%E3%83%B3%E3%81%AE%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%92%E5%BE%A9%E5%85%83%E3%81%99%E3%82%8B-159cad6d-d76e-4981-88ef-de6e96c93893">OneDrive に保存されている以前のバージョンのファイルを復元する - Microsoft サポート</a></li>
+<li><strong>[Windows]</strong> <a href="https://support.microsoft.com/ja-jp/office/onedrive-%E3%81%AE%E5%90%8C%E6%9C%9F%E3%81%AE%E5%95%8F%E9%A1%8C%E3%82%92%E8%A7%A3%E6%B1%BA%E3%81%99%E3%82%8B-0899b115-05f7-45ec-95b2-e4cc8c4670b2">OneDrive の同期の問題を解決する - Microsoft サポート</a></li>
+<li><strong>[macOS / 共通]</strong> <a href="https://support.google.com/drive/answer/10838124?hl=ja">パソコン版 Google ドライブを使用する - Google ドライブ ヘルプ</a></li>
+<li><strong>[iOS]</strong> <a href="https://support.apple.com/ja-jp/guide/iphone/iphc61044c11/ios">iPhoneの「ファイル」でファイルやフォルダを変更する - Apple サポート (日本)</a></li>
+<li><strong>[Android]</strong> <a href="https://support.google.com/drive/answer/2424368?hl=ja">Google ドライブにファイルやフォルダをアップロードする - Google ドライブ ヘルプ</a></li>
+<li><strong>[Android / 共通]</strong> <a href="https://support.google.com/drive/answer/2409045?hl=ja">操作履歴とファイル バージョンを確認する - Google ドライブ ヘルプ</a></li>
+</ul>
+    </article>
+  </main>
+  <footer>Generated with Local Ollama (qwen3.5 / gemma4) &amp; Draw Things (FLUX.2 klein 4B)</footer>
+</body>
+</html>
