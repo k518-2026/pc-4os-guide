@@ -1316,5 +1316,75 @@
       "カット編集",
       "継ぎ目調整"
     ]
+  },
+  {
+    "id": "art101-cross-os-todo-list-sync-templates",
+    "article_num": 101,
+    "cat_num": 16,
+    "category": "学習・教育・自己啓発",
+    "task_topic": "Cross-platform Todo List Sync & Template Sharing (Win/mac/iOS/And)",
+    "title": "重要タスクを「メモ帳・アプリ連携」で4台同時に管理：Windows・macOS・iOS・Androidの標準機能活用実例｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "cross-platform-todo-list",
+      "windows-macos-ios-android-sync",
+      "standard-app-usage-comparison",
+      "offline-workflow"
+    ]
+  },
+  {
+    "id": "art102-bank-statement-digital-categorization",
+    "article_num": 102,
+    "cat_num": 17,
+    "category": "生活・行政手続き・家計・資産管理",
+    "task_topic": "家計管理",
+    "title": "銀行取引明細を「カテゴリ」で自動整理する：Windows・macOS、iOS、Androidの標準アプリ比較｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "家計簿",
+      "支出分類",
+      "電子取引明細",
+      "Excel/VBA"
+    ]
+  },
+  {
+    "id": "art103-word-editor-comparison-text-formatting-across-os",
+    "article_num": 103,
+    "cat_num": 1,
+    "category": "文書作成・オフィス業務・事務作業",
+    "task_topic": "文書作成・オフィス業務・事務作業",
+    "title": "Word エディタ比較：Windows/macOS/iOS/Android で「文字装飾とリンク管理」を徹底検証｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "ワードエディター",
+      "テキストフォーマット",
+      "ハイパーリンク管理",
+      "クロスプラットフォーム比較"
+    ]
+  },
+  {
+    "id": "art104-cross-os-task-manager-group-project-sync",
+    "article_num": 104,
+    "cat_num": 2,
+    "category": "コミュニケーション・情報共有",
+    "task_topic": "コミュニケーション・情報共有",
+    "title": "4OS（Win/Mac/iOS/Android）でグループ共同編集するタスク管理アプリの比較実例｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "タスク管理",
+      "共同作業",
+      "クロスプラットフォーム",
+      "プロジェクト共有"
+    ]
+  },
+  {
+    "id": "art105-web-form-filling-across-os-comparison",
+    "article_num": 105,
+    "cat_num": 3,
+    "category": "情報収集・リサーチ・Web利用",
+    "task_topic": "Web フォーム記入時の「自動入力」機能のOS間比較と、セキュリティリスクのあるサイトでの注意点｜Windows・macOS・iOS・Android",
+    "title": "Web フォーム記入時の「自動入力」機能の OS 間比較：Chrome/Edge/Safari の挙動違いと偽サイト対策｜Windows・macOS・iOS・Android",
+    "keywords": [
+      "web form auto-fill",
+      "chrome autofill comparison",
+      "edge browser security",
+      "ios safari password management"
+    ]
   }
 ]
