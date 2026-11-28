@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Web フォーム記入時の「自動入力」機能の OS 間比較：Chrome/Edge/Safari の挙動違いと偽サイト対策｜Windows・macOS・iOS・Android | PC 4OS実例ガイド</title>
+  <style>
+:root {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --muted: #475569;
+  --accent: #0284c7;
+  --accent-soft: #e0f2fe;
+  --border: #e2e8f0;
+  --code-bg: #0f172a;
+  --code-text: #e2e8f0;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Noto Sans JP", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+}
+header.site-header {
+  background: linear-gradient(135deg, #0f172a 0%, #0369a1 100%);
+  color: #fff;
+  padding: 2.2rem 1.25rem;
+}
+header.site-header .inner { max-width: 980px; margin: 0 auto; }
+header.site-header h1 { margin: 0 0 0.4rem; font-size: 1.75rem; }
+header.site-header p { margin: 0; opacity: 0.9; font-size: 0.96rem; }
+main { max-width: 980px; margin: 2rem auto; padding: 0 1.25rem 3rem; }
+.badge {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: var(--accent-soft);
+  color: #0369a1;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1.25rem;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08); }
+.card img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; display: block; background: #e2e8f0; }
+.card-body { padding: 1rem 1.1rem 1.2rem; flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+.card-title { font-size: 1.02rem; font-weight: 700; margin: 0; line-height: 1.45; }
+.card-meta { font-size: 0.82rem; color: var(--muted); margin-top: auto; }
+article.post {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 2rem;
+}
+article.post img.eyecatch {
+  width: 100%;
+  max-height: 460px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+}
+article.post h1 { font-size: 1.65rem; line-height: 1.35; margin-top: 0; }
+article.post h2 {
+  font-size: 1.3rem;
+  margin-top: 2.1rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 2px solid var(--accent-soft);
+}
+article.post h3 { font-size: 1.08rem; margin-top: 1.4rem; }
+article.post table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.2rem 0;
+  font-size: 0.92rem;
+  display: block;
+  overflow-x: auto;
+}
+article.post th, article.post td {
+  border: 1px solid var(--border);
+  padding: 0.6rem 0.8rem;
+  text-align: left;
+}
+article.post th { background: #f1f5f9; font-weight: 700; }
+article.post pre {
+  background: var(--code-bg);
+  color: var(--code-text);
+  padding: 1rem 1.15rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+article.post code {
+  background: #f1f5f9;
+  padding: 0.15rem 0.38rem;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+article.post pre code { background: transparent; padding: 0; color: inherit; }
+article.post blockquote {
+  margin: 1.2rem 0;
+  padding: 0.8rem 1.1rem;
+  border-left: 4px solid var(--accent);
+  background: #f0f9ff;
+  border-radius: 0 8px 8px 0;
+}
+.back-link { display: inline-block; margin-bottom: 1rem; color: var(--accent); text-decoration: none; font-weight: 600; }
+.filter-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.15rem 1.25rem;
+  margin-bottom: 1.5rem;
+}
+.filter-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) auto;
+  gap: 0.9rem;
+  align-items: end;
+}
+.filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.filter-field label {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.filter-field input[type="search"],
+.filter-field select {
+  font: inherit;
+  font-size: max(1rem, 1em);
+  min-height: 48px;
+  padding: 0.55rem 0.85rem;
+  border: 1.5px solid #767676;
+  border-radius: 8px;
+  background: #fff;
+  color: var(--text);
+  width: 100%;
+}
+.filter-field input[type="search"]:focus-visible,
+.filter-field select:focus-visible,
+.filter-actions button:focus-visible {
+  outline: 3px solid #0284c7;
+  outline-offset: 2px;
+}
+.filter-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+.filter-actions button {
+  font: inherit;
+  font-size: max(1rem, 0.95em);
+  font-weight: 600;
+  min-height: 48px;
+  padding: 0 1.05rem;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+}
+.btn-primary {
+  background: #0369a1;
+  color: #fff;
+}
+.btn-primary:hover { background: #075985; }
+.btn-secondary {
+  background: #f1f5f9;
+  color: var(--text);
+  border-color: #94a3b8;
+}
+.btn-secondary:hover { background: #e2e8f0; }
+.results-status {
+  color: var(--muted);
+  font-size: 0.92rem;
+  margin: 0 0 1.1rem;
+}
+.empty-state {
+  background: var(--surface);
+  border: 1px dashed #94a3b8;
+  border-radius: 12px;
+  padding: 2rem 1.25rem;
+  text-align: center;
+  color: var(--muted);
+}
+.card[hidden],
+.empty-state[hidden] { display: none; }
+footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 2rem 1rem; }
+@media (max-width: 720px) {
+  .filter-form { grid-template-columns: 1fr; }
+  .filter-actions { width: 100%; }
+  .filter-actions button { flex: 1; }
+}
+@media (max-width: 640px) {
+  article.post { padding: 1.2rem; }
+}
+</style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="inner">
+      <h1>PC 4OS実例ガイド</h1>
+      <p>Windows・macOS・iOS・Android の実践比較＆トラブル解決アーカイブ</p>
+    </div>
+  </header>
+  <main>
+    <a class="back-link" href="../index.html">← 記事一覧へ戻る</a>
+    <article class="post">
+      <p><span class="badge">#105｜分類03: 情報収集・リサーチ・Web利用</span> <small style="color:#64748b;margin-left:0.5rem;">2026-11-28</small></p>
+      <img class="eyecatch" src="../images/2026-11-28_art105_web_form_filling_across_os_comparison.png" alt="Web フォーム記入時の「自動入力」機能の OS 間比較：Chrome/Edge/Safari の挙動違いと偽サイト対策｜Windows・macOS・iOS・Android">
+      <h1>Web フォーム記入時の「自動入力」機能の OS 間比較：Chrome/Edge/Safari の挙動違いと偽サイト対策｜Windows・macOS・iOS・Android</h1>
+<p>Webサイトでログインする際や、会員登録フォームを埋める際、「以前入力した情報が自動で入る」便利さを誰もが求めています。しかし、この「自動入力（オートフィル）」機能は、利便性の裏側に<strong>フィッシング詐欺などのセキュリティリスク</strong>を常に孕んでいます。</p>
+<p>特に、Windows、macOS、iOS、Androidといった異なるOSやブラウザを併用しているユーザーにとって、「どのデバイスで、どの設定を確認すれば安全に自動入力を管理できるのか」は非常に重要な課題です。</p>
+<p>本記事では、主要4OSにおける標準機能の挙動の違いを徹底比較し、利便性を保ちつつ安全を守るための実践的な設定手順とトラブル解決策を解説します。</p>
+<h2>4OS比較早見表</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">OS</th>
+<th style="text-align: left;">主要ブラウザ</th>
+<th style="text-align: left;">自動入力の実装基盤</th>
+<th style="text-align: left;">同期・管理の仕組み</th>
+<th style="text-align: left;">特徴</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Windows</strong></td>
+<td style="text-align: left;">Chrome / Edge</td>
+<td style="text-align: left;">ブラウザ内蔵マネージャー</td>
+<td style="text-align: left;">Google / Microsoft アカウント</td>
+<td style="text-align: left;">キーボードショートカット等で操作性が高い</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>macOS</strong></td>
+<td style="text-align: left;">Safari / Chrome</td>
+<td style="text-align: left;">iCloudキーチェーン / ブラウザ内蔵</td>
+<td style="text-align: left;">iCloud / 各社アカウント</td>
+<td style="text-align: left;">OS標準の「キーチェーン」と密接に連携</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>iOS</strong></td>
+<td style="text-align: left;">Safari / Chrome</td>
+<td style="text-align: left;">iCloudキーチェーン / ブラウザ内蔵</td>
+<td style="text-align: left;">iCloud / Google アカウント</td>
+<td style="text-align: left;">画面下部へのポップアップ通知が特徴</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Android</strong></td>
+<td style="text-align: left;">Chrome / Samsung Internet</td>
+<td style="text-align: left;">Googleパスワードマネージャー</td>
+<td style="text-align: left;">Google アカウント</td>
+<td style="text-align: left;">キーボード入力時の予測提案と連動</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>1. Windows 11 での実例手順（Chrome / Edge）</h2>
+<p>Windows環境では、ブラウザ独自のパスワードマネージャーが中心となります。OS標準の独立したパスワード管理アプリは存在しないため、ブラウザの設定を正しく把握することが重要です。</p>
+<h3>設定と操作</h3>
+<ul>
+<li><strong>Google Chrome</strong>: 「設定」＞「プライバシーとセキュリティ」＞「パスワードマネージャー」から管理します。</li>
+<li><strong>Microsoft Edge</strong>: 「設定」＞「プロファイル」＞「パスワード」からアクセス可能です。Microsoftアカウントとの連携により、PC間での同期が行われます。</li>
+</ul>
+<h3>挙動の特徴</h3>
+<ul>
+<li><strong>ショートカット</strong>: Chromeでは <code>Ctrl</code> + <code>Shift</code> + <code>L</code> を押すことで、保存されたフォーム情報を素早く呼び出せる場合があります（※ブラウザのバージョンや設定に依存）。</li>
+<li><strong>個別の無効化</strong>: 特定のサイトだけで自動入力を止めたい場合は、パスワードマネージャー内の各サイト設定から「自動入力」をオフにします。</li>
+</ul>
+<hr />
+<h2>2. macOS での実例手順（Safari / Chrome）</h2>
+<p>macOSでは、Apple独自の「キーチェーン」とブラウザ機能の使い分けに注意が必要です。</p>
+<h3>設定と操作</h3>
+<ul>
+<li><strong>Safari</strong>: 「設定」＞「パスワード」から管理します。ここで入力した情報はiCloudキーチェーンを通じてiPhone/iPadとも同期されます。</li>
+<li><strong>Google Chrome</strong>: Windowsと同様、ブラウザ内蔵のマネージャーを使用します。</li>
+</ul>
+<h3>挙動の特徴</h3>
+<ul>
+<li><strong>注意点</strong>: Safariで保存した情報はChromeには自動で反映されません（逆も同様）。OSレベルの「設定」＞「プライバシーとセキュリティ」の中に独立した自動入力管理項目はなく、あくまで<strong>ブラウザアプリごとの設定</strong>として管理する必要があります。</li>
+</ul>
+<hr />
+<h2>3. iOS（iPhone / iPad）での実例手順</h2>
+<p>iOSでは、Safariの標準機能が非常に強力に統合されています。</p>
+<h3>設定と操作</h3>
+<ul>
+<li><strong>Safari</strong>: 「設定」＞「パスワード」から、保存されたすべての情報（クレジットカード含む）を確認・編集できます（iOS 16.2以降）。</li>
+<li><strong>Chrome</strong>: Googleアカウントによる同期のみとなります。</li>
+</ul>
+<h3>挙動の特徴</h3>
+<ul>
+<li><strong>UIの挙動</strong>: Webページでフォームをタップすると、画面下部やURLバー付近に「自動入力」の提案がポップアップとして表示されます。</li>
+<li><strong>制限事項</strong>: サードパーティ製ブラウザ（Chrome等）の自動入力はOSレベルでは制御できないため、iOSでの一貫した体験を求めるならSafariの利用が推奨されます。</li>
+</ul>
+<hr />
+<h2>4. Android での実例手順（Chrome / Samsung Internet）</h2>
+<p>Androidは機種やメーカーによって挙動が分かれることが多いため、注意が必要です。</p>
+<h3>設定と操作</h3>
+<ul>
+<li><strong>Google Chrome</strong>: 「設定」＞「パスワードマネージャー」から管理します。</li>
+<li><strong>Samsung Galaxy (Samsung Internet)</strong>: ブラウザ内の「設定」＞「パスワード管理」からアクセスします。</li>
+<li><strong>OS標準連携</strong>: Android 12以降では、OSレベルのパスワードマネージャーとの連携も可能ですが、機種により名称が異なるためブラウザ個別の設定を確認するのが確実です。</li>
+</ul>
+<h3>挙動の特徴</h3>
+<ul>
+<li><strong>キーボード連動</strong>: キーボードを表示した際に、保存された情報が予測候補として提示されます。オフにする場合は各ブラウザの設定から変更する必要があります。</li>
+</ul>
+<hr />
+<h2>よくあるトラブルと解決チェックリスト</h2>
+<p>自動入力がうまくいかない、あるいはセキュリティに不安を感じた際のチェックリストです。</p>
+<h3>トラブル A: 「自動入力」が反応しない・表示されない</h3>
+<ul>
+<li><strong>原因</strong>: ブラウザキャッシュの不整合、パスワード保存設定のオフ、またはサイト側がHTTPS非対応（セキュリティ上の理由でブロック）。</li>
+<li><strong>解決策</strong>: <ol>
+<li>ブラウザの設定から「すべてのパスワードを管理」を開き、自動入力がONか確認。</li>
+<li>キャッシュとCookieをクリアしてブラウザを再起動。</li>
+</ol>
+</li>
+<li><strong>OS別補足</strong>: WindowsではSnipping Toolでエラー画面をキャプチャし、問題箇所を特定するのが効率的です。macOSでは「キーチェーンアクセス」アプリを開き、そもそもデータが存在するか確認してください。</li>
+</ul>
+<h3>トラブル B: 偽サイト（フィッシング）での情報漏洩への対策</h3>
+<ul>
+<li><strong>原因</strong>: URLが偽装されたサイトで無意識に自動入力が作動し、認証情報が送信される。</li>
+<li><strong>解決策</strong>: <ol>
+<li>入力前に必ずアドレスバーの「鍵アイコン」とドメイン名を視認する。</li>
+<li>Safari等の設定で「信頼できないサイトでの自動入力を無効化」するオプションがある場合は活用する。</li>
+</ol>
+</li>
+<li><strong>重要</strong>: Chrome等のブラウザでは、拡張機能なしでは高度な制御が難しいため、<strong>「怪しいサイトでは手動入力する」という習慣</strong>を徹底してください。</li>
+</ul>
+<h3>トラブル C: パスワード情報の同期エラー・重複表示</h3>
+<ul>
+<li><strong>原因</strong>: クラウドアカウント（Google/Microsoft/iCloud）の同期遅延や、複数デバイスでの設定不一致。</li>
+<li><strong>解決策</strong>: <ol>
+<li>各アカウントの「パスワード管理ツール」にログインし、手動で再同期を促す。</li>
+<li>ブラウザを完全に終了させてから再起動する。</li>
+</ol>
+</li>
+</ul>
+<h3>トラブル D: 操作手順を正確に記録・共有したい場合（技術者向け）</h3>
+<ul>
+<li><strong>目的</strong>: 設定変更やトラブルの過程をマニュアル化するために記録を残す。</li>
+<li><strong>OS別推奨ツール</strong>:<ul>
+<li><strong>Windows</strong>: 「Snipping Tool」でスクリーンショットを取得し、Xbox Game Barで操作動画を記録。</li>
+<li><strong>macOS</strong>: <code>Shift + Command + 5</code> で画面収録を開始。</li>
+<li><strong>iOS</strong>: コントロールセンターから「画面収録」を選択。</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2>まとめ：快適なマルチOS環境を作るポイント</h2>
+<p>Webフォームの自動入力は強力な味方ですが、安全に使いこなすには<strong>「どのプラットフォームで何が起きているか」を把握すること</strong>が第一歩です。</p>
+<p>快適かつ安全なデジタルライフを送るためには、以下の周辺機器やツールの導入も検討してみることをお勧めします。</p>
+<ul>
+<li><strong>VPNサービス</strong>: 公共Wi-Fi等でフォーム入力を行う際、通信を暗号化して盗聴を防ぎます。</li>
+<li><strong>トラックボールマウス</strong>: Windows/macOS問わず、精密な操作が可能で手首の負担を軽減し、長時間のブラウジング作業を快適にします。</li>
+<li><strong>ブルーライトカット眼鏡</strong>: 画面上の細かい文字（ドメイン名の確認など）を長時間注視する際の目の疲れを抑え、集中力を維持します。</li>
+</ul>
+<p>各OSの特性を理解し、適切な設定とツールを組み合わせることで、利便性とセキュリティを両立した理想的なマルチOS環境を実現しましょう。</p>
+<hr />
+<h2>参考文献・公式ドキュメント（一次情報ソース）</h2>
+<p>本記事の手順・仕様は以下の各OSおよびツールの公式ドキュメントに基づいています。OSアップデートによりメニュー名称や挙動が変わる場合があるため、最新仕様の確認にもご活用ください。</p>
+<ul>
+<li><strong>[Windows]</strong> <a href="https://support.microsoft.com/ja-jp/windows/snipping-tool-%E3%82%92%E4%BD%BF%E3%81%A3%E3%81%A6%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%88%E3%82%92%E3%82%AD%E3%83%A3%E3%83%97%E3%83%81%E3%83%A3%E3%81%99%E3%82%8B-00246869-1843-655f-f220-97299b865f6b">Snipping Tool を使ってスクリーンショットをキャプチャする・画面録画する - Microsoft サポート</a></li>
+<li><strong>[macOS]</strong> <a href="https://support.apple.com/ja-jp/102646">Macでスクリーンショットを撮る - Apple サポート (日本)</a></li>
+<li><strong>[macOS]</strong> <a href="https://support.apple.com/ja-jp/102618">Macで画面を収録する方法 - Apple サポート (日本)</a></li>
+<li><strong>[iOS]</strong> <a href="https://support.apple.com/ja-jp/guide/iphone/iphc872c0115/ios">iPhoneでスクリーンショットを撮る（フルページ保存を含む） - Apple サポート (日本)</a></li>
+<li><strong>[iOS]</strong> <a href="https://support.apple.com/ja-jp/102653">iPhone、iPad、iPod touchで画面を録画する - Apple サポート (日本)</a></li>
+<li><strong>[Android]</strong> <a href="https://support.google.com/android/answer/9075928?hl=ja">Android デバイスで画面の画像（スクリーンショット）または動画を撮影する - Android ヘルプ</a></li>
+</ul>
+    </article>
+  </main>
+  <footer>Generated with Local Ollama (qwen3.5 / gemma4) &amp; Draw Things (FLUX.2 klein 4B)</footer>
+</body>
+</html>
